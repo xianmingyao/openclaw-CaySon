@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "skills": {
+    "edgeone-clawscan": {
+      "version": "1.0.13",
+      "installedAt": 1773808023086
+    },
+    "cron-scheduling": {
+      "version": "1.0.0",
+      "installedAt": 1773808261981
+    },
+    "memory-hygiene": {
+      "version": "1.0.0",
+      "installedAt": 1773808322131
+    },
+    "triple-memory": {
+      "version": "1.0.0",
+      "installedAt": 1773808330101
+    },
+    "web-scraper-as-a-service": {
+      "version": "1.0.0",
+      "installedAt": 1773808382250
+    },
+    "web-monitor": {
+      "version": "1.0.0",
+      "installedAt": 1773808390796
+    },
+    "filesystem": {
+      "version": "1.0.0",
+      "installedAt": 1773808442045
+    },
+    "serpapi": {
+      "version": "1.0.0",
+      "installedAt": 1773808445514
+    },
+    "searxng": {
+      "version": "1.0.3",
+      "installedAt": 1773808448234
+    },
+    "office": {
+      "version": "1.0.0",
+      "installedAt": 1773808455955
+    },
+    "multi-search-engine": {
+      "version": "2.0.1",
+      "installedAt": 1773808502296
+    },
+    "social-content": {
+      "version": "0.1.0",
+      "installedAt": 1773808505808
+    },
+    "diagram-generator": {
+      "version": "1.1.1",
+      "installedAt": 1773808513638
+    },
+    "elite-longterm-memory": {
+      "version": "1.2.3",
+      "installedAt": 1773808516587
+    },
+    "pinchtab": {
+      "version": "0.8.3",
+      "installedAt": 1773808562359
+    },
+    "memos": {
+      "version": "0.1.1",
+      "installedAt": 1773808572229
+    },
+    "evomap": {
+      "version": "1.0.0",
+      "installedAt": 1773808622599
+    },
+    "ai-web-automation": {
+      "version": "1.0.0",
+      "installedAt": 1773808637727
+    },
+    "multi-agent-collaboration": {
+      "version": "1.0.0",
+      "installedAt": 1773808685286
+    },
+    "ralph-loops": {
+      "version": "1.0.2",
+      "installedAt": 1773808760139
+    },
+    "ralph-loop-agent": {
+      "version": "1.1.0",
+      "installedAt": 1773808802496
+    },
+    "agent-browser": {
+      "version": "0.2.0",
+      "installedAt": 1773809041773
+    },
+    "cron-mastery": {
+      "version": "1.0.3",
+      "installedAt": 1773809044848
+    },
+    "has-anonymizer": {
+      "version": "1.0.1",
+      "installedAt": 1773809103348
+    },
+    "agent-reach": {
+      "version": "1.1.0",
+      "installedAt": 1773809283375
+    },
+    "ui-ux-design": {
+      "version": "1.0.0",
+      "installedAt": 1773809342494
+    },
+    "ui-design": {
+      "version": "1.0.0",
+      "installedAt": 1773809346081
+    },
+    "simplify": {
+      "version": "1.0.2",
+      "installedAt": 1773809401796
+    },
+    "ui-ux-pro-max": {
+      "version": "0.1.0",
+      "installedAt": 1773809465405
+    },
+    "frontend": {
+      "version": "1.0.2",
+      "installedAt": 1773809522127
+    },
+    "frontend-design-pro": {
+      "version": "1.0.0",
+      "installedAt": 1773809525456
+    },
+    "self-improving": {
+      "version": "1.2.16",
+      "installedAt": 1773819782697
+    },
+    "find-skills": {
+      "version": "0.1.0",
+      "installedAt": 1773819842430
+    }
+  }
+}

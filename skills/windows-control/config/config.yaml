@@ -1,0 +1,96 @@
+# Windows Control 配置文件
+# 参考 UFO/ufo/config/config.yaml
+
+system:
+  # 点击 API: "click" 或 "click_input"
+  # click: 使用 pywinauto 的 click()
+  # click_input: 使用 pywinauto 的 click_input() (更精确，推荐)
+  click_api: "click_input"
+
+  # 输入文本 API: "set_text" 或 "type_keys"
+  # set_text: 使用 set_edit_text() 方法
+  # type_keys: 使用 type_keys() 方法 (推荐，支持特殊键)
+  input_text_api: "type_keys"
+
+  # 输入后是否自动按 Enter
+  input_text_enter: false
+
+  # 按键间隔时间 (秒)
+  # 较慢的间隔可以避免输入遗漏，但速度慢
+  input_text_inter_key_pause: 0.01
+
+  # 点击后等待时间 (秒)
+  after_click_wait: 0.1
+
+  # 鼠标移动持续时间 (秒)
+  mouse_move_duration: 0.1
+
+  # 拖拽持续时间 (秒)
+  drag_duration: 0.5
+
+  # 截图压缩质量 (1-100)
+  screenshot_quality: 85
+
+  # 是否启用截图
+  enable_screenshot: true
+
+  # 截图后等待时间 (秒)
+  after_screenshot_wait: 0.2
+
+  # 日志级别: DEBUG, INFO, WARNING, ERROR
+  log_level: "INFO"
+
+  # pywinauto 后端: "win32" (32位) 或 "uia" (推荐)
+  pywinauto_backend: "win32"
+
+  # 最大重试次数
+  max_retries: 3
+
+  # 操作超时时间 (秒)
+  operation_timeout: 30
+
+window:
+  # 窗口查找超时 (秒)
+  window_find_timeout: 10
+
+  # 窗口启动超时 (秒)
+  window_startup_timeout: 30
+
+  # 是否自动最大化窗口
+  auto_maximize: false
+
+automation:
+  # 是否启用 Windows 原生辅助功能
+  use_native_accessibility: true
+
+  # 是否使用 DPI 感知
+  dpi_aware: true
+
+  # UI 遍历最大深度
+  max_ui_depth: 15
+
+  # UI 控件缓存时间 (秒)
+  ui_cache_ttl: 300
+
+office:
+  # Word 启动超时 (秒)
+  word_timeout: 30
+
+  # Excel 启动超时 (秒)
+  excel_timeout: 30
+
+  # PowerPoint 启动超时 (秒)
+  powerpoint_timeout: 30
+
+  # 是否显示 Office 窗口
+  visible: true
+
+browser:
+  # 默认浏览器: "chrome", "edge", "firefox"
+  default_browser: "chrome"
+
+  # 浏览器启动超时 (秒)
+  browser_timeout: 30
+
+  # 是否使用无头模式
+  headless: false

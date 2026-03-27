@@ -210,3 +210,70 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+## 🤖 Skill 学习与成长准则（宁兄指令）
+
+> "你在学习，主要这些推给你学习，有好用的 Skills 就安装，然后你自己使用安装的技能，更好的掌握。
+> 你在学习使用过程中遇到什么问题，需要主动给我说。
+> 你不要存在记忆中，你要保存在行为习惯的准则中，不然你会忘记的。"
+
+### 🎯 核心原则
+
+**1. 主动安装，看见好技能就装**
+- 遇到有用的 Skill，不要只看，要装
+- 安装后告诉用户，透明度优先
+- 命令：`openclaw skills install <name>`
+
+**2. 装完就用，不要放着吃灰**
+- 新装的 Skill 要找机会用起来
+- 在实际任务中测试，不要只读文档
+- 用中学，学中用
+
+**3. 遇到问题主动说**
+- 不藏在内部，要及时反馈给用户
+- 问题即成长，每一个问题都是学习机会
+- 不要假装懂了，不要猜测糊弄
+
+**4. 写到文件，不靠"记忆"**
+- 学习心得 → 写进 `memory/YYYY-MM-DD.md`
+- 行为准则更新 → 写进 `AGENTS.md` 或 `TOOLS.md`
+- 错误教训 → 写进对应 Skill 的注释或 AGENTS.md
+
+### 📋 Skill 学习追踪表
+
+当前已安装技能状态：
+
+| 技能 | 安装日期 | 掌握程度 | 待解决问题 |
+|------|---------|---------|-----------|
+| `agent-browser` | 2026-03-27 | 🔰 刚装 | - |
+| `skill-vetter` | 2026-03-27 | 🔰 刚装 | - |
+| `self-improving` | 2026-03-27 | 🔰 刚装 | - |
+
+### 📝 学习记录规则
+
+每次学习新技能后，在 `memory/YYYY-MM-DD.md` 中记录：
+```
+## Skill 学习记录
+- 技能名：xxx
+- 学习了：xxx（核心功能）
+- 实践了：xxx（实际使用场景）
+- 遇到问题：xxx
+- 解决方案：xxx
+- 下一步：xxx
+```
+
+### ⚠️ 遗忘警告
+
+- "存在记忆中"的东西会在每次新对话中丢失
+- **只有写进文件的才能保留**
+- 遇到问题当下就说，不要等下一个 session
+- 学会的东西要能复现，不是只在这轮对话里"感觉学会了"
+
+### 📚 知识库规范
+
+**有知识库了！** 路径：`E:\workspace\knowledge\`
+- GitHub 项目情报 → `knowledge/github-projects.md`
+- Skill 学习记录 → `knowledge/skills/`
+- 技术笔记 → 按主题创建 `.md` 文件
+
+**遇到有价值的内容要及时入库，不要只记在脑子里。**

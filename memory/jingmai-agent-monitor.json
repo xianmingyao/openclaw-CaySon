@@ -1,0 +1,12 @@
+{
+  "lastCheckedAt": "2026-03-20T17:03:00+08:00",
+  "lastGitStatus": "A  .idea/vcs.xml\n M .specify/memory/constitution.md\n M dependencies/logger_types.py\n M main.py\n M plugins/__init__.py\n M plugins/storage/__init__.py\n?? .claude/settings.local.json\n?? .gitignore\n?? CLAUDE.md\n?? LICENSE\n?? README.md\n?? README_BUILD.md\n?? apps.py\n?? build_file.bat\n?? cli/\n?? dependencies/__init__.py\n?? dependencies/container.py\n?? dependencies/database.py\n?? dependencies/redis.py\n?? exceptions/\n?? http_base.py\n?? middlewares.py\n?? migrations/\n?? models/\n?? plugins/storage/base.py\n?? plugins/storage/oss.py\n?? plugins/vector_stores/\n?? requirements.txt\n?? run_server.sh\n?? specs/\n?? tests/\n?? updater.py\n?? utils/\n",
+  "lastCommit": "4e9c467",
+  "lastDoneCount": 36,
+  "lastProcessCount": 0,
+  "checkCount": 1,
+  "lastPhase1Count": 0,
+  "lastPhase2Count": 36,
+  "lastPhase3Count": 0,
+  "speckitComplete": false
+}

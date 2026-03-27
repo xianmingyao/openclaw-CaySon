@@ -132,6 +132,22 @@
     "find-skills": {
       "version": "0.1.0",
       "installedAt": 1773819842430
+    },
+    "openmaic": {
+      "version": "0.2.1",
+      "installedAt": 1773821943860
+    },
+    "openclaw-agent-browser": {
+      "version": "1.0.0",
+      "installedAt": 1774602557391
+    },
+    "openclaw-skill-vetter-1-0-0": {
+      "version": "1.0.0",
+      "installedAt": 1774602573405
+    },
+    "claw-self-improving": {
+      "version": "1.2.10",
+      "installedAt": 1774602615998
     }
   }
 }

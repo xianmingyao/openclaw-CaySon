@@ -1,0 +1,8 @@
+# Windows-Control 依赖
+# 安装命令: pip install -r requirements.txt
+
+pyautogui>=0.9.54
+pyperclip>=1.8.2
+Pillow>=10.0.0
+psutil>=5.9.0
+pywin32>=306  # 用于 Office COM 操作

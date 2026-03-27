@@ -28,17 +28,32 @@ def run_action(action_class, action_name: str, **kwargs):
         action = action_class()
         action.set_context(1.0, (1920, 1080))
         result = asyncio.run(action.execute(**kwargs))
-        return result
+        # ActionResult 是 Pydantic 模型，转换为 dict 以便序列化
+        return {
+            "success": result.success,
+            "data": result.data,
+            "error": result.error,
+            "metadata": result.metadata,
+        }
     except Exception as e:
-        return {"success": False, "error": str(e)}
+        return {"success": False, "error": str(e), "data": None, "metadata": {}}
 
 
 def print_result(result: dict):
     """格式化打印结果"""
     if result.get("success"):
-        print(f"✅ {result}")
+        # 只打印关键信息，不打印完整的 data（太长）
+        if result.get("data"):
+            data_str = str(result["data"])
+            if len(data_str) > 200:
+                data_str = data_str[:200] + "..."
+            print(f"[OK] success, data: {data_str}")
+        else:
+            print(f"[OK] success")
+        if result.get("metadata"):
+            print(f"   metadata: {result['metadata']}")
     else:
-        print(f"❌ {result}")
+        print(f"[FAIL] error: {result.get('error')}")
 
 
 # ==================== 鼠标操作 ====================
@@ -186,18 +201,18 @@ def cmd_capture_window_screenshot(args):
     from app.service.actions.ui_collect_actions import CaptureWindowScreenshotAction
     result = run_action(CaptureWindowScreenshotAction, "capture_window_screenshot")
     if result.get("success"):
-        print(f"✅ Screenshot captured: {result['data']['width']}x{result['data']['height']}")
+        print(f"[OK] Screenshot captured: {result['data']['width']}x{result['data']['height']}")
     else:
-        print(f"❌ {result}")
+        print(f"[FAIL] {result}")
 
 
 def cmd_capture_desktop_screenshot(args):
     from app.service.actions.ui_collect_actions import CaptureDesktopScreenshotAction
     result = run_action(CaptureDesktopScreenshotAction, "capture_desktop_screenshot")
     if result.get("success"):
-        print(f"✅ Screenshot captured: {result['data']['width']}x{result['data']['height']}")
+        print(f"[OK] Screenshot captured: {result['data']['width']}x{result['data']['height']}")
     else:
-        print(f"❌ {result}")
+        print(f"[FAIL] {result}")
 
 
 def cmd_get_app_window_info(args):

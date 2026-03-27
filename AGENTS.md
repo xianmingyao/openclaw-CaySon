@@ -269,6 +269,30 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 - 遇到问题当下就说，不要等下一个 session
 - 学会的东西要能复现，不是只在这轮对话里"感觉学会了"
 
+### ⏰ 定时任务（OpenClaw Cron）
+
+已设置以下自动任务：
+
+**🌅 每天 09:00（微信登录检查）**
+- **morning-wechat-login-check**
+  - 检查微信登录状态
+  - 未登录则执行：`openclaw channels login --channel openclaw-weixin`
+  - 发送登录链接给用户（格式：`https://liteapp.weixin.qq.com/q/xxx?qrcode=xxx&bot_type=3`）
+  - Job ID：`584353fb-d6d7-40f2-8d14-4de85d0461e6`
+
+**🌙 每天 22:30（两个任务并行）**
+- **daily-git-commit**：自动提交 workspace 到 git
+  - 命令：`git add . && git commit -m '定时自动提交' && git push`
+  - Job ID：`d17e9c1c-7e7f-4b5d-8f3a-c6b2e1d0a987`
+- **daily-youdao-summary**：学习总结写入有道云笔记
+  - 目标：https://note.youdao.com/web/#/file/WEBa2b687261f801b0d8ba1335e93450410/empty
+  - 内容：今日GitHub项目 / Skills / 技术总结 / 下一步计划
+  - 登录状态：如果未登录，截图二维码发给用户
+  - Job ID：`5b756acc-89d9-4dd7-9b00-df35e6010f86`
+
+查看所有 cron 任务：`openclaw cron list`
+手动触发测试：`openclaw cron run <job-id>`
+
 ### 📚 知识库规范
 
 **有知识库了！** 路径：`E:\workspace\knowledge\`
@@ -277,3 +301,47 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 - 技术笔记 → 按主题创建 `.md` 文件
 
 **遇到有价值的内容要及时入库，不要只记在脑子里。**
+
+**📝 每日学习总结格式规范（严格按此格式写作）：**
+
+笔记必须包含以下结构：
+```
+# 今日学习总结 YYYY-MM-DD
+
+## 今日GitHub项目推荐
+- 项目名称
+  - Star数/今日增量
+  - 链接
+  - 核心功能
+  - 学习价值（⭐数量）
+
+## 今日Skills学习
+- 技能名称
+  - 功能描述
+  - 安装日期
+  - 掌握程度
+
+## 技术架构/方法论
+- 核心知识点
+- 关键要点
+
+## 下一步学习计划
+- 待学习项目
+- 计划实践场景
+```
+
+**格式要求：**
+- 标题用 Markdown H1/H2 级别
+- 链接展示完整URL
+- 列表用 `-` 或数字序号
+- 重点术语用 `` ` `` 或 **加粗**
+- 结构清晰，语言简洁专业
+- 参考模板：https://share.note.youdao.com/s/GKx09cna
+
+**📝 每日学习总结流程（22:30自动执行）：**
+1. 读取 `memory/YYYY-MM-DD.md` 今日学习日志
+2. 读取 `knowledge/` 下相关知识文件
+3. 使用 `agent-browser` 操作有道云笔记「技术知识库」文件夹
+4. 未登录 → 截图二维码通知用户 → 扫码后继续
+5. 按上述格式写入今日总结笔记
+6. 操作完成后通知用户

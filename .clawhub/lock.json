@@ -152,6 +152,10 @@
     "desktop-control-1-0-0": {
       "version": "1.0.0",
       "installedAt": 1774608935684
+    },
+    "mem0": {
+      "version": "1.0.0",
+      "installedAt": 1774657708545
     }
   }
 }

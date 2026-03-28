@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "playwright-scraper-skill": {
+      "name": "Playwright Scraper Skill",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=playwright-scraper-skill",
+      "source": "skillhub",
+      "version": "1.2.0"
+    },
+    "frontend-design": {
+      "name": "Frontend Design",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=frontend-design",
+      "source": "skillhub",
+      "version": "1.0.0"
+    }
+  }
+}

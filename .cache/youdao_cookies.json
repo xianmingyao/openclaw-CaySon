@@ -1,0 +1,142 @@
+[
+  {
+    "name": "__snaker__id",
+    "value": "2F2kqmc0b47qTIar",
+    "domain": "passport.youdao.com",
+    "path": "/webzj/v1.0.1/pub",
+    "expires": 1806191467,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "Hm_lvt_fcbf8a457b2c5ae9cc58b5bf4cb7cef1",
+    "value": "1774655467",
+    "domain": ".note.youdao.com",
+    "path": "/signIn/",
+    "expires": 1806191467,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "Hm_lpvt_fcbf8a457b2c5ae9cc58b5bf4cb7cef1",
+    "value": "1774655467",
+    "domain": ".note.youdao.com",
+    "path": "/signIn/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "HMACCOUNT",
+    "value": "B746CDC2FECE6549",
+    "domain": ".note.youdao.com",
+    "path": "/signIn/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "___rl__test__cookies",
+    "value": "1774655467005",
+    "domain": "note.youdao.com",
+    "path": "/signIn",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "JSESSIONID",
+    "value": "1F03FBF72323D3E25D158B498D542975.ynote-accountserver-docker-gzonline-3-ohezd-9kblv-69479d8ckpmdh-8081",
+    "domain": "note.youdao.com",
+    "path": "/login",
+    "expires": -1,
+    "httpOnly": true,
+    "secure": true,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "__yadk_uid",
+    "value": "FcgBHkanxDk6oxWjf056KQcPmQPvHiUO",
+    "domain": "note.youdao.com",
+    "path": "/",
+    "expires": 1806191466,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "OUTFOX_SEARCH_USER_ID_NCOO",
+    "value": "780160514.5231822",
+    "domain": ".youdao.com",
+    "path": "/",
+    "expires": 1809215467.007306,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "OUTFOX_SEARCH_USER_ID",
+    "value": "-419265660@171.221.159.181",
+    "domain": ".youdao.com",
+    "path": "/",
+    "expires": 1809215467.065993,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "HMACCOUNT_BFESS",
+    "value": "B746CDC2FECE6549",
+    "domain": ".hm.baidu.com",
+    "path": "/",
+    "expires": 1809215467.121866,
+    "httpOnly": false,
+    "secure": true,
+    "sameSite": "None"
+  },
+  {
+    "name": "utid",
+    "value": "5HQfLK0ECE9i16REZMzfqqAv6tolgR9L",
+    "domain": "passport.youdao.com",
+    "path": "/",
+    "expires": 1809215467.44233,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "l_yd_s_youdaonotedvsFApU",
+    "value": "B2844D2E666B49865118540A2A5531BB24CF71777B0954BBD1625ECF2D44AACAA55246974C84F0301DE1145FC74EC5EA67BB0C4AB286C08BDED9D2B83AC8E1B0894A7DF18BF9E45CDCE0A96837209FB45E13D7B1A90F983B5F950136B08F7BA6C5977FA3ECDBDFC4283DB2C9E64C4140",
+    "domain": "passport.youdao.com",
+    "path": "/",
+    "expires": -1,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "NTES_WEB_FP",
+    "value": "8832308a59e08803f968aaf6aa18dfa0",
+    "domain": "passport.youdao.com",
+    "path": "/",
+    "expires": 1777247467,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  },
+  {
+    "name": "gdxidpyhxdE",
+    "value": "ThAAv%5CpHod%2BNpS9ml%2F4bJ%2FoNy0GJtxfg%2Bs2AeL04E1pGUu6M%2Bw%2F788xdhuwUY%2Br%5CIgilwOZKpgbC9PMOtQAVQ0BjG1x%2BPhLPxV%2FgCqGX8bhXe%5CSw09tWidlme16LOz2dh8whIWxakqs1sbiEpm9HWGZirqH%2F%2B82m%2BjxdMh7qwzevtSdW%3A1774656367934",
+    "domain": "passport.youdao.com",
+    "path": "/",
+    "expires": 1777248367,
+    "httpOnly": false,
+    "secure": false,
+    "sameSite": "Lax"
+  }
+]

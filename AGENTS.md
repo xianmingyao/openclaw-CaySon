@@ -52,6 +52,36 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
 
+## 🔑 记忆检索行为准则（铁律）
+
+### 长期记忆检索优先级
+
+**必须严格按照以下顺序检索：**
+
+1. **首选：云端Milvus向量数据库**
+   - 地址：`8.137.122.11:19530`
+   - 集合：`CaySon_db`
+   - 原因：快速、准确、匹配度高
+
+2. **备选：本地ChromaDB**
+   - 路径：`C:\Users\Administrator\.mem0\chroma\`
+   - 触发条件：Milvus连接失败时自动降级
+
+### 检索命令
+
+```bash
+# 优先Milvus检索
+python E:\workspace\scripts\mem0_dual_write.py search "查询"
+
+# 仅本地检索
+python E:\workspace\scripts\show_memories.py
+```
+
+### 记忆写入
+
+- 新记忆：**双写**（同时写入两个库）
+- 同步脚本：`E:\workspace\scripts\sync_memories_to_milvus.py`
+
 ## External vs Internal
 
 **Safe to do freely:**

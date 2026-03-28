@@ -37,4 +37,45 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 
 ---
 
+## 🔑 记忆检索行为准则（铁律）
+
+### 检索优先级
+
+**长期记忆检索顺序：**
+1. **首选：云端Milvus向量数据库**
+   - 地址：`8.137.122.11:19530`
+   - 集合：`CaySon_db`
+   - 优势：快速、准确、匹配度高
+
+2. **备选：本地ChromaDB**
+   - 路径：`C:\Users\Administrator\.mem0\chroma\`
+   - 触发条件：Milvus连接失败时自动降级
+
+### 检索脚本
+
+```bash
+# 主检索脚本（优先Milvus）
+python E:\workspace\scripts\mem0_dual_write.py search "查询内容"
+
+# 仅本地检索
+python E:\workspace\scripts\show_memories.py
+```
+
+### 记忆写入策略
+
+- 新记忆：**双写**（同时写入Milvus + ChromaDB）
+- 同步脚本：`E:\workspace\scripts\sync_memories_to_milvus.py`
+
+### 技术配置
+
+| 项目 | 配置 |
+|------|------|
+| Milvus HOST | 8.137.122.11 |
+| Milvus PORT | 19530 |
+| Collection | CaySon_db |
+| Embedding模型 | nomic-embed-text |
+| 维度 | 768 |
+
+---
+
 Add whatever helps you do your job. This is your cheat sheet.

@@ -1,0 +1,62 @@
+{
+  "cookies": [
+    {
+      "name": "Hm_lpvt_7fe66a8317b6d6f28c82b62b9f890118",
+      "value": "1774677712",
+      "domain": ".note.youdao.com",
+      "path": "/",
+      "expires": -1.0,
+      "size": 50,
+      "httpOnly": false,
+      "secure": false,
+      "session": true
+    },
+    {
+      "name": "Hm_lvt_7fe66a8317b6d6f28c82b62b9f890118",
+      "value": "1774677712",
+      "domain": ".note.youdao.com",
+      "path": "/",
+      "expires": 1806213712.0,
+      "size": 49,
+      "httpOnly": false,
+      "secure": false,
+      "session": false
+    },
+    {
+      "name": "HMACCOUNT",
+      "value": "C7668B3771B40A45",
+      "domain": ".note.youdao.com",
+      "path": "/",
+      "expires": -1.0,
+      "size": 25,
+      "httpOnly": false,
+      "secure": false,
+      "session": true
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://note.youdao.com",
+      "localStorage": [
+        {
+          "name": "mp_MA-B0D8-94CBE089C042_hubble",
+          "value": "{\"sessionReferrer\": \"https://note.youdao.com/\",\"updatedTime\": 1774677712306,\"sessionStartTime\": 1774677712303,\"sendNumClass\": {\"allNum\": 0,\"errSendNum\": 0},\"deviceUdid\": \"f8132a3889676464972a335c87cc50edaa61a1cd\",\"persistedTime\": 1774677712300,\"sessionUuid\": \"d3f2a0786fdb3aca32bad24dadd8162c09ca92a6\"}"
+        },
+        {
+          "name": "Hm_lvt_7fe66a8317b6d6f28c82b62b9f890118",
+          "value": "1806213712208|1774677712"
+        }
+      ],
+      "sessionStorage": [
+        {
+          "name": "Hm_lpvt_7fe66a8317b6d6f28c82b62b9f890118",
+          "value": "1774677712"
+        },
+        {
+          "name": "HMACCOUNT",
+          "value": "C7668B3771B40A45"
+        }
+      ]
+    }
+  ]
+}

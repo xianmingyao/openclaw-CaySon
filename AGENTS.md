@@ -275,7 +275,7 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 
 | 技能 | 安装日期 | 掌握程度 | 待解决问题 |
 |------|---------|---------|-----------|
-| `agent-browser` | 2026-03-27 | 🔰 刚装 | - |
+| `agent-browser` | 2026-03-27 | ⭐ 精通 | ✅ 需加 `--headed` 参数 |
 | `skill-vetter` | 2026-03-27 | 🔰 刚装 | - |
 | `self-improving` | 2026-03-27 | 🔰 刚装 | - |
 
@@ -375,3 +375,42 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 4. 未登录 → 截图二维码通知用户 → 扫码后继续
 5. 按上述格式写入今日总结笔记
 6. 操作完成后通知用户
+
+## agent-browser 使用铁律（宁兄指令，2026-03-28）
+
+> "agent-browser 打开浏览器必须用 headed 模式，让用户能看到、能操作。"
+
+**铁律：使用 `agent-browser` 技能打开浏览器时，必须加 `--headed` 参数。**
+
+### 具体操作规范
+
+**✅ 正确做法：**
+```bash
+# 1. 先关闭可能存在的无头浏览器
+npx agent-browser close
+
+# 2. 用 headed 模式打开（用户能看到窗口）
+npx agent-browser --headed open "https://example.com"
+
+# 3. 后续命令不需要加 --headed（已复用 session）
+npx agent-browser snapshot
+npx agent-browser click @e1
+```
+
+**❌ 错误做法（默认无头模式，看不到窗口）：**
+```bash
+npx agent-browser open "https://example.com"          # 无头，看不到
+npx agent-browser open "https://example.com" --headed  # daemon已在跑时被忽略
+```
+
+### 常见坑
+
+1. **daemon 已在跑**：必须先 `agent-browser close` 再重新 `--headed` 打开
+2. **agent-browser 默认无头**：所有 `open` 命令都要显式加 `--headed`
+3. **宁兄的要求**：只要开浏览器，必须 headed，用户需要看到窗口才能配合操作
+
+### 违反后果
+
+- 浏览器在后台运行，用户看不到
+- 截图发给用户后，用户以为我没操作
+- 浪费用户时间配合登录等操作

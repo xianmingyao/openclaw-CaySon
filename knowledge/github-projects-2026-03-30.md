@@ -5,6 +5,89 @@
 
 ---
 
+## 🆕 @超级大威 "港大团队7个神级AI项目"
+
+> 来源：@超级大威 | 系列："港大团队sha疯了！7个神级AI项目速看！"
+
+| 排名 | 项目 | 方向 | 亮点 | 推荐 |
+|------|------|------|------|------|
+| 🥇#1 | **agency-agents** | AI公司架构 | 完整Multi-Agent公司模拟 | ⭐⭐⭐⭐⭐ |
+| #2 | **autoresearch** | 自我进化 | 83次实验15项改进，代码自我迭代 | ⭐⭐⭐⭐ |
+| #3 | **Lightpanda** | AI专用浏览器 | 首个专为AI打造的无头浏览器 | ⭐⭐⭐⭐ |
+| #4 | **llmfit** | LLM硬件匹配 | 根据系统配置自动匹配最佳模型 | ⭐⭐⭐ |
+| #5 | **CLI-Anything** | 软件代理适配 | HKUDS开源，支持Blender/GIMP等 | ⭐⭐⭐⭐⭐ |
+| #6 | **SpacetimeDB** | 数据库即服务器 | 客户端直连DB，WASM模块运行 | ⭐⭐⭐ |
+| #7 | **cognee** | 知识引擎 | 自我进化的技能库，RAG+长期记忆 | ⭐⭐⭐⭐ |
+
+### 重点解读
+
+1. **港大团队（HKUDS）实力强劲** —— CLI-Anything、autoresearch 等多个项目
+2. **AI Agent 分工明确** —— agency-agents 的公司架构模拟
+3. **自动化研究兴起** —— autoresearch 的自我进化实验
+4. **轻量化工具流行** —— Lightpanda、llmfit 强调硬件适配
+
+---
+
+## 🆕 @MojoAI "Agent Skills 合集"
+
+| 项目 | ⭐ | 方向 | 推荐 |
+|------|-----|------|------|
+| **Scrapling** | 29.3k | AI爬虫框架 | ⭐⭐⭐⭐ |
+
+### Scrapling
+- GitHub：`D4Vinci/Scrapling`
+- 功能：AI驱动的自适应爬虫框架，大规模爬取
+- 特点：自适应 + Playwright集成
+
+---
+
+## 🆕 @拉斐尔2077 "OpenClaw实战系列"
+
+| 项目 | 来源 | 方向 |
+|------|------|------|
+| **anything-to-notebooklm** | Vercel | 内容转换NotebookLM |
+
+---
+
+## 🆕 @溪树知识 "Skill编写方法论"
+
+### 核心公式
+> **好的 skill = 定场景 + 立目标 + 理规则 + 给示例 + 划边界**
+
+### 5W/L 模型
+
+| 维度 | 关键词 | 含义 | 示例 |
+|------|--------|------|------|
+| WHEN | 定场景 | 什么时候用 | "用户需要代码解释时..." |
+| WHAT | 立目标 | 解决什么问题 | 输出带注释的Python代码 |
+| HOW | 理规则 | 怎么执行 | Step 1→2→3; If A then B |
+| REFERENCE | 给示例 | 参考什么 | ✅正例 + ❌反例 |
+| LIMITS | 划边界 | 什么不做 | 不涉及敏感话题 |
+
+---
+
+## 🆕 @IT咖啡馆 "AI咖啡馆"
+
+| 项目 | 方向 | 推荐 |
+|------|------|------|
+| **LibTV API Skills** | 漫剧生成工作流 | ⭐⭐⭐⭐ |
+
+### LibTV API Skills
+- 定位：OpenClaw Skill for 漫剧生成
+- 版本：v1.0.3（MIT）
+- 功能：文生图、图生视频、转动画、风格迁移
+- 平台：ClawHub
+
+---
+
+## 🆕 @磊哥聊AI "AI干货合集"
+
+### OpenClaw 定时任务
+- 任务类型：at（一次性）、every（间隔）、cron（定点）
+- 文档：https://docs.openclaw.ai/zh-CN/automation/cron-jobs
+
+---
+
 ## 📊 @AI未来 日榜 TOP 10
 
 > "GitHub一天涨2万星" 系列
@@ -329,3 +412,76 @@ response = litellm.completion(
 - `knowledge/github-projects.md` - GitHub 项目情报汇总
 - `knowledge/memory-system-architecture.md` - 记忆系统架构
 - `skills/windows-control/` - windows-control v3.0
+
+---
+
+## 📊 今日情报汇总（2026-03-30）
+
+### 情报来源统计
+
+| UP主 | 项目数 | 代表作 |
+|------|--------|--------|
+| @AI未来 | 10 | deer-flow、litellm、ruview |
+| @赛博笔记 | 10+ | everything-claude-code、x-algorithm |
+| @超级大威 | 7 | agency-agents、CLI-Anything |
+| @MojoAI | 1 | Scrapling |
+| @拉斐尔2077 | 1 | anything-to-notebooklm |
+| @成也2077 | 1 | agency-agents |
+| @溪树知识 | 方法论 | Skill 5W/L |
+| @IT咖啡馆 | 1 | LibTV API Skills |
+
+### 核心趋势总结
+
+1. **Multi-Agent 爆发**
+   - deer-flow（字节）、ruflo、agency-agents、TradingAgents-CN、eigent
+   - 从"单Agent"到"多Agent团队协作"
+
+2. **AI记忆是刚需**
+   - claude-subconscious、Supermemory、cognee、mem0 + Milvus
+   - 解决AI"健忘症"问题
+
+3. **Claude生态热**
+   - everything-claude-code、agent-skills、Antigravity-Manager
+   - Anthropic获胜者 + Vercel官方双重背书
+
+4. **TypeScript崛起**
+   - ruflo、Supermemory、aimangastudio、agent-skills
+   - 和Python五五开
+
+5. **大厂开源加速**
+   - 字节跳动（deer-flow）
+   - X/Twitter（x-algorithm）
+   - Vercel（agent-skills）
+   - HKUDS港大（CLI-Anything、autoresearch）
+
+6. **AI工具链完善**
+   - 浏览器：agent-browser、Lightpanda
+   - 爬虫：Scrapling
+   - 视频：LibTV、Huobao Drama
+   - 数据库：SpacetimeDB
+
+### 已安装Skills对应项目
+
+| 我已安装 | 对应热门项目 |
+|----------|-------------|
+| agent-browser | agent-browser (#19) |
+| human-browser | - |
+| mem0 | Supermemory、cognee |
+| self-improving | autoresearch |
+| windows-control | CLI-Anything架构 |
+
+### 重点关注项目（待clone研究）
+
+| 优先级 | 项目 | 原因 |
+|--------|------|------|
+| P0 | deer-flow | 字节SuperAgent，多级子代理架构 |
+| P0 | everything-claude-code | Claude Code配置王炸 |
+| P0 | x-algorithm | 推荐算法开源，重大事件 |
+| P0 | CLI-Anything | HKUDS，架构已被我借鉴 |
+| P1 | litellm | LLM Gateway架构 |
+| P1 | agent-skills | Vercel官方技能封装 |
+| P1 | agency-agents | AI公司协作模式 |
+| P1 | autoresearch | 自我进化实验 |
+| P2 | ruflo + ruview | 同作者，技术创新 |
+| P2 | Supermemory | AI记忆API设计 |
+| P2 | Scrapling | AI爬虫框架 |

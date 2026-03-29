@@ -41,6 +41,7 @@
 | 🆕#4 | **agent-skills** | 15.6k | Vercel 官方 AI 技能 | ⭐⭐⭐⭐ |
 | #7 | maptoposter | 7k | 城市地图海报/Python | ⭐⭐ |
 | #10 | AionUI | - | AI工作台/多模型 | ⭐⭐⭐ |
+| #11 | **eigent** | - | 多Agent协作/工作流 | ⭐⭐⭐⭐ |
 | #20 | Antigravity-Manager | 16.9k | Claude 账号管理/Tauri | ⭐⭐⭐ |
 
 ### 重点解读
@@ -236,7 +237,31 @@ response = litellm.completion(
 
 ---
 
-### 8. agency-agents（AI 员工）
+### 8. eigent（多Agent协作工作流）
+
+**项目信息**
+- GitHub：`eigent`
+- 定位：多Agent协作系统
+
+**工作流示例**
+1. **Browser Agent** → 访问网页 + 读取本地文件 → JSON
+2. **Developer Agent** → 浏览器自动化提交表单
+3. **Document Agent** → 生成统计报告 + 数据可视化
+
+**技术亮点**
+- 多Agent分工协作
+- 浏览器自动化
+- 本地文件处理
+- 数据可视化报告生成
+
+**学习价值**
+- Multi-Agent 协作模式实战
+- Agent 间通信和任务分配
+- 办公自动化场景落地
+
+---
+
+### 9. agency-agents（AI 员工）
 
 **项目信息**
 - GitHub：`msitarzewski/agency-agents`
@@ -262,7 +287,7 @@ response = litellm.completion(
 ## 📈 技术趋势总结
 
 ### 1. Multi-Agent 爆发
-- deer-flow（字节）、ruflo、agency-agents、TradingAgents-CN
+- deer-flow（字节）、ruflo、agency-agents、TradingAgents-CN、**eigent**
 - 从"单 Agent"到"多 Agent 团队协作"
 
 ### 2. AI 记忆是刚需

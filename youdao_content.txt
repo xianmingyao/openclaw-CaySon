@@ -1,0 +1,51 @@
+今日学习总结 2026-03-28
+
+## 今日GitHub项目推荐
+
+### 程序员Sunday推荐 - Claude Code生态5个新工具
+
+1. get-shit-done - 39,307 stars - 元提示+上下文工程
+2. learn-claude-code - 36,537 stars - 框架教程
+3. claude-hud - 11,643 stars - 状态可视化
+4. claude-code-action - 6,514 stars - CI/CD集成
+5. claude-subconscious - 记忆增强
+
+### gstack - YC CEO开源项目
+- 33,203 stars
+- 链接：https://github.com/gstack-projects/gstack
+- 核心功能：YC创业孵化管理平台
+
+## 今日Skills学习
+
+| 技能 | 功能描述 | 安装日期 |
+|------|---------|---------|
+| agent-browser | 浏览器自动化CLI | 2026-03-28 |
+| self-improving agent | 自我反思+持续优化 | 2026-03-28 |
+| skill-vetter | 安装前安全审查 | 2026-03-28 |
+
+## 记忆系统配置
+
+### 技术架构
+- 首选：云端Milvus (8.137.122.11:19530)
+- 备选：本地ChromaDB
+- Embedding模型：nomic-embed-text (768维)
+
+### 检索命令
+python E:\workspace\scripts\mem0_dual_write.py search "查询"
+python E:\workspace\scripts\show_memories.py
+
+## 技术架构/方法论
+
+### OpenClaw定时任务
+- 每天 09:00：微信登录检查
+- 每天 22:30：Git自动提交 + 有道云笔记同步
+
+## 下一步学习计划
+
+### 待学习项目
+- gstack 源码研究（YC CEO开源）
+- get-shit-done 元提示工程
+
+### 计划实践场景
+- 在实际任务中使用 agent-browser
+- 测试 Milvus 双写同步功能

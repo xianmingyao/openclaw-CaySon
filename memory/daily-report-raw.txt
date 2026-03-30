@@ -1,34 +1,35 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-03-30 13:27:43
+Date: 2026-03-30 13:39:51
 --- GIT COMMITS ---
+  7c6be2f0 fix: 淇cron浠诲姟delivery鎶曢€掗棶棰?- 鏀逛负mode=none閬垮厤wechat鎶曢€掑け璐?09ee2594 瀹氭椂鑷姩鎻愪氦
   75e7ac8c fix: 淇cron浠诲姟delivery.channel鏈寚瀹氬鑷寸殑鎶ラ敊 - 涓変釜浠诲姟鍏ㄩ儴璁剧疆channel=openclaw-weixin
   9925acb4 瀹氭椂鑷姩鎻愪氦
   25e6d61d fix: 淇瀹氭椂浠诲姟瓒呮椂闂 - 澧炲姞cron job timeoutSeconds
   57856e76 feat: 琛ュ厖@瓒呯骇澶у▉/MojoAI/IT鍜栧暋棣嗙瓑鎯呮姤锛屾暣鐞嗗畬鏁存眹鎬?fa7702a1 feat: 琛ュ厖eigent澶欰gent鍗忎綔椤圭洰
   165a2115 feat: 鏁寸悊2026-03-30 GitHub鐑棬椤圭洰鎯呮姤
 --- FILES MODIFIED ---
+  13:34 | 今日学习总结_2026-03-30.md
+  13:34 | .git\logs\refs\remotes\origin\main
+  13:34 | .git\refs\remotes\origin\main
+  13:34 | .git\logs\refs\heads\main
+  13:34 | .git\logs\HEAD
+  13:34 | .git\objects\7c\6be2f0ce3d460bd6cbf8895c15d0f111250eed
+  13:34 | .git\refs\heads\main
+  13:34 | .git\COMMIT_EDITMSG
+  13:34 | .git\index
+  13:34 | .git\objects\df\70b0af7664b856618ea0d19ea51c8a81532de8
+  13:34 | .git\objects\f5\68a08ab82f31e94f138f649f9de060644201e6
+  13:34 | AGENTS.md
+  13:28 | .git\objects\09\ee259499ad8c9795981229f752e81fb6d1b6e8
+  13:28 | .git\objects\96\51c14a5e2a85270ea306e954cd53b598c3d28a
+  13:28 | .git\objects\be\9740b2fb7176611bebd4929b29d468e1e22977
+  13:28 | .git\objects\e1\9febe849121f8bc900b9842cb463fbbe3ab788
+  13:28 | .git\objects\48\e4b1a2ee46cc106e6c45365daf19653a07ba25
+  13:28 | .git\objects\c0\ec6b50be179ecac5860b4832a6a412852be68f
+  13:27 | memory\daily-report-raw.txt
   13:19 | knowledge\daily-summary-2026-03-30.md
-  13:17 | .git\logs\refs\remotes\origin\main
-  13:17 | .git\refs\remotes\origin\main
-  13:17 | .git\logs\refs\heads\main
-  13:17 | .git\objects\75\e7ac8c3deadbe141da681b0cd6916eceb299f5
-  13:17 | .git\refs\heads\main
-  13:17 | .git\logs\HEAD
-  13:17 | .git\COMMIT_EDITMSG
-  13:17 | .git\index
-  13:17 | .git\objects\e5\bf91e796f02ad314321189f208080b2ff86d95
-  13:17 | .git\objects\b9\0c14cddbc5210bd1589f7859e0a026f18b7a1e
-  13:17 | AGENTS.md
-  13:14 | .git\objects\99\25acb49beb412e23f776aca9721e22fdc73ec5
-  13:14 | .git\objects\e4\17e7ee2d346381bcb4394a721c2cc04adbc86f
-  13:14 | .git\objects\dc\2bde98f6977371c4d14b29628bfd112b34591a
-  13:14 | .git\objects\3e\921d40a731893f38ce981aa186e11f8202ad58
-  13:14 | .git\objects\bd\a4b7b7410531c161c96386112ceb5d314cd604
-  13:14 | .git\objects\21\8068cfa9c12de3159807e54b80240821b050f8
-  13:14 | .git\objects\0c\b9ede8be6ce77858f784738b704b208d654eb2
-  13:14 | .git\objects\d7\738d98bb07b242366715337cea1b11a5ad0862
 --- SESSIONS ---
-  Count: 11
+  Count: 16
   - 040039d7-e752-457e-8cd9-4f5c237cf5f1.jsonl [13:15]
   - 07d3b933-890d-4665-a20f-d4699e53abe1.jsonl [13:15]
   - 081bd325-5481-4f74-a6e1-42d9bee28e81.jsonl [13:19]
@@ -38,4 +39,4 @@ Date: 2026-03-30 13:27:43
   + tmux
   + video-frames
 --- STRUCTURED ---
-{"skillsUpdated":["github","mcporter","tmux","video-frames"],"dayOfWeek":"Monday","sessionCount":11,"modifiedFiles":["E:\\workspace\\knowledge\\daily-summary-2026-03-30.md","E:\\workspace\\.git\\logs\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\logs\\refs\\heads\\main","E:\\workspace\\.git\\objects\\75\\e7ac8c3deadbe141da681b0cd6916eceb299f5","E:\\workspace\\.git\\refs\\heads\\main","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\COMMIT_EDITMSG","E:\\workspace\\.git\\index","E:\\workspace\\.git\\objects\\e5\\bf91e796f02ad314321189f208080b2ff86d95","E:\\workspace\\.git\\objects\\b9\\0c14cddbc5210bd1589f7859e0a026f18b7a1e","E:\\workspace\\AGENTS.md","E:\\workspace\\.git\\objects\\99\\25acb49beb412e23f776aca9721e22fdc73ec5","E:\\workspace\\.git\\objects\\e4\\17e7ee2d346381bcb4394a721c2cc04adbc86f","E:\\workspace\\.git\\objects\\dc\\2bde98f6977371c4d14b29628bfd112b34591a","E:\\workspace\\.git\\objects\\3e\\921d40a731893f38ce981aa186e11f8202ad58","E:\\workspace\\.git\\objects\\bd\\a4b7b7410531c161c96386112ceb5d314cd604","E:\\workspace\\.git\\objects\\21\\8068cfa9c12de3159807e54b80240821b050f8","E:\\workspace\\.git\\objects\\0c\\b9ede8be6ce77858f784738b704b208d654eb2","E:\\workspace\\.git\\objects\\d7\\738d98bb07b242366715337cea1b11a5ad0862"],"gitCommits":["75e7ac8c fix: 淇cron浠诲姟delivery.channel鏈寚瀹氬鑷寸殑鎶ラ敊 - 涓変釜浠诲姟鍏ㄩ儴璁剧疆channel=openclaw-weixin","9925acb4 瀹氭椂鑷姩鎻愪氦","25e6d61d fix: 淇瀹氭椂浠诲姟瓒呮椂闂 - 澧炲姞cron job timeoutSeconds","57856e76 feat: 琛ュ厖@瓒呯骇澶у▉/MojoAI/IT鍜栧暋棣嗙瓑鎯呮姤锛屾暣鐞嗗畬鏁存眹鎬?fa7702a1 feat: 琛ュ厖eigent澶欰gent鍗忎綔椤圭洰","165a2115 feat: 鏁寸悊2026-03-30 GitHub鐑棬椤圭洰鎯呮姤"],"date":"2026.03.30"}
+{"skillsUpdated":["github","mcporter","tmux","video-frames"],"dayOfWeek":"Monday","sessionCount":16,"modifiedFiles":["E:\\workspace\\今日学习总结_2026-03-30.md","E:\\workspace\\.git\\logs\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\logs\\refs\\heads\\main","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\objects\\7c\\6be2f0ce3d460bd6cbf8895c15d0f111250eed","E:\\workspace\\.git\\refs\\heads\\main","E:\\workspace\\.git\\COMMIT_EDITMSG","E:\\workspace\\.git\\index","E:\\workspace\\.git\\objects\\df\\70b0af7664b856618ea0d19ea51c8a81532de8","E:\\workspace\\.git\\objects\\f5\\68a08ab82f31e94f138f649f9de060644201e6","E:\\workspace\\AGENTS.md","E:\\workspace\\.git\\objects\\09\\ee259499ad8c9795981229f752e81fb6d1b6e8","E:\\workspace\\.git\\objects\\96\\51c14a5e2a85270ea306e954cd53b598c3d28a","E:\\workspace\\.git\\objects\\be\\9740b2fb7176611bebd4929b29d468e1e22977","E:\\workspace\\.git\\objects\\e1\\9febe849121f8bc900b9842cb463fbbe3ab788","E:\\workspace\\.git\\objects\\48\\e4b1a2ee46cc106e6c45365daf19653a07ba25","E:\\workspace\\.git\\objects\\c0\\ec6b50be179ecac5860b4832a6a412852be68f","E:\\workspace\\memory\\daily-report-raw.txt","E:\\workspace\\knowledge\\daily-summary-2026-03-30.md"],"gitCommits":["7c6be2f0 fix: 淇cron浠诲姟delivery鎶曢€掗棶棰?- 鏀逛负mode=none閬垮厤wechat鎶曢€掑け璐?09ee2594 瀹氭椂鑷姩鎻愪氦","75e7ac8c fix: 淇cron浠诲姟delivery.channel鏈寚瀹氬鑷寸殑鎶ラ敊 - 涓変釜浠诲姟鍏ㄩ儴璁剧疆channel=openclaw-weixin","9925acb4 瀹氭椂鑷姩鎻愪氦","25e6d61d fix: 淇瀹氭椂浠诲姟瓒呮椂闂 - 澧炲姞cron job timeoutSeconds","57856e76 feat: 琛ュ厖@瓒呯骇澶у▉/MojoAI/IT鍜栧暋棣嗙瓑鎯呮姤锛屾暣鐞嗗畬鏁存眹鎬?fa7702a1 feat: 琛ュ厖eigent澶欰gent鍗忎綔椤圭洰","165a2115 feat: 鏁寸悊2026-03-30 GitHub鐑棬椤圭洰鎯呮姤"],"date":"2026.03.30"}

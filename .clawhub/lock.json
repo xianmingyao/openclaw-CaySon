@@ -156,6 +156,22 @@
     "mem0": {
       "version": "1.0.0",
       "installedAt": 1774657708545
+    },
+    "video-frames": {
+      "version": "1.0.0",
+      "installedAt": 1774846089514
+    },
+    "tmux": {
+      "version": "1.0.0",
+      "installedAt": 1774846096920
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1774846110292
+    },
+    "mcporter": {
+      "version": "1.0.0",
+      "installedAt": 1774846117846
     }
   }
 }

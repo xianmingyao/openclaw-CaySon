@@ -1,36 +1,41 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-03-27 17:33:52
+Date: 2026-03-30 13:27:43
 --- GIT COMMITS ---
-  (none today)
+  75e7ac8c fix: 淇cron浠诲姟delivery.channel鏈寚瀹氬鑷寸殑鎶ラ敊 - 涓変釜浠诲姟鍏ㄩ儴璁剧疆channel=openclaw-weixin
+  9925acb4 瀹氭椂鑷姩鎻愪氦
+  25e6d61d fix: 淇瀹氭椂浠诲姟瓒呮椂闂 - 澧炲姞cron job timeoutSeconds
+  57856e76 feat: 琛ュ厖@瓒呯骇澶у▉/MojoAI/IT鍜栧暋棣嗙瓑鎯呮姤锛屾暣鐞嗗畬鏁存眹鎬?fa7702a1 feat: 琛ュ厖eigent澶欰gent鍗忎綔椤圭洰
+  165a2115 feat: 鏁寸悊2026-03-30 GitHub鐑棬椤圭洰鎯呮姤
 --- FILES MODIFIED ---
-  17:32 | memory\2026-03-27.md
-  17:27 | memory\daily-report-raw.txt
-  17:27 | scripts\daily-report.ps1
-  17:10 | .clawhub\lock.json
-  17:10 | skills\claw-self-improving\.clawhub\origin.json
-  17:10 | skills\claw-self-improving\SKILL.md
-  17:10 | skills\claw-self-improving\setup.md
-  17:10 | skills\claw-self-improving\scaling.md
-  17:10 | skills\claw-self-improving\reflections.md
-  17:10 | skills\claw-self-improving\operations.md
-  17:10 | skills\claw-self-improving\memory.md
-  17:10 | skills\claw-self-improving\memory-template.md
-  17:10 | skills\claw-self-improving\learning.md
-  17:10 | skills\claw-self-improving\corrections.md
-  17:10 | skills\claw-self-improving\boundaries.md
-  17:10 | skills\claw-self-improving\_meta.json
-  17:09 | skills\openclaw-skill-vetter-1-0-0\.clawhub\origin.json
-  17:09 | skills\openclaw-skill-vetter-1-0-0\SKILL.md
-  17:09 | skills\openclaw-skill-vetter-1-0-0\README.md
-  17:09 | skills\openclaw-skill-vetter-1-0-0\_meta.json
+  13:19 | knowledge\daily-summary-2026-03-30.md
+  13:17 | .git\logs\refs\remotes\origin\main
+  13:17 | .git\refs\remotes\origin\main
+  13:17 | .git\logs\refs\heads\main
+  13:17 | .git\objects\75\e7ac8c3deadbe141da681b0cd6916eceb299f5
+  13:17 | .git\refs\heads\main
+  13:17 | .git\logs\HEAD
+  13:17 | .git\COMMIT_EDITMSG
+  13:17 | .git\index
+  13:17 | .git\objects\e5\bf91e796f02ad314321189f208080b2ff86d95
+  13:17 | .git\objects\b9\0c14cddbc5210bd1589f7859e0a026f18b7a1e
+  13:17 | AGENTS.md
+  13:14 | .git\objects\99\25acb49beb412e23f776aca9721e22fdc73ec5
+  13:14 | .git\objects\e4\17e7ee2d346381bcb4394a721c2cc04adbc86f
+  13:14 | .git\objects\dc\2bde98f6977371c4d14b29628bfd112b34591a
+  13:14 | .git\objects\3e\921d40a731893f38ce981aa186e11f8202ad58
+  13:14 | .git\objects\bd\a4b7b7410531c161c96386112ceb5d314cd604
+  13:14 | .git\objects\21\8068cfa9c12de3159807e54b80240821b050f8
+  13:14 | .git\objects\0c\b9ede8be6ce77858f784738b704b208d654eb2
+  13:14 | .git\objects\d7\738d98bb07b242366715337cea1b11a5ad0862
 --- SESSIONS ---
-  Count: 4
-  - 3fe431ee-71a0-43b5-bc2b-44a2503be1ef.jsonl [17:33]
-  - 4977c5c6-3ce4-4d26-83f8-b48602625acf.jsonl [16:46]
-  - 718be5c3-94fa-41ac-8bdb-8a47a31f6686.jsonl [16:23]
+  Count: 11
+  - 040039d7-e752-457e-8cd9-4f5c237cf5f1.jsonl [13:15]
+  - 07d3b933-890d-4665-a20f-d4699e53abe1.jsonl [13:15]
+  - 081bd325-5481-4f74-a6e1-42d9bee28e81.jsonl [13:19]
 --- SKILLS ---
-  + claw-self-improving
-  + openclaw-agent-browser
-  + openclaw-skill-vetter-1-0-0
+  + github
+  + mcporter
+  + tmux
+  + video-frames
 --- STRUCTURED ---
-{"skillsUpdated":["claw-self-improving","openclaw-agent-browser","openclaw-skill-vetter-1-0-0"],"dayOfWeek":"Friday","sessionCount":4,"modifiedFiles":["E:\\workspace\\memory\\2026-03-27.md","E:\\workspace\\memory\\daily-report-raw.txt","E:\\workspace\\scripts\\daily-report.ps1","E:\\workspace\\.clawhub\\lock.json","E:\\workspace\\skills\\claw-self-improving\\.clawhub\\origin.json","E:\\workspace\\skills\\claw-self-improving\\SKILL.md","E:\\workspace\\skills\\claw-self-improving\\setup.md","E:\\workspace\\skills\\claw-self-improving\\scaling.md","E:\\workspace\\skills\\claw-self-improving\\reflections.md","E:\\workspace\\skills\\claw-self-improving\\operations.md","E:\\workspace\\skills\\claw-self-improving\\memory.md","E:\\workspace\\skills\\claw-self-improving\\memory-template.md","E:\\workspace\\skills\\claw-self-improving\\learning.md","E:\\workspace\\skills\\claw-self-improving\\corrections.md","E:\\workspace\\skills\\claw-self-improving\\boundaries.md","E:\\workspace\\skills\\claw-self-improving\\_meta.json","E:\\workspace\\skills\\openclaw-skill-vetter-1-0-0\\.clawhub\\origin.json","E:\\workspace\\skills\\openclaw-skill-vetter-1-0-0\\SKILL.md","E:\\workspace\\skills\\openclaw-skill-vetter-1-0-0\\README.md","E:\\workspace\\skills\\openclaw-skill-vetter-1-0-0\\_meta.json"],"gitCommits":[],"date":"2026.03.27"}
+{"skillsUpdated":["github","mcporter","tmux","video-frames"],"dayOfWeek":"Monday","sessionCount":11,"modifiedFiles":["E:\\workspace\\knowledge\\daily-summary-2026-03-30.md","E:\\workspace\\.git\\logs\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\logs\\refs\\heads\\main","E:\\workspace\\.git\\objects\\75\\e7ac8c3deadbe141da681b0cd6916eceb299f5","E:\\workspace\\.git\\refs\\heads\\main","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\COMMIT_EDITMSG","E:\\workspace\\.git\\index","E:\\workspace\\.git\\objects\\e5\\bf91e796f02ad314321189f208080b2ff86d95","E:\\workspace\\.git\\objects\\b9\\0c14cddbc5210bd1589f7859e0a026f18b7a1e","E:\\workspace\\AGENTS.md","E:\\workspace\\.git\\objects\\99\\25acb49beb412e23f776aca9721e22fdc73ec5","E:\\workspace\\.git\\objects\\e4\\17e7ee2d346381bcb4394a721c2cc04adbc86f","E:\\workspace\\.git\\objects\\dc\\2bde98f6977371c4d14b29628bfd112b34591a","E:\\workspace\\.git\\objects\\3e\\921d40a731893f38ce981aa186e11f8202ad58","E:\\workspace\\.git\\objects\\bd\\a4b7b7410531c161c96386112ceb5d314cd604","E:\\workspace\\.git\\objects\\21\\8068cfa9c12de3159807e54b80240821b050f8","E:\\workspace\\.git\\objects\\0c\\b9ede8be6ce77858f784738b704b208d654eb2","E:\\workspace\\.git\\objects\\d7\\738d98bb07b242366715337cea1b11a5ad0862"],"gitCommits":["75e7ac8c fix: 淇cron浠诲姟delivery.channel鏈寚瀹氬鑷寸殑鎶ラ敊 - 涓変釜浠诲姟鍏ㄩ儴璁剧疆channel=openclaw-weixin","9925acb4 瀹氭椂鑷姩鎻愪氦","25e6d61d fix: 淇瀹氭椂浠诲姟瓒呮椂闂 - 澧炲姞cron job timeoutSeconds","57856e76 feat: 琛ュ厖@瓒呯骇澶у▉/MojoAI/IT鍜栧暋棣嗙瓑鎯呮姤锛屾暣鐞嗗畬鏁存眹鎬?fa7702a1 feat: 琛ュ厖eigent澶欰gent鍗忎綔椤圭洰","165a2115 feat: 鏁寸悊2026-03-30 GitHub鐑棬椤圭洰鎯呮姤"],"date":"2026.03.30"}

@@ -92,3 +92,38 @@ YYYY.MM.DD(日报)
 - 🌐 50+平台接入
 - 🤖 500+模型（Kilo Gateway）
 - 🏢 企业版解决"影子AI"安全问题
+
+## AI-NATIVE 开发工作流 SOP（宁兄标准流程）
+
+**来源：** 宁兄白板手绘流程图（2026-04-02）
+**定位：** 宁兄所有项目的**标准作业流程（SOP）**
+
+### 7阶段标准流程
+
+```
+阶段1：知识获取 → Google/GitHub/知网 → CodeWiki
+阶段2：想法原型 → 产品方向 → Idea确定
+阶段3：UI设计 → shadcn/ui → Midjourney/Stitch → Figma精修
+阶段4：知识库 → Puppeteer/NotebookLM/Obsidian → Gemini理解
+阶段5：AI逻辑 → Google AI Studio → Skills定义
+阶段6：AI编程 → Cursor/Trae → Skills/MCP/rvl
+阶段7：部署上线 → GitHub + Vercel → 产品上线
+```
+
+### CaySon职责（纠正流程错误）
+
+**宁兄项目开发时，CaySon 必须监督执行：**
+- ❌ 跳过调研直接开发 → 🔴 立即暂停，要求补全
+- ❌ 没有设计稿直接写代码 → 🔴 立即暂停，要求先出Figma
+- ❌ 不用AI IDE → 🟡 建议使用Cursor/Trae
+- ❌ 没有知识库 → 🟡 建议建立NotebookLM/Obsidian
+- ❌ 上线前没走GitHub → 🔴 立即暂停，必须走流程
+
+### 检查清单
+
+每个项目必须确认7个阶段都有产出物，缺一不可。
+
+### 规范文档
+
+- `knowledge/ai-native-workflow-SOP.md` - 完整SOP文档
+- `knowledge/ai-native-workflow-mermaid.md` - Mermaid流程图代码

@@ -67,3 +67,28 @@ YYYY.MM.DD(日报)
 2. **Windows必须**设置 `$env:PYTHONIOENCODING="utf-8"` 避免emoji错误
 3. **agent-browser + browser-use CLI** 互补，建议同时使用
 4. **WebMCP** 是未来趋势（2026年中正式版），值得关注
+
+### GitHub Claude Code相关仓库
+
+| 仓库 | Stars | 定位 | 推荐度 |
+|------|-------|------|--------|
+| instructkr/claw-code | 48,000+ | Clean-room重写，合法安全 | ⭐⭐⭐⭐⭐ |
+| sanbuphy/claude-code-source-code | Fork 41,500 | 泄露源码，⚠️法律风险 | ⭐（仅研究） |
+| unohee/OpenSwarm | 232 | 多Agent编排器 | ⭐⭐ |
+
+### GStack 角色映射表
+
+**核心理念：** AI Agent模拟软件团队全生命周期
+
+9大角色：CEO规划 / 工程经理架构 / Staff工程师找bug / QA测试 / 安全护栏 等
+
+### KiloClaw 全托管OpenClaw
+
+**一句话：** OpenClaw全托管云服务，60秒一键部署
+
+**核心特点：**
+- ⚡ 60秒部署（vs自托管30-60分钟）
+- 🔒 零运维（自动安全/更新/监控）
+- 🌐 50+平台接入
+- 🤖 500+模型（Kilo Gateway）
+- 🏢 企业版解决"影子AI"安全问题

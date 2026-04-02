@@ -12,6 +12,18 @@
       "zip_url": "https://lightmake.site/api/v1/download?slug=frontend-design",
       "source": "skillhub",
       "version": "1.0.0"
+    },
+    "summarize": {
+      "name": "Summarize",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=summarize",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "nano-banana-pro": {
+      "name": "Nano Banana Pro",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=nano-banana-pro",
+      "source": "skillhub",
+      "version": "1.0.1"
     }
   }
 }

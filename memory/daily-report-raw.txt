@@ -1,43 +1,34 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-03-30 18:33:13
+Date: 2026-04-01 17:20:16
 --- GIT COMMITS ---
-  e0b1b28b 瀹氭椂鑷姩鎻愪氦
-  7c6be2f0 fix: 淇cron浠诲姟delivery鎶曢€掗棶棰?- 鏀逛负mode=none閬垮厤wechat鎶曢€掑け璐?09ee2594 瀹氭椂鑷姩鎻愪氦
-  75e7ac8c fix: 淇cron浠诲姟delivery.channel鏈寚瀹氬鑷寸殑鎶ラ敊 - 涓変釜浠诲姟鍏ㄩ儴璁剧疆channel=openclaw-weixin
-  9925acb4 瀹氭椂鑷姩鎻愪氦
-  25e6d61d fix: 淇瀹氭椂浠诲姟瓒呮椂闂 - 澧炲姞cron job timeoutSeconds
-  57856e76 feat: 琛ュ厖@瓒呯骇澶у▉/MojoAI/IT鍜栧暋棣嗙瓑鎯呮姤锛屾暣鐞嗗畬鏁存眹鎬?fa7702a1 feat: 琛ュ厖eigent澶欰gent鍗忎綔椤圭洰
-  165a2115 feat: 鏁寸悊2026-03-30 GitHub鐑棬椤圭洰鎯呮姤
+  (none today)
 --- FILES MODIFIED ---
-  18:13 | memory\daily-report-raw.txt
-  15:42 | knowledge\wecom-customer-service-bot.md
-  13:40 | .git\logs\refs\remotes\origin\main
-  13:40 | .git\refs\remotes\origin\main
-  13:40 | .git\logs\refs\heads\main
-  13:40 | .git\refs\heads\main
-  13:40 | .git\logs\HEAD
-  13:40 | .git\objects\e0\b1b28bf7e99f3eb58aae4e2e19adcd33a8298d
-  13:40 | .git\COMMIT_EDITMSG
-  13:40 | .git\index
-  13:40 | .git\objects\64\63b285c1347e496a5ebaf8cce79af0fb3294ef
-  13:40 | .git\objects\57\1b8fbb84aa888b58a433a11f69282692bc99fb
-  13:40 | .git\objects\98\10158b56a3c0f695f2c3be6b5563416a67edb3
-  13:40 | .git\objects\c9\98e7681be6bf93702f3185efef9b37b20e1203
-  13:34 | 今日学习总结_2026-03-30.md
-  13:34 | .git\objects\7c\6be2f0ce3d460bd6cbf8895c15d0f111250eed
-  13:34 | .git\objects\df\70b0af7664b856618ea0d19ea51c8a81532de8
-  13:34 | .git\objects\f5\68a08ab82f31e94f138f649f9de060644201e6
-  13:34 | AGENTS.md
-  13:28 | .git\objects\09\ee259499ad8c9795981229f752e81fb6d1b6e8
+  14:45 | config\mcporter.json
+  09:42 | scripts\fetch_readme.py
+  09:22 | knowledge\claude-code-source-analysis.md
+  09:21 | temp_claude_code\src\bridge\bridgePermissionCallbacks.ts
+  09:21 | temp_claude_code\src\bridge\bridgeMessaging.ts
+  09:21 | temp_claude_code\src\bridge\bridgeMain.ts
+  09:21 | temp_claude_code\src\bridge\bridgeEnabled.ts
+  09:21 | temp_claude_code\src\bridge\bridgeDebug.ts
+  09:21 | temp_claude_code\src\bridge\bridgeConfig.ts
+  09:21 | temp_claude_code\src\bridge\bridgeApi.ts
+  09:21 | temp_claude_code\src\bootstrap\state.ts
+  09:21 | temp_claude_code\src\assistant\sessionHistory.ts
+  09:21 | temp_claude_code\src\Tool.ts
+  09:21 | temp_claude_code\src\Task.ts
+  09:21 | temp_claude_code\src\QueryEngine.ts
+  09:21 | temp_claude_code\README_CN.md
+  09:21 | temp_claude_code\QUICKSTART.md
+  09:20 | scripts\fetch_github_repo.py
+  09:16 | scripts\search_github.py
+  09:16 | scripts\fetch_trending_slow.py
 --- SESSIONS ---
-  Count: 34
-  - 040039d7-e752-457e-8cd9-4f5c237cf5f1.jsonl [13:15]
-  - 07d3b933-890d-4665-a20f-d4699e53abe1.jsonl [13:15]
-  - 081bd325-5481-4f74-a6e1-42d9bee28e81.jsonl [13:19]
+  Count: 3
+  - 6278f850-cea5-4340-8308-98c6867d57c7.jsonl [17:20]
+  - 740771cc-5678-40e2-96ba-40e772030d45.jsonl [09:02]
+  - 7c0a9062-80d7-4b75-a495-a041065f85f7.jsonl [14:47]
 --- SKILLS ---
-  + github
-  + mcporter
-  + tmux
-  + video-frames
+  (none today)
 --- STRUCTURED ---
-{"skillsUpdated":["github","mcporter","tmux","video-frames"],"dayOfWeek":"Monday","sessionCount":34,"modifiedFiles":["E:\\workspace\\memory\\daily-report-raw.txt","E:\\workspace\\knowledge\\wecom-customer-service-bot.md","E:\\workspace\\.git\\logs\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\logs\\refs\\heads\\main","E:\\workspace\\.git\\refs\\heads\\main","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\objects\\e0\\b1b28bf7e99f3eb58aae4e2e19adcd33a8298d","E:\\workspace\\.git\\COMMIT_EDITMSG","E:\\workspace\\.git\\index","E:\\workspace\\.git\\objects\\64\\63b285c1347e496a5ebaf8cce79af0fb3294ef","E:\\workspace\\.git\\objects\\57\\1b8fbb84aa888b58a433a11f69282692bc99fb","E:\\workspace\\.git\\objects\\98\\10158b56a3c0f695f2c3be6b5563416a67edb3","E:\\workspace\\.git\\objects\\c9\\98e7681be6bf93702f3185efef9b37b20e1203","E:\\workspace\\今日学习总结_2026-03-30.md","E:\\workspace\\.git\\objects\\7c\\6be2f0ce3d460bd6cbf8895c15d0f111250eed","E:\\workspace\\.git\\objects\\df\\70b0af7664b856618ea0d19ea51c8a81532de8","E:\\workspace\\.git\\objects\\f5\\68a08ab82f31e94f138f649f9de060644201e6","E:\\workspace\\AGENTS.md","E:\\workspace\\.git\\objects\\09\\ee259499ad8c9795981229f752e81fb6d1b6e8"],"gitCommits":["e0b1b28b 瀹氭椂鑷姩鎻愪氦","7c6be2f0 fix: 淇cron浠诲姟delivery鎶曢€掗棶棰?- 鏀逛负mode=none閬垮厤wechat鎶曢€掑け璐?09ee2594 瀹氭椂鑷姩鎻愪氦","75e7ac8c fix: 淇cron浠诲姟delivery.channel鏈寚瀹氬鑷寸殑鎶ラ敊 - 涓変釜浠诲姟鍏ㄩ儴璁剧疆channel=openclaw-weixin","9925acb4 瀹氭椂鑷姩鎻愪氦","25e6d61d fix: 淇瀹氭椂浠诲姟瓒呮椂闂 - 澧炲姞cron job timeoutSeconds","57856e76 feat: 琛ュ厖@瓒呯骇澶у▉/MojoAI/IT鍜栧暋棣嗙瓑鎯呮姤锛屾暣鐞嗗畬鏁存眹鎬?fa7702a1 feat: 琛ュ厖eigent澶欰gent鍗忎綔椤圭洰","165a2115 feat: 鏁寸悊2026-03-30 GitHub鐑棬椤圭洰鎯呮姤"],"date":"2026.03.30"}
+{"skillsUpdated":[],"dayOfWeek":"Wednesday","sessionCount":3,"modifiedFiles":["E:\\workspace\\config\\mcporter.json","E:\\workspace\\scripts\\fetch_readme.py","E:\\workspace\\knowledge\\claude-code-source-analysis.md","E:\\workspace\\temp_claude_code\\src\\bridge\\bridgePermissionCallbacks.ts","E:\\workspace\\temp_claude_code\\src\\bridge\\bridgeMessaging.ts","E:\\workspace\\temp_claude_code\\src\\bridge\\bridgeMain.ts","E:\\workspace\\temp_claude_code\\src\\bridge\\bridgeEnabled.ts","E:\\workspace\\temp_claude_code\\src\\bridge\\bridgeDebug.ts","E:\\workspace\\temp_claude_code\\src\\bridge\\bridgeConfig.ts","E:\\workspace\\temp_claude_code\\src\\bridge\\bridgeApi.ts","E:\\workspace\\temp_claude_code\\src\\bootstrap\\state.ts","E:\\workspace\\temp_claude_code\\src\\assistant\\sessionHistory.ts","E:\\workspace\\temp_claude_code\\src\\Tool.ts","E:\\workspace\\temp_claude_code\\src\\Task.ts","E:\\workspace\\temp_claude_code\\src\\QueryEngine.ts","E:\\workspace\\temp_claude_code\\README_CN.md","E:\\workspace\\temp_claude_code\\QUICKSTART.md","E:\\workspace\\scripts\\fetch_github_repo.py","E:\\workspace\\scripts\\search_github.py","E:\\workspace\\scripts\\fetch_trending_slow.py"],"gitCommits":[],"date":"2026.04.01"}

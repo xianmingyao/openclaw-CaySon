@@ -34,6 +34,11 @@ USER_ID = "ningcaison"
 
 def init_mem0():
     """初始化Mem0（用于记忆提取）"""
+    # 强制禁用 OpenAI API Key（防止 mem0  fallback 到 OpenAI）
+    import os
+    os.environ.pop("OPENAI_API_KEY", None)
+    os.environ.pop("OPENAI_API_KEY", None)  # 确保从当前进程删除
+    
     config = {
         "vector_store": {
             "provider": "chroma",
@@ -63,6 +68,13 @@ def init_mem0():
 def init_milvus():
     """初始化Milvus客户端"""
     return MilvusClient(uri=f"http://{MILVUS_HOST}:{MILVUS_PORT}")
+
+def ensure_collection_loaded(milvus_client):
+    """确保 collection 已加载，必要时自动加载"""
+    try:
+        milvus_client.load_collection(MILVUS_COLLECTION)
+    except Exception:
+        pass  # 已加载或无权限，忽略
 
 def get_embedding(text):
     """使用Ollama获取文本嵌入"""
@@ -101,20 +113,23 @@ def add_memory(memory_client, milvus_client, text, metadata=None):
     
     # 3. 写入云端Milvus
     print("[4] 写入云端Milvus...")
+    ensure_collection_loaded(milvus_client)
     try:
+        import time
+        milvus_id = int(str(int(time.time() * 1000)) + str(local_id if local_id else '0')[-4:])
         data = [
             {
+                "id": milvus_id,
+                "vector": embedding,
                 "text": text,
                 "user_id": USER_ID,
-                "local_id": str(local_id) if local_id else "",
-                "vector": embedding  # 包含向量
             }
         ]
         result = milvus_client.insert(
             collection_name=MILVUS_COLLECTION,
             data=data
         )
-        print(f"    [OK] 云端写入成功 (ID: {result.get('ids', ['unknown'])[0]})")
+        print(f"    [OK] 云端写入成功 (ID: {milvus_id})")
     except Exception as e:
         print(f"    [ERROR] 云端写入失败: {e}")
     
@@ -129,7 +144,9 @@ def search_memories(memory_client, milvus_client, query, limit=10):
     # 1. 从本地搜索
     print("[1] 本地ChromaDB搜索...")
     try:
-        local_results = memory_client.search(query, user_id=USER_ID, limit=limit)
+        local_results_raw = memory_client.search(query, user_id=USER_ID, limit=limit)
+        # search 返回 dict{'results': [...]}，需要取 ['results']
+        local_results = local_results_raw.get('results', []) if isinstance(local_results_raw, dict) else local_results_raw
         print(f"    [OK] 找到 {len(local_results)} 条")
     except Exception as e:
         print(f"    [ERROR] 本地搜索失败: {e}")
@@ -137,6 +154,7 @@ def search_memories(memory_client, milvus_client, query, limit=10):
     
     # 2. 从云端搜索
     print("[2] 云端Milvus搜索...")
+    ensure_collection_loaded(milvus_client)
     try:
         query_embedding = get_embedding(query)
         milvus_results = milvus_client.search(
@@ -197,7 +215,8 @@ def get_all_memories(memory_client, milvus_client):
     print("[1] 本地ChromaDB...")
     try:
         local_all = memory_client.get_all(user_id=USER_ID)
-        local_results = local_all.get("results", []) if local_all else []
+        # get_all 返回 dict{'results': [...]} 或 list
+        local_results = local_all.get("results", []) if isinstance(local_all, dict) else (local_all if isinstance(local_all, list) else [])
         print(f"    [OK] {len(local_results)} 条")
     except Exception as e:
         print(f"    [ERROR] {e}")
@@ -205,6 +224,7 @@ def get_all_memories(memory_client, milvus_client):
     
     # 从云端获取
     print("[2] 云端Milvus...")
+    ensure_collection_loaded(milvus_client)
     try:
         milvus_all = milvus_client.query(
             collection_name=MILVUS_COLLECTION,

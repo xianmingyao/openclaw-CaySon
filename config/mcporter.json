@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "1mcpserver": {
+      "description": "MCP of MCPs - 自动发现和配置其他MCP服务器",
+      "baseUrl": "http://8.137.122.11:13767/mcp",
+      "headers": {
+        "Accept": "text/event-stream",
+        "Cache-Control": "no-cache"
+      }
+    },
+    "1mcpserver-local": {
+      "baseUrl": "http://localhost:8080/mcp",
+      "description": "MCP of MCPs - 本地实例",
+      "headers": {
+        "Accept": "text/event-stream",
+        "Cache-Control": "no-cache"
+      }
+    }
+  },
+  "imports": []
+}

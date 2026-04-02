@@ -73,7 +73,7 @@ YYYY.MM.DD(日报)
 | 仓库 | Stars | 定位 | 推荐度 |
 |------|-------|------|--------|
 | instructkr/claw-code | 48,000+ | Clean-room重写，合法安全 | ⭐⭐⭐⭐⭐ |
-| sanbuphy/claude-code-source-code | Fork 41,500 | 泄露源码，⚠️法律风险 | ⭐（仅研究） |
+| sanbuphy/claude-code-source-code | Fork 41,500 | 泄露源码，法律风险高 | ⭐（仅研究） |
 | unohee/OpenSwarm | 232 | 多Agent编排器 | ⭐⭐ |
 
 ### GStack 角色映射表
@@ -120,10 +120,67 @@ YYYY.MM.DD(日报)
 - ❌ 上线前没走GitHub → 🔴 立即暂停，必须走流程
 
 ### 检查清单
-
 每个项目必须确认7个阶段都有产出物，缺一不可。
 
 ### 规范文档
-
 - `knowledge/ai-native-workflow-SOP.md` - 完整SOP文档
 - `knowledge/ai-native-workflow-mermaid.md` - Mermaid流程图代码
+
+## SkillHub 技能管理规范（2026-04-02 新增）
+
+### SkillHub CLI 用法
+```bash
+python ~/.skillhub/skills_store_cli.py search <关键词>
+python ~/.skillhub/skills_store_cli.py install <技能名>
+python ~/.skillhub/skills_store_cli.py update <技能名>
+```
+
+### 技能安装安全流程（铁律）
+1. 安装前：edgeone-clawscan 安全扫描
+2. 风险 HIGH/EXTREME → 拒绝安装
+3. 风险 MEDIUM → 告知用户确认
+4. 安装后验证
+
+### 每日安全扫描 Cron
+- **任务ID：** 5227d14e-ae2f-4a41-93c7-3f14b58b9cfc
+- **时间：** 每天凌晨 12:30
+- **内容：** edgeone-clawscan 全技能安全体检 + 版本更新检查
+- **升级后：** 主动告知宁兄
+
+### 已安装技能
+| 技能 | 版本 | 日期 | 用途 |
+|------|------|------|------|
+| summarize | 1.0.0 | 2026-04-02 | 总结网页/PDF/YouTube |
+| nano-banana-pro | 1.0.1 | 2026-04-02 | AI图片生成（Gemini 3 Pro） |
+
+## 2026-04-02 今日完成总结
+
+### 技术研究
+- ✅ browser-use CLI 2.0 深度测试
+- ✅ WebMCP + MCP 浏览器自动化研究
+- ✅ GitHub 三大仓库对比分析（claw-code/OpenSwarm/sanbuphy）
+- ✅ GStack 角色映射表整理
+- ✅ KiloClaw 全托管 OpenClaw 研究
+- ✅ AI-Native 开发工作流 SOP 制定
+
+### 系统配置
+- ✅ SkillHub CLI 安装完成
+- ✅ summarize 技能安装
+- ✅ nano-banana-pro 技能安装
+- ✅ 每日安全扫描 Cron 设置（12:30）
+- ✅ 行为准则更新（TOOLS.md）
+
+### 知识库文档
+- `knowledge/browser-use-cli.md` - browser-use CLI 2.0 技术报告
+- `knowledge/webmcp-mcp-browser-automation.md` - WebMCP + MCP 深度报告
+- `knowledge/github-repos-comparison.md` - GitHub仓库对比分析
+- `knowledge/kiloclaw.md` - KiloClaw 深度报告
+- `knowledge/ai-native-workflow-SOP.md` - AI-NATIVE 开发工作流 SOP
+
+### Git 提交记录
+- docs: add browser-use CLI 2.0 深度研究报告
+- docs: add WebMCP + MCP浏览器自动化深度研究报告
+- docs: add GitHub repos comparison
+- docs: add KiloClaw research report
+- docs: add AI-NATIVE workflow SOP as standard process
+- docs: add SkillHub safety protocol and daily security scan cron

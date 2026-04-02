@@ -131,4 +131,81 @@ python E:\workspace\scripts\show_memories.py
 
 ---
 
+## 🔒 SkillHub 技能商店规范（宁兄指令 - 铁律）
+
+### SkillHub CLI 用法
+
+```bash
+# 搜索技能
+python ~/.skillhub/skills_store_cli.py search <关键词>
+
+# 安装技能
+python ~/.skillhub/skills_store_cli.py install <技能名>
+
+# 更新技能
+python ~/.skillhub/skills_store_cli.py update <技能名>
+```
+
+### 技能安装安全流程（铁律）
+
+**每次安装技能前必须执行：**
+
+1. **安全扫描（必须）**
+   ```bash
+   # 使用 edgeone-clawscan 扫描技能安全风险
+   openclaw skills scan <技能名>
+   # 或使用 edgeone-clawscan 技能进行安全体检
+   ```
+
+2. **风险评估**
+   - 🔴 HIGH/EXTREME 风险 → 拒绝安装，告知用户
+   - 🟡 MEDIUM 风险 → 告知用户，确认后安装
+   - 🟢 LOW 风险 → 可以安装
+
+3. **安装后验证**
+   ```bash
+   openclaw skills list | grep <技能名>
+   ```
+
+### 每日安全扫描（Cron）
+
+**⏰ 每天凌晨 12:30 自动执行**
+
+使用 `edgeone-clawscan` 对所有已安装技能进行安全体检：
+- 扫描技能目录：`E:\workspace\skills\`
+- 扫描范围：所有已安装技能
+- 异常处理：发现问题立即通知宁兄
+
+**Cron Job ID：** 待设置（需创建）
+
+### 技能版本监控与自动升级
+
+**升级触发条件：**
+- 每日凌晨安全扫描后检查版本更新
+- 手动触发：`python ~/.skillhub/skills_store_cli.py update <技能名>`
+
+**升级后必须：**
+1. 记录升级内容（技能名、旧版本→新版本）
+2. 主动告知宁兄升级详情
+3. 如有重大变更，更新相关文档
+
+**通知模板：**
+```
+🔔 技能升级通知
+技能：<名称>
+旧版本：<v1.0.0>
+新版本：<v1.0.1>
+变更：<简短描述>
+时间：<YYYY-MM-DD HH:mm>
+```
+
+### 已安装的 SkillHub 技能
+
+| 技能 | 版本 | 安装日期 | 用途 |
+|------|------|---------|------|
+| summarize | 1.0.0 | 2026-04-02 | 网页/PDF/YouTube总结 |
+| nano-banana-pro | 1.0.1 | 2026-04-02 | AI图片生成（Gemini 3 Pro）|
+
+---
+
 Add whatever helps you do your job. This is your cheat sheet.

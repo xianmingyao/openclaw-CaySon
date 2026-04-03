@@ -68,6 +68,29 @@ YYYY.MM.DD(日报)
 - 网页动效转视频：HTML/Canvas动画直接变素材
 - ⚠️ 自动导出依赖剪映5.9或更低版本
 
+### Remotion Video Toolkit - React视频生成Skill
+
+**来源：** 抖音@艾伦2077v 视频「Remotion的Skill」
+
+| 项目 | 信息 |
+|------|------|
+| GitHub | `Arxchibobo/openclaw-remotion-video-toolkit` |
+| 安装命令 | `openclaw skill install github:Arxchibobo/openclaw-remotion-video-toolkit` |
+| 核心依赖 | Node.js 18+ / React 18+ / FFmpeg |
+| 规则数 | 29条规则，覆盖动画/字幕/3D/图表全场景 |
+| 文档 | `knowledge/remotion-video-toolkit.md` |
+
+**核心价值：**
+- 用React代码生成MP4视频（代码即视频）
+- 批量个性化：一套模板，千人千面（Spotify Wrapped模式）
+- TikTok字幕：音频转逐字高亮字幕
+- 数据可视化：JSON → 视频自动化
+
+**对比jianying-editor-skill：**
+- jianying-editor-skill → 口播/Vlog/影视解说
+- remotion-video-toolkit → 数据视频/批量个性化/程序化视频
+- 两者组合 → 全面覆盖视频创作场景
+
 ### Skill学习追踪表更新
 
 | 技能 | 状态 | 安装日期 | 掌握程度 | 待解决问题 |
@@ -75,6 +98,7 @@ YYYY.MM.DD(日报)
 | summarize | ✅ 已安装 | 2026-04-02 | 精通 | - |
 | nano-banana-pro | ✅ 已安装 | 2026-04-02 | 精通 | - |
 | jianying-editor-skill | 🔍 研究完成 | 待安装 | ⭐待实践 | 需先装剪映5.9 |
+| remotion-video-toolkit | 🔍 研究完成 | 待安装 | ⭐待实践 | 需Node.js 18+ |
 
 ### 2026-04-02 技术研究成果
 
@@ -216,20 +240,23 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 ## 2026-04-03 今日完成总结
 
 ### 技术研究
-- ✅ 抖音@艾伦2077v 视频扒取分析
+- ✅ 抖音@艾伦2077v 视频扒取分析（剪映Skill + Remotion Skill）
 - ✅ jianying-editor-skill 深度研究（剪映AI剪辑Skill）
-- ✅ 整理剪映Skill完整技术报告
+- ✅ remotion-video-toolkit 深度研究（React视频生成Skill）
+- ✅ 整理两份完整技术报告
 
 ### 知识库文档
-- `knowledge/jianying-editor-skill.md` - 剪映AI剪辑Skill完整技术报告（含安装配置/使用示例/避坑指南）
+- `knowledge/jianying-editor-skill.md` - 剪映AI剪辑Skill完整技术报告
+- `knowledge/remotion-video-toolkit.md` - React视频生成Skill完整技术报告
 
 ### 重要结论
-1. **jianying-editor-skill** 是目前最完整的剪映自动化方案
-2. 核心价值：自然语言驱动+全流程自动化+录屏红圈标记
-3. 最大限制：自动导出必须用剪映5.9或更低版本
+1. **jianying-editor-skill** - 剪映自动化，自然语言驱动，适合口播/Vlog/影视解说
+2. **remotion-video-toolkit** - React代码生成视频，适合数据视频/批量个性化
+3. 两者组合可全面覆盖视频创作场景
 4. 下一步：先下载剪映5.9，再运行一键安装脚本
 
 ### 待办事项
 - [ ] 下载剪映5.9（夸克网盘：pan.quark.cn/s/81566e9c6e08）
 - [ ] 运行Windows一键安装：`irm is.gd/rpb65M | iex`
 - [ ] 实践剪映Skill自动化剪辑
+- [ ] 安装remotion-video-toolkit（需Node.js 18+）

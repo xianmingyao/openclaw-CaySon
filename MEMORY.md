@@ -91,6 +91,24 @@ YYYY.MM.DD(日报)
 - remotion-video-toolkit → 数据视频/批量个性化/程序化视频
 - 两者组合 → 全面覆盖视频创作场景
 
+### CLI vs MCP 专题研究报告
+
+**来源：** 抖音@技术爬爬虾 - 「为什么巨头都在做CLI？比起MCP有哪些优势？」
+
+| 项目 | Stars | 说明 |
+|------|-------|------|
+| CLI-Anything | 1.4k+ | 港大开源，自动为软件生成CLI接口 |
+| OpenCLI | 9.6k | 任意网站/工具→CLI，Apache-2.0 |
+| 巨头CLI | - | Claude Code/Codex CLI/钉钉/飞书/网易云 |
+
+**核心结论：**
+- CLI是AI Agent的通用交互语言（稳定 > GUI自动化）
+- MCP需要官方支持，CLI可绕过官方自动生成
+- CLI-Anything：7阶段自动生成CLI，支持GIMP/Blender等
+- browser-use vs CLI-Anything：浏览器用前者，专业软件用后者
+
+**文档：** `knowledge/cli-vs-mcp-research.md`
+
 ### Skill学习追踪表更新
 
 | 技能 | 状态 | 安装日期 | 掌握程度 | 待解决问题 |
@@ -99,6 +117,8 @@ YYYY.MM.DD(日报)
 | nano-banana-pro | ✅ 已安装 | 2026-04-02 | 精通 | - |
 | jianying-editor-skill | 🔍 研究完成 | 待安装 | ⭐待实践 | 需先装剪映5.9 |
 | remotion-video-toolkit | 🔍 研究完成 | 待安装 | ⭐待实践 | 需Node.js 18+ |
+| CLI-Anything | 🔍 研究完成 | 待实践 | ⭐待测试 | 需Python 3.10+ |
+| OpenCLI | 🔍 研究完成 | 待实践 | ⭐待测试 | 需npm/Node.js |
 
 ### 2026-04-02 技术研究成果
 

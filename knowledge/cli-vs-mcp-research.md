@@ -255,35 +255,285 @@ AI Agent控制软件的方式
 
 ## 7. ⚡ 怎么安装
 
-### CLI-Anything
+### CLI-Anything 安装
 
 ```bash
-# 克隆仓库
+# 方式1：克隆仓库（推荐）
 git clone https://github.com/HKUDS/CLI-Anything.git
 cd CLI-Anything
 
 # 安装依赖
 pip install -r requirements.txt
 
-# 为软件生成CLI
-python -m cli_anything <software-path>
+# 方式2：PyPI直接安装
+pip install cli-anything
+
+# 验证安装
+python -m cli_anything --help
 ```
 
-### OpenCLI
+**依赖要求：**
+- Python >= 3.10
+- click >= 8.0
+- pytest（测试用）
+
+### OpenCLI 安装
 
 ```bash
-# 通过npm安装
+# 方式1：npm全局安装（推荐）
 npm install -g opencli
 
-# 或通过pip安装
+# 方式2：pip安装
 pip install opencli
 
-# 注册本地CLI
-opencli register mycli
-
-# AI Agent中配置
-opencli list via Bash
+# 验证安装
+opencli --version
+opencli --help
 ```
+
+---
+
+## 8. 🎬 演示案例
+
+### 案例1：CLI-Anything 为 GIMP 生成 CLI
+
+**目标：** 让AI Agent通过命令行控制GIMP图片编辑器
+
+```bash
+# 1. 安装GIMP（如果未安装）
+# Windows: https://www.gimp.org/downloads/
+# Linux: sudo apt install gimp
+
+# 2. 使用CLI-Anything为GIMP生成CLI
+python -m cli_anything "C:\Program Files\GIMP 2\bin\gimp-2.10.exe"
+
+# 3. 生成的CLI会自动注册到系统
+# 输出示例：
+# ✅ CLI生成成功！
+# 📦 包名: gimp-cli
+# 📂 输出目录: ./generated/gimp-cli
+# 🔧 安装命令: pip install -e ./generated/gimp-cli
+
+# 4. 安装生成的CLI
+pip install -e ./generated/gimp-cli
+
+# 5. 验证CLI
+gimp-cli --help
+```
+
+**GIMP CLI常用命令：**
+```bash
+# 打开图片
+gimp-cli open "photo.jpg"
+
+# 缩放图片
+gimp-cli resize "photo.jpg" --width 800 --height 600
+
+# 裁剪图片
+gimp-cli crop "photo.jpg" --x 100 --y 100 --width 500 --height 500
+
+# 保存为不同格式
+gimp-cli export "photo.jpg" --format png --output "photo.png"
+
+# 添加滤镜
+gimp-cli filter "photo.jpg" --effect blur --radius 5
+```
+
+### 案例2：OpenCLI 让微信文章可 CLI 化
+
+**目标：** 把微信文章页面转换为命令行可抓取的形式
+
+```bash
+# 1. 安装OpenCLI
+npm install -g opencli
+
+# 2. 安装Chrome扩展（浏览器支持）
+opencli install chrome-extension
+
+# 3. 初始化
+opencli init
+
+# 4. 让AI Agent发现工具
+# 在AGENT.md中添加：
+opencli list via Bash
+
+# 5. 抓取网页内容
+opencli fetch "https://mp.weixin.qq.com/s/xxx"
+
+# 6. 输出结构化内容
+{
+  "title": "文章标题",
+  "author": "作者",
+  "content": "文章内容...",
+  "published": "2026-04-03"
+}
+```
+
+### 案例3：Claude Code 通过 CLI 控制 Blender
+
+```bash
+# 1. 为Blender生成CLI
+python -m cli_anything "C:\Program Files\Blender Foundation\Blender 4.0\blender.exe"
+
+# 2. 安装生成的CLI
+pip install -e ./generated/blender-cli
+
+# 3. 在Claude Code中调用
+# prompt: "帮我创建一个红色的球体，并导出为OBJ格式"
+
+# Claude Code会执行：
+blender-cli create-sphere --name "my_sphere" --color red --output "sphere.obj"
+
+# 4. 查看结果
+ls -la sphere.obj
+```
+
+### 案例4：OpenCLI 自动化飞书消息
+
+```bash
+# 1. 安装飞书CLI（官方）
+npm install -g @feishu/cli
+
+# 2. 配置认证
+feishu-cli auth --login
+
+# 3. AI Agent发送消息
+# prompt: "在飞书群里发一条消息：'AI自动化测试'"
+
+# Claude Code执行：
+feishu-cli send-message --channel "工作群" --message "AI自动化测试"
+
+# 4. 查询消息
+feishu-cli list-messages --channel "工作群" --limit 10
+```
+
+### 案例5：OpenClaw + CLI-Anything 自动化 LibreOffice
+
+```bash
+# 1. 为LibreOffice生成CLI
+python -m cli_anything "C:\Program Files\LibreOffice\program\soffice.exe"
+
+# 2. 安装
+pip install -e ./generated/libreoffice-cli
+
+# 3. 在OpenClaw中调用
+# prompt: "把document.docx转换成PDF"
+
+libreoffice-cli convert "document.docx" --format pdf --output "document.pdf"
+
+# 4. 批量转换
+for file in *.docx; do libreoffice-cli convert "$file" --format pdf; done
+```
+
+---
+
+## 9. 🔧 OpenClaw 集成配置
+
+### 9.1 在 OpenClaw 中启用 CLI
+
+在 `AGENTS.md` 或 `SOUL.md` 中添加：
+
+```markdown
+## CLI工具配置
+
+### CLI-Anything
+- 安装路径: `E:\workspace\cli-anything`
+- 命令: `python -m cli_anything <software-path>`
+
+### OpenCLI
+- 命令: `opencli`
+- 注册工具: `opencli register <tool-name>`
+- 列出工具: `opencli list`
+
+### AI Agent调用示例
+当用户需要控制特定软件时：
+1. 检查是否有现成的CLI工具
+2. 如果没有，使用CLI-Anything生成
+3. 调用生成的CLI完成操作
+```
+
+### 9.2 在 Claude Code 中集成
+
+在项目根目录创建 `AGENT.md`：
+
+```markdown
+# CLI工具集成
+
+## 可用工具
+- opencli: 访问网站和本地工具的CLI接口
+- cli-anything: 为软件生成CLI接口
+
+## 使用方式
+1. 搜索工具: `opencli search <keyword>`
+2. 注册工具: `opencli register <tool>`
+3. 调用工具: `opencli run <tool> <args>`
+
+## 示例
+- 抓取网页: `opencli fetch <url>`
+- 生成CLI: `cli-anything <software-path>`
+```
+
+---
+
+## 10. ⚠️ 常见问题与解决
+
+### Q1: CLI-Anything 生成失败？
+
+**问题：** `Error: Cannot analyze binary file`
+
+**解决：**
+```bash
+# 确保软件路径正确
+ls -la "C:\Program Files\MyApp\app.exe"
+
+# 使用 --verbose 查看详细错误
+python -m cli_anything "app.exe" --verbose
+
+# 检查是否是需要GUI分析的应用
+# CLI-Anything主要支持有代码库的开源软件
+```
+
+### Q2: OpenCLI 无法发现工具？
+
+**问题：** `opencli list` 返回空
+
+**解决：**
+```bash
+# 重新初始化
+opencli init --force
+
+# 检查Chrome扩展是否安装
+opencli status
+
+# 手动注册工具
+opencli register "C:\path\to\mytool.exe"
+```
+
+### Q3: CLI工具执行权限不足？
+
+**解决：**
+```bash
+# Windows: 以管理员运行
+# Linux/Mac: chmod +x /path/to/tool
+
+# 或使用Python调用（绕过权限问题）
+python -c "import subprocess; subprocess.run(['tool-name', 'arg1'])"
+```
+
+### Q4: 生成的CLI无法导入Python？
+
+**解决：**
+```bash
+# 使用开发模式安装
+pip install -e ./generated/cli-package
+
+# 或直接添加到PYTHONPATH
+export PYTHONPATH="${PYTHONPATH}:$(pwd)/generated/cli-package"
+```
+
+---
+
+## 11. ✅ 优点
 
 ---
 

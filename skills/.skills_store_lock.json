@@ -24,6 +24,12 @@
       "zip_url": "https://lightmake.site/api/v1/download?slug=nano-banana-pro",
       "source": "skillhub",
       "version": "1.0.1"
+    },
+    "apify-ultimate-scraper": {
+      "name": "Apify Ultimate Scraper",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=apify-ultimate-scraper",
+      "source": "skillhub",
+      "version": "1.0.1"
     }
   }
 }

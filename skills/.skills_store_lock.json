@@ -30,6 +30,60 @@
       "zip_url": "https://lightmake.site/api/v1/download?slug=apify-ultimate-scraper",
       "source": "skillhub",
       "version": "1.0.1"
+    },
+    "skill-9": {
+      "name": "Agent Reach",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=skill-9",
+      "source": "skillhub",
+      "version": "0.1.0"
+    },
+    "video-summary": {
+      "name": "Video Summary",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=video-summary",
+      "source": "skillhub",
+      "version": "1.6.4"
+    },
+    "content-hunter": {
+      "name": "内容捕手",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=content-hunter",
+      "source": "skillhub",
+      "version": "1.0.2"
+    },
+    "wechat-mp-cn": {
+      "name": "WeChat MP CN",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=wechat-mp-cn",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "wechat": {
+      "name": "Wechat Local Data Reader",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=wechat",
+      "source": "skillhub",
+      "version": "1.0.2"
+    },
+    "cloudbase": {
+      "name": "Cloudbase",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=cloudbase",
+      "source": "skillhub",
+      "version": "1.18.0"
+    },
+    "phoenixclaw-ledger": {
+      "name": "phoenixclaw-ledger",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=phoenixclaw-ledger",
+      "source": "skillhub",
+      "version": "0.0.2"
+    },
+    "wechat-article-scraper": {
+      "name": "微信公众号文章抓取",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=wechat-article-scraper",
+      "source": "skillhub",
+      "version": "1.1.1"
+    },
+    "auto-publisher": {
+      "name": "Auto Publisher",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=auto-publisher",
+      "source": "skillhub",
+      "version": "1.0.0"
     }
   }
 }

@@ -1,0 +1,49 @@
+{
+  "name": "openclaw-ledger",
+  "version": "1.0.0",
+  "display_name": "OpenClaw Ledger",
+  "description": "Personal financial tracking for OpenClaw - automatic expense detection from conversations and screenshots",
+  "author": "CaySon",
+  "tags": [
+    "finance",
+    "expense-tracking",
+    "budget",
+    "wechat-pay",
+    "alipay"
+  ],
+  "platform": "openclaw",
+  "min_core_version": "0.1.0",
+  "dependencies": [],
+  "optional_dependencies": [
+    "agent-browser"
+  ],
+  "data_storage": {
+    "ledger_file": "E:\\workspace\\ledger\\ledger.yaml",
+    "budget_file": "E:\\workspace\\ledger\\budget.yaml",
+    "transactions_file": "E:\\workspace\\ledger\\transactions.md"
+  },
+  "features": [
+    "Semantic expense detection from conversation",
+    "Payment screenshot OCR (WeChat Pay, Alipay)",
+    "Smart merchant categorization",
+    "Monthly budget tracking",
+    "Daily/Weekly/Monthly reports",
+    "Multi-currency support (CNY, USD, EUR)",
+    "Natural language queries"
+  ],
+  "categories_covered": [
+    "food",
+    "transport",
+    "shopping",
+    "entertainment",
+    "utilities",
+    "housing",
+    "health",
+    "education",
+    "personal",
+    "subscription",
+    "income"
+  ],
+  "created": "2026-04-06",
+  "source": "Based on phoenixclaw-ledger, adapted for OpenClaw"
+}

@@ -345,6 +345,38 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 ### 文档
 - `knowledge/openclaw-45-dreaming-memory.md`
 
+## HKUDS 港大AI Agent生态（2026-04新发布）
+
+### 三项目矩阵
+| 项目 | 定位 | Stars | 核心价值 |
+|------|------|-------|---------|
+| OpenSpace | 自进化引擎 | - | 技能进化+经验沉淀 |
+| OpenHarness | 基础设施框架 | 4000+ | hands/eyes/memory/safety |
+| CLI-Anything | CLI生成工具 | 1400+ | 任意软件→CLI |
+
+### 三层架构
+```
+OpenSpace（进化层）→ OpenHarness（基础层）→ CLI-Anything（接口层）
+```
+
+### OpenSpace 自进化引擎
+- **一句话**：让AI Agent自我进化的技能引擎
+- **实测**：Token消耗-46%，收入4.2倍
+- **命令**：openspace capture/evolve/optimize
+
+### OpenHarness 轻量级框架
+- **一句话**：1万行Python复刻Claude Code 98%功能
+- **定位**：Agent基础设施（hands/eyes/memory/safety）
+- **优势**：模型无关，可复用Claude Code生态
+
+### 与OpenClaw协同
+```
+OpenClaw（主框架）
+    ├── OpenHarness（基础设施增强）
+    ├── OpenSpace（进化能力增强）
+    └── CLI-Anything（工具扩展）
+```
+
 ## HKUDS OpenSpace 自进化引擎
 
 ### 核心定位
@@ -380,3 +412,5 @@ openspace engine start                                # 启动引擎
 
 ### 文档
 - `knowledge/hkuds-openspace-self-evolution.md`
+- `knowledge/hkuds-openharness-agent-framework.md`
+- `knowledge/hkuds-ai-agent-ecosystem.md`

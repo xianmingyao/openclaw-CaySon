@@ -449,3 +449,37 @@ pip install openspec
 
 ### 文档
 - `knowledge/openspec-sdd-dev-workflow.md`
+
+## DeerFlow 2.0 × ELUCKY 架构融合
+
+### 核心信息
+- **出品方**：字节跳动（ByteDance）
+- **类型**：SuperAgent Harness
+- **Stars**：47.3k+
+- **基于**：LangGraph 1.0
+
+### 六大组件
+| 组件 | 说明 |
+|------|------|
+| memory | 多层次记忆系统 |
+| tools | 扩展工具集 |
+| subagents | 子Agent编排 |
+| sandboxes | 沙箱隔离执行 |
+| skills | 可扩展技能 |
+| message gateway | 消息网关 |
+
+### DeerFlow vs OpenHarness
+| 维度 | DeerFlow 2.0 | OpenHarness |
+|------|---------------|-------------|
+| 出品方 | 字节跳动 | 港大HKUDS |
+| Stars | 47.3k | 4000+ |
+| 定位 | SuperAgent运行时 | 轻量基础设施 |
+
+### ELUCKY v2融合方案
+- Phase1：集成DeerFlow Harness Core
+- Phase2：重构LangGraph Orchestrator
+- Phase3：对接OpenSpace进化引擎
+- Phase4：灰度发布验证
+
+### 文档
+- `knowledge/deerflow-elucky-integration.md`

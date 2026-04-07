@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re, os, datetime
 
-DATA_DIR = r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data'
+DATA_DIR = r'E:\workspace\content-hunter-data\data'
 
 def count_items(fp):
     if not os.path.exists(fp): return 0

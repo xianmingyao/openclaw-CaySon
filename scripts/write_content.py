@@ -5,7 +5,7 @@
 import time
 import os
 
-data_dir = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_dir = r"E:\workspace\content-hunter-data\data"
 os.makedirs(data_dir, exist_ok=True)
 
 # B站内容 (从搜索引擎索引获取)

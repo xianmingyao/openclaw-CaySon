@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-data_path = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_path = r"E:\workspace\content-hunter-data\data"
 
 # Items from web search + known AI content on Douyin
 # Note: Due to captcha blocking on Douyin website, items compiled from search results

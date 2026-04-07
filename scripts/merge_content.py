@@ -5,7 +5,7 @@ import re
 import sys
 from datetime import datetime
 
-data_dir = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_dir = r"E:\workspace\content-hunter-data\data"
 out_dir = os.path.join(os.path.expanduser("~"), ".openclaw", "workspace", "content-hunter", "data")
 os.makedirs(out_dir, exist_ok=True)
 

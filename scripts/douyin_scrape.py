@@ -87,6 +87,6 @@ if __name__ == "__main__":
     print(f"共生成 {count} 条抖音数据")
     
     # 写入临时文件
-    with open(r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data\douyin_append.md", "w", encoding="utf-8") as f:
+    with open(r"E:\workspace\content-hunter-data\data\douyin_append.md", "w", encoding="utf-8") as f:
         f.write(md_content)
     print("已写入: douyin_append.md")

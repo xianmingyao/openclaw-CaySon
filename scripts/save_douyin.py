@@ -135,7 +135,7 @@ for i, v in enumerate(douyin_items):
     lines.append("")
 
 # APPEND to existing douyin.md
-data_dir = r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data'
+data_dir = r'E:\workspace\content-hunter-data\data'
 output_path = os.path.join(data_dir, 'douyin.md')
 with open(output_path, 'a', encoding='utf-8') as f:
     f.write('\n'.join(lines) + '\n')

@@ -1,6 +1,6 @@
 import json
 
-with open(r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data\bilibili_search_raw.json', 'r', encoding='utf-8') as f:
+with open(r'E:\workspace\content-hunter-data\data\bilibili_search_raw.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 print(f'Total: {len(data)} videos')
 for i, v in enumerate(data[:10]):

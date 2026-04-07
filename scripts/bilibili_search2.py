@@ -103,7 +103,7 @@ def main():
     
     content = '\n'.join(lines)
     
-    output_path = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data\bilibili.md"
+    output_path = r"E:\workspace\content-hunter-data\data\bilibili.md"
     with open(output_path, 'a', encoding='utf-8') as f:
         f.write(content)
     

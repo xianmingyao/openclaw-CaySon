@@ -3,7 +3,7 @@
 import re
 from datetime import datetime
 
-DATA_DIR = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+DATA_DIR = r"E:\workspace\content-hunter-data\data"
 
 with open(f"{DATA_DIR}\\bilibili.md", 'r', encoding='utf-8') as f:
     b_content = f.read()

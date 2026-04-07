@@ -46,7 +46,7 @@ def get_video_detail(bvid):
         return None
 
 # Load search results
-data_dir = r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data'
+data_dir = r'E:\workspace\content-hunter-data\data'
 os.makedirs(data_dir, exist_ok=True)
 
 with open(os.path.join(data_dir, 'bilibili_search_raw.json'), 'r', encoding='utf-8') as f:

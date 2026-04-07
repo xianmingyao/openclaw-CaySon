@@ -142,6 +142,6 @@ if __name__ == "__main__":
     print(f"\n... 共 {len(bilibili_items_101_200)} 条数据")
     
     # 写入临时文件
-    with open(r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data\bilibili_append_101_200.md", "w", encoding="utf-8") as f:
+    with open(r"E:\workspace\content-hunter-data\data\bilibili_append_101_200.md", "w", encoding="utf-8") as f:
         f.write(md_content)
     print("已写入: bilibili_append_101_200.md")

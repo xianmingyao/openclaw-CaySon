@@ -9,7 +9,7 @@ import time
 import requests
 from datetime import datetime
 
-DATA_DIR = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+DATA_DIR = r"E:\workspace\content-hunter-data\data"
 BILIBILI_FILE = f"{DATA_DIR}\\bilibili.md"
 DOUYIN_FILE = f"{DATA_DIR}\\douyin.md"
 

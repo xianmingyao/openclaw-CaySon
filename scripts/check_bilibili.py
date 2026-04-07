@@ -1,6 +1,6 @@
 import os
 
-data_dir = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_dir = r"E:\workspace\content-hunter-data\data"
 
 files = ["bilibili-ai.md", "bilibili_new_items.md", "bilibili_new_p2.md", "douyin-ai.md"]
 for fname in files:

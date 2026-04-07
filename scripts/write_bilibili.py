@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import codecs
 
-data_path = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_path = r"E:\workspace\content-hunter-data\data"
 
 # Items 101-140 from Bilibili search
 bilibili_items = [

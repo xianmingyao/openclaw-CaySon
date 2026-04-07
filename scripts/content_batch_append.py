@@ -6,7 +6,7 @@ import time
 import os
 import re
 
-data_dir = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_dir = r"E:\workspace\content-hunter-data\data"
 os.makedirs(data_dir, exist_ok=True)
 
 # B站AI技术热门内容（第21-100条，从搜索引擎和视频页获取）

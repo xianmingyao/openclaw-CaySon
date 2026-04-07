@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-data_path = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_path = r"E:\workspace\content-hunter-data\data"
 
 # Items 141-156 from Bilibili search page 3
 items_p3 = [

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-data_path = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_path = r"E:\workspace\content-hunter-data\data"
 
 # Last 4 items to reach exactly 100 new items (197-200)
 items_last = [

@@ -2,7 +2,7 @@
 import re
 from datetime import datetime
 
-DATA = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+DATA = r"E:\workspace\content-hunter-data\data"
 
 # B站统计
 with open(f"{DATA}\\bilibili.md", encoding='utf-8') as f:

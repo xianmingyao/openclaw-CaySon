@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-data_path = r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data"
+data_path = r"E:\workspace\content-hunter-data\data"
 
 # Only verified items from page 7 (20 items, 201-220)
 # These are from confirmed snapshot data

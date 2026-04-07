@@ -8,7 +8,7 @@ from datetime import datetime
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-DATA_DIR = r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data'
+DATA_DIR = r'E:\workspace\content-hunter-data\data'
 APIFY_TOKEN = os.environ.get('APIFY_TOKEN', '')
 
 def run_apify_actor(actor_id, input_data):

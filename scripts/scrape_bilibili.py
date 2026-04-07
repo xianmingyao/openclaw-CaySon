@@ -100,6 +100,6 @@ for i, v in enumerate(sorted_videos[:10]):
     print(f"  {i+1}. {v['title'][:50]} | {v['author']} | {v['play']}播放")
 
 # Save raw search data
-with open(r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data\bilibili_search_raw.json', 'w', encoding='utf-8') as f:
+with open(r'E:\workspace\content-hunter-data\data\bilibili_search_raw.json', 'w', encoding='utf-8') as f:
     json.dump(list(all_videos.values()), f, ensure_ascii=False, indent=2)
 print(f"\nSaved {len(all_videos)} videos to bilibili_search_raw.json")

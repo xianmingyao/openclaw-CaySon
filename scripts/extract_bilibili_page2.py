@@ -201,6 +201,6 @@ for i, item in enumerate(items_page2, start=81):
     md += f"- 内容简介: (待补充)\n\n"
 
 # Write directly to file
-with open(r"C:\Users\Administrator\.openclaw\workspace\content-hunter\data\bilibili_page2_new.txt", "w", encoding="utf-8") as f:
+with open(r"E:\workspace\content-hunter-data\data\bilibili_page2_new.txt", "w", encoding="utf-8") as f:
     f.write(md)
 print("Written to file")

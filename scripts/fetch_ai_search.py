@@ -8,7 +8,7 @@ from datetime import datetime
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-DATA_DIR = r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data'
+DATA_DIR = r'E:\workspace\content-hunter-data\data'
 
 AI_QUERIES = [
     'AI技术', '人工智能', '大模型', 'LLM', 'GPT', 'ChatGPT',

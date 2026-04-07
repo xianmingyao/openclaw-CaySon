@@ -305,12 +305,13 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 - `knowledge/shopify-ai-agent-ecommerce-2026.md` - Shopify AI Agent 2026报告
 - `knowledge/openclaw-45-dreaming-memory.md` - OpenClaw 4.5梦境记忆系统报告
 
-### 已安装Skills
-| 技能 | 版本 | 日期 | 用途 |
-|------|------|------|------|
+### 已安装Skills/Packages
+| 技能/包 | 版本 | 日期 | 用途 |
+|---------|------|------|------|
 | summarize | 1.0.0 | 2026-04-02 | 总结网页/PDF/YouTube |
 | nano-banana-pro | 1.0.1 | 2026-04-02 | AI图片生成（Gemini 3 Pro） |
 | memory-dream | 1.0.3 | 2026-04-07 | 记忆整合（睡眠记忆） |
+| openspace | 0.1.0 | 2026-04-07 | HKUDS自进化引擎（GitHub安装） |
 
 ### Cron任务状态
 | 任务 | ID | 时间 | 状态 |

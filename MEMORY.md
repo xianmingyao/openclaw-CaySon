@@ -415,3 +415,37 @@ openspace engine start                                # 启动引擎
 - `knowledge/hkuds-openspace-self-evolution.md`
 - `knowledge/hkuds-openharness-agent-framework.md`
 - `knowledge/hkuds-ai-agent-ecosystem.md`
+
+## OpenSpec SDD 规范驱动开发
+
+### 核心定位
+- **一句话**：先对齐规范，再写代码（Agree before you build）
+- **官网**：github.com/Fission-AI/OpenSpec
+- **定位**：AI-Native规范驱动开发系统
+
+### 解决问题
+- AI编程质量不稳定（有时神队友，有时漏洞百出）
+- 需求只有聊天记录，没有结构化文档
+- 多人协作规范不统一
+
+### 工作流
+```
+📝 提案（Proposal） → 📋 规范（Spec） → 🎨 设计（Design） → ✅ 任务（Tasks）
+```
+
+### 安装命令
+```bash
+npm install -g openspec
+# 或
+pip install openspec
+```
+
+### 与AI-Native SOP对应
+| AI-Native SOP阶段 | OpenSpec对应 |
+|-------------------|-------------|
+| 阶段5：AI逻辑 | Spec规范编写 |
+| 阶段6：AI编程 | Generate生成 |
+| 验证环节 | Verify验证 |
+
+### 文档
+- `knowledge/openspec-sdd-dev-workflow.md`

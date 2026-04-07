@@ -1,0 +1,106 @@
+{
+  "task_name": "task_7ecff71c533e",
+  "start_time": "2026-04-07T09:00:09",
+  "enable_screenshot": false,
+  "enable_video": false,
+  "task_id": "task_7ecff71c533e",
+  "backends": [
+    "gui",
+    "system",
+    "mcp",
+    "shell",
+    "web"
+  ],
+  "instruction": "hello",
+  "skill_selection": {
+    "method": "llm_failed",
+    "task": "hello",
+    "available_skills": [
+      "Agent Browser__imp_930ebe75",
+      "agent-reach__imp_f120c079",
+      "ai-web-automation__imp_c19a5177",
+      "apify-ultimate-scraper__imp_23cc56b8",
+      "auto-publisher__imp_029b4047",
+      "Self-Improving Agent (Proactive Self-Reflection)__imp_3bdce6e7",
+      "cloudbase__imp_519b9db1",
+      "content-hunter__imp_3ccdaa28",
+      "cron-mastery__imp_a71777cc",
+      "cron-scheduling__imp_41811f3c",
+      "desktop-control-1-0-0__imp_c84c9ff9",
+      "diagram-generator__imp_85318d6a",
+      "evomap__imp_3b69586e",
+      "memos__imp_a7964d1c",
+      "windows-control__imp_45dbdf2b"
+    ],
+    "filtered_out": [],
+    "prefilter_used": true,
+    "prompt": "You are a skill selector for an autonomous agent.\n\n# Task\n\nhello\n\n# Available Skills\n\n- **Agent Browser__imp_930ebe75**: A fast Rust-based headless browser automation CLI with Node.js fallback that enables AI agents to navigate, click, type, and snapshot pages via structured commands.  (new)\n- **agent-reach__imp_f120c079**: >  (new)\n- **ai-web-automation__imp_c19a5177**: ai-web-automation  (new)\n- **apify-ultimate-scraper__imp_23cc56b8**: Universal AI-powered web scraper for any platform. Scrape data from Instagram, Facebook, TikTok, YouTube, Google Maps, Google Search, Google Trends, Booking.com, and TripAdvisor. Use for lead generation, brand monitoring, competitor analysis, influencer discovery, trend research, content analytics, audience analysis, or any data extraction task.  (new)\n- **auto-publisher__imp_029b4047**: Multi-platform video auto-publisher. Automatically upload videos to Douyin, WeChat Channels, Xiaohongshu, Bilibili, YouTube and more. Supports batch publishing, scheduled posting, auto-caption generation, and hashtag optimization.  (new)\n- **Self-Improving Agent (Proactive Self-Reflection)__imp_3bdce6e7**: Self-reflection + Self-criticism + Self-learning + Self-organizing memory. Agent evaluates its own work, catches mistakes, and improves permanently. Use before starting work and after responding to the user.  (new)\n- **cloudbase__imp_519b9db1**: CloudBase is a full-stack development and deployment toolkit for building and launching websites, Web apps, 微信小程序 (WeChat Mini Programs), and mobile apps with backend, database, hosting, cloud functions, storage, AI capabilities, Agent, and UI guidance. This skill should be used when users ask to develop, build, create, scaffold, deploy, publish, host, launch, go live, migrate, or optimize websites, Web apps, landing pages, dashboards, admin systems, e-commerce sites, 微信小程序 (WeChat Mini Programs), 小程序, Agent, 智能体, uni-app, or native/mobile apps with CloudBase (腾讯云开发, 云开发), including authentication, login, database, NoSQL, MySQL, cloud functions, CloudRun, storage, AI models, and UI guidance, or when they ask to compare CloudBase with Supabase or migrate from Supabase to CloudBase.  (new)\n- **content-hunter__imp_3ccdaa28**: 内容捕手 (Content Hunter) - 短视频平台热门内容抓取机器人。支持小红书、抖音、B站，可分批抓取热门内容并自动生成汇报。/Content Hunter - Hot content crawler for Xiaohongshu, Douyin, Bilibili. Supports batch scraping and scheduled reporting.  (new)\n- **cron-mastery__imp_a71777cc**: Master OpenClaw's timing systems. Use for scheduling reliable reminders, setting up periodic maintenance (janitor jobs), and understanding when to use Cron vs Heartbeat for time-sensitive tasks.  (new)\n- **cron-scheduling__imp_41811f3c**: Schedule and manage recurring tasks with cron and systemd timers. Use when setting up cron jobs, writing systemd timer units, handling timezone-aware scheduling, monitoring failed jobs, implementing retry patterns, or debugging why a scheduled task didn't run.  (new)\n- **desktop-control-1-0-0__imp_c84c9ff9**: Advanced desktop automation with mouse, keyboard, and screen control  (new)\n- **diagram-generator__imp_85318d6a**: Generate and edit various types of diagrams (including draw.io, Mermaid, and Excalidraw). This tool supports common diagram types such as flowcharts, sequence diagrams, class diagrams, Entity-Relationship (ER) diagrams, mind maps, architecture diagrams, and network topologies.  (new)\n- **evomap__imp_3b69586e**: Connect to the EvoMap collaborative evolution marketplace. Publish Gene+Capsule bundles, fetch promoted assets, claim bounty tasks, and earn credits via the GEP-A2A protocol. Use when the user mentions EvoMap, evolution assets, A2A protocol, capsule publishing, or agent marketplace.  (new)\n- **memos__imp_a7964d1c**: memos  (new)\n- **windows-control__imp_45dbdf2b**: Windows UI Automation CLI 技能 - 通过 CLI-Anything 架构封装 jingmai-agent action 系统，实现生产级 Windows 自动化控制。pip install 后可用 cli-windows-control 命令，支持 mouse/keyboard/window/ui/system/file 全操作。  (new)\n\n# Instructions\n\nFollow these steps:\n\n**Step 1 — Plan**: Think about how you would accomplish this task. What are the key deliverables? What file formats are needed (PDF, DOCX, XLSX, etc.)? What tools or libraries would you use?\n\n**Step 2 — Match**: Check which skills directly teach workflows for the deliverables or file formats identified in your plan. A skill is relevant ONLY if it provides a tested procedure for a core part of your plan. Skills that only share vague topical overlap (e.g. a \"PDF checklist\" skill for a task that just happens to involve PDFs) add noise and should be excluded.\n\n**Step 3 — Quality check**: Among matching skills, prefer ones with higher success rates. Avoid skills marked as \"never succeeded\" or with very low success rates — they waste iterations and actively hurt performance.\n\n**Step 4 — Decide**: Select at most 2 skill(s). If no skill closely matches your plan, you MUST return an empty list. Selecting an irrelevant or low-quality skill is **worse than selecting none** — it forces the agent down an unproductive path and wastes the entire iteration budget. When in doubt, leave it out.\n\nReturn a JSON object:\n{\"brief_plan\": \"1-2 sentence plan for this task\", \"skills\": [\"skill_id_1\", \"skill_id_2\"]}\n\nIf no skill applies:\n{\"brief_plan\": \"1-2 sentence plan\", \"skills\": []}\n\nIMPORTANT: Use the **exact skill_id** from the list above.",
+    "error": "litellm.AuthenticationError: AuthenticationError: OpenrouterException - {\"error\":{\"message\":\"No cookie auth credentials found\",\"code\":401}}",
+    "selected": [],
+    "model": "openrouter/anthropic/claude-sonnet-4.5"
+  },
+  "retrieved_tools": {
+    "instruction": "hello",
+    "count": 10,
+    "tools": [
+      {
+        "name": "shell_agent",
+        "backend": "shell",
+        "server_name": null
+      },
+      {
+        "name": "read_file",
+        "backend": "shell",
+        "server_name": null
+      },
+      {
+        "name": "write_file",
+        "backend": "shell",
+        "server_name": null
+      },
+      {
+        "name": "list_dir",
+        "backend": "shell",
+        "server_name": null
+      },
+      {
+        "name": "run_shell",
+        "backend": "shell",
+        "server_name": null
+      },
+      {
+        "name": "list_providers",
+        "backend": "system",
+        "server_name": null
+      },
+      {
+        "name": "list_backend_tools",
+        "backend": "system",
+        "server_name": null
+      },
+      {
+        "name": "list_session_tools",
+        "backend": "system",
+        "server_name": null
+      },
+      {
+        "name": "list_all_backend_tools",
+        "backend": "system",
+        "server_name": null
+      },
+      {
+        "name": "retrieve_skill",
+        "backend": "system",
+        "server_name": null
+      }
+    ]
+  },
+  "execution_outcome": {
+    "status": "error",
+    "iterations": 0,
+    "execution_time": 1.39
+  },
+  "end_time": "2026-04-07T09:00:10",
+  "total_steps": 0,
+  "backend_counts": {}
+}

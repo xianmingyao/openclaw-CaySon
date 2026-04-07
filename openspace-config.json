@@ -1,0 +1,9 @@
+{
+  "debug": true,
+  "log_level": "DEBUG",
+  "security_policies": {
+    "global": {
+      "blocked_commands": []
+    }
+  }
+}

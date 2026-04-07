@@ -1,198 +1,105 @@
-# -*- coding: utf-8 -*-
-"""B站 AI人工智能 热门视频爬虫
-通过B站官方API抓取搜索结果
-"""
-import requests, re, json, time, codecs, sys
+import urllib.request
+import urllib.parse
+import json
+import re
+import time
 
-# 确保控制台输出UTF-8
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+def clean_title(title):
+    """Remove HTML tags from title"""
+    return re.sub(r'<[^>]+>', '', title)
 
-SESSION = requests.Session()
-SESSION.headers.update({
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Referer': 'https://www.bilibili.com/',
-    'Accept': 'application/json, text/plain, */*',
-    'Accept-Language': 'zh-CN,zh;q=0.9',
-})
-
-API_URL = 'https://api.bilibili.com/x/web-interface/search/type'
-SEARCH_PARAMS = {
-    'search_type': 'video',
-    'keyword': 'AI人工智能',
-    'order': 'totalrank',  # 综合排序
-    'duration': 0,  # 全部时长
-    'page_size': 30
-}
-
-def clean_html(text):
-    """清理HTML标签和解码特殊字符"""
-    if not text:
-        return ''
-    # 解码 \u003c \u003e 等
-    text = re.sub(r'\\u003c([^>]+)\\u003e', r'<\1>', text)
-    # 移除HTML标签
-    text = re.sub('<[^>]+>', '', text)
-    return text.strip()
-
-def fetch_page(page_num):
-    """抓取单页数据"""
-    params = dict(SEARCH_PARAMS, page=page_num)
-    for attempt in range(3):
-        try:
-            r = SESSION.get(API_URL, params=params, timeout=15)
-            data = r.json()
+def search_bilibili(keyword, page=1, page_size=30):
+    """Search Bilibili videos by keyword"""
+    url = f"https://api.bilibili.com/x/web-interface/search/type?search_type=video&keyword={urllib.parse.quote(keyword)}&order=totalrank&duration=0&page={page}&page_size={page_size}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Referer": "https://www.bilibili.com",
+        "Origin": "https://www.bilibili.com"
+    }
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
             if data.get('code') == 0:
-                return data['data']
-            elif 'request was banned' in str(data.get('message', '')):
-                print(f'  Page {page_num}: 请求被禁止，等待10秒...')
-                time.sleep(10)
-                continue
+                return data.get('data', {}).get('result', [])
             else:
-                print(f'  Page {page_num}: API错误 - {data.get("message")}')
-                return None
-        except Exception as e:
-            print(f'  Page {page_num}: 网络错误 - {e}, 重试中...')
-            time.sleep(3)
-    return None
+                print(f"API error: {data.get('message', 'unknown')}")
+                return []
+    except Exception as e:
+        print(f"Request error: {e}")
+        return []
 
-def parse_video(v, entry_num):
-    """解析单个视频条目"""
-    title = clean_html(v.get('title', ''))
-    author = v.get('author', '')
-    play = v.get('play', '0')
-    danmaku = v.get('video_review', '0')
-    like = v.get('like', '0')
-    coin = v.get('coin', '0')
-    fav = v.get('fav', '0')
-    duration = v.get('duration', '')
-    description = clean_html(v.get('description', ''))
-    arcurl = v.get('arcurl', '')
-    bvid = v.get('bvid', '')
-    
-    # 生成内容总结
-    summary = generate_summary(title, description, author, play)
-    
-    # 检查字幕（有description说明有字幕）
-    has_subtitle = '有' if description else '无'
-    
-    return f"""### 第{entry_num}条
-- 标题: {title}
-- UP主: {author}
-- 播放: {play}
-- 弹幕: {danmaku}
-- 点赞: {like}
-- 投币: {coin}
-- 收藏: {fav}
-- 字幕: {has_subtitle}
-- 内容总结: {summary}
-"""
+def get_video_details(bvid):
+    """Get detailed info for a specific video"""
+    url = f"https://api.bilibili.com/x/web-interface/view?bvid={bvid}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Referer": "https://www.bilibili.com"
+    }
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            if data.get('code') == 0:
+                d = data.get('data', {})
+                return {
+                    'aid': d.get('aid'),
+                    'bvid': d.get('bvid'),
+                    'title': d.get('title', ''),
+                    'owner': d.get('owner', {}).get('name', ''),
+                    'view': d.get('stat', {}).get('view', '0'),
+                    'danmaku': d.get('stat', {}).get('danmaku', '0'),
+                    'like': d.get('stat', {}).get('like', '0'),
+                    'coin': d.get('stat', {}).get('coin', '0'),
+                    'favorite': d.get('stat', {}).get('favorite', '0'),
+                    'duration': d.get('duration', 0),
+                    'desc': d.get('desc', ''),
+                    'tname': d.get('tname', ''),
+                    'pubdate': d.get('pubdate', 0)
+                }
+    except Exception as e:
+        print(f"Detail error for {bvid}: {e}")
+    return {}
 
-def generate_summary(title, description, author, play):
-    """生成内容总结"""
-    parts = []
-    if title:
-        parts.append(f"视频标题为{title}")
-    if description:
-        # 取description前100字
-        desc_short = description[:100] if len(description) > 100 else description
-        parts.append(f"内容围绕{desc_short}")
-    if author:
-        parts.append(f"由UP主{author}创作")
-    if play:
-        parts.append(f"播放量达{play}次")
-    
-    summary = '，'.join(parts[:4])
-    if len(summary) > 150:
-        summary = summary[:147] + '...'
-    return summary
+# Keywords to search for AI content
+keywords = [
+    'AI大模型', '人工智能', 'AI教程', 'ChatGPT', 'AIGC',
+    'AI Agent', 'AI智能体', 'LLM', '大模型应用',
+    'AI编程', 'AI绘图', '文生图', 'AI工具',
+    '机器学习', '深度学习', '神经网络', 'AI技术'
+]
 
-def get_total_entries():
-    """获取总条目数"""
-    data = fetch_page(1)
-    if data:
-        return data.get('numResults', 0), data.get('numPages', 0)
-    return 0, 0
+all_videos = {}
+seen_ids = set()
 
-def scrape_all(total_needed=100):
-    """抓取指定数量的视频"""
-    all_entries = []
-    page = 1
-    consecutive_errors = 0
-    
-    while len(all_entries) < total_needed:
-        print(f'\n正在抓取第 {page} 页...')
-        data = fetch_page(page)
-        
-        if data is None:
-            consecutive_errors += 1
-            if consecutive_errors >= 3:
-                print('连续3页失败，停止抓取')
-                break
-            page += 1
-            continue
-        
-        videos = data.get('result', [])
-        if not videos:
-            print(f'  第 {page} 页没有视频，停止')
-            break
-        
-        consecutive_errors = 0
-        num_pages = data.get('numPages', 1)
-        print(f'  获取到 {len(videos)} 个视频，总共 {num_pages} 页')
-        
-        for v in videos:
-            entry_num = 527 + len(all_entries)  # 从527开始（接续原有526条）
-            entry = parse_video(v, entry_num)
-            all_entries.append(entry)
-            print(f'  [{len(all_entries)}] {clean_html(v.get("title", ""))[:40]}')
-            
-            if len(all_entries) >= total_needed:
-                break
-        
-        if page >= num_pages:
-            print(f'  已到达最后一页 ({num_pages})')
-            break
-        
-        page += 1
-        time.sleep(2)  # 礼貌性延迟
-    
-    return all_entries
+print(f"Searching Bilibili for AI content across {len(keywords)} keywords...")
+for kw in keywords:
+    print(f"\nSearching: {kw}")
+    results = search_bilibili(kw, page=1, page_size=30)
+    print(f"  Got {len(results)} results")
+    for r in results:
+        bvid = r.get('bvid', '')
+        if bvid and bvid not in seen_ids:
+            seen_ids.add(bvid)
+            all_videos[bvid] = {
+                'bvid': bvid,
+                'title': clean_title(r.get('title', '')),
+                'author': r.get('author', ''),
+                'play': r.get('play', '0'),
+                'video_duration': r.get('duration', ''),
+                'description': clean_title(r.get('description', '')),
+                'pubdate': r.get('pubdate', ''),
+                'keyword': kw
+            }
+    time.sleep(0.5)
 
-if __name__ == '__main__':
-    print('=' * 50)
-    print('B站 AI人工智能 热门视频爬虫')
-    print('=' * 50)
-    
-    # 获取总数
-    print('\n正在获取搜索结果总数...')
-    total, num_pages = get_total_entries()
-    print(f'搜索结果总数: {total}, 总页数: {num_pages}')
-    
-    # 抓取100条
-    entries = scrape_all(100)
-    print(f'\n抓取完成! 共获取 {len(entries)} 条数据')
-    
-    # 输出前3条预览
-    for e in entries[:3]:
-        print('\n' + e[:200])
-    
-    # 保存到文件
-    output_file = r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data\bilibili.md'
-    
-    # 构建新内容
-    new_header = """# B站 AI人工智能 热门内容
-抓取时间：2026-04-06 18:38（追加）
-数据来源：B站搜索AI人工智能（综合排序）
-说明：数据来自B站热门内容追加抓取
+print(f"\n\nTotal unique videos collected: {len(all_videos)}")
+print(f"Top 10 by plays:")
+sorted_videos = sorted(all_videos.values(), key=lambda x: int(x.get('play', 0) or 0), reverse=True)
+for i, v in enumerate(sorted_videos[:10]):
+    print(f"  {i+1}. {v['title'][:50]} | {v['author']} | {v['play']}播放")
 
----
-
-"""
-    new_content = new_header + '\n\n'.join(entries) + '\n'
-    
-    # 追加到文件
-    with codecs.open(output_file, 'a', 'utf-8') as f:
-        f.write('\n\n' + new_content)
-    
-    print(f'\n已追加到文件: {output_file}')
-    print(f'新增条目数: {len(entries)}')
+# Save raw search data
+with open(r'C:\Users\Administrator\.openclaw\workspace\content-hunter\data\bilibili_search_raw.json', 'w', encoding='utf-8') as f:
+    json.dump(list(all_videos.values()), f, ensure_ascii=False, indent=2)
+print(f"\nSaved {len(all_videos)} videos to bilibili_search_raw.json")

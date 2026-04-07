@@ -344,3 +344,39 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 
 ### 文档
 - `knowledge/openclaw-45-dreaming-memory.md`
+
+## HKUDS OpenSpace 自进化引擎
+
+### 核心定位
+- **一句话**：让AI Agent自我进化的技能引擎
+- **官网**：github.com/HKUDS/OpenSpace
+- **支持**：OpenClaw / Claude Code / Cursor / Codex / nanobot
+
+### 三大核心能力
+| 能力 | 说明 |
+|------|------|
+| 🔧 自动修复 | 技能失效自己修 |
+| 📚 经验沉淀 | 成功经验固化为可复用Skill |
+| ⚡ 工作流捕获 | 复杂任务简化为一条命令 |
+
+### 核心数据
+- Token消耗 **减少46%**
+- 收入提升 **4.2倍**
+- 6小时赚取 **$11K**
+
+### 核心命令
+```bash
+openspace capture --task "任务" --output skill-name  # 捕获成功任务
+openspace skill list                                  # 查看技能
+openspace evolve --skill skill-name                   # 进化技能
+openspace optimize --all                              # 批量优化
+openspace engine start                                # 启动引擎
+```
+
+### 与梦境记忆的关系
+- **梦境记忆（memory-dream）**：整理和遗忘（记忆层面）
+- **OpenSpace**：技能进化（能力层面）
+- **组合效果**：真正的学习型Agent
+
+### 文档
+- `knowledge/hkuds-openspace-self-evolution.md`

@@ -1,0 +1,14 @@
+[
+  {
+    "title": "index",
+    "content": "# 知识库索引\n\n> 生成时间: 2026-04-08 21:15\n\n## 统计\n\n- 总文件数: 1\n- 总概念数: 0\n\n## 分类\n\n### 其他 (1)\n\n- articles\\karpathy-workflow.md\n\n",
+    "path": "index.md",
+    "created": "2026-04-08T21:21:24.747783"
+  },
+  {
+    "title": "articles_karpathy-workflow",
+    "content": "# articles_karpathy-workflow\n\n> 来源: articles\\karpathy-workflow.md\n> 时间: 2026-04-08 21:15\n\n## 摘要\n\n来自 karpathy-workflow.md 的内容\n\n## 相关概念\n\n\n## 原始内容\n\n```\n# Karpathy 知识库工作流\n\n## 核心理念\n\n用 LLM 把原始资料（论文/文章/代码）编译成 wiki 知识库。\n\n## 工作流三步曲\n\n### STEP 01: 收集\n- raw/ 目录存放原始资料\n- 支持：论文/文章/GitHub/数据集/截图\n- 使用 Obsidian Web Clipper 保存网页\n\n### STEP 02: 编译\n- LLM 读取 raw/ 所有文件\n- 提取核心概念\n- 生成结构化 wiki 文章\n- 建立双向链接\n\n### STEP 03: 查询\n- 直接向 LLM 提问\n- LLM 在 wiki/ 中查找答案\n- 好答案归档回 wiki\n\n## 为什么不需要 RAG？\n\n100 篇/40 万字规模下，LLM 的上下文窗口足够大，直接把所有 wiki 内容放进 context 就够了。\n\n## 相关概念\n\n- [[LLM]]\n- [[Obsidian]]\n- [[知识管理]]\n- [[RAG]]\n...\n```\n\n\n---\n\n*由 Karpathy 知识库系统自动生成*\n",
+    "path": "concepts\\articles_karpathy-workflow.md",
+    "created": "2026-04-08T21:21:24.747783"
+  }
+]

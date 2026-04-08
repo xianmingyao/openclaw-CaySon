@@ -172,43 +172,8 @@ YYYY.MM.DD(日报)
 | windows-control | - | Windows自动化 |
 | frontend-design | - | 前端设计 |
 | ui-design | - | UI设计 |
-| jingmai-agent-cli | - | Windows桌面自动化CLI（京麦UFO复刻）|
+| windows-control | - | Windows自动化 |
 - 上传脚本：scripts/upload_20260408_research.py
-
-### 2026-04-08 下午技能创建（14:58）
-
-#### jingmai-agent-cli Skill（新建）
-
-**来源：** 基于 `E:\PY\jingmai-agent\cli` 代码复刻
-
-| 项目 | 信息 |
-|------|------|
-| 路径 | `skills/jingmai-agent-cli/` |
-| 核心功能 | Windows 桌面自动化 CLI 工具 |
-| 命令 | run/interactive/batch/memory/rag/skills/status |
-| 脚本 | `scripts/jingmai_cli.py` (已测试通过) |
-
-**创建流程：**
-1. 读取 `E:\PY\jingmai-agent\cli\main.py` + `service/` + `resources/`
-2. 使用 `skill-creator` 初始化技能目录
-3. 创建 SKILL.md + references/ + scripts/
-4. 打包为 `.skill` 文件
-
-**核心内容：**
-- SKILL.md - CLI 命令用法 + UFO 操作指南
-- references/ufo-actions.md - 完整操作参考（9大类操作）
-- references/architecture.md - 系统架构图
-- scripts/jingmai_cli.py - 可运行 CLI 工具
-
-**测试验证：**
-- ✅ `jingmai run "打开记事本"` - 正常
-- ✅ `jingmai memory stats` - 正常
-- ✅ `jingmai memory create/search` - 正常
-- ✅ `jingmai rag query` - 正常
-- ✅ `jingmai skills list/search` - 正常
-- ✅ `jingmai status --json` - 正常
-
-**Git 提交：** `9d6c7d98` (已推送 main)
 
 ## 2026-04-03 技术研究成果（新增）
 

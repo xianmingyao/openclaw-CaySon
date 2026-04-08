@@ -107,6 +107,48 @@ YYYY.MM.DD(日报)
 - docs: add weekly AI report + Context layer skills design + Trace system + Karpathy workflow implementation
 - 4个文件，1740行新增
 
+## 2026-04-08 下午研究成果（08:45-08:49）
+
+### 视频研究
+
+#### 1. SDD开发教程（大力AI第5集）
+- OpenSpec规范多人协作
+- SDD最小闭环：init→explore→propose→apply→archive
+- 与纯裸聊差别：有回看、有reveal、有交接、有演进
+
+#### 2. Red/Green TDD方法论（大力AI）
+- Simon Willison提出：AI编程时代测试必须
+- 流程：RED写测试→GREEN写代码→REFACTOR重构
+- AI会作弊改期望值，需测试文件加锁
+
+#### 3. Karpathy个人知识库（大力AI第18集）
+- 三个文件夹：RO/原始素材、wiki/整理、altpus/答案报告
+- CLOD.md指令文件
+- 对比NotebookLM：Karpathy上限更高
+
+#### 4. GitHub一周star排行TOP20（赛博笔记）
+- 本周主题：AI基础设施+Agent工具+开发者效率
+- 系列：第3集1.5万赞、第7集1859赞
+
+### 新Skill发现
+
+#### Anspire Web Search v1.0.3
+- ClawHub上的国内信息搜索Skill
+- 作者：Gavin，MIT-0，VirusTotal安全
+
+#### xcrowd
+- 数据采集必备Skill
+- ClawHub未收录，可能刚发布
+
+### ClawHub数据类Skills
+- Data Analyst 5.1k stars
+- Data Model Designer 3.9k stars
+- 国内：Data Analyst Cn 1.6k stars
+
+### 下午记忆上传
+- 已上传7条记忆到云端Milvus + 本地ChromaDB
+- 上传脚本：scripts/upload_20260408_research.py
+
 ## 2026-04-03 技术研究成果（新增）
 
 ### 剪映AI剪辑Skill - jianying-editor-skill

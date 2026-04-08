@@ -147,6 +147,31 @@ YYYY.MM.DD(日报)
 
 ### 下午记忆上传
 - 已上传7条记忆到云端Milvus + 本地ChromaDB
+
+## 2026-04-08 Skills安装（09:14-09:19）
+
+### AI干货局6个必备Skill
+| # | Skill | Stars | 状态 |
+|---|-------|-------|------|
+| 1 | react-best-practices | 3.6k | ✅ 已安装 |
+| 2 | remotion-video-toolkit | 16k | ✅ 已安装 |
+| 3 | superdesign | 28.2k | ✅ 已安装 |
+| 4 | mobile | 1.6k | ✅ 已安装 |
+| 5 | azure-ai | - | ⚠️ 未找到 |
+| 6 | frontend-design-pro | - | ⚠️ 限流未安装 |
+
+### 当前已安装Skills（9个）
+| Skill | Stars | 用途 |
+|-------|-------|------|
+| agent-reach | 16.3k | 17平台互联网能力 |
+| anspire-web-search | - | 国内信息搜索 |
+| mobile | 1.6k | 移动端开发 |
+| react-best-practices | 3.6k | React性能优化57规则 |
+| remotion-video-toolkit | 16k | 视频生成 |
+| superdesign | 28.2k | 专家级UI设计 |
+| windows-control | - | Windows自动化 |
+| frontend-design | - | 前端设计 |
+| ui-design | - | UI设计 |
 - 上传脚本：scripts/upload_20260408_research.py
 
 ## 2026-04-03 技术研究成果（新增）

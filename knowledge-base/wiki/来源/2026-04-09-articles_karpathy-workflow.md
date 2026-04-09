@@ -1,11 +1,11 @@
 # 来源摘要：articles\karpathy-workflow.md
 
 > 原始路径：raw/articles\karpathy-workflow.md
-> 摄入时间：2026-04-09 15:29
+> 摄入时间：2026-04-09 15:37
 
 ## 核心观点
 
-Karpathy 知识库工作流通过收集、编译和查询三个步骤，利用LLM将原始资料转化为结构化的wiki知识库。
+Karpathy的工作流通过使用LLM将各种形式的原始资料编译成结构化的wiki知识库，无需RAG技术。
 
 ## 关键细节
 
@@ -46,10 +46,9 @@ Karpathy 知识库工作流通过收集、编译和查询三个步骤，利用LL
 
 
 ## 相关实体
-- [[Karpathy 知识库工作流]]
+- [[Karpathy]]
 - [[Obsidian Web Clipper]]
-- [[raw/目录]]
-- [[wiki/]]
+- [[LLM]]
 - [[RAG]]
 
 ## 相关概念
@@ -58,7 +57,8 @@ Karpathy 知识库工作流通过收集、编译和查询三个步骤，利用LL
 - [[原始资料]]
 - [[wiki]]
 - [[双向链接]]
-- [[查询]]
+- [[上下文窗口]]
+- [[知识管理]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

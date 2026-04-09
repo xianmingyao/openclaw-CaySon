@@ -1,12 +1,12 @@
 # 知识库索引
 
-> 生成时间：2026-04-09 15:29
+> 生成时间：2026-04-09 15:38
 
 ## 统计
 
-- 总文件数：5
-- 总概念数：33
-- 总实体数：28
+- 总文件数：6
+- 总概念数：37
+- 总实体数：27
 
 ## 来源列表
 
@@ -14,6 +14,7 @@
 - [[2026-04-09-articles\karpathy-workflow.md]]
 - [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]
 - [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]]
+- [[2026-04-09-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]
 - [[2026-04-09-README.md]]
 
 ## 概念
@@ -21,6 +22,9 @@
 - [[Agent]]
 - [[AI Agent]]
 - [[AI Scientist]]
+- [[AI 科研]]
+- [[AI 编程 Agent]]
+- [[Alchemy 框架]]
 - [[Alchemy]]
 - [[Alchemy框架]]
 - [[articles_karpathy-workflow]]
@@ -36,6 +40,7 @@
 - [[Prompt Engineering]]
 - [[Python 环境]]
 - [[RAG]]
+- [[Seed Baseline 机制]]
 - [[Seed Baseline]]
 - [[Seed Baseline机制]]
 - [[wiki 知识库]]
@@ -56,13 +61,16 @@
 - [[查询]]
 - [[框架设计与核心开发]]
 - [[目录结构]]
+- [[知识图谱]]
 - [[知识库]]
 - [[知识库工作流]]
 - [[知识管理]]
 - [[研究环境执行层]]
 - [[科研基础设施]]
 - [[科研流程自动化]]
+- [[端侧推理]]
 - [[算法开发层]]
+- [[系统提示词]]
 - [[结果收集与分析]]
 - [[编译]]
 - [[超参数配置]]
@@ -78,16 +86,20 @@
 - [[algorithm.py]]
 - [[Anthropic]]
 - [[articles_]]
+- [[Claude Code]]
 - [[compile.py]]
 - [[datasets_]]
 - [[DeepMind]]
 - [[github_]]
+- [[GitNexus]]
 - [[Karpathy 知识库工作流]]
 - [[Karpathy]]
+- [[LiteRT-LM]]
 - [[LLM]]
 - [[Obsidian Web Clipper]]
 - [[OpenAI]]
 - [[OpenClaw]]
+- [[OpenCode]]
 - [[papers_]]
 - [[RAG]]
 - [[raw_ 目录]]

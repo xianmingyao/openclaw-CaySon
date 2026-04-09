@@ -1,9 +1,9 @@
 # Prompt Engineering
 
 > 分类：概念
-> 创建时间：2026-04-09 15:29
+> 创建时间：2026-04-09 15:37
 
-Prompt Engineering 是一种技术方法，旨在通过精心设计的提示（prompt）来优化人机交互的质量与效率。它在自然语言处理、机器学习等领域中尤为重要，能够提升模型的理解能力、生成能力和对话流畅度。关键要点包括：明确性、简洁性、多样性以及对目标任务的高度相关性。Prompt Engineering 要求工程师具备深厚的语言学知识和创意能力，以确保提示能有效引导模型产出高质量的响应。
+Prompt Engineering 是一种设计和优化提示以引导人工智能模型产生预期响应的技术。它涉及理解如何构建有效、清晰且具体的问题或指令来与 AI 交互，从而提高模型的输出质量。关键要点包括：明确性（确保提示足够详细）、简洁性（避免冗余信息）以及多样性（探索不同表达方式以获得最佳结果）。Prompt Engineering 在自然语言处理、内容生成和对话系统等领域具有广泛应用价值。
 
 ## 相关概念
 - [[Agent]]
@@ -12,9 +12,6 @@ Prompt Engineering 是一种技术方法，旨在通过精心设计的提示（p
 - [[Feedback System]]
 - [[Control Loop]]
 - [[Context Engineering]]
-- [[LLM]]
-- [[AI Agent]]
-- [[DeerFlow]]
 - [[Anthropic]]
 - [[OpenAI]]
 - [[DeepMind]]

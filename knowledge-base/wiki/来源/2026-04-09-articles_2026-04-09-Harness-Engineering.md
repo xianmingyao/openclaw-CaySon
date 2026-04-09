@@ -1,11 +1,11 @@
 # 来源摘要：articles\2026-04-09-Harness-Engineering.md
 
 > 原始路径：raw/articles\2026-04-09-Harness-Engineering.md
-> 摄入时间：2026-04-09 15:28
+> 摄入时间：2026-04-09 15:37
 
 ## 核心观点
 
-Harness Engineering 是让 AI Agent 从能工作到可靠工作的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。
+Harness Engineering 是让 AI Agent 从‘能工作’到‘可靠工作’的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。
 
 ## 关键细节
 
@@ -53,9 +53,6 @@ Harness 是 AI 智能体的"操作系统"，通过以下方式解决问题：
 - [[Control Loop]]
 - [[Prompt Engineering]]
 - [[Context Engineering]]
-- [[LLM]]
-- [[AI Agent]]
-- [[DeerFlow]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

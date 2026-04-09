@@ -1,11 +1,11 @@
 # 来源摘要：github\2026-04-09-Alchemy-Tsinghua-AI-Science.md
 
 > 原始路径：raw/github\2026-04-09-Alchemy-Tsinghua-AI-Science.md
-> 摄入时间：2026-04-09 15:29
+> 摄入时间：2026-04-09 15:37
 
 ## 核心观点
 
-Alchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，让用户只需交付算法和配置文件。
+Alchemy 是由清华大学开发的 AI 科研自动化框架，旨在减轻科研工程负担，提高科研效率。
 
 ## 关键细节
 
@@ -49,15 +49,13 @@ Alchemy 是由清华大学人工智能学院李佳助理教授课题组开发的
 - [[李佳助理教授课题组]]
 - [[李乐晖]]
 - [[蔡立一]]
-- [[AAAII 2025 论文《Mind Individual Information!》]]
-- [[AI Scientist 系统]]
 
 ## 相关概念
-- [[Alchemy]]
-- [[AI Scientist]]
+- [[AI 科研]]
+- [[Alchemy 框架]]
 - [[算法开发层]]
 - [[研究环境执行层]]
-- [[Seed Baseline]]
+- [[Seed Baseline 机制]]
 - [[多模态推荐任务]]
 
 ---

@@ -1,15 +1,16 @@
 # 知识库索引
 
-> 生成时间：2026-04-09 10:17
+> 生成时间：2026-04-09 15:29
 
 ## 统计
 
-- 总文件数：4
-- 总概念数：29
-- 总实体数：21
+- 总文件数：5
+- 总概念数：33
+- 总实体数：28
 
 ## 来源列表
 
+- [[2026-04-09-articles\2026-04-09-Harness-Engineering.md]]
 - [[2026-04-09-articles\karpathy-workflow.md]]
 - [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]
 - [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]]
@@ -17,12 +18,22 @@
 
 ## 概念
 
+- [[Agent]]
+- [[AI Agent]]
 - [[AI Scientist]]
 - [[Alchemy]]
+- [[Alchemy框架]]
 - [[articles_karpathy-workflow]]
+- [[Constraint Engine]]
+- [[Context Engineering]]
+- [[Control Loop]]
+- [[DeerFlow]]
+- [[Feedback System]]
+- [[Harness Engineering]]
 - [[Karpathy 知识库工作流]]
 - [[LLM]]
 - [[Obsidian Web Clipper]]
+- [[Prompt Engineering]]
 - [[Python 环境]]
 - [[RAG]]
 - [[Seed Baseline]]
@@ -40,6 +51,7 @@
 - [[只读]]
 - [[多模态推荐任务]]
 - [[实验环境搭建]]
+- [[工程自动化]]
 - [[收集]]
 - [[查询]]
 - [[框架设计与核心开发]]
@@ -59,16 +71,22 @@
 ## 实体
 
 - [[AAAI 2025 论文《Mind Individual Information!》]]
+- [[AAAII 2025 论文《Mind Individual Information!》]]
+- [[AAAII 2025论文级别的基线算法]]
 - [[AI Scientist 系统]]
 - [[Alchemy（炼丹炉）]]
+- [[algorithm.py]]
+- [[Anthropic]]
 - [[articles_]]
 - [[compile.py]]
 - [[datasets_]]
+- [[DeepMind]]
 - [[github_]]
 - [[Karpathy 知识库工作流]]
 - [[Karpathy]]
 - [[LLM]]
 - [[Obsidian Web Clipper]]
+- [[OpenAI]]
 - [[OpenClaw]]
 - [[papers_]]
 - [[RAG]]
@@ -78,10 +96,14 @@
 - [[README.md]]
 - [[wiki]]
 - [[wiki_]]
+- [[yaml配置文件]]
+- [[多模态推荐任务]]
+- [[字节跳动]]
 - [[李乐晖]]
 - [[李佳助理教授课题组]]
 - [[李佳（助理教授）]]
 - [[清华 AI 科研自动化框架]]
 - [[清华人工智能学院]]
+- [[清华大学人工智能学院]]
 - [[素材_]]
 - [[蔡立一]]

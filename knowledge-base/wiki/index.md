@@ -1,16 +1,17 @@
 # 知识库索引
 
-> 生成时间：2026-04-09 15:38
+> 生成时间：2026-04-09 16:10
 
 ## 统计
 
-- 总文件数：6
-- 总概念数：37
-- 总实体数：27
+- 总文件数：7
+- 总概念数：44
+- 总实体数：32
 
 ## 来源列表
 
 - [[2026-04-09-articles\2026-04-09-Harness-Engineering.md]]
+- [[2026-04-09-articles\2026-04-09-Knowledge-Screenshots-Summary.md]]
 - [[2026-04-09-articles\karpathy-workflow.md]]
 - [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]
 - [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]]
@@ -23,6 +24,7 @@
 - [[AI Agent]]
 - [[AI Scientist]]
 - [[AI 科研]]
+- [[AI 科研自动化]]
 - [[AI 编程 Agent]]
 - [[Alchemy 框架]]
 - [[Alchemy]]
@@ -36,6 +38,8 @@
 - [[Harness Engineering]]
 - [[Karpathy 知识库工作流]]
 - [[LLM]]
+- [[MCP (Model Context Protocol)]]
+- [[MemPalace]]
 - [[Obsidian Web Clipper]]
 - [[Prompt Engineering]]
 - [[Python 环境]]
@@ -86,16 +90,21 @@
 - [[algorithm.py]]
 - [[Anthropic]]
 - [[articles_]]
+- [[chrome-devtools-mcp]]
 - [[Claude Code]]
 - [[compile.py]]
 - [[datasets_]]
+- [[DataTool]]
 - [[DeepMind]]
 - [[github_]]
 - [[GitNexus]]
+- [[Karpathy AI 知识库系列]]
+- [[Karpathy 知识库]]
 - [[Karpathy 知识库工作流]]
 - [[Karpathy]]
 - [[LiteRT-LM]]
 - [[LLM]]
+- [[MemPalace (milla-jovovich_mempalace)]]
 - [[Obsidian Web Clipper]]
 - [[OpenAI]]
 - [[OpenClaw]]

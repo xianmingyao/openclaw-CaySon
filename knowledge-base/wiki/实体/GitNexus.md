@@ -1,11 +1,11 @@
 # GitNexus
 
 > 类型：实体
-> 创建时间：2026-04-09 15:38
+> 创建时间：2026-04-09 16:10
 
 ## 简介
 
-2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，如Claude Code、LiteRT-LM等。
+2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发尤为突出。
 
 ## 相关概念
 - [[AI 编程 Agent]]

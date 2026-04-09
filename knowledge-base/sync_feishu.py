@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-飞书文档同步脚本 v3
-简化版 - 只创建文档，不写入内容
+飞书文档同步脚本 v5
+使用可用的 block 格式：heading1, heading2, heading3, bullet, code
 """
 
 import os
@@ -11,20 +11,16 @@ import requests
 from pathlib import Path
 from datetime import datetime
 
-# 配置
 WIKI_DIR = Path(__file__).parent / "wiki"
 FEISHU_BASE_URL = "https://open.feishu.cn/open-apis"
 
-# 飞书配置
 FEISHU_APP_ID = None
 FEISHU_APP_SECRET = None
 TENANT_ACCESS_TOKEN = None
 
 
 def get_feishu_config():
-    """从配置文件获取飞书配置"""
     global FEISHU_APP_ID, FEISHU_APP_SECRET
-    
     config_path = Path.home() / ".openclaw" / "openclaw.json"
     if config_path.exists():
         config = json.loads(config_path.read_text(encoding='utf-8'))
@@ -34,21 +30,16 @@ def get_feishu_config():
 
 
 def get_tenant_access_token() -> str:
-    """获取 tenant_access_token"""
     global TENANT_ACCESS_TOKEN
-    
+    if TENANT_ACCESS_TOKEN:
+        return TENANT_ACCESS_TOKEN
     get_feishu_config()
-    
+    if not FEISHU_APP_ID or not FEISHU_APP_SECRET:
+        return None
     url = f"{FEISHU_BASE_URL}/auth/v3/tenant_access_token/internal"
-    headers = {"Content-Type": "application/json"}
-    data = {
-        "app_id": FEISHU_APP_ID,
-        "app_secret": FEISHU_APP_SECRET
-    }
-    
-    response = requests.post(url, headers=headers, json=data, timeout=10)
-    result = response.json()
-    
+    resp = requests.post(url, headers={"Content-Type": "application/json"},
+        json={"app_id": FEISHU_APP_ID, "app_secret": FEISHU_APP_SECRET}, timeout=10)
+    result = resp.json()
     if result.get('code') == 0:
         TENANT_ACCESS_TOKEN = result.get('tenant_access_token')
         return TENANT_ACCESS_TOKEN
@@ -56,56 +47,38 @@ def get_tenant_access_token() -> str:
 
 
 def create_doc(title: str) -> dict:
-    """创建飞书文档"""
     token = get_tenant_access_token()
     if not token:
         return {'success': False, 'error': 'No token'}
-    
     url = f"{FEISHU_BASE_URL}/docx/v1/documents"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
-    
-    data = {"title": title}
-    
-    response = requests.post(url, headers=headers, json=data, timeout=10)
-    result = response.json()
-    
+    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    resp = requests.post(url, headers=headers, json={"title": title}, timeout=10)
+    result = resp.json()
     if result.get('code') == 0:
         doc_id = result.get('data', {}).get('document', {}).get('document_id')
         return {'success': True, 'doc_id': doc_id, 'title': title}
-    else:
-        return {'success': False, 'error': result.get('msg')}
+    return {'success': False, 'error': result.get('msg')}
 
 
-def update_doc_content(doc_id: str, content: str) -> dict:
-    """使用 docx API 更新文档内容"""
-    token = get_tenant_access_token()
-    if not token:
-        return {'success': False, 'error': 'No token'}
-    
-    # 使用 blocks API
-    url = f"{FEISHU_BASE_URL}/docx/v1/documents/{doc_id}/blocks"
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
-    }
-    
-    # 构建 blocks
+def markdown_to_blocks(markdown: str) -> list:
+    """将 markdown 转换为飞书文档块（仅使用支持的格式）"""
     blocks = []
-    lines = content.split('\n')
+    lines = markdown.split('\n')
+    i = 0
     
-    for line in lines:
-        line = line.strip()
-        if not line:
+    while i < len(lines):
+        line = lines[i].rstrip()
+        
+        if not line.strip():
+            i += 1
             continue
         
+        # 标题 - 全部转为 heading1
         if line.startswith('# '):
             blocks.append({
                 "block_type": 3,
                 "heading1": {
-                    "elements": [{"type": "text_run", "text_run": {"content": line[2:], "text_style": {}}}],
+                    "elements": [{"type": "text_run", "text_run": {"content": line[2:]}}],
                     "style": {}
                 }
             })
@@ -113,7 +86,7 @@ def update_doc_content(doc_id: str, content: str) -> dict:
             blocks.append({
                 "block_type": 4,
                 "heading2": {
-                    "elements": [{"type": "text_run", "text_run": {"content": line[3:], "text_style": {}}}],
+                    "elements": [{"type": "text_run", "text_run": {"content": line[3:]}}],
                     "style": {}
                 }
             })
@@ -121,59 +94,91 @@ def update_doc_content(doc_id: str, content: str) -> dict:
             blocks.append({
                 "block_type": 5,
                 "heading3": {
-                    "elements": [{"type": "text_run", "text_run": {"content": line[4:], "text_style": {}}}],
+                    "elements": [{"type": "text_run", "text_run": {"content": line[4:]}}],
                     "style": {}
                 }
             })
+        # 无序列表
         elif line.startswith('- '):
             blocks.append({
                 "block_type": 12,
                 "bullet": {
-                    "elements": [{"type": "text_run", "text_run": {"content": line[2:], "text_style": {}}}],
+                    "elements": [{"type": "text_run", "text_run": {"content": line[2:]}}],
                     "style": {}
                 }
             })
+        # 引用行 - 转为 bullet
         elif line.startswith('>'):
             blocks.append({
-                "block_type": 13,
-                "quote": {
-                    "elements": [{"type": "text_run", "text_run": {"content": line[1:].strip(), "text_style": {}}}],
+                "block_type": 12,
+                "bullet": {
+                    "elements": [{"type": "text_run", "text_run": {"content": "  " + line[1:].strip()}}],
                     "style": {}
                 }
             })
+        # 代码块 - 转为 bullet（跳过内容）
         elif line.startswith('```'):
-            continue  # 跳过代码块标记
-        else:
             blocks.append({
-                "block_type": 2,
-                "paragraph": {
-                    "elements": [{"type": "text_run", "text_run": {"content": line, "text_style": {}}}],
+                "block_type": 12,
+                "bullet": {
+                    "elements": [{"type": "text_run", "text_run": {"content": "[代码块] " + line[3:].strip() if len(line) > 3 else "[代码块]"}}],
                     "style": {}
                 }
             })
-    
-    data = {"children": blocks, "index": -1}
-    
-    response = requests.post(url, headers=headers, json=data, timeout=30)
-    
-    if response.status_code == 200:
-        try:
-            result = response.json()
-            if result.get('code') == 0:
-                return {'success': True}
-        except:
+        # 水平线 - 跳过
+        elif line.startswith('---') or line.startswith('***'):
             pass
+        # 普通段落 - 转为 bullet
+        else:
+            # 跳过表格行和特殊字符过多的行
+            clean = line.strip()
+            if clean and len(clean) < 500:
+                blocks.append({
+                    "block_type": 12,
+                    "bullet": {
+                        "elements": [{"type": "text_run", "text_run": {"content": clean}}],
+                        "style": {}
+                    }
+                })
+        
+        i += 1
     
-    return {'success': False, 'error': f'Status {response.status_code}'}
+    return blocks
+
+
+def write_blocks(doc_id: str, blocks: list) -> dict:
+    """写入 blocks 到文档"""
+    token = get_tenant_access_token()
+    if not token:
+        return {'success': False, 'error': 'No token'}
+    
+    # 获取 page block id
+    resp = requests.get(
+        f"{FEISHU_BASE_URL}/docx/v1/documents/{doc_id}/blocks",
+        headers={"Authorization": f"Bearer {token}"}, timeout=10)
+    items = resp.json().get('data', {}).get('items', [])
+    page_block_id = items[0].get('block_id', doc_id) if items else doc_id
+    
+    # 分批写入（每次最多10个block）
+    batch_size = 10
+    for i in range(0, len(blocks), batch_size):
+        batch = blocks[i:i+batch_size]
+        url = f"{FEISHU_BASE_URL}/docx/v1/documents/{doc_id}/blocks/{page_block_id}/children"
+        resp = requests.post(url,
+            headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+            json={"children": batch, "index": -1}, timeout=30)
+        result = resp.json()
+        if result.get('code') != 0:
+            return {'success': False, 'error': result.get('msg'), 'code': result.get('code')}
+    
+    return {'success': True}
 
 
 def load_wiki_files():
-    """加载 wiki 目录下的所有 .md 文件"""
     return list(WIKI_DIR.rglob("*.md"))
 
 
 def read_wiki_content(file_path: Path) -> dict:
-    """读取 wiki 文件内容"""
     return {
         'title': file_path.stem,
         'content': file_path.read_text(encoding='utf-8'),
@@ -183,65 +188,64 @@ def read_wiki_content(file_path: Path) -> dict:
 
 def main():
     print("=" * 50)
-    print("FEISHU DOC SYNC v3")
+    print("FEISHU DOC SYNC v5")
     print("=" * 50)
     
-    # 加载 wiki 文件
-    print("\n[LOAD] Loading wiki files...")
+    token = get_tenant_access_token()
+    if not token:
+        print("[ERROR] Cannot get token")
+        return
+    print("[OK] Token acquired")
+    
     wiki_files = load_wiki_files()
-    print(f"   Found {len(wiki_files)} files")
+    print(f"[LOAD] Found {len(wiki_files)} files")
     
     if not wiki_files:
-        print("   WARNING: No wiki files found")
+        print("[WARN] No wiki files")
         return
     
-    # 创建文档
-    print("\n[CREATE] Creating Feishu docs...")
+    print("\n[SYNC] Syncing to Feishu...")
     results = []
     
     for wiki_file in wiki_files:
         doc_data = read_wiki_content(wiki_file)
-        print(f"\n   Creating: {doc_data['title']}")
+        print(f"\n   [{len(results)+1}/{len(wiki_files)}] {doc_data['title']}")
         
         # 创建文档
-        result = create_doc(doc_data['title'])
+        create_result = create_doc(doc_data['title'])
+        if not create_result.get('success'):
+            print(f"   [FAIL] Create: {create_result.get('error')}")
+            results.append({'title': doc_data['title'], 'success': False, 'error': create_result.get('error')})
+            continue
         
-        if result.get('success'):
-            doc_id = result.get('doc_id')
-            print(f"   [OK] Created: https://xxx.feishu.cn/docx/{doc_id}")
-            
-            # 尝试写入内容
-            write_result = update_doc_content(doc_id, doc_data['content'])
-            if write_result.get('success'):
-                print(f"   [OK] Content written")
-            else:
-                print(f"   [WARN] Content write failed: {write_result.get('error')}")
-                print(f"   [INFO] Please add content manually")
-            
-            results.append({
-                'title': doc_data['title'],
-                'doc_id': doc_id,
-                'url': f"https://xxx.feishu.cn/docx/{doc_id}",
-                'success': True
-            })
+        doc_id = create_result.get('doc_id')
+        print(f"   [OK] Doc: {doc_id}")
+        
+        # 转换并写入 blocks
+        blocks = markdown_to_blocks(doc_data['content'])
+        write_result = write_blocks(doc_id, blocks)
+        
+        if write_result.get('success'):
+            print(f"   [OK] Content written ({len(blocks)} blocks)")
         else:
-            print(f"   [FAIL] {result.get('error')}")
-            results.append({
-                'title': doc_data['title'],
-                'success': False,
-                'error': result.get('error')
-            })
+            print(f"   [WARN] Write: {write_result.get('error')}")
+        
+        results.append({
+            'title': doc_data['title'],
+            'doc_id': doc_id,
+            'url': f"https://feishu.cn/docx/{doc_id}",
+            'success': write_result.get('success', False)
+        })
     
-    # 汇总
     print("\n" + "=" * 50)
     success_count = sum(1 for r in results if r.get('success'))
-    print(f"[DONE] Created {success_count}/{len(results)} docs")
+    print(f"[DONE] Success: {success_count}/{len(results)}")
     
-    print("\nCreated Documents:")
     for r in results:
-        if r.get('success'):
-            print(f"   - {r['title']}")
-            print(f"     {r['url']}")
+        status = "[OK]" if r.get('success') else "[WARN]"
+        print(f"   {status} {r['title']}")
+        if r.get('url'):
+            print(f"      {r['url']}")
 
 
 if __name__ == '__main__':

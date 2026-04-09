@@ -11,45 +11,58 @@
 
 import asyncio
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 
+# 设置工作目录
+KB_DIR = Path(__file__).parent
+os.chdir(KB_DIR)
+sys.path.insert(0, str(KB_DIR))
+
 print("=" * 60)
-print("🚀 Karpathy 知识库 - 全量同步")
+print("Karpathy Knowledge Base - Full Sync")
 print("=" * 60)
-print(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+print(f"Start: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 print()
 
 # 1. 编译
-print("📦 STEP 01: 编译 raw → wiki")
+print("[1/4] Compiling raw -> wiki")
 print("-" * 40)
-sys.path.insert(0, str(Path(__file__).parent))
 from compile import main as compile_main
 asyncio.run(compile_main())
 print()
 
 # 2. 同步到飞书
-print("📤 STEP 02: 同步到飞书")
+print("[2/4] Syncing to Feishu")
 print("-" * 40)
 from sync_feishu import main as feishu_main
-feishu_main()
+try:
+    feishu_main()
+except Exception as e:
+    print(f"   [ERROR] Feishu sync failed: {e}")
 print()
 
 # 3. 同步到 Notion
-print("📓 STEP 03: 同步到 Notion")
+print("[3/4] Syncing to Notion")
 print("-" * 40)
 from sync_notion import main as notion_main
-notion_main()
+try:
+    notion_main()
+except Exception as e:
+    print(f"   [ERROR] Notion sync failed: {e}")
 print()
 
 # 4. 上传到云端
-print("☁️  STEP 04: 上传到云端记忆")
+print("[4/4] Uploading to cloud memory")
 print("-" * 40)
 from upload_mem0 import main as mem0_main
-mem0_main()
+try:
+    mem0_main()
+except Exception as e:
+    print(f"   [ERROR] Milvus upload failed: {e}")
 print()
 
 print("=" * 60)
-print("✅ 全量同步完成!")
-print(f"结束时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+print(f"Done! {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 print("=" * 60)

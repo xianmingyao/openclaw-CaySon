@@ -153,35 +153,37 @@ def sync_to_notion(wiki_files: list) -> dict:
 
 def main():
     """主函数"""
-    print("📤 Notion 同步工具")
+    print("[NOTION] Notion sync tool")
     print("=" * 50)
     
     # 检查 token
     token = get_notion_token()
     if not token:
-        print("\n⚠️  未配置 Notion API Token")
-        print("   请设置环境变量: NOTION_API_TOKEN")
-        print("   或创建 .notion_token 文件")
+        print("\n[WARN] Notion API Token not configured")
+        print("   Set env var: NOTION_API_TOKEN")
+        print("   Or create .notion_token file")
+        print("   Skipping Notion sync...")
+        return
     
     # 加载 wiki 文件
-    print("\n📂 加载 wiki 文件...")
+    print("\n[LOAD] Loading wiki files...")
     wiki_files = load_wiki_files()
-    print(f"   找到 {len(wiki_files)} 个文件")
+    print(f"   Found {len(wiki_files)} files")
     
     if not wiki_files:
-        print("⚠️  没有找到 wiki 文件，请先运行 compile.py")
+        print("[WARN] No wiki files found, run compile.py first")
         return
     
     # 同步到 Notion
-    print("\n🔄 同步到 Notion...")
+    print("\n[SYNC] Syncing to Notion...")
     results = sync_to_notion(wiki_files)
     
     success_count = sum(1 for r in results if r['result'].get('success'))
-    print(f"\n✅ 同步完成! 成功: {success_count}/{len(results)}")
+    print(f"\n[DONE] Success: {success_count}/{len(results)}")
     
     # 显示结果
     for r in results:
-        status = "✓" if r['result'].get('success') else "✗"
+        status = "[OK]" if r['result'].get('success') else "[FAIL]"
         print(f"   {status} {r['file']}")
 
 

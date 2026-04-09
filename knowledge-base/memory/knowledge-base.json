@@ -1,686 +1,710 @@
 [
   {
     "title": "index",
-    "content": "# 知识库索引\n\n> 生成时间：2026-04-09 16:10\n\n## 统计\n\n- 总文件数：7\n- 总概念数：44\n- 总实体数：32\n\n## 来源列表\n\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n- [[2026-04-09-README.md]]\n\n## 概念\n\n- [[Agent]]\n- [[AI Agent]]\n- [[AI Scientist]]\n- [[AI 科研]]\n- [[AI 科研自动化]]\n- [[AI 编程 Agent]]\n- [[Alchemy 框架]]\n- [[Alchemy]]\n- [[Alchemy框架]]\n- [[articles_karpathy-workflow]]\n- [[Constraint Engine]]\n- [[Context Engineering]]\n- [[Control Loop]]\n- [[DeerFlow]]\n- [[Feedback System]]\n- [[Harness Engineering]]\n- [[Karpathy 知识库工作流]]\n- [[LLM]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Prompt Engineering]]\n- [[Python 环境]]\n- [[RAG]]\n- [[Seed Baseline 机制]]\n- [[Seed Baseline]]\n- [[Seed Baseline机制]]\n- [[wiki 知识库]]\n- [[wiki]]\n- [[wiki文章生成]]\n- [[上下文窗口]]\n- [[使用方式]]\n- [[原则]]\n- [[原始资料]]\n- [[原始资料层]]\n- [[原始资料编译]]\n- [[双向链接]]\n- [[只读]]\n- [[多模态推荐任务]]\n- [[实验环境搭建]]\n- [[工程自动化]]\n- [[收集]]\n- [[查询]]\n- [[框架设计与核心开发]]\n- [[目录结构]]\n- [[知识图谱]]\n- [[知识库]]\n- [[知识库工作流]]\n- [[知识管理]]\n- [[研究环境执行层]]\n- [[科研基础设施]]\n- [[科研流程自动化]]\n- [[端侧推理]]\n- [[算法开发层]]\n- [[系统提示词]]\n- [[结果收集与分析]]\n- [[编译]]\n- [[超参数配置]]\n- [[迭代优化循环]]\n\n## 实体\n\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n- [[AAAII 2025论文级别的基线算法]]\n- [[AI Scientist 系统]]\n- [[Alchemy（炼丹炉）]]\n- [[algorithm.py]]\n- [[Anthropic]]\n- [[articles_]]\n- [[chrome-devtools-mcp]]\n- [[Claude Code]]\n- [[compile.py]]\n- [[datasets_]]\n- [[DataTool]]\n- [[DeepMind]]\n- [[github_]]\n- [[GitNexus]]\n- [[Karpathy AI 知识库系列]]\n- [[Karpathy 知识库]]\n- [[Karpathy 知识库工作流]]\n- [[Karpathy]]\n- [[LiteRT-LM]]\n- [[LLM]]\n- [[MemPalace (milla-jovovich_mempalace)]]\n- [[Obsidian Web Clipper]]\n- [[OpenAI]]\n- [[OpenClaw]]\n- [[OpenCode]]\n- [[papers_]]\n- [[RAG]]\n- [[raw_ 目录]]\n- [[raw_]]\n- [[raw_目录]]\n- [[README.md]]\n- [[wiki]]\n- [[wiki_]]\n- [[yaml配置文件]]\n- [[多模态推荐任务]]\n- [[字节跳动]]\n- [[李乐晖]]\n- [[李佳助理教授课题组]]\n- [[李佳（助理教授）]]\n- [[清华 AI 科研自动化框架]]\n- [[清华人工智能学院]]\n- [[清华大学人工智能学院]]\n- [[素材_]]\n- [[蔡立一]]\n",
+    "content": "# 知识库索引\n\n> 生成时间：2026-04-09 20:03\n\n## 统计\n\n- 总文件数：7\n- 总概念数：43\n- 总实体数：33\n\n## 来源列表\n\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n- [[2026-04-09-README.md]]\n\n## 概念\n\n- [[Agent]]\n- [[AI Agent]]\n- [[AI Scientist]]\n- [[AI 科研]]\n- [[AI 科研自动化]]\n- [[AI 科研自动化框架]]\n- [[AI 编程 Agent]]\n- [[Alchemy 框架]]\n- [[Alchemy]]\n- [[Alchemy框架]]\n- [[Alchemy（炼丹炉）]]\n- [[articles_karpathy-workflow]]\n- [[Constraint Engine]]\n- [[Context Engineering]]\n- [[Control Loop]]\n- [[DeerFlow]]\n- [[Feedback System]]\n- [[Harness Engineering]]\n- [[Karpathy 知识库工作流]]\n- [[LLM]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Prompt Engineering]]\n- [[Python 环境]]\n- [[RAG]]\n- [[Seed Baseline 机制]]\n- [[Seed Baseline]]\n- [[Seed Baseline机制]]\n- [[wiki 知识库]]\n- [[wiki]]\n- [[wiki文章生成]]\n- [[上下文窗口]]\n- [[使用方式]]\n- [[原则]]\n- [[原始资料]]\n- [[原始资料层]]\n- [[原始资料编译]]\n- [[双向链接]]\n- [[只读]]\n- [[多模态推荐任务]]\n- [[实验环境搭建]]\n- [[工程自动化]]\n- [[收集]]\n- [[查询]]\n- [[框架设计与核心开发]]\n- [[目录结构]]\n- [[知识图谱]]\n- [[知识库]]\n- [[知识库工作流]]\n- [[知识管理]]\n- [[研究环境执行层]]\n- [[科研基础设施]]\n- [[科研流程自动化]]\n- [[端侧推理]]\n- [[算法开发层]]\n- [[系统提示词]]\n- [[结果收集与分析]]\n- [[编译]]\n- [[超参数配置]]\n- [[迭代优化循环]]\n\n## 实体\n\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n- [[AAAII 2025论文级别的基线算法]]\n- [[AI Scientist 系统]]\n- [[Alchemy]]\n- [[Alchemy（炼丹炉）]]\n- [[algorithm.py]]\n- [[Anthropic]]\n- [[articles_]]\n- [[chrome-devtools-mcp]]\n- [[Claude Code]]\n- [[compile.py]]\n- [[datasets_]]\n- [[DataTool]]\n- [[DeepMind]]\n- [[github_]]\n- [[GitNexus]]\n- [[Karpathy AI 知识库系列]]\n- [[Karpathy 知识库]]\n- [[Karpathy 知识库工作流]]\n- [[Karpathy]]\n- [[LiteRT-LM]]\n- [[LLM]]\n- [[MemPalace (milla-jovovich_mempalace)]]\n- [[MemPalace-milla-jovovich-mempalace]]\n- [[Obsidian Web Clipper]]\n- [[OpenAI]]\n- [[OpenClaw]]\n- [[OpenCode]]\n- [[papers_]]\n- [[RAG]]\n- [[raw_ 目录]]\n- [[raw_]]\n- [[raw_目录]]\n- [[README.md]]\n- [[wiki]]\n- [[wiki_]]\n- [[yaml配置文件]]\n- [[多模态推荐任务]]\n- [[字节跳动]]\n- [[李乐晖]]\n- [[李佳助理教授课题组]]\n- [[李佳（助理教授）]]\n- [[清华 AI 科研自动化框架]]\n- [[清华人工智能学院]]\n- [[清华大学人工智能学院]]\n- [[素材_]]\n- [[蔡立一]]\n",
     "path": "index.md",
-    "created": "2026-04-09T16:15:20.874522"
+    "created": "2026-04-09T20:12:35.688138"
   },
   {
     "title": "log",
-    "content": "﻿# Wiki 操作日志\n\n> 本文件记录所有 wiki 的操作历史，包括 ingest、query、lint 检查结果。\n> 格式：每次操作追加条目，不删除历史记录。\n\n---\n\n## 历史记录\n\n*（暂无操作记录）*\n\n\n\n## 2026-04-09 08:34 - INGEST 摄入\n\n处理 2 个文件，提取 12 个概念，12 个实体。\n\n\n\n## LINT 检查报告 - 2026-04-09 08:34\n\n**问题总数**: 148\n\n\n### 孤儿链接 (140 项)\n\n- [[papers/]] (来源: 实体\\articles_.md)\n- [[github/]] (来源: 实体\\articles_.md)\n- [[datasets/]] (来源: 实体\\articles_.md)\n- [[素材/]] (来源: 实体\\articles_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\articles_.md)\n- [[articles/]] (来源: 实体\\compile.py.md)\n- [[papers/]] (来源: 实体\\compile.py.md)\n- [[github/]] (来源: 实体\\compile.py.md)\n- [[datasets/]] (来源: 实体\\compile.py.md)\n- [[素材/]] (来源: 实体\\compile.py.md)\n- [[2026-04-09-README.md]] (来源: 实体\\compile.py.md)\n- [[articles/]] (来源: 实体\\datasets_.md)\n- [[papers/]] (来源: 实体\\datasets_.md)\n- [[github/]] (来源: 实体\\datasets_.md)\n- [[素材/]] (来源: 实体\\datasets_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\datasets_.md)\n- [[articles/]] (来源: 实体\\github_.md)\n- [[papers/]] (来源: 实体\\github_.md)\n- [[datasets/]] (来源: 实体\\github_.md)\n- [[素材/]] (来源: 实体\\github_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\github_.md)\n- [[raw/]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[wiki/]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[raw/目录]] (来源: 实体\\Karpathy.md)\n- [[wiki/]] (来源: 实体\\Karpathy.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Karpathy.md)\n- [[raw/目录]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[wiki/]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[articles/]] (来源: 实体\\papers_.md)\n- [[github/]] (来源: 实体\\papers_.md)\n- [[datasets/]] (来源: 实体\\papers_.md)\n- [[素材/]] (来源: 实体\\papers_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\papers_.md)\n- [[raw/目录]] (来源: 实体\\RAG.md)\n- [[wiki/]] (来源: 实体\\RAG.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\RAG.md)\n- [[wiki/]] (来源: 实体\\raw_.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\raw_.md)\n- [[wiki/]] (来源: 实体\\raw_目录.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\raw_目录.md)\n- [[articles/]] (来源: 实体\\wiki.md)\n- [[papers/]] (来源: 实体\\wiki.md)\n- [[github/]] (来源: 实体\\wiki.md)\n- [[datasets/]] (来源: 实体\\wiki.md)\n- [[素材/]] (来源: 实体\\wiki.md)\n- [[2026-04-09-README.md]] (来源: 实体\\wiki.md)\n- [[raw/目录]] (来源: 实体\\wiki_.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\wiki_.md)\n- [[articles/]] (来源: 实体\\素材_.md)\n- [[papers/]] (来源: 实体\\素材_.md)\n- [[github/]] (来源: 实体\\素材_.md)\n- [[datasets/]] (来源: 实体\\素材_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\素材_.md)\n- [[Obsidian]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[raw/目录]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[wiki/]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[articles/]] (来源: 来源\\2026-04-09-README.md)\n- [[papers/]] (来源: 来源\\2026-04-09-README.md)\n- [[github/]] (来源: 来源\\2026-04-09-README.md)\n- [[datasets/]] (来源: 来源\\2026-04-09-README.md)\n- [[素材/]] (来源: 来源\\2026-04-09-README.md)\n- [[Obsidian]] (来源: 概念\\articles_karpathy-workflow.md)\n- [[Obsidian]] (来源: 概念\\Karpathy 知识库工作流.md)\n- [[Obsidian]] (来源: 概念\\Karpathy 知识库工作流.md)\n- [[raw/目录]] (来源: 概念\\LLM.md)\n- [[wiki/]] (来源: 概念\\LLM.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\LLM.md)\n- [[Obsidian]] (来源: 概念\\Obsidian Web Clipper.md)\n- [[Obsidian]] (来源: 概念\\Obsidian Web Clipper.md)\n- [[论文]] (来源: 概念\\RAG.md)\n- [[文章]] (来源: 概念\\RAG.md)\n- [[GitHub]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\wiki 知识库.md)\n- [[Obsidian]] (来源: 概念\\wiki 知识库.md)\n- [[raw/]] (来源: 概念\\wiki.md)\n- [[wiki/]] (来源: 概念\\wiki.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\wiki.md)\n- [[raw/目录]] (来源: 概念\\wiki文章生成.md)\n- [[wiki/]] (来源: 概念\\wiki文章生成.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\wiki文章生成.md)\n- [[raw/目录]] (来源: 概念\\上下文窗口.md)\n- [[wiki/]] (来源: 概念\\上下文窗口.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\上下文窗口.md)\n- [[articles/]] (来源: 概念\\原则.md)\n- [[papers/]] (来源: 概念\\原则.md)\n- [[github/]] (来源: 概念\\原则.md)\n- [[datasets/]] (来源: 概念\\原则.md)\n- [[素材/]] (来源: 概念\\原则.md)\n- [[2026-04-09-README.md]] (来源: 概念\\原则.md)\n- [[Obsidian]] (来源: 概念\\原始资料.md)\n- [[Obsidian]] (来源: 概念\\原始资料.md)\n- [[articles/]] (来源: 概念\\原始资料层.md)\n- [[papers/]] (来源: 概念\\原始资料层.md)\n- [[github/]] (来源: 概念\\原始资料层.md)\n- [[datasets/]] (来源: 概念\\原始资料层.md)\n- [[素材/]] (来源: 概念\\原始资料层.md)\n- [[2026-04-09-README.md]] (来源: 概念\\原始资料层.md)\n- [[raw/目录]] (来源: 概念\\原始资料编译.md)\n- [[wiki/]] (来源: 概念\\原始资料编译.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\原始资料编译.md)\n- [[raw/目录]] (来源: 概念\\双向链接.md)\n- [[wiki/]] (来源: 概念\\双向链接.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\双向链接.md)\n- [[articles/]] (来源: 概念\\只读.md)\n- [[papers/]] (来源: 概念\\只读.md)\n- [[github/]] (来源: 概念\\只读.md)\n- [[datasets/]] (来源: 概念\\只读.md)\n- [[素材/]] (来源: 概念\\只读.md)\n- [[2026-04-09-README.md]] (来源: 概念\\只读.md)\n- [[Obsidian]] (来源: 概念\\收集.md)\n- [[Obsidian]] (来源: 概念\\收集.md)\n- [[raw/目录]] (来源: 概念\\查询.md)\n- [[wiki/]] (来源: 概念\\查询.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\查询.md)\n- [[articles/]] (来源: 概念\\目录结构.md)\n- [[papers/]] (来源: 概念\\目录结构.md)\n- [[github/]] (来源: 概念\\目录结构.md)\n- [[datasets/]] (来源: 概念\\目录结构.md)\n- [[素材/]] (来源: 概念\\目录结构.md)\n- [[2026-04-09-README.md]] (来源: 概念\\目录结构.md)\n- [[raw/]] (来源: 概念\\知识库.md)\n- [[wiki/]] (来源: 概念\\知识库.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\知识库.md)\n- [[raw/目录]] (来源: 概念\\知识库工作流.md)\n- [[wiki/]] (来源: 概念\\知识库工作流.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\知识库工作流.md)\n- [[大型语言模型 (LLM)]] (来源: 概念\\知识管理.md)\n- [[Obsidian]] (来源: 概念\\知识管理.md)\n- [[检索与获取信息 (RAG)]] (来源: 概念\\知识管理.md)\n- [[Obsidian]] (来源: 概念\\知识管理.md)\n- [[articles/]] (来源: 概念\\编译.md)\n- [[papers/]] (来源: 概念\\编译.md)\n- [[github/]] (来源: 概念\\编译.md)\n- [[datasets/]] (来源: 概念\\编译.md)\n- [[素材/]] (来源: 概念\\编译.md)\n- [[2026-04-09-README.md]] (来源: 概念\\编译.md)\n\n### 重复页面 (4 项)\n\n- 标题「Karpathy 知识库工作流」出现在:\n  - 实体\\Karpathy 知识库工作流.md\n  - 概念\\Karpathy 知识库工作流.md\n- 标题「Obsidian Web Clipper」出现在:\n  - 实体\\Obsidian Web Clipper.md\n  - 概念\\Obsidian Web Clipper.md\n- 标题「RAG」出现在:\n  - 实体\\RAG.md\n  - 概念\\RAG.md\n- 标题「wiki」出现在:\n  - 实体\\wiki.md\n  - 概念\\wiki.md\n\n### 潜在矛盾 (4 项)\n\n- 组「Karpathy 知识库工作流」:\n  - 实体\\Karpathy 知识库工作流.md\n  - 概念\\Karpathy 知识库工作流.md\n- 组「Obsidian Web Clipper」:\n  - 实体\\Obsidian Web Clipper.md\n  - 概念\\Obsidian Web Clipper.md\n- 组「RAG」:\n  - 实体\\RAG.md\n  - 概念\\RAG.md\n- 组「wiki」:\n  - 实体\\wiki.md\n  - 概念\\wiki.md\n\n\n## 2026-04-09 08:50 - INGEST 摄入\n\n处理 3 个文件，提取 16 个概念，18 个实体。\n\n\n\n## LINT 检查报告 - 2026-04-09 09:29\n\n**问题总数**: 173\n\n\n### 孤儿链接 (163 项)\n\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\AAAI 2025 论文《Mind Individual Information!》.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\AI Scientist 系统.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\Alchemy（炼丹炉）.md)\n- [[papers/]] (来源: 实体\\articles_.md)\n- [[github/]] (来源: 实体\\articles_.md)\n- [[datasets/]] (来源: 实体\\articles_.md)\n- [[素材/]] (来源: 实体\\articles_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\articles_.md)\n- [[articles/]] (来源: 实体\\compile.py.md)\n- [[papers/]] (来源: 实体\\compile.py.md)\n- [[github/]] (来源: 实体\\compile.py.md)\n- [[datasets/]] (来源: 实体\\compile.py.md)\n- [[素材/]] (来源: 实体\\compile.py.md)\n- [[2026-04-09-README.md]] (来源: 实体\\compile.py.md)\n- [[articles/]] (来源: 实体\\datasets_.md)\n- [[papers/]] (来源: 实体\\datasets_.md)\n- [[github/]] (来源: 实体\\datasets_.md)\n- [[素材/]] (来源: 实体\\datasets_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\datasets_.md)\n- [[articles/]] (来源: 实体\\github_.md)\n- [[papers/]] (来源: 实体\\github_.md)\n- [[datasets/]] (来源: 实体\\github_.md)\n- [[素材/]] (来源: 实体\\github_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\github_.md)\n- [[raw/]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[wiki/]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[raw/目录]] (来源: 实体\\Karpathy.md)\n- [[wiki/]] (来源: 实体\\Karpathy.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Karpathy.md)\n- [[raw/目录]] (来源: 实体\\LLM.md)\n- [[wiki/]] (来源: 实体\\LLM.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\LLM.md)\n- [[raw/目录]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[wiki/]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[articles/]] (来源: 实体\\papers_.md)\n- [[github/]] (来源: 实体\\papers_.md)\n- [[datasets/]] (来源: 实体\\papers_.md)\n- [[素材/]] (来源: 实体\\papers_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\papers_.md)\n- [[raw/目录]] (来源: 实体\\RAG.md)\n- [[wiki/]] (来源: 实体\\RAG.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\RAG.md)\n- [[wiki/]] (来源: 实体\\raw_.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\raw_.md)\n- [[wiki/]] (来源: 实体\\raw_目录.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\raw_目录.md)\n- [[articles/]] (来源: 实体\\wiki.md)\n- [[papers/]] (来源: 实体\\wiki.md)\n- [[github/]] (来源: 实体\\wiki.md)\n- [[datasets/]] (来源: 实体\\wiki.md)\n- [[素材/]] (来源: 实体\\wiki.md)\n- [[2026-04-09-README.md]] (来源: 实体\\wiki.md)\n- [[raw/目录]] (来源: 实体\\wiki_.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\wiki_.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\李乐晖.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\李佳助理教授课题组.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\清华人工智能学院.md)\n- [[articles/]] (来源: 实体\\素材_.md)\n- [[papers/]] (来源: 实体\\素材_.md)\n- [[github/]] (来源: 实体\\素材_.md)\n- [[datasets/]] (来源: 实体\\素材_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\素材_.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\蔡立一.md)\n- [[Obsidian]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[raw/目录]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[wiki/]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[articles/]] (来源: 来源\\2026-04-09-README.md)\n- [[papers/]] (来源: 来源\\2026-04-09-README.md)\n- [[github/]] (来源: 来源\\2026-04-09-README.md)\n- [[datasets/]] (来源: 来源\\2026-04-09-README.md)\n- [[素材/]] (来源: 来源\\2026-04-09-README.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\AI Scientist.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\Alchemy.md)\n- [[Obsidian]] (来源: 概念\\articles_karpathy-workflow.md)\n- [[Obsidian]] (来源: 概念\\Karpathy 知识库工作流.md)\n- [[Obsidian]] (来源: 概念\\Karpathy 知识库工作流.md)\n- [[raw/目录]] (来源: 概念\\LLM.md)\n- [[wiki/]] (来源: 概念\\LLM.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\LLM.md)\n- [[Obsidian]] (来源: 概念\\Obsidian Web Clipper.md)\n- [[Obsidian]] (来源: 概念\\Obsidian Web Clipper.md)\n- [[论文]] (来源: 概念\\RAG.md)\n- [[文章]] (来源: 概念\\RAG.md)\n- [[GitHub]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\RAG.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\Seed Baseline.md)\n- [[Obsidian]] (来源: 概念\\wiki 知识库.md)\n- [[Obsidian]] (来源: 概念\\wiki 知识库.md)\n- [[raw/目录]] (来源: 概念\\wiki.md)\n- [[wiki/]] (来源: 概念\\wiki.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\wiki.md)\n- [[raw/目录]] (来源: 概念\\wiki文章生成.md)\n- [[wiki/]] (来源: 概念\\wiki文章生成.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\wiki文章生成.md)\n- [[raw/目录]] (来源: 概念\\上下文窗口.md)\n- [[wiki/]] (来源: 概念\\上下文窗口.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\上下文窗口.md)\n- [[articles/]] (来源: 概念\\使用方式.md)\n- [[papers/]] (来源: 概念\\使用方式.md)\n- [[github/]] (来源: 概念\\使用方式.md)\n- [[datasets/]] (来源: 概念\\使用方式.md)\n- [[素材/]] (来源: 概念\\使用方式.md)\n- [[2026-04-09-README.md]] (来源: 概念\\使用方式.md)\n- [[articles/]] (来源: 概念\\原则.md)\n- [[papers/]] (来源: 概念\\原则.md)\n- [[github/]] (来源: 概念\\原则.md)\n- [[datasets/]] (来源: 概念\\原则.md)\n- [[素材/]] (来源: 概念\\原则.md)\n- [[2026-04-09-README.md]] (来源: 概念\\原则.md)\n- [[raw/目录]] (来源: 概念\\原始资料.md)\n- [[wiki/]] (来源: 概念\\原始资料.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\原始资料.md)\n- [[articles/]] (来源: 概念\\原始资料层.md)\n- [[papers/]] (来源: 概念\\原始资料层.md)\n- [[github/]] (来源: 概念\\原始资料层.md)\n- [[datasets/]] (来源: 概念\\原始资料层.md)\n- [[素材/]] (来源: 概念\\原始资料层.md)\n- [[2026-04-09-README.md]] (来源: 概念\\原始资料层.md)\n- [[raw/目录]] (来源: 概念\\原始资料编译.md)\n- [[wiki/]] (来源: 概念\\原始资料编译.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\原始资料编译.md)\n- [[raw/目录]] (来源: 概念\\双向链接.md)\n- [[wiki/]] (来源: 概念\\双向链接.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\双向链接.md)\n- [[articles/]] (来源: 概念\\只读.md)\n- [[papers/]] (来源: 概念\\只读.md)\n- [[github/]] (来源: 概念\\只读.md)\n- [[datasets/]] (来源: 概念\\只读.md)\n- [[素材/]] (来源: 概念\\只读.md)\n- [[2026-04-09-README.md]] (来源: 概念\\只读.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\多模态推荐任务.md)\n- [[Obsidian]] (来源: 概念\\收集.md)\n- [[Obsidian]] (来源: 概念\\收集.md)\n- [[raw/目录]] (来源: 概念\\查询.md)\n- [[wiki/]] (来源: 概念\\查询.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\查询.md)\n- [[articles/]] (来源: 概念\\目录结构.md)\n- [[papers/]] (来源: 概念\\目录结构.md)\n- [[github/]] (来源: 概念\\目录结构.md)\n- [[datasets/]] (来源: 概念\\目录结构.md)\n- [[素材/]] (来源: 概念\\目录结构.md)\n- [[2026-04-09-README.md]] (来源: 概念\\目录结构.md)\n- [[raw/]] (来源: 概念\\知识库.md)\n- [[wiki/]] (来源: 概念\\知识库.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\知识库.md)\n- [[raw/目录]] (来源: 概念\\知识库工作流.md)\n- [[wiki/]] (来源: 概念\\知识库工作流.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\知识库工作流.md)\n- [[大型语言模型 (LLM)]] (来源: 概念\\知识管理.md)\n- [[Obsidian]] (来源: 概念\\知识管理.md)\n- [[检索与获取信息 (RAG)]] (来源: 概念\\知识管理.md)\n- [[Obsidian]] (来源: 概念\\知识管理.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\研究环境执行层.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\算法开发层.md)\n- [[articles/]] (来源: 概念\\编译.md)\n- [[papers/]] (来源: 概念\\编译.md)\n- [[github/]] (来源: 概念\\编译.md)\n- [[datasets/]] (来源: 概念\\编译.md)\n- [[素材/]] (来源: 概念\\编译.md)\n- [[2026-04-09-README.md]] (来源: 概念\\编译.md)\n\n### 重复页面 (5 项)\n\n- 标题「Karpathy 知识库工作流」出现在:\n  - 实体\\Karpathy 知识库工作流.md\n  - 概念\\Karpathy 知识库工作流.md\n- 标题「LLM」出现在:\n  - 实体\\LLM.md\n  - 概念\\LLM.md\n- 标题「Obsidian Web Clipper」出现在:\n  - 实体\\Obsidian Web Clipper.md\n  - 概念\\Obsidian Web Clipper.md\n- 标题「RAG」出现在:\n  - 实体\\RAG.md\n  - 概念\\RAG.md\n- 标题「wiki」出现在:\n  - 实体\\wiki.md\n  - 概念\\wiki.md\n\n### 潜在矛盾 (5 项)\n\n- 组「Karpathy 知识库工作流」:\n  - 实体\\Karpathy 知识库工作流.md\n  - 概念\\Karpathy 知识库工作流.md\n- 组「LLM」:\n  - 实体\\LLM.md\n  - 概念\\LLM.md\n- 组「Obsidian Web Clipper」:\n  - 实体\\Obsidian Web Clipper.md\n  - 概念\\Obsidian Web Clipper.md\n- 组「RAG」:\n  - 实体\\RAG.md\n  - 概念\\RAG.md\n- 组「wiki」:\n  - 实体\\wiki.md\n  - 概念\\wiki.md\n\n\n## 2026-04-09 10:17 - INGEST 摄入\n\n处理 4 个文件，提取 29 个概念，21 个实体。\n\n\n\n## 2026-04-09 14:40 - INGEST 摄入\n\n处理 4 个文件，提取 24 个概念，20 个实体。\n\n\n\n## 2026-04-09 15:29 - INGEST 摄入\n\n处理 5 个文件，提取 33 个概念，28 个实体。\n\n\n\n## 2026-04-09 15:38 - INGEST 摄入\n\n处理 6 个文件，提取 37 个概念，27 个实体。\n\n\n\n## 2026-04-09 16:10 - INGEST 摄入\n\n处理 7 个文件，提取 44 个概念，32 个实体。\n\n",
+    "content": "﻿# Wiki 操作日志\n\n> 本文件记录所有 wiki 的操作历史，包括 ingest、query、lint 检查结果。\n> 格式：每次操作追加条目，不删除历史记录。\n\n---\n\n## 历史记录\n\n*（暂无操作记录）*\n\n\n\n## 2026-04-09 08:34 - INGEST 摄入\n\n处理 2 个文件，提取 12 个概念，12 个实体。\n\n\n\n## LINT 检查报告 - 2026-04-09 08:34\n\n**问题总数**: 148\n\n\n### 孤儿链接 (140 项)\n\n- [[papers/]] (来源: 实体\\articles_.md)\n- [[github/]] (来源: 实体\\articles_.md)\n- [[datasets/]] (来源: 实体\\articles_.md)\n- [[素材/]] (来源: 实体\\articles_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\articles_.md)\n- [[articles/]] (来源: 实体\\compile.py.md)\n- [[papers/]] (来源: 实体\\compile.py.md)\n- [[github/]] (来源: 实体\\compile.py.md)\n- [[datasets/]] (来源: 实体\\compile.py.md)\n- [[素材/]] (来源: 实体\\compile.py.md)\n- [[2026-04-09-README.md]] (来源: 实体\\compile.py.md)\n- [[articles/]] (来源: 实体\\datasets_.md)\n- [[papers/]] (来源: 实体\\datasets_.md)\n- [[github/]] (来源: 实体\\datasets_.md)\n- [[素材/]] (来源: 实体\\datasets_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\datasets_.md)\n- [[articles/]] (来源: 实体\\github_.md)\n- [[papers/]] (来源: 实体\\github_.md)\n- [[datasets/]] (来源: 实体\\github_.md)\n- [[素材/]] (来源: 实体\\github_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\github_.md)\n- [[raw/]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[wiki/]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[raw/目录]] (来源: 实体\\Karpathy.md)\n- [[wiki/]] (来源: 实体\\Karpathy.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Karpathy.md)\n- [[raw/目录]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[wiki/]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[articles/]] (来源: 实体\\papers_.md)\n- [[github/]] (来源: 实体\\papers_.md)\n- [[datasets/]] (来源: 实体\\papers_.md)\n- [[素材/]] (来源: 实体\\papers_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\papers_.md)\n- [[raw/目录]] (来源: 实体\\RAG.md)\n- [[wiki/]] (来源: 实体\\RAG.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\RAG.md)\n- [[wiki/]] (来源: 实体\\raw_.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\raw_.md)\n- [[wiki/]] (来源: 实体\\raw_目录.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\raw_目录.md)\n- [[articles/]] (来源: 实体\\wiki.md)\n- [[papers/]] (来源: 实体\\wiki.md)\n- [[github/]] (来源: 实体\\wiki.md)\n- [[datasets/]] (来源: 实体\\wiki.md)\n- [[素材/]] (来源: 实体\\wiki.md)\n- [[2026-04-09-README.md]] (来源: 实体\\wiki.md)\n- [[raw/目录]] (来源: 实体\\wiki_.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\wiki_.md)\n- [[articles/]] (来源: 实体\\素材_.md)\n- [[papers/]] (来源: 实体\\素材_.md)\n- [[github/]] (来源: 实体\\素材_.md)\n- [[datasets/]] (来源: 实体\\素材_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\素材_.md)\n- [[Obsidian]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[raw/目录]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[wiki/]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[articles/]] (来源: 来源\\2026-04-09-README.md)\n- [[papers/]] (来源: 来源\\2026-04-09-README.md)\n- [[github/]] (来源: 来源\\2026-04-09-README.md)\n- [[datasets/]] (来源: 来源\\2026-04-09-README.md)\n- [[素材/]] (来源: 来源\\2026-04-09-README.md)\n- [[Obsidian]] (来源: 概念\\articles_karpathy-workflow.md)\n- [[Obsidian]] (来源: 概念\\Karpathy 知识库工作流.md)\n- [[Obsidian]] (来源: 概念\\Karpathy 知识库工作流.md)\n- [[raw/目录]] (来源: 概念\\LLM.md)\n- [[wiki/]] (来源: 概念\\LLM.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\LLM.md)\n- [[Obsidian]] (来源: 概念\\Obsidian Web Clipper.md)\n- [[Obsidian]] (来源: 概念\\Obsidian Web Clipper.md)\n- [[论文]] (来源: 概念\\RAG.md)\n- [[文章]] (来源: 概念\\RAG.md)\n- [[GitHub]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\wiki 知识库.md)\n- [[Obsidian]] (来源: 概念\\wiki 知识库.md)\n- [[raw/]] (来源: 概念\\wiki.md)\n- [[wiki/]] (来源: 概念\\wiki.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\wiki.md)\n- [[raw/目录]] (来源: 概念\\wiki文章生成.md)\n- [[wiki/]] (来源: 概念\\wiki文章生成.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\wiki文章生成.md)\n- [[raw/目录]] (来源: 概念\\上下文窗口.md)\n- [[wiki/]] (来源: 概念\\上下文窗口.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\上下文窗口.md)\n- [[articles/]] (来源: 概念\\原则.md)\n- [[papers/]] (来源: 概念\\原则.md)\n- [[github/]] (来源: 概念\\原则.md)\n- [[datasets/]] (来源: 概念\\原则.md)\n- [[素材/]] (来源: 概念\\原则.md)\n- [[2026-04-09-README.md]] (来源: 概念\\原则.md)\n- [[Obsidian]] (来源: 概念\\原始资料.md)\n- [[Obsidian]] (来源: 概念\\原始资料.md)\n- [[articles/]] (来源: 概念\\原始资料层.md)\n- [[papers/]] (来源: 概念\\原始资料层.md)\n- [[github/]] (来源: 概念\\原始资料层.md)\n- [[datasets/]] (来源: 概念\\原始资料层.md)\n- [[素材/]] (来源: 概念\\原始资料层.md)\n- [[2026-04-09-README.md]] (来源: 概念\\原始资料层.md)\n- [[raw/目录]] (来源: 概念\\原始资料编译.md)\n- [[wiki/]] (来源: 概念\\原始资料编译.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\原始资料编译.md)\n- [[raw/目录]] (来源: 概念\\双向链接.md)\n- [[wiki/]] (来源: 概念\\双向链接.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\双向链接.md)\n- [[articles/]] (来源: 概念\\只读.md)\n- [[papers/]] (来源: 概念\\只读.md)\n- [[github/]] (来源: 概念\\只读.md)\n- [[datasets/]] (来源: 概念\\只读.md)\n- [[素材/]] (来源: 概念\\只读.md)\n- [[2026-04-09-README.md]] (来源: 概念\\只读.md)\n- [[Obsidian]] (来源: 概念\\收集.md)\n- [[Obsidian]] (来源: 概念\\收集.md)\n- [[raw/目录]] (来源: 概念\\查询.md)\n- [[wiki/]] (来源: 概念\\查询.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\查询.md)\n- [[articles/]] (来源: 概念\\目录结构.md)\n- [[papers/]] (来源: 概念\\目录结构.md)\n- [[github/]] (来源: 概念\\目录结构.md)\n- [[datasets/]] (来源: 概念\\目录结构.md)\n- [[素材/]] (来源: 概念\\目录结构.md)\n- [[2026-04-09-README.md]] (来源: 概念\\目录结构.md)\n- [[raw/]] (来源: 概念\\知识库.md)\n- [[wiki/]] (来源: 概念\\知识库.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\知识库.md)\n- [[raw/目录]] (来源: 概念\\知识库工作流.md)\n- [[wiki/]] (来源: 概念\\知识库工作流.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\知识库工作流.md)\n- [[大型语言模型 (LLM)]] (来源: 概念\\知识管理.md)\n- [[Obsidian]] (来源: 概念\\知识管理.md)\n- [[检索与获取信息 (RAG)]] (来源: 概念\\知识管理.md)\n- [[Obsidian]] (来源: 概念\\知识管理.md)\n- [[articles/]] (来源: 概念\\编译.md)\n- [[papers/]] (来源: 概念\\编译.md)\n- [[github/]] (来源: 概念\\编译.md)\n- [[datasets/]] (来源: 概念\\编译.md)\n- [[素材/]] (来源: 概念\\编译.md)\n- [[2026-04-09-README.md]] (来源: 概念\\编译.md)\n\n### 重复页面 (4 项)\n\n- 标题「Karpathy 知识库工作流」出现在:\n  - 实体\\Karpathy 知识库工作流.md\n  - 概念\\Karpathy 知识库工作流.md\n- 标题「Obsidian Web Clipper」出现在:\n  - 实体\\Obsidian Web Clipper.md\n  - 概念\\Obsidian Web Clipper.md\n- 标题「RAG」出现在:\n  - 实体\\RAG.md\n  - 概念\\RAG.md\n- 标题「wiki」出现在:\n  - 实体\\wiki.md\n  - 概念\\wiki.md\n\n### 潜在矛盾 (4 项)\n\n- 组「Karpathy 知识库工作流」:\n  - 实体\\Karpathy 知识库工作流.md\n  - 概念\\Karpathy 知识库工作流.md\n- 组「Obsidian Web Clipper」:\n  - 实体\\Obsidian Web Clipper.md\n  - 概念\\Obsidian Web Clipper.md\n- 组「RAG」:\n  - 实体\\RAG.md\n  - 概念\\RAG.md\n- 组「wiki」:\n  - 实体\\wiki.md\n  - 概念\\wiki.md\n\n\n## 2026-04-09 08:50 - INGEST 摄入\n\n处理 3 个文件，提取 16 个概念，18 个实体。\n\n\n\n## LINT 检查报告 - 2026-04-09 09:29\n\n**问题总数**: 173\n\n\n### 孤儿链接 (163 项)\n\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\AAAI 2025 论文《Mind Individual Information!》.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\AI Scientist 系统.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\Alchemy（炼丹炉）.md)\n- [[papers/]] (来源: 实体\\articles_.md)\n- [[github/]] (来源: 实体\\articles_.md)\n- [[datasets/]] (来源: 实体\\articles_.md)\n- [[素材/]] (来源: 实体\\articles_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\articles_.md)\n- [[articles/]] (来源: 实体\\compile.py.md)\n- [[papers/]] (来源: 实体\\compile.py.md)\n- [[github/]] (来源: 实体\\compile.py.md)\n- [[datasets/]] (来源: 实体\\compile.py.md)\n- [[素材/]] (来源: 实体\\compile.py.md)\n- [[2026-04-09-README.md]] (来源: 实体\\compile.py.md)\n- [[articles/]] (来源: 实体\\datasets_.md)\n- [[papers/]] (来源: 实体\\datasets_.md)\n- [[github/]] (来源: 实体\\datasets_.md)\n- [[素材/]] (来源: 实体\\datasets_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\datasets_.md)\n- [[articles/]] (来源: 实体\\github_.md)\n- [[papers/]] (来源: 实体\\github_.md)\n- [[datasets/]] (来源: 实体\\github_.md)\n- [[素材/]] (来源: 实体\\github_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\github_.md)\n- [[raw/]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[wiki/]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Karpathy 知识库工作流.md)\n- [[raw/目录]] (来源: 实体\\Karpathy.md)\n- [[wiki/]] (来源: 实体\\Karpathy.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Karpathy.md)\n- [[raw/目录]] (来源: 实体\\LLM.md)\n- [[wiki/]] (来源: 实体\\LLM.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\LLM.md)\n- [[raw/目录]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[wiki/]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\Obsidian Web Clipper.md)\n- [[articles/]] (来源: 实体\\papers_.md)\n- [[github/]] (来源: 实体\\papers_.md)\n- [[datasets/]] (来源: 实体\\papers_.md)\n- [[素材/]] (来源: 实体\\papers_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\papers_.md)\n- [[raw/目录]] (来源: 实体\\RAG.md)\n- [[wiki/]] (来源: 实体\\RAG.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\RAG.md)\n- [[wiki/]] (来源: 实体\\raw_.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\raw_.md)\n- [[wiki/]] (来源: 实体\\raw_目录.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\raw_目录.md)\n- [[articles/]] (来源: 实体\\wiki.md)\n- [[papers/]] (来源: 实体\\wiki.md)\n- [[github/]] (来源: 实体\\wiki.md)\n- [[datasets/]] (来源: 实体\\wiki.md)\n- [[素材/]] (来源: 实体\\wiki.md)\n- [[2026-04-09-README.md]] (来源: 实体\\wiki.md)\n- [[raw/目录]] (来源: 实体\\wiki_.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 实体\\wiki_.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\李乐晖.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\李佳助理教授课题组.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\清华人工智能学院.md)\n- [[articles/]] (来源: 实体\\素材_.md)\n- [[papers/]] (来源: 实体\\素材_.md)\n- [[github/]] (来源: 实体\\素材_.md)\n- [[datasets/]] (来源: 实体\\素材_.md)\n- [[2026-04-09-README.md]] (来源: 实体\\素材_.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\\蔡立一.md)\n- [[Obsidian]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[raw/目录]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[wiki/]] (来源: 来源\\2026-04-09-articles_karpathy-workflow.md)\n- [[articles/]] (来源: 来源\\2026-04-09-README.md)\n- [[papers/]] (来源: 来源\\2026-04-09-README.md)\n- [[github/]] (来源: 来源\\2026-04-09-README.md)\n- [[datasets/]] (来源: 来源\\2026-04-09-README.md)\n- [[素材/]] (来源: 来源\\2026-04-09-README.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\AI Scientist.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\Alchemy.md)\n- [[Obsidian]] (来源: 概念\\articles_karpathy-workflow.md)\n- [[Obsidian]] (来源: 概念\\Karpathy 知识库工作流.md)\n- [[Obsidian]] (来源: 概念\\Karpathy 知识库工作流.md)\n- [[raw/目录]] (来源: 概念\\LLM.md)\n- [[wiki/]] (来源: 概念\\LLM.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\LLM.md)\n- [[Obsidian]] (来源: 概念\\Obsidian Web Clipper.md)\n- [[Obsidian]] (来源: 概念\\Obsidian Web Clipper.md)\n- [[论文]] (来源: 概念\\RAG.md)\n- [[文章]] (来源: 概念\\RAG.md)\n- [[GitHub]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\RAG.md)\n- [[Obsidian]] (来源: 概念\\RAG.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\Seed Baseline.md)\n- [[Obsidian]] (来源: 概念\\wiki 知识库.md)\n- [[Obsidian]] (来源: 概念\\wiki 知识库.md)\n- [[raw/目录]] (来源: 概念\\wiki.md)\n- [[wiki/]] (来源: 概念\\wiki.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\wiki.md)\n- [[raw/目录]] (来源: 概念\\wiki文章生成.md)\n- [[wiki/]] (来源: 概念\\wiki文章生成.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\wiki文章生成.md)\n- [[raw/目录]] (来源: 概念\\上下文窗口.md)\n- [[wiki/]] (来源: 概念\\上下文窗口.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\上下文窗口.md)\n- [[articles/]] (来源: 概念\\使用方式.md)\n- [[papers/]] (来源: 概念\\使用方式.md)\n- [[github/]] (来源: 概念\\使用方式.md)\n- [[datasets/]] (来源: 概念\\使用方式.md)\n- [[素材/]] (来源: 概念\\使用方式.md)\n- [[2026-04-09-README.md]] (来源: 概念\\使用方式.md)\n- [[articles/]] (来源: 概念\\原则.md)\n- [[papers/]] (来源: 概念\\原则.md)\n- [[github/]] (来源: 概念\\原则.md)\n- [[datasets/]] (来源: 概念\\原则.md)\n- [[素材/]] (来源: 概念\\原则.md)\n- [[2026-04-09-README.md]] (来源: 概念\\原则.md)\n- [[raw/目录]] (来源: 概念\\原始资料.md)\n- [[wiki/]] (来源: 概念\\原始资料.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\原始资料.md)\n- [[articles/]] (来源: 概念\\原始资料层.md)\n- [[papers/]] (来源: 概念\\原始资料层.md)\n- [[github/]] (来源: 概念\\原始资料层.md)\n- [[datasets/]] (来源: 概念\\原始资料层.md)\n- [[素材/]] (来源: 概念\\原始资料层.md)\n- [[2026-04-09-README.md]] (来源: 概念\\原始资料层.md)\n- [[raw/目录]] (来源: 概念\\原始资料编译.md)\n- [[wiki/]] (来源: 概念\\原始资料编译.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\原始资料编译.md)\n- [[raw/目录]] (来源: 概念\\双向链接.md)\n- [[wiki/]] (来源: 概念\\双向链接.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\双向链接.md)\n- [[articles/]] (来源: 概念\\只读.md)\n- [[papers/]] (来源: 概念\\只读.md)\n- [[github/]] (来源: 概念\\只读.md)\n- [[datasets/]] (来源: 概念\\只读.md)\n- [[素材/]] (来源: 概念\\只读.md)\n- [[2026-04-09-README.md]] (来源: 概念\\只读.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\多模态推荐任务.md)\n- [[Obsidian]] (来源: 概念\\收集.md)\n- [[Obsidian]] (来源: 概念\\收集.md)\n- [[raw/目录]] (来源: 概念\\查询.md)\n- [[wiki/]] (来源: 概念\\查询.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\查询.md)\n- [[articles/]] (来源: 概念\\目录结构.md)\n- [[papers/]] (来源: 概念\\目录结构.md)\n- [[github/]] (来源: 概念\\目录结构.md)\n- [[datasets/]] (来源: 概念\\目录结构.md)\n- [[素材/]] (来源: 概念\\目录结构.md)\n- [[2026-04-09-README.md]] (来源: 概念\\目录结构.md)\n- [[raw/]] (来源: 概念\\知识库.md)\n- [[wiki/]] (来源: 概念\\知识库.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\知识库.md)\n- [[raw/目录]] (来源: 概念\\知识库工作流.md)\n- [[wiki/]] (来源: 概念\\知识库工作流.md)\n- [[2026-04-09-articles\\karpathy-workflow.md]] (来源: 概念\\知识库工作流.md)\n- [[大型语言模型 (LLM)]] (来源: 概念\\知识管理.md)\n- [[Obsidian]] (来源: 概念\\知识管理.md)\n- [[检索与获取信息 (RAG)]] (来源: 概念\\知识管理.md)\n- [[Obsidian]] (来源: 概念\\知识管理.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\研究环境执行层.md)\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\\算法开发层.md)\n- [[articles/]] (来源: 概念\\编译.md)\n- [[papers/]] (来源: 概念\\编译.md)\n- [[github/]] (来源: 概念\\编译.md)\n- [[datasets/]] (来源: 概念\\编译.md)\n- [[素材/]] (来源: 概念\\编译.md)\n- [[2026-04-09-README.md]] (来源: 概念\\编译.md)\n\n### 重复页面 (5 项)\n\n- 标题「Karpathy 知识库工作流」出现在:\n  - 实体\\Karpathy 知识库工作流.md\n  - 概念\\Karpathy 知识库工作流.md\n- 标题「LLM」出现在:\n  - 实体\\LLM.md\n  - 概念\\LLM.md\n- 标题「Obsidian Web Clipper」出现在:\n  - 实体\\Obsidian Web Clipper.md\n  - 概念\\Obsidian Web Clipper.md\n- 标题「RAG」出现在:\n  - 实体\\RAG.md\n  - 概念\\RAG.md\n- 标题「wiki」出现在:\n  - 实体\\wiki.md\n  - 概念\\wiki.md\n\n### 潜在矛盾 (5 项)\n\n- 组「Karpathy 知识库工作流」:\n  - 实体\\Karpathy 知识库工作流.md\n  - 概念\\Karpathy 知识库工作流.md\n- 组「LLM」:\n  - 实体\\LLM.md\n  - 概念\\LLM.md\n- 组「Obsidian Web Clipper」:\n  - 实体\\Obsidian Web Clipper.md\n  - 概念\\Obsidian Web Clipper.md\n- 组「RAG」:\n  - 实体\\RAG.md\n  - 概念\\RAG.md\n- 组「wiki」:\n  - 实体\\wiki.md\n  - 概念\\wiki.md\n\n\n## 2026-04-09 10:17 - INGEST 摄入\n\n处理 4 个文件，提取 29 个概念，21 个实体。\n\n\n\n## 2026-04-09 14:40 - INGEST 摄入\n\n处理 4 个文件，提取 24 个概念，20 个实体。\n\n\n\n## 2026-04-09 15:29 - INGEST 摄入\n\n处理 5 个文件，提取 33 个概念，28 个实体。\n\n\n\n## 2026-04-09 15:38 - INGEST 摄入\n\n处理 6 个文件，提取 37 个概念，27 个实体。\n\n\n\n## 2026-04-09 16:10 - INGEST 摄入\n\n处理 7 个文件，提取 44 个概念，32 个实体。\n\n\n\n## 2026-04-09 20:03 - INGEST 摄入\n\n处理 7 个文件，提取 43 个概念，33 个实体。\n\n",
     "path": "log.md",
-    "created": "2026-04-09T16:15:20.875523"
+    "created": "2026-04-09T20:12:35.690649"
   },
   {
     "title": "AAAI 2025 论文《Mind Individual Information!》",
-    "content": "# AAAI 2025 论文《Mind Individual Information!》\n\n> 类型：实体\n> 创建时间：2026-04-09 14:39\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的科研自动化框架，旨在减轻工程负担，提高科研效率。\n\n## 相关概念\n- [[Alchemy]]\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# AAAI 2025 论文《Mind Individual Information!》\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，实现高效科研。用户只需提供算法代码和配置文件，Alchemy 负责搭建实验环境、优化算法。\n\n## 相关概念\n- [[AI 科研自动化框架]]\n- [[Alchemy（炼丹炉）]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\AAAI 2025 论文《Mind Individual Information!》.md",
-    "created": "2026-04-09T16:15:20.876036"
+    "created": "2026-04-09T20:12:35.692660"
   },
   {
     "title": "AAAII 2025 论文《Mind Individual Information!》",
     "content": "# AAAII 2025 论文《Mind Individual Information!》\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，提高科研效率。\n\n## 相关概念\n- [[AI 科研自动化]]\n- [[Alchemy 框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\AAAII 2025 论文《Mind Individual Information!》.md",
-    "created": "2026-04-09T16:15:20.876036"
+    "created": "2026-04-09T20:12:35.694676"
   },
   {
     "title": "AAAII 2025论文级别的基线算法",
     "content": "# AAAII 2025论文级别的基线算法\n\n> 类型：实体\n> 创建时间：2026-04-09 15:29\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，提升科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[工程自动化]]\n- [[algorithm.py]]\n- [[yaml配置文件]]\n- [[多模态推荐任务]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\AAAII 2025论文级别的基线算法.md",
-    "created": "2026-04-09T16:15:20.876036"
+    "created": "2026-04-09T20:12:35.696203"
   },
   {
     "title": "AI Scientist 系统",
-    "content": "# AI Scientist 系统\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，提高科研效率。\n\n## 相关概念\n- [[AI 科研自动化]]\n- [[Alchemy 框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# AI Scientist 系统\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，实现高效科研。用户只需提供算法代码和配置文件，Alchemy 负责搭建实验环境、优化算法。\n\n## 相关概念\n- [[AI 科研自动化框架]]\n- [[Alchemy（炼丹炉）]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\AI Scientist 系统.md",
-    "created": "2026-04-09T16:15:20.876036"
+    "created": "2026-04-09T20:12:35.697205"
+  },
+  {
+    "title": "Alchemy",
+    "content": "# Alchemy\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，实现高效科研。用户只需提供算法代码和配置文件，Alchemy 负责搭建实验环境、优化算法。\n\n## 相关概念\n- [[AI 科研自动化框架]]\n- [[Alchemy（炼丹炉）]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "path": "实体\\Alchemy.md",
+    "created": "2026-04-09T20:12:35.697712"
   },
   {
     "title": "Alchemy（炼丹炉）",
-    "content": "# Alchemy（炼丹炉）\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，旨在提高科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Alchemy（炼丹炉）\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理科研基础设施，让科学家专注于算法创新。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\Alchemy（炼丹炉）.md",
-    "created": "2026-04-09T16:15:20.876036"
+    "created": "2026-04-09T20:12:35.697712"
   },
   {
     "title": "algorithm.py",
     "content": "# algorithm.py\n\n> 类型：实体\n> 创建时间：2026-04-09 15:29\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，提升科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[工程自动化]]\n- [[yaml配置文件]]\n- [[多模态推荐任务]]\n- [[AAAII 2025论文级别的基线算法]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\algorithm.py.md",
-    "created": "2026-04-09T16:15:20.876036"
+    "created": "2026-04-09T20:12:35.699219"
   },
   {
     "title": "Anthropic",
-    "content": "# Anthropic\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nHarness Engineering 是让 AI Agent 从能工作到可靠工作的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Anthropic\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nHarness Engineering 是让 AI Agent 从‘能工作’到‘可靠工作’的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\Anthropic.md",
-    "created": "2026-04-09T16:15:20.876036"
+    "created": "2026-04-09T20:12:35.700739"
   },
   {
     "title": "articles_",
-    "content": "# articles_\n\n> 类型：实体\n> 创建时间：2026-04-09 15:38\n\n## 简介\n\nREADME.md 文件描述了项目的原始资料层及其管理方式。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# articles_\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nREADME.md文件描述了Raw目录的结构和使用方式，强调了只读原则，并介绍了编译方法和文件命名规则。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\articles_.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.701256"
   },
   {
     "title": "chrome-devtools-mcp",
-    "content": "# chrome-devtools-mcp\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n该文件整理了2026年4月9日的知识库截图，重点介绍了Karpathy的LLM Wiki知识管理方法、MemPalace AI记忆系统及Chrome DevTools MCP等项目。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# chrome-devtools-mcp\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\n该文件整理了2026年4月9日的知识库截图，主要内容包括Karpathy的LLM知识管理方法、MemPalace AI记忆系统和Chrome DevTools MCP等。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\chrome-devtools-mcp.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.702302"
   },
   {
     "title": "Claude Code",
-    "content": "# Claude Code\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发尤为突出。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Claude Code\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\Claude Code.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.703337"
   },
   {
     "title": "compile.py",
     "content": "# compile.py\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n该文件描述了原始资料的存放规则和使用方式，强调只读原则并介绍了编译流程。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[README.md]]\n- [[wiki]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\compile.py.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.703337"
   },
   {
     "title": "datasets_",
-    "content": "# datasets_\n\n> 类型：实体\n> 创建时间：2026-04-09 15:38\n\n## 简介\n\nREADME.md 文件描述了项目的原始资料层及其管理方式。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# datasets_\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nREADME.md文件描述了Raw目录的结构和使用方式，强调了只读原则，并介绍了编译方法和文件命名规则。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\datasets_.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.703853"
   },
   {
     "title": "DataTool",
-    "content": "# DataTool\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n该文件整理了2026年4月9日的知识库截图，重点介绍了Karpathy的LLM Wiki知识管理方法、MemPalace AI记忆系统及Chrome DevTools MCP等项目。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# DataTool\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\n该文件整理了2026年4月9日的知识库截图，主要内容包括Karpathy的LLM知识管理方法、MemPalace AI记忆系统和Chrome DevTools MCP等。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\DataTool.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.704365"
   },
   {
     "title": "DeepMind",
-    "content": "# DeepMind\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nHarness Engineering 是让 AI Agent 从能工作到可靠工作的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# DeepMind\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nHarness Engineering 是让 AI Agent 从‘能工作’到‘可靠工作’的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\DeepMind.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.704365"
   },
   {
     "title": "github_",
-    "content": "# github_\n\n> 类型：实体\n> 创建时间：2026-04-09 15:38\n\n## 简介\n\nREADME.md 文件描述了项目的原始资料层及其管理方式。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# github_\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nREADME.md文件描述了Raw目录的结构和使用方式，强调了只读原则，并介绍了编译方法和文件命名规则。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\github_.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.704875"
   },
   {
     "title": "GitNexus",
-    "content": "# GitNexus\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发尤为突出。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# GitNexus\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\GitNexus.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.704875"
   },
   {
     "title": "Karpathy AI 知识库系列",
-    "content": "# Karpathy AI 知识库系列\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n该文件整理了2026年4月9日的知识库截图，重点介绍了Karpathy的LLM Wiki知识管理方法、MemPalace AI记忆系统及Chrome DevTools MCP等项目。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Karpathy AI 知识库系列\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\n该文件整理了2026年4月9日的知识库截图，主要内容包括Karpathy的LLM知识管理方法、MemPalace AI记忆系统和Chrome DevTools MCP等。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\Karpathy AI 知识库系列.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.705893"
   },
   {
     "title": "Karpathy 知识库",
     "content": "# Karpathy 知识库\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nKarpathy 提出使用 LLM 将原始资料编译成结构化的 wiki 知识库，通过三步工作流实现知识管理。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\Karpathy 知识库.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.705893"
   },
   {
     "title": "Karpathy 知识库工作流",
     "content": "# Karpathy 知识库工作流\n\n> 类型：实体\n> 创建时间：2026-04-09 15:29\n\n## 简介\n\nKarpathy 知识库工作流通过收集、编译和查询三个步骤，利用LLM将原始资料转化为结构化的wiki知识库。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\Karpathy 知识库工作流.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.706408"
   },
   {
     "title": "Karpathy",
-    "content": "# Karpathy\n\n> 类型：实体\n> 创建时间：2026-04-09 15:37\n\n## 简介\n\nKarpathy的工作流通过使用LLM将各种形式的原始资料编译成结构化的wiki知识库，无需RAG技术。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[上下文窗口]]\n- [[知识管理]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Karpathy\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nKarpathy的工作流使用LLM将各种原始资料编译成结构化的wiki知识库，并通过双向链接和直接查询来管理和获取信息。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\Karpathy.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.706408"
   },
   {
     "title": "LiteRT-LM",
-    "content": "# LiteRT-LM\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发尤为突出。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# LiteRT-LM\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\LiteRT-LM.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.706408"
   },
   {
     "title": "LLM",
-    "content": "# LLM\n\n> 类型：实体\n> 创建时间：2026-04-09 15:37\n\n## 简介\n\nKarpathy的工作流通过使用LLM将各种形式的原始资料编译成结构化的wiki知识库，无需RAG技术。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[上下文窗口]]\n- [[知识管理]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# LLM\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nKarpathy的工作流使用LLM将各种原始资料编译成结构化的wiki知识库，并通过双向链接和直接查询来管理和获取信息。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\LLM.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.706928"
   },
   {
     "title": "MemPalace (milla-jovovich_mempalace)",
-    "content": "# MemPalace (milla-jovovich_mempalace)\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n该文件整理了2026年4月9日的知识库截图，重点介绍了Karpathy的LLM Wiki知识管理方法、MemPalace AI记忆系统及Chrome DevTools MCP等项目。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# MemPalace (milla-jovovich_mempalace)\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\n该文件整理了2026年4月9日的知识库截图，主要内容包括Karpathy的LLM知识管理方法、MemPalace AI记忆系统和Chrome DevTools MCP等。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\MemPalace (milla-jovovich_mempalace).md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.707457"
+  },
+  {
+    "title": "MemPalace-milla-jovovich-mempalace",
+    "content": "# MemPalace (milla-jovovich/mempalace)\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n> 更新：2026-04-09 17:11\n\n## 基本信息\n\n| 项目 | 信息 |\n|------|------|\n| **项目名** | MemPalace |\n| **作者** | milla-jovovich |\n| **GitHub** | github.com/milla-jovovich/mempalace |\n| **Stars** | 23.6k |\n| **标签** | python, ai, memory, mcp, llm, chromadb |\n| **特点** | 有史以来得分最高且免费的 AI 记忆系统 |\n| **来源** | @阿甘探AI（抖音）|\n\n## 核心亮点\n\n### 1. 性能超越顶级AI公司\n\n> \"甚至连 OpenAI 和 Anthropic 的原生记忆方案都比不上它\"\n\nMemPalace 在多项基准测试中超越：\n- OpenAI 原生记忆方案\n- Anthropic 原生记忆方案\n\n### 2. 完全本地运行\n\n- 无需云服务\n- 数据完全本地存储\n- 保护隐私\n\n### 3. 支持 MCP 生态\n\n- 支持 Model Context Protocol\n- 可与多种 LLM 集成\n- 基于 ChromaDB 向量数据库\n\n## 技术架构\n\n```\nMemPalace\n├── benchmarks/     # 基准测试\n├── mempalace/      # 核心代码\n├── tests/          # 测试\n└── assets/         # 资源\n```\n\n## 相关概念\n\n- [[AI Agent]]\n- [[LLM]]\n- [[MCP (Model Context Protocol)]]\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n\n## 为什么火\n\n| 原因 | 说明 |\n|------|------|\n| 名字噱头 | \"milla-jovovich\" = 生化危机女主同名 |\n| 性能最强 | 超越 OpenAI/Anthropic 官方方案 |\n| 完全免费 | 开源免费 |\n| 本地运行 | 数据隐私有保障 |\n\n## 总结\n\n| 指标 | 评分 |\n|------|------|\n| Stars | 23.6k |\n| 技术前沿性 | ⭐⭐⭐⭐⭐ |\n| 实用价值 | ⭐⭐⭐⭐⭐ |\n| 热度 | ⭐⭐⭐⭐⭐ |\n\n**一句话**：23.6k Stars 的开源 AI 记忆系统，本地运行，超越 OpenAI/Anthropic 官方方案。\n\n## 来源\n\n- [[2026-04-09-Knowledge-Screenshots-Summary]]\n\n---\n*由 Karpathy 知识库系统自动生成 | 更新于 2026-04-09*\n",
+    "path": "实体\\MemPalace-milla-jovovich-mempalace.md",
+    "created": "2026-04-09T20:12:35.707973"
   },
   {
     "title": "Obsidian Web Clipper",
-    "content": "# Obsidian Web Clipper\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nKarpathy 提出使用 LLM 将原始资料编译成结构化的 wiki 知识库，通过三步工作流实现知识管理。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Obsidian Web Clipper\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nKarpathy的工作流使用LLM将各种原始资料编译成结构化的wiki知识库，并通过双向链接和直接查询来管理和获取信息。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\Obsidian Web Clipper.md",
-    "created": "2026-04-09T16:15:20.877046"
+    "created": "2026-04-09T20:12:35.707973"
   },
   {
     "title": "OpenAI",
-    "content": "# OpenAI\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nHarness Engineering 是让 AI Agent 从能工作到可靠工作的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# OpenAI\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nHarness Engineering 是让 AI Agent 从‘能工作’到‘可靠工作’的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\OpenAI.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.707973"
   },
   {
     "title": "OpenClaw",
     "content": "# OpenClaw\n\n> 类型：实体\n> 创建时间：2026-04-09 10:16\n\n## 简介\n\nAlchemy 是清华大学人工智能学院发布的科研自动化框架，用户只需提供算法代码和配置文件，Alchemy 自动化处理其余科研工程基础设施。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[实验环境搭建]]\n- [[超参数配置]]\n- [[结果收集与分析]]\n- [[迭代优化循环]]\n- [[科研流程自动化]]\n- [[框架设计与核心开发]]\n- [[Python 环境]]\n- [[Alchemy（炼丹炉）]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\OpenClaw.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.709018"
   },
   {
     "title": "OpenCode",
-    "content": "# OpenCode\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发尤为突出。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# OpenCode\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\OpenCode.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.709535"
   },
   {
     "title": "papers_",
-    "content": "# papers_\n\n> 类型：实体\n> 创建时间：2026-04-09 15:38\n\n## 简介\n\nREADME.md 文件描述了项目的原始资料层及其管理方式。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# papers_\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nREADME.md文件描述了Raw目录的结构和使用方式，强调了只读原则，并介绍了编译方法和文件命名规则。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\papers_.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.709535"
   },
   {
     "title": "RAG",
-    "content": "# RAG\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nKarpathy 提出使用 LLM 将原始资料编译成结构化的 wiki 知识库，通过三步工作流实现知识管理。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# RAG\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nKarpathy的工作流使用LLM将各种原始资料编译成结构化的wiki知识库，并通过双向链接和直接查询来管理和获取信息。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\RAG.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.710052"
   },
   {
     "title": "raw_ 目录",
     "content": "# raw_ 目录\n\n> 类型：实体\n> 创建时间：2026-04-09 10:16\n\n## 简介\n\nKarpathy 工作流通过 LLM 将原始资料编译成结构化的 wiki，实现高效的知识管理。\n\n## 相关概念\n- [[LLM]]\n- [[知识库]]\n- [[wiki]]\n- [[双向链接]]\n- [[上下文窗口]]\n- [[Karpathy 知识库工作流]]\n- [[Obsidian Web Clipper]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\raw_ 目录.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.710052"
   },
   {
     "title": "raw_",
     "content": "# raw_\n\n> 类型：实体\n> 创建时间：2026-04-09 08:34\n\n## 简介\n\nKarpathy 工作流利用 LLM 将原始资料编译成结构化的 wiki 知识库，通过收集、编译和查询三个步骤实现高效的知识管理。\n\n## 相关概念\n- [[LLM]]\n- [[知识库]]\n- [[wiki]]\n- [[双向链接]]\n- [[上下文窗口]]\n- [[Karpathy 知识库工作流]]\n- [[Obsidian Web Clipper]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\raw_.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.710569"
   },
   {
     "title": "raw_目录",
     "content": "# raw_目录\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nKarpathy 提出使用 LLM 将原始资料编译成结构化的 wiki 知识库，通过三步工作流实现知识管理。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\raw_目录.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.710569"
   },
   {
     "title": "README.md",
     "content": "# README.md\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n该文件描述了原始资料的存放规则和使用方式，强调只读原则并介绍了编译流程。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[compile.py]]\n- [[wiki]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\README.md.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.711085"
   },
   {
     "title": "wiki",
     "content": "# wiki\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\n该文件描述了原始资料的存放规则和使用方式，强调只读原则并介绍了编译流程。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[README.md]]\n- [[compile.py]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\wiki.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.711085"
   },
   {
     "title": "wiki_",
     "content": "# wiki_\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nKarpathy 提出使用 LLM 将原始资料编译成结构化的 wiki 知识库，通过三步工作流实现知识管理。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\wiki_.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.711085"
   },
   {
     "title": "yaml配置文件",
     "content": "# yaml配置文件\n\n> 类型：实体\n> 创建时间：2026-04-09 15:29\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，提升科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[工程自动化]]\n- [[algorithm.py]]\n- [[多模态推荐任务]]\n- [[AAAII 2025论文级别的基线算法]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\yaml配置文件.md",
-    "created": "2026-04-09T16:15:20.878225"
+    "created": "2026-04-09T20:12:35.711602"
   },
   {
     "title": "多模态推荐任务",
     "content": "# 多模态推荐任务\n\n> 类型：实体\n> 创建时间：2026-04-09 15:29\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，提升科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[工程自动化]]\n- [[algorithm.py]]\n- [[yaml配置文件]]\n- [[AAAII 2025论文级别的基线算法]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\多模态推荐任务.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.711602"
   },
   {
     "title": "字节跳动",
-    "content": "# 字节跳动\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nHarness Engineering 是让 AI Agent 从能工作到可靠工作的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 字节跳动\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nHarness Engineering 是让 AI Agent 从‘能工作’到‘可靠工作’的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\字节跳动.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.712117"
   },
   {
     "title": "李乐晖",
-    "content": "# 李乐晖\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，旨在提高科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 李乐晖\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理科研基础设施，让科学家专注于算法创新。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\李乐晖.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.712117"
   },
   {
     "title": "李佳助理教授课题组",
-    "content": "# 李佳助理教授课题组\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，提高科研效率。\n\n## 相关概念\n- [[AI 科研自动化]]\n- [[Alchemy 框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 李佳助理教授课题组\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，实现高效科研。用户只需提供算法代码和配置文件，Alchemy 负责搭建实验环境、优化算法。\n\n## 相关概念\n- [[AI 科研自动化框架]]\n- [[Alchemy（炼丹炉）]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy]]\n- [[清华 AI 科研自动化框架]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\李佳助理教授课题组.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.712117"
   },
   {
     "title": "李佳（助理教授）",
-    "content": "# 李佳（助理教授）\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，旨在提高科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 李佳（助理教授）\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理科研基础设施，让科学家专注于算法创新。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\李佳（助理教授）.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.712117"
   },
   {
     "title": "清华 AI 科研自动化框架",
-    "content": "# 清华 AI 科研自动化框架\n\n> 类型：实体\n> 创建时间：2026-04-09 10:16\n\n## 简介\n\nAlchemy 是清华大学人工智能学院发布的科研自动化框架，用户只需提供算法代码和配置文件，Alchemy 自动化处理其余科研工程基础设施。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[实验环境搭建]]\n- [[超参数配置]]\n- [[结果收集与分析]]\n- [[迭代优化循环]]\n- [[科研流程自动化]]\n- [[框架设计与核心开发]]\n- [[Python 环境]]\n- [[Alchemy（炼丹炉）]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[OpenClaw]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 清华 AI 科研自动化框架\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，实现高效科研。用户只需提供算法代码和配置文件，Alchemy 负责搭建实验环境、优化算法。\n\n## 相关概念\n- [[AI 科研自动化框架]]\n- [[Alchemy（炼丹炉）]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\清华 AI 科研自动化框架.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.713119"
   },
   {
     "title": "清华人工智能学院",
-    "content": "# 清华人工智能学院\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，旨在提高科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 清华人工智能学院\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理科研基础设施，让科学家专注于算法创新。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\清华人工智能学院.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.713625"
   },
   {
     "title": "清华大学人工智能学院",
     "content": "# 清华大学人工智能学院\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，提高科研效率。\n\n## 相关概念\n- [[AI 科研自动化]]\n- [[Alchemy 框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\清华大学人工智能学院.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.713625"
   },
   {
     "title": "素材_",
-    "content": "# 素材_\n\n> 类型：实体\n> 创建时间：2026-04-09 15:38\n\n## 简介\n\nREADME.md 文件描述了项目的原始资料层及其管理方式。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 素材_\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nREADME.md文件描述了Raw目录的结构和使用方式，强调了只读原则，并介绍了编译方法和文件命名规则。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\素材_.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.713625"
   },
   {
     "title": "蔡立一",
-    "content": "# 蔡立一\n\n> 类型：实体\n> 创建时间：2026-04-09 16:10\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，旨在提高科研效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 蔡立一\n\n> 类型：实体\n> 创建时间：2026-04-09 20:03\n\n## 简介\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理科研基础设施，让科学家专注于算法创新。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "实体\\蔡立一.md",
-    "created": "2026-04-09T16:15:20.879256"
+    "created": "2026-04-09T20:12:35.714627"
   },
   {
     "title": "2026-04-09-articles_2026-04-09-Harness-Engineering",
-    "content": "# 来源摘要：articles\\2026-04-09-Harness-Engineering.md\n\n> 原始路径：raw/articles\\2026-04-09-Harness-Engineering.md\n> 摄入时间：2026-04-09 16:09\n\n## 核心观点\n\nHarness Engineering 是让 AI Agent 从能工作到可靠工作的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 关键细节\n\n# Harness Engineering（驾驭工程）\n\n> 来源：知乎/AI铺子综合整理\n> 日期：2026-04-09\n> 主题：2026年最火的工程范式\n\n## 一句话总结\n\n2025年证明了 Agent 能工作，2026年要解决的是如何让 Agent **可靠地工作**。答案就是 Harness Engineering。\n\n## 核心定位\n\n**Harness Engineering = AI 工程领域继 Prompt Engineering、Context Engineering 之后的第三次重心迁移**\n\n## 为什么需要 Harness？\n\n### 问题：模型幻觉与熵增\n\n- **幻觉**：LLM 会编造不存在的信息\n- **熵增**：随着对话进行，上下文会越来越混乱\n\n### 解决方案：Harness 作为\"操作系统\"\n\nHarness 是 AI 智能体的\"操作系统\"，通过以下方式解决问题：\n\n| 能力 | 说明 |\n|------|------|\n| **约束（Constraint）** | 限制 Agent 的行为范围 |\n| **反馈（Feedback）** | \n\n## 相关实体\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 来源摘要：articles\\2026-04-09-Harness-Engineering.md\n\n> 原始路径：raw/articles\\2026-04-09-Harness-Engineering.md\n> 摄入时间：2026-04-09 20:03\n\n## 核心观点\n\nHarness Engineering 是让 AI Agent 从‘能工作’到‘可靠工作’的关键技术，通过约束、反馈和控制三大组件实现系统的可持续运行。\n\n## 关键细节\n\n# Harness Engineering（驾驭工程）\n\n> 来源：知乎/AI铺子综合整理\n> 日期：2026-04-09\n> 主题：2026年最火的工程范式\n\n## 一句话总结\n\n2025年证明了 Agent 能工作，2026年要解决的是如何让 Agent **可靠地工作**。答案就是 Harness Engineering。\n\n## 核心定位\n\n**Harness Engineering = AI 工程领域继 Prompt Engineering、Context Engineering 之后的第三次重心迁移**\n\n## 为什么需要 Harness？\n\n### 问题：模型幻觉与熵增\n\n- **幻觉**：LLM 会编造不存在的信息\n- **熵增**：随着对话进行，上下文会越来越混乱\n\n### 解决方案：Harness 作为\"操作系统\"\n\nHarness 是 AI 智能体的\"操作系统\"，通过以下方式解决问题：\n\n| 能力 | 说明 |\n|------|------|\n| **约束（Constraint）** | 限制 Agent 的行为范围 |\n| **反馈（Feedback）** | \n\n## 相关实体\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "来源\\2026-04-09-articles_2026-04-09-Harness-Engineering.md",
-    "created": "2026-04-09T16:15:20.880282"
+    "created": "2026-04-09T20:12:35.714627"
   },
   {
     "title": "2026-04-09-articles_2026-04-09-Knowledge-Screenshots-Summary",
-    "content": "# 来源摘要：articles\\2026-04-09-Knowledge-Screenshots-Summary.md\n\n> 原始路径：raw/articles\\2026-04-09-Knowledge-Screenshots-Summary.md\n> 摄入时间：2026-04-09 16:10\n\n## 核心观点\n\n该文件整理了2026年4月9日的知识库截图，重点介绍了Karpathy的LLM Wiki知识管理方法、MemPalace AI记忆系统及Chrome DevTools MCP等项目。\n\n## 关键细节\n\n# 知识库截图整理总结\n\n> 来源：E:\\workspace\\knowledge-base\\raw\\screenshots\n> 整理日期：2026-04-09\n> 截图数量：611张\n\n## 本期主要内容\n\n### 1. Karpathy AI 知识库系列（2026年4月）\n\n这是今天整理的核心内容，关于 Karpathy 的 LLM Wiki 知识管理方法论。\n\n**核心要点：**\n- INGEST → QUERY → LINT 三阶段工作流\n- Schema/Wiki/Raw 三层架构\n- 人机分工：人类负责筛选、提问；AI 负责阅读、提炼、维护链接\n- Obsidian + AI 本地知识管理\n\n### 2. MemPalace - AI 记忆系统\n\n| 项目 | 信息 |\n|------|------|\n| 名称 | MemPalace (milla-jovovich/mempalace) |\n| Stars | 23.6k |\n| 特点 | 有史以来得分最高且免费的 AI 记忆系统 |\n| 标签 | python, ai, memory, mcp, llm, chromadb\n\n## 相关实体\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 来源摘要：articles\\2026-04-09-Knowledge-Screenshots-Summary.md\n\n> 原始路径：raw/articles\\2026-04-09-Knowledge-Screenshots-Summary.md\n> 摄入时间：2026-04-09 20:03\n\n## 核心观点\n\n该文件整理了2026年4月9日的知识库截图，主要内容包括Karpathy的LLM知识管理方法、MemPalace AI记忆系统和Chrome DevTools MCP等。\n\n## 关键细节\n\n# 知识库截图整理总结\n\n> 来源：E:\\workspace\\knowledge-base\\raw\\screenshots\n> 整理日期：2026-04-09\n> 截图数量：611张\n\n## 本期主要内容\n\n### 1. Karpathy AI 知识库系列（2026年4月）\n\n这是今天整理的核心内容，关于 Karpathy 的 LLM Wiki 知识管理方法论。\n\n**核心要点：**\n- INGEST → QUERY → LINT 三阶段工作流\n- Schema/Wiki/Raw 三层架构\n- 人机分工：人类负责筛选、提问；AI 负责阅读、提炼、维护链接\n- Obsidian + AI 本地知识管理\n\n### 2. MemPalace - AI 记忆系统\n\n| 项目 | 信息 |\n|------|------|\n| 名称 | MemPalace (milla-jovovich/mempalace) |\n| Stars | 23.6k |\n| 特点 | 有史以来得分最高且免费的 AI 记忆系统 |\n| 标签 | python, ai, memory, mcp, llm, chromadb\n\n## 相关实体\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "来源\\2026-04-09-articles_2026-04-09-Knowledge-Screenshots-Summary.md",
-    "created": "2026-04-09T16:15:20.880282"
+    "created": "2026-04-09T20:12:35.715133"
   },
   {
     "title": "2026-04-09-articles_karpathy-workflow",
-    "content": "# 来源摘要：articles\\karpathy-workflow.md\n\n> 原始路径：raw/articles\\karpathy-workflow.md\n> 摄入时间：2026-04-09 16:10\n\n## 核心观点\n\nKarpathy 提出使用 LLM 将原始资料编译成结构化的 wiki 知识库，通过三步工作流实现知识管理。\n\n## 关键细节\n\n# Karpathy 知识库工作流\n\n## 核心理念\n\n用 LLM 把原始资料（论文/文章/代码）编译成 wiki 知识库。\n\n## 工作流三步曲\n\n### STEP 01: 收集\n- raw/ 目录存放原始资料\n- 支持：论文/文章/GitHub/数据集/截图\n- 使用 Obsidian Web Clipper 保存网页\n\n### STEP 02: 编译\n- LLM 读取 raw/ 所有文件\n- 提取核心概念\n- 生成结构化 wiki 文章\n- 建立双向链接\n\n### STEP 03: 查询\n- 直接向 LLM 提问\n- LLM 在 wiki/ 中查找答案\n- 好答案归档回 wiki\n\n## 为什么不需要 RAG？\n\n100 篇/40 万字规模下，LLM 的上下文窗口足够大，直接把所有 wiki 内容放进 context 就够了。\n\n## 相关概念\n\n- [[LLM]]\n- [[Obsidian]]\n- [[知识管理]]\n- [[RAG]]\n\n\n## 相关实体\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 来源摘要：articles\\karpathy-workflow.md\n\n> 原始路径：raw/articles\\karpathy-workflow.md\n> 摄入时间：2026-04-09 20:03\n\n## 核心观点\n\nKarpathy的工作流使用LLM将各种原始资料编译成结构化的wiki知识库，并通过双向链接和直接查询来管理和获取信息。\n\n## 关键细节\n\n# Karpathy 知识库工作流\n\n## 核心理念\n\n用 LLM 把原始资料（论文/文章/代码）编译成 wiki 知识库。\n\n## 工作流三步曲\n\n### STEP 01: 收集\n- raw/ 目录存放原始资料\n- 支持：论文/文章/GitHub/数据集/截图\n- 使用 Obsidian Web Clipper 保存网页\n\n### STEP 02: 编译\n- LLM 读取 raw/ 所有文件\n- 提取核心概念\n- 生成结构化 wiki 文章\n- 建立双向链接\n\n### STEP 03: 查询\n- 直接向 LLM 提问\n- LLM 在 wiki/ 中查找答案\n- 好答案归档回 wiki\n\n## 为什么不需要 RAG？\n\n100 篇/40 万字规模下，LLM 的上下文窗口足够大，直接把所有 wiki 内容放进 context 就够了。\n\n## 相关概念\n\n- [[LLM]]\n- [[Obsidian]]\n- [[知识管理]]\n- [[RAG]]\n\n\n## 相关实体\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "来源\\2026-04-09-articles_karpathy-workflow.md",
-    "created": "2026-04-09T16:15:20.880282"
+    "created": "2026-04-09T20:12:35.715133"
   },
   {
     "title": "2026-04-09-github_2026-04-09-Alchemy-Tsinghua-AI-Science",
-    "content": "# 来源摘要：github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md\n\n> 原始路径：raw/github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md\n> 摄入时间：2026-04-09 16:10\n\n## 核心观点\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，提高科研效率。\n\n## 关键细节\n\n# Alchemy - 清华 AI 科研自动化框架\n\n## 基本信息\n\n| 项目 | 信息 |\n|------|------|\n| 名称 | Alchemy（炼丹炉） |\n| 机构 | 清华大学人工智能学院 |\n| 课题组 | 李佳助理教授课题组 |\n| GitHub | github.com/TsinghuaISE/Alchemy |\n| 发布日期 | 2026年3月23日 |\n| 主要贡献者 | 李乐晖（框架设计+核心开发）、蔡立一（部分关键工作） |\n\n## 核心定位\n\n**一句话总结**：让 AI Scientist 只需交付 algorithm.py + yaml，Alchemy 负责把科研基础设施连接起来。\n\n**Slogan**：让自动化 AI 科研只剩最后一块拼图\n\n## 解决问题\n\n当前自动化 AI 科研系统的**核心矛盾**：\n- 科学发现与科研基础设施耦合在同一条链路里\n- 工程负担重，拖累了科研效率\n- 难以规模化开展实验\n\n## 核心架构\n\n### 两层分离设计\n\n```\n┌─────────────────────────────────────┐\n│  A\n\n## 相关实体\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n\n## 相关概念\n- [[AI 科研自动化]]\n- [[Alchemy 框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 来源摘要：github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md\n\n> 原始路径：raw/github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md\n> 摄入时间：2026-04-09 20:03\n\n## 核心观点\n\nAlchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，实现高效科研。用户只需提供算法代码和配置文件，Alchemy 负责搭建实验环境、优化算法。\n\n## 关键细节\n\n# Alchemy - 清华 AI 科研自动化框架\n\n## 基本信息\n\n| 项目 | 信息 |\n|------|------|\n| 名称 | Alchemy（炼丹炉） |\n| 机构 | 清华大学人工智能学院 |\n| 课题组 | 李佳助理教授课题组 |\n| GitHub | github.com/TsinghuaISE/Alchemy |\n| 发布日期 | 2026年3月23日 |\n| 主要贡献者 | 李乐晖（框架设计+核心开发）、蔡立一（部分关键工作） |\n\n## 核心定位\n\n**一句话总结**：让 AI Scientist 只需交付 algorithm.py + yaml，Alchemy 负责把科研基础设施连接起来。\n\n**Slogan**：让自动化 AI 科研只剩最后一块拼图\n\n## 解决问题\n\n当前自动化 AI 科研系统的**核心矛盾**：\n- 科学发现与科研基础设施耦合在同一条链路里\n- 工程负担重，拖累了科研效率\n- 难以规模化开展实验\n\n## 核心架构\n\n### 两层分离设计\n\n```\n┌─────────────────────────────────────┐\n│  A\n\n## 相关实体\n- [[Alchemy]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n\n## 相关概念\n- [[AI 科研自动化框架]]\n- [[Alchemy（炼丹炉）]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "来源\\2026-04-09-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md",
-    "created": "2026-04-09T16:15:20.880282"
+    "created": "2026-04-09T20:12:35.716135"
   },
   {
     "title": "2026-04-09-github_2026-04-09-Alchemy-清华AI科研自动化框架",
-    "content": "# 来源摘要：github\\2026-04-09-Alchemy-清华AI科研自动化框架.md\n\n> 原始路径：raw/github\\2026-04-09-Alchemy-清华AI科研自动化框架.md\n> 摄入时间：2026-04-09 16:10\n\n## 核心观点\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理实验环境搭建等工程问题，旨在提高科研效率。\n\n## 关键细节\n\n# Alchemy（炼丹炉）— 清华 AI 科研自动化框架\n\n> 发布日期：2026 年 3 月 23 日\n> 机构：清华大学人工智能学院\n> GitHub：github.com/TsinghuaISE/Alchemy\n\n## 一句话总结\n\n用户只需提供 algorithm.py + yaml 配置文件，Alchemy 自动搞定剩下的科研工程基础设施，让 AI Scientist 专注算法创新。\n\n**Slogan**: \"让自动化 AI 科研只剩最后一块拼图\"\n\n## 核心架构\n\n### 设计理念\n\n当前 AI Scientist 系统的核心矛盾：科学发现与科研基础设施耦合在同一条链路里，导致：\n- 工程负担重，拖累了科研效率\n- 难以规模化开展实验\n\n**Alchemy 解法：分离两层**\n\n```\nAI Scientist（算法开发层）  <- 用户只需关注这里\nAlchemy 炼丹炉（研究环境执行层） <- 复杂工程自动化处理\n```\n\n## 核心模块\n\n| 模块 | 说明 |\n|------|------|\n| ai_scientist | AI Scientist 核心算法\n\n## 相关实体\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 来源摘要：github\\2026-04-09-Alchemy-清华AI科研自动化框架.md\n\n> 原始路径：raw/github\\2026-04-09-Alchemy-清华AI科研自动化框架.md\n> 摄入时间：2026-04-09 20:03\n\n## 核心观点\n\nAlchemy是清华大学AI科研自动化框架，用户只需提供算法代码和配置文件，Alchemy自动处理科研基础设施，让科学家专注于算法创新。\n\n## 关键细节\n\n# Alchemy（炼丹炉）— 清华 AI 科研自动化框架\n\n> 发布日期：2026 年 3 月 23 日\n> 机构：清华大学人工智能学院\n> GitHub：github.com/TsinghuaISE/Alchemy\n\n## 一句话总结\n\n用户只需提供 algorithm.py + yaml 配置文件，Alchemy 自动搞定剩下的科研工程基础设施，让 AI Scientist 专注算法创新。\n\n**Slogan**: \"让自动化 AI 科研只剩最后一块拼图\"\n\n## 核心架构\n\n### 设计理念\n\n当前 AI Scientist 系统的核心矛盾：科学发现与科研基础设施耦合在同一条链路里，导致：\n- 工程负担重，拖累了科研效率\n- 难以规模化开展实验\n\n**Alchemy 解法：分离两层**\n\n```\nAI Scientist（算法开发层）  <- 用户只需关注这里\nAlchemy 炼丹炉（研究环境执行层） <- 复杂工程自动化处理\n```\n\n## 核心模块\n\n| 模块 | 说明 |\n|------|------|\n| ai_scientist | AI Scientist 核心算法\n\n## 相关实体\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "来源\\2026-04-09-github_2026-04-09-Alchemy-清华AI科研自动化框架.md",
-    "created": "2026-04-09T16:15:20.880282"
+    "created": "2026-04-09T20:12:35.716646"
   },
   {
     "title": "2026-04-09-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周",
-    "content": "# 来源摘要：github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md\n\n> 原始路径：raw/github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md\n> 摄入时间：2026-04-09 16:10\n\n## 核心观点\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发尤为突出。\n\n## 关键细节\n\n# GitHub 一周热门项目 TOP20【2026第9周】\n\n> 来源：赛博笔记（抖音）\n> 日期：2026-04-09\n> 主题：GitHub一周热门项目TOP20\n\n## 本周趋势总结\n\n本周 GitHub 热门项目 TOP20 依旧没有逃脱 AI 的浪潮，大部分项目依旧与 AI 相关。\n\n## 核心主题\n\n### AI 编程 Agent 狂潮\n\n本周的 GitHub 热榜几乎被一个主题所统治——**AI 编程 Agent**。\n\n3月31日 Claude Code 的源码通过 npm 的 sourcemap 文件意外泄露，整个开发者社区为之沸腾，围绕 Claude Code 生态的各类项目如雨后春笋般涌现。\n\n## 本期热点趋势总结\n\n本期 GitHub 热榜反映出 AI 领域正经历从**云端黑盒向端侧落地与生产力闭环深化的范式转移**。\n\n以 Google **LiteRT-LM** 为代表的项目标志着大模型技术栈持续下沉，端侧推理性能的底层优化已...\n\n## TOP 项目一览\n\n| 排名 | 项目 | 描述 | Stars |\n|------|------|------|\n\n## 相关实体\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 来源摘要：github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md\n\n> 原始路径：raw/github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md\n> 摄入时间：2026-04-09 20:03\n\n## 核心观点\n\n2026年第9周GitHub热门项目TOP20主要围绕AI编程Agent、端侧推理和知识图谱展开，其中Claude Code生态爆发。\n\n## 关键细节\n\n# GitHub 一周热门项目 TOP20【2026第9周】\n\n> 来源：赛博笔记（抖音）\n> 日期：2026-04-09\n> 主题：GitHub一周热门项目TOP20\n\n## 本周趋势总结\n\n本周 GitHub 热门项目 TOP20 依旧没有逃脱 AI 的浪潮，大部分项目依旧与 AI 相关。\n\n## 核心主题\n\n### AI 编程 Agent 狂潮\n\n本周的 GitHub 热榜几乎被一个主题所统治——**AI 编程 Agent**。\n\n3月31日 Claude Code 的源码通过 npm 的 sourcemap 文件意外泄露，整个开发者社区为之沸腾，围绕 Claude Code 生态的各类项目如雨后春笋般涌现。\n\n## 本期热点趋势总结\n\n本期 GitHub 热榜反映出 AI 领域正经历从**云端黑盒向端侧落地与生产力闭环深化的范式转移**。\n\n以 Google **LiteRT-LM** 为代表的项目标志着大模型技术栈持续下沉，端侧推理性能的底层优化已...\n\n## TOP 项目一览\n\n| 排名 | 项目 | 描述 | Stars |\n|------|------|------|\n\n## 相关实体\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "来源\\2026-04-09-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周.md",
-    "created": "2026-04-09T16:15:20.880282"
+    "created": "2026-04-09T20:12:35.716646"
   },
   {
     "title": "2026-04-09-README",
-    "content": "# 来源摘要：README.md\n\n> 原始路径：raw/README.md\n> 摄入时间：2026-04-09 16:10\n\n## 核心观点\n\n该文件描述了原始资料的存放规则和使用方式，强调只读原则并介绍了编译流程。\n\n## 关键细节\n\n﻿# Raw 原始资料层\n\n> 本目录存放原始资料，**只读，不可修改**。\n\n## 目录结构\n\n- \u0007rticles/ - 文章\n- papers/ - 论文\n- github/ - GitHub 相关\n- datasets/ - 数据集\n- 素材/ - 内嵌图片\n\n## 使用方式\n\n将原始资料（md/txt/pdf/json/csv）放入对应子目录，然后运行 python compile.py 编译到 wiki。\n\n## 原则\n\n1. **只读**：绝不修改原始资料\n2. **来源可追溯**：文件名包含日期\n3. **图片本地化**：使用 素材/ 目录存储内嵌图片\n\n\n## 相关实体\n- [[README.md]]\n- [[compile.py]]\n- [[wiki]]\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 来源摘要：README.md\n\n> 原始路径：raw/README.md\n> 摄入时间：2026-04-09 20:03\n\n## 核心观点\n\nREADME.md文件描述了Raw目录的结构和使用方式，强调了只读原则，并介绍了编译方法和文件命名规则。\n\n## 关键细节\n\n﻿# Raw 原始资料层\n\n> 本目录存放原始资料，**只读，不可修改**。\n\n## 目录结构\n\n- \u0007rticles/ - 文章\n- papers/ - 论文\n- github/ - GitHub 相关\n- datasets/ - 数据集\n- 素材/ - 内嵌图片\n\n## 使用方式\n\n将原始资料（md/txt/pdf/json/csv）放入对应子目录，然后运行 python compile.py 编译到 wiki。\n\n## 原则\n\n1. **只读**：绝不修改原始资料\n2. **来源可追溯**：文件名包含日期\n3. **图片本地化**：使用 素材/ 目录存储内嵌图片\n\n\n## 相关实体\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "来源\\2026-04-09-README.md",
-    "created": "2026-04-09T16:15:20.880282"
+    "created": "2026-04-09T20:12:35.717656"
   },
   {
     "title": "Agent",
-    "content": "# Agent\n\n> 分类：概念\n> 创建时间：2026-04-09 16:09\n\n在计算机科学中，“Agent”通常指能够自主执行任务或决策的软件程序或机器人。它具备感知环境、制定策略和采取行动的能力。关键要点包括：自治性（能独立工作）、反应性（对环境变化迅速响应）、社会性（与其他智能体交互）以及适应性（根据经验学习并改进）。在人工智能领域，Agent常用于模拟真实世界中的决策过程，广泛应用于游戏开发、机器人技术及自动化系统中。\n\n## 相关概念\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Agent\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n在计算机科学领域中，“Agent”通常指一种能够感知环境并根据特定目标采取行动的人工智能系统。它具有自主性、适应性和反应性等特性，并且能够在复杂环境中执行任务或解决问题。关键要点包括：自主性（能独立做出决策）、适应性（能够调整策略以应对变化的环境）和反应性（对环境刺激作出快速响应）。此外，Agent还可以分为理性Agent与非理性Agent，前者追求最大化效用函数，后者则不遵循这一原则。\n\n## 相关概念\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Agent.md",
-    "created": "2026-04-09T16:15:20.880282"
+    "created": "2026-04-09T20:12:35.719850"
   },
   {
     "title": "AI Agent",
-    "content": "# AI Agent\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nAI Agent是一种能够自主执行任务的人工智能实体。它基于特定环境中的感知与行动来实现目标。关键要点包括：自主性、适应性和学习能力；通常在复杂或动态环境中运作；通过算法优化决策过程以最大化效用函数值；广泛应用于游戏、机器人技术及自动化系统等领域。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# AI Agent\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nAI Agent是一种能够自主执行任务或与环境交互的人工智能实体。它具备感知、决策和行动的能力，并能根据环境反馈进行学习和适应。关键要点包括：自主性（能够在没有人类直接干预的情况下工作）、适应性（能够根据新信息调整行为策略）以及效率（在资源限制下实现目标）。AI Agent广泛应用于游戏、机器人技术、自动化系统等领域，是现代智能系统的重要组成部分。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\AI Agent.md",
-    "created": "2026-04-09T16:15:20.881299"
+    "created": "2026-04-09T20:12:35.720872"
   },
   {
     "title": "AI Scientist",
-    "content": "# AI Scientist\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nAI Scientist 是一种专注于人工智能领域的研究与开发的专业角色。他们利用统计学、机器学习和深度学习等技术来解决复杂问题，并推动理论和技术的发展。其核心任务包括设计智能系统、优化算法性能以及探索新的应用领域。AI科学家不仅需要深厚的数学和编程技能，还需要具备创新思维和跨学科知识，以应对不断变化的技术挑战。此外，他们还需关注伦理和社会影响，确保技术的负责任使用。\n\n## 相关概念\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# AI Scientist\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nAI Scientist 是一种专注于人工智能领域的研究与开发的专业角色。他们运用统计学、机器学习和深度学习等技术来解决复杂问题，并推动理论创新和技术进步。关键要点包括：具备深厚的数学和编程基础；擅长数据分析与建模；能够设计并优化复杂的算法系统；致力于跨学科合作，促进AI在各行业的应用与发展。\n\n## 相关概念\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\AI Scientist.md",
-    "created": "2026-04-09T16:15:20.881299"
+    "created": "2026-04-09T20:12:35.720872"
   },
   {
     "title": "AI 科研",
     "content": "# AI 科研\n\n> 分类：概念\n> 创建时间：2026-04-09 15:37\n\nAI科研是指运用人工智能技术和方法进行科学研究的过程。它涵盖了机器学习、深度学习、自然语言处理等技术在理论探索与实际应用中的创新研究。关键要点包括：数据驱动的研究方法；算法优化与模型构建；跨学科合作；伦理与法律考量；以及对社会影响的评估和管理。\n\n## 相关概念\n- [[Alchemy 框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\AI 科研.md",
-    "created": "2026-04-09T16:15:20.881299"
+    "created": "2026-04-09T20:12:35.720872"
   },
   {
     "title": "AI 科研自动化",
     "content": "# AI 科研自动化\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nAI科研自动化是指利用人工智能技术来优化科学研究过程中的数据处理、实验设计、结果分析等环节，从而提高研究效率与质量的技术方法。其关键要点包括：智能化的数据管理与处理能力；自动化的实验设计与执行系统；高效的结果分析与解释工具；以及跨学科的知识整合与应用能力。通过这些手段，AI科研自动化能够显著缩短科研周期，提升研究成果的质量和创新性。\n\n## 相关概念\n- [[Alchemy 框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\AI 科研自动化.md",
-    "created": "2026-04-09T16:15:20.881299"
+    "created": "2026-04-09T20:12:35.721900"
+  },
+  {
+    "title": "AI 科研自动化框架",
+    "content": "# AI 科研自动化框架\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nAI科研自动化框架是一种集成工具集与流程，旨在提高人工智能研究效率的技术系统。它通过标准化实验设置、自动执行重复性任务以及优化资源分配来加速模型开发周期。关键要点包括：支持多种机器学习算法的无缝切换；提供灵活的数据处理和预处理功能；具备自定义脚本和模块扩展能力；集成版本控制与结果追踪，确保研究过程透明可追溯；促进团队协作与知识共享。\n\n## 相关概念\n- [[Alchemy（炼丹炉）]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "path": "概念\\AI 科研自动化框架.md",
+    "created": "2026-04-09T20:12:35.721900"
   },
   {
     "title": "AI 编程 Agent",
-    "content": "# AI 编程 Agent\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nAI编程Agent是一种智能实体，在特定环境中执行任务或解决问题的人工智能系统。它能够通过学习、推理和自我优化来适应环境变化，并自主完成分配给它的任务。关键要点包括：自主性（根据环境自主行动）、学习能力（从经验中学习并改进策略）、适应性（应对新情况的能力）以及效率（以最小资源消耗实现目标）。\n\n## 相关概念\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# AI 编程 Agent\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nAI编程Agent是一种智能代理，能够利用人工智能技术进行学习、推理和决策以完成特定任务或目标。它基于机器学习算法，在复杂环境中自主执行操作并优化性能。关键要点包括：自主性（根据环境变化调整策略）、适应性（通过学习改善表现）以及高效性（在资源限制下实现最优结果）。AI编程Agent广泛应用于自动化、游戏开发和智能系统设计等领域，是现代软件工程的重要组成部分。\n\n## 相关概念\n- [[端侧推理]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\AI 编程 Agent.md",
-    "created": "2026-04-09T16:15:20.881299"
+    "created": "2026-04-09T20:12:35.721900"
   },
   {
     "title": "Alchemy 框架",
     "content": "# Alchemy 框架\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nAlchemy框架是一种轻量级、灵活的Web开发工具包，专注于快速构建响应式网站与应用。它基于Python语言，采用简洁明了的设计理念，支持多种流行的前端技术如HTML5和CSS3，并且易于学习和使用。Alchemy的核心优势在于其模块化架构，允许开发者按需选择所需组件，同时提供强大的路由系统、数据库集成以及REST API支持，确保项目开发的高效与便捷。\n\n## 相关概念\n- [[AI 科研自动化]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Alchemy 框架.md",
-    "created": "2026-04-09T16:15:20.881299"
+    "created": "2026-04-09T20:12:35.721900"
   },
   {
     "title": "Alchemy",
     "content": "# Alchemy\n\n> 分类：概念\n> 创建时间：2026-04-09 15:29\n\nAlchemy 是一种古代哲学和科学实践，旨在将普通金属转化为黄金，并探索物质转化的可能性。它也涉及炼制长生不老药等神秘目标。关键要点包括：实验化学的早期形式、哲学与科学交织的思想体系、四大元素理论的应用以及对现代化学的重要贡献。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n- [[AI Scientist 系统]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Alchemy.md",
-    "created": "2026-04-09T16:15:20.881299"
+    "created": "2026-04-09T20:12:35.722935"
   },
   {
     "title": "Alchemy框架",
-    "content": "# Alchemy框架\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nAlchemy框架是一种用于构建复杂Web应用的技术工具包，它基于现代编程语言和技术栈，旨在简化开发流程并提高效率。Alchemy的关键要点包括：支持多种编程语言、提供灵活的模块化结构以适应不同需求、内置安全性和性能优化功能、以及强大的社区支持和文档资源。通过使用Alchemy框架，开发者可以快速搭建起稳定且高效的Web应用基础架构。\n\n## 相关概念\n- [[AI Scientist]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Alchemy框架\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nAlchemy框架是一种用于构建复杂Web应用的技术工具包，它基于现代JavaScript库和框架设计，旨在简化开发流程并提高效率。Alchemy的核心特点包括模块化架构、强大的路由系统以及对多种前端技术的支持，如React或Vue.js。此外，该框架还提供了丰富的API文档和示例代码，便于开发者快速上手。通过使用Alchemy，开发者能够更专注于业务逻辑的实现，而无需过多关注底层细节。\n\n## 相关概念\n- [[AI Scientist]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Alchemy框架.md",
-    "created": "2026-04-09T16:15:20.882330"
+    "created": "2026-04-09T20:12:35.722935"
+  },
+  {
+    "title": "Alchemy（炼丹炉）",
+    "content": "# Alchemy（炼丹炉）\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nAlchemy，又称炼金术，是一种古代哲学与科学实践，旨在将普通金属转化为黄金、发现长生不老药或创造哲人之石等神秘物质。其核心理念包括转化、合成与分解的过程，并强调自然界的和谐统一。尽管在现代科学中已不再被视为一种严谨的学科，但alchemy对化学、医学乃至哲学等领域产生了深远影响。\n\n## 相关概念\n- [[AI 科研自动化框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline 机制]]\n- [[多模态推荐任务]]\n- [[Alchemy]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "path": "概念\\Alchemy（炼丹炉）.md",
+    "created": "2026-04-09T20:12:35.722935"
   },
   {
     "title": "articles_karpathy-workflow",
     "content": "# articles_karpathy-workflow\n\n> 来源: articles\\karpathy-workflow.md\n> 时间: 2026-04-09 08:12\n\n## 摘要\n\n来自 karpathy-workflow.md 的内容\n\n## 相关概念\n\n\n## 原始内容\n\n```\n# Karpathy 知识库工作流\n\n## 核心理念\n\n用 LLM 把原始资料（论文/文章/代码）编译成 wiki 知识库。\n\n## 工作流三步曲\n\n### STEP 01: 收集\n- raw/ 目录存放原始资料\n- 支持：论文/文章/GitHub/数据集/截图\n- 使用 Obsidian Web Clipper 保存网页\n\n### STEP 02: 编译\n- LLM 读取 raw/ 所有文件\n- 提取核心概念\n- 生成结构化 wiki 文章\n- 建立双向链接\n\n### STEP 03: 查询\n- 直接向 LLM 提问\n- LLM 在 wiki/ 中查找答案\n- 好答案归档回 wiki\n\n## 为什么不需要 RAG？\n\n100 篇/40 万字规模下，LLM 的上下文窗口足够大，直接把所有 wiki 内容放进 context 就够了。\n\n## 相关概念\n\n- [[LLM]]\n- [[Obsidian]]\n- [[知识管理]]\n- [[RAG]]\n...\n```\n\n\n---\n\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\articles_karpathy-workflow.md",
-    "created": "2026-04-09T16:15:20.882330"
+    "created": "2026-04-09T20:12:35.722935"
   },
   {
     "title": "Constraint Engine",
-    "content": "# Constraint Engine\n\n> 分类：概念\n> 创建时间：2026-04-09 16:09\n\nConstraint Engine 是一种用于解决约束满足问题的技术工具或算法。它通过定义变量及其可能值范围以及约束条件来工作，旨在找到所有符合这些约束条件的有效解集。关键要点包括：1) 高效性——能够快速筛选出不符合条件的选项；2) 灵活性——适用于多种类型的问题和领域；3) 多样化求解策略——如回溯、最差优先等方法，以优化搜索过程。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Constraint Engine\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nConstraint Engine是一种用于解决约束满足问题的软件组件或库。它通过定义变量及其可能值范围以及约束条件来工作，旨在找到所有可能满足这些约束的解集。关键要点包括：灵活性高、可应用于多种领域（如调度、配置管理）、依赖于高效的搜索算法和冲突驱动回溯策略以优化性能。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Constraint Engine.md",
-    "created": "2026-04-09T16:15:20.882330"
+    "created": "2026-04-09T20:12:35.722935"
   },
   {
     "title": "Context Engineering",
-    "content": "# Context Engineering\n\n> 分类：概念\n> 创建时间：2026-04-09 16:09\n\nContext Engineering 是一种系统化的方法，用于识别、理解和管理与软件项目相关的上下文信息。它强调在开发过程中明确界定业务需求、用户角色及其环境，以确保技术解决方案能够准确满足实际需求。关键要点包括：1）定义清晰的业务目标和用户场景；2）构建详细的上下文模型来描述系统运行环境；3）促进跨团队沟通与协作，提高项目透明度；4）持续迭代优化，确保最终产品符合预期。通过这些步骤，Context Engineering 能够显著提升软件开发的质量和效率。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Context Engineering\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nContext Engineering 是一种系统化的方法，旨在明确、设计并管理软件开发中的上下文依赖关系。通过定义清晰的业务规则与数据模型，它确保了团队在复杂项目中能够高效协作，减少误解和错误。关键要点包括：1）明确业务需求；2）设计可扩展的数据架构；3）持续优化文档以适应变化；4）促进跨部门沟通与理解。Context Engineering 有助于提高软件质量、降低维护成本，并加速产品上市时间。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Context Engineering.md",
-    "created": "2026-04-09T16:15:20.882330"
+    "created": "2026-04-09T20:12:35.723969"
   },
   {
     "title": "Control Loop",
-    "content": "# Control Loop\n\n> 分类：概念\n> 创建时间：2026-04-09 16:09\n\nControl Loop（控制回路）是一种自动化系统的核心组成部分，用于维持一个或多个过程变量在预设的目标值附近。它通常包括测量、比较、计算和执行四个基本环节：首先通过传感器测量实际值；然后与设定值进行对比以确定偏差；接着控制器根据偏差大小调整控制量；最后执行器依据控制信号对被控对象施加影响，使系统输出接近目标值。关键要点在于闭环反馈机制确保了系统的稳定性和准确性，广泛应用于工业自动化、航空航天和医疗设备等领域。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Control Loop\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nControl Loop（控制回路）是一种自动控制系统，通过闭环反馈机制调整系统输出以达到预期目标。它由测量元件、控制器、执行器和被控对象组成。关键要点包括：设定点与实际值的比较产生误差信号；控制器根据此信号调整控制量；执行器作用于被控对象改变其状态；最终使系统输出接近设定值，形成闭环调节过程。控制回路广泛应用于工业自动化、航空航天及医疗设备等领域。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Control Loop.md",
-    "created": "2026-04-09T16:15:20.882846"
+    "created": "2026-04-09T20:12:35.723969"
   },
   {
     "title": "DeerFlow",
     "content": "# DeerFlow\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nDeerFlow 是一种基于区块链技术的去中心化流动性协议，旨在优化数字资产间的流动性与互操作性。该协议通过智能合约自动执行交易匹配与资金分配，降低交易成本并提高效率。其核心功能包括提供流动性和价格发现机制、支持多种加密货币之间的即时兑换以及确保用户隐私和安全。DeerFlow 的目标是构建一个开放、透明且高效的去中心化金融生态系统。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\DeerFlow.md",
-    "created": "2026-04-09T16:15:20.882846"
+    "created": "2026-04-09T20:12:35.723969"
   },
   {
     "title": "Feedback System",
-    "content": "# Feedback System\n\n> 分类：概念\n> 创建时间：2026-04-09 16:09\n\nFeedback System：一种控制系统，通过将系统的输出反馈到输入端来调整其行为，以达到期望的结果或性能标准。关键要点包括：闭环控制、误差修正、稳定性与响应速度的优化、以及在工业自动化、航空航天、电子设备等领域的广泛应用。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Feedback System\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nFeedback System：一种控制系统，通过将系统的输出信号的一部分或全部返回到输入端与参考输入进行比较，以调整系统行为并改善性能。关键要点包括：闭环控制、误差修正、稳定性分析、动态响应及调节参数设计等。该系统广泛应用于工业自动化、航空航天、电子设备等领域，用于精确控制和优化复杂过程。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Control Loop]]\n- [[Prompt Engineering]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Feedback System.md",
-    "created": "2026-04-09T16:15:20.882846"
+    "created": "2026-04-09T20:12:35.723969"
   },
   {
     "title": "Harness Engineering",
-    "content": "# Harness Engineering\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nHarness Engineering 是一种系统化的方法，用于设计、开发和优化复杂的工程产品或系统的集成解决方案。它强调跨学科团队合作，通过早期识别风险和挑战来提高项目成功率。关键要点包括：采用模块化设计理念；实施全面的测试与验证流程；确保所有组件间的兼容性和互操作性；重视用户体验和性能优化；以及持续改进机制以适应技术发展和市场需求变化。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Harness Engineering\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nHarness Engineering 是一种系统化的方法论，用于设计、开发和维护复杂的软件生态系统中的组件和服务。其核心在于通过模块化和标准化的设计原则来提高系统的可扩展性、可靠性和安全性。关键要点包括：采用微服务架构以增强灵活性；实施持续集成/持续部署（CI/CD）流程确保高效迭代；强调代码质量和自动化测试以减少错误；以及注重团队协作与知识共享，促进最佳实践的传播。通过这些策略，Harness Engineering 能够显著提升软件开发和交付过程中的效率与质量。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Harness Engineering.md",
-    "created": "2026-04-09T16:15:20.882846"
+    "created": "2026-04-09T20:12:35.723969"
   },
   {
     "title": "Karpathy 知识库工作流",
-    "content": "# Karpathy 知识库工作流\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nKarpathy知识库工作流是一种用于构建和管理机器学习项目的技术文档和代码结构方法。由Andrej Karpathy提出，该工作流强调清晰地分离数据、模型、训练脚本和评估逻辑，以促进项目的可维护性和扩展性。关键要点包括：1) 数据存储与处理的明确划分；2) 模型定义与实现的独立性；3) 训练过程的自动化配置；4) 结果可视化与分析工具集成。这种结构化方法有助于团队协作，并简化了从项目初期到生产部署的整个生命周期管理。\n\n## 相关概念\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Karpathy 知识库工作流\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nKarpathy知识库工作流是一种用于构建和管理机器学习模型的技术文档编写方法论，由Andrej Karpathy提出。该工作流强调清晰、简洁地记录从数据准备到模型训练与评估的整个过程，确保每个步骤都有详细的注释和解释。关键要点包括：1）明确的数据处理流程；2）详尽的代码注释；3）持续的知识积累与分享；4）促进团队成员之间的沟通与协作。通过遵循这一工作流，开发者可以更高效地构建、测试和优化机器学习模型，并确保文档易于理解和维护。\n\n## 相关概念\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Karpathy 知识库工作流.md",
-    "created": "2026-04-09T16:15:20.883934"
+    "created": "2026-04-09T20:12:35.724978"
   },
   {
     "title": "LLM",
-    "content": "# LLM\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nLLM（大型语言模型）是一种能够处理和生成自然语言文本的人工智能系统。这类模型通常基于深度学习技术，拥有庞大的参数量和训练数据集，使其在多种自然语言任务上表现出色。其关键特点包括强大的语义理解和生成能力、多样的应用场景以及对上下文的理解与记忆能力。LLM的发展推动了诸如机器翻译、文本摘要、对话系统等领域的进步，并且正在逐步改变人机交互的方式。\n\n## 相关概念\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# LLM\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nLLM（大型语言模型）是一种能够处理和生成自然语言文本的人工智能技术。这类模型通常基于深度学习框架，通过大规模语料库训练，以理解和生成人类语言。其关键特点包括：强大的语言理解能力、广泛的知识覆盖范围以及多样的应用潜力。常见的应用场景包括但不限于自动摘要、机器翻译、对话系统等。LLM的发展促进了自然语言处理领域的进步，并在多个行业和领域中展现出广泛应用的前景。\n\n## 相关概念\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\LLM.md",
-    "created": "2026-04-09T16:15:20.899532"
+    "created": "2026-04-09T20:12:35.724978"
   },
   {
     "title": "MCP (Model Context Protocol)",
-    "content": "# MCP (Model Context Protocol)\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nMCP（Model Context Protocol）是一种用于软件开发中模型与视图之间交互的协议。它定义了如何在不同的上下文环境中管理数据模型，确保数据的一致性和完整性。关键要点包括：1) 强调数据模型的中心地位；2) 支持多视角的数据展示和操作；3) 促进模块化设计，提高代码复用性与可维护性；4) 简化复杂系统的开发过程，增强团队协作效率。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# MCP (Model Context Protocol)\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nMCP（Model Context Protocol）是一种用于软件开发中的数据模型与业务逻辑之间交互的协议。它允许在不同的模块或组件间高效地传递和处理复杂的数据结构，确保数据的一致性和完整性。关键要点包括：1. 提高系统的可维护性和扩展性；2. 通过定义明确的数据接口减少耦合度；3. 支持跨平台和多语言开发环境的集成与协作。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MemPalace]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\MCP (Model Context Protocol).md",
-    "created": "2026-04-09T16:15:20.899532"
+    "created": "2026-04-09T20:12:35.724978"
   },
   {
     "title": "MemPalace",
-    "content": "# MemPalace\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nMemPalace（记忆宫殿）是一种记忆技巧，源自古希腊罗马时期的“位置记忆法”。通过将要记忆的信息与一个虚拟的空间中的具体地点关联起来，利用空间布局帮助大脑更有效地存储和检索信息。关键要点包括：1) 构建个人化的宫殿；2) 在宫殿中放置需要记忆的项目；3) 以故事形式连接各个项目增强记忆效果；4) 定期复习以巩固记忆。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# MemPalace\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nMemPalace是一种记忆宫殿技术，也称为方法记忆法或洛基特技巧，它通过将信息与特定地点关联来增强记忆力。用户在心中构建一个虚拟宫殿，并将需要记忆的信息放置于宫殿内的不同位置。这种方法的关键在于利用空间布局和视觉化联想，使抽象信息变得具体可感，从而提高记忆效率。MemPalace特别适用于学习语言、历史事件或任何需要大量记忆的领域。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[Obsidian Web Clipper]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\MemPalace.md",
-    "created": "2026-04-09T16:15:20.900541"
+    "created": "2026-04-09T20:12:35.725490"
   },
   {
     "title": "Obsidian Web Clipper",
-    "content": "# Obsidian Web Clipper\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nObsidian Web Clipper 是一款由 Obsidian 应用开发的功能插件，用于直接从网页抓取信息并保存至 Obsidian 笔记本中。通过此工具，用户可以轻松地截取网页内容、图片及链接，并自动同步到本地 Obsidian 数据库，便于后续整理和引用。其关键要点包括：便捷的网页内容管理、支持多种格式的文件导入、增强笔记创建效率、集成于主流浏览器确保无缝使用体验。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Obsidian Web Clipper\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nObsidian Web Clipper 是一款由 Obsidian 应用开发的功能插件，允许用户直接从网页中抓取信息并保存至个人知识库或笔记系统。该工具支持多种格式的网页内容提取，并能自动生成引用链接，方便管理和检索。关键要点包括：跨平台兼容性、强大的剪辑功能、与 Obsidian 主体无缝集成以及易于设置和使用的特性。\n\n## 相关概念\n- [[Karpathy 知识库工作流]]\n- [[Harness Engineering]]\n- [[MCP (Model Context Protocol)]]\n- [[MemPalace]]\n- [[Karpathy AI 知识库系列]]\n- [[MemPalace (milla-jovovich/mempalace)]]\n- [[chrome-devtools-mcp]]\n- [[DataTool]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Knowledge-Screenshots-Summary.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Obsidian Web Clipper.md",
-    "created": "2026-04-09T16:15:20.900541"
+    "created": "2026-04-09T20:12:35.725490"
   },
   {
     "title": "Prompt Engineering",
-    "content": "# Prompt Engineering\n\n> 分类：概念\n> 创建时间：2026-04-09 16:09\n\nPrompt Engineering 是一种设计和优化提示以引导AI系统产生预期响应的技术。它涉及创建清晰、具体且富有创意的输入，以确保人工智能模型能够准确理解任务并提供高质量输出。关键要点包括：明确性（确保指令清晰无歧义）、简洁性（保持指令简短精炼）、多样性（尝试不同表达方式以获得最佳结果）和反馈循环（根据AI响应调整提示）。Prompt Engineering 在自然语言处理、内容生成等多个领域具有广泛应用价值。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[DeerFlow]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Prompt Engineering\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nPrompt Engineering 是一种技术，旨在通过精心设计的提示（prompt）来优化人机交互，特别是在自然语言处理领域。它涉及创建能够引导模型产生准确、相关且有用响应的指令或问题。关键要点包括：明确性与简洁性、意图导向、多样性与创造性以及持续迭代以提升性能。Prompt Engineering 的目标是提高生成式AI系统的效率和效果，使其更好地满足用户需求。\n\n## 相关概念\n- [[Agent]]\n- [[Harness Engineering]]\n- [[Constraint Engine]]\n- [[Feedback System]]\n- [[Control Loop]]\n- [[Context Engineering]]\n- [[LLM]]\n- [[AI Agent]]\n- [[Anthropic]]\n- [[OpenAI]]\n- [[DeepMind]]\n- [[字节跳动]]\n\n## 来源\n- [[2026-04-09-articles\\2026-04-09-Harness-Engineering.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Prompt Engineering.md",
-    "created": "2026-04-09T16:15:20.900541"
+    "created": "2026-04-09T20:12:35.725490"
   },
   {
     "title": "Python 环境",
     "content": "# Python 环境\n\n> 分类：概念\n> 创建时间：2026-04-09 10:16\n\nPython环境是指运行Python代码所需的一系列软件组件和技术栈。它通常包括Python解释器、标准库以及第三方库（如NumPy, Pandas等）。一个完整的Python环境还可能包含虚拟环境工具（如venv或conda），用于隔离不同项目的依赖关系，确保开发和生产环境的一致性。安装管理工具（如pip或conda）也是构建高效工作流程的关键部分。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[实验环境搭建]]\n- [[超参数配置]]\n- [[结果收集与分析]]\n- [[迭代优化循环]]\n- [[科研流程自动化]]\n- [[框架设计与核心开发]]\n- [[Alchemy（炼丹炉）]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[OpenClaw]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Python 环境.md",
-    "created": "2026-04-09T16:15:20.900541"
+    "created": "2026-04-09T20:12:35.726492"
   },
   {
     "title": "RAG",
     "content": "# RAG\n\n> 来源: articles\\karpathy-workflow.md\n> 分类: AI\n> 生成时间: 2026-04-09 08:19\n\n# Karpathy 知识库工作流\n\n## 核心理念\n\n用语言模型（LLM）把原始资料（论文/文章/代码）编译成 wiki 知识库。\n\n## 工作流三步曲\n\n### STEP 01: 收集\n\n- 将原始资料存放在 `raw/` 目录中。\n- 支持的资料类型包括：[[论文]], [[文章]], [[GitHub]], 数据集，以及截图。\n- 使用 Obsidian Web Clipper 保存网页。\n\n### STEP 02: 编译\n\n- LLM 读取 `raw/` 目录下的所有文件。\n- 提取出核心概念并生成结构化的 wiki 文章。\n- 建立双向链接，确保知识库中各部分之间的关联性。\n\n### STEP 03: 查询\n\n- 可以直接向 LLM 提问。\n- LLM 在 wiki/ 中查找答案，并提供相关信息。\n- 将好的答案归档回 wiki，以便未来查询。\n\n## 为什么不需要 RAG？\n\n在规模为 100 篇文章、40 万字的情况下，LLM 的上下文窗口足够大，直接将所有 wiki 内容放入 context 中即可满足需求。因此，在这种情况下并不需要使用 RAG（Retrieval-Augmented Generation）技术。\n\n## 相关概念\n\n- [[LLM]]：语言模型\n- [[Obsidian]]：一个支持双向链接的笔记软件\n- [[知识管理]]：一种系统化地创建、组织和维护信息的方法\n- [[RAG]]：检索增强生成，是一种结合了检索和生成技术的知识处理方法\n\n---\n\n## 摘要\n\nKarpathy 工作流通过 LLM 将多种格式的原始资料整理成结构化的 wiki，支持收集、编译和查询。\n\n## 相关概念\n\n- [[LLM]]\n- [[Obsidian]]\n- [[知识管理]]\n- [[RAG]]\n\n---\n\n*由 Karpathy 知识库系统自动生成 | 2026-04-09 08:19*\n",
     "path": "概念\\RAG.md",
-    "created": "2026-04-09T16:15:20.900541"
+    "created": "2026-04-09T20:12:35.726492"
   },
   {
     "title": "Seed Baseline 机制",
-    "content": "# Seed Baseline 机制\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nSeed Baseline 机制是一种在软件开发中用于版本控制和项目初始化的技术手段。它通过创建一个初始的基础版本（baseline），确保所有开发者在同一起点工作，并且能够追踪项目的早期状态。关键要点包括：1. 提供项目启动时的完整代码库快照；2. 支持团队协作，减少因环境差异导致的问题；3. 便于问题回溯和历史分析，确保开发过程中的透明度与可追溯性。\n\n## 相关概念\n- [[AI 科研自动化]]\n- [[Alchemy 框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Seed Baseline 机制\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nSeed Baseline 机制是一种在软件开发初期用于固定依赖库版本的技术手段。通过创建一个种子基线（Seed Baseline），开发者可以确保项目初始阶段使用的依赖库版本一致，从而避免因版本不兼容导致的问题。该机制的关键要点包括：定义清晰的依赖关系、定期更新和验证基线版本、以及在团队中推广使用统一的开发环境。这种做法有助于提高项目的可维护性和协作效率。\n\n## 相关概念\n- [[AI 科研自动化框架]]\n- [[Alchemy（炼丹炉）]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[多模态推荐任务]]\n- [[Alchemy]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AI Scientist 系统]]\n- [[AAAI 2025 论文《Mind Individual Information!》]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Seed Baseline 机制.md",
-    "created": "2026-04-09T16:15:20.900541"
+    "created": "2026-04-09T20:12:35.726999"
   },
   {
     "title": "Seed Baseline",
     "content": "# Seed Baseline\n\n> 分类：概念\n> 创建时间：2026-04-09 15:29\n\nSeed Baseline 是一种项目初始化策略，在软件开发中用于创建项目的初始版本或基准点，确保所有团队成员从相同的起点开始工作。它通常包括项目的基本结构、配置文件以及必要的依赖项。关键要点在于：1）确保一致性，避免因环境差异导致的开发问题；2）便于新成员快速上手和理解项目架构；3）作为后续开发的基础，易于进行版本控制与回溯。通过这种方式，Seed Baseline 有助于提高团队协作效率并简化项目的管理流程。\n\n## 相关概念\n- [[Alchemy]]\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华大学人工智能学院]]\n- [[李佳助理教授课题组]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[AAAII 2025 论文《Mind Individual Information!》]]\n- [[AI Scientist 系统]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Seed Baseline.md",
-    "created": "2026-04-09T16:15:20.901046"
+    "created": "2026-04-09T20:12:35.726999"
   },
   {
     "title": "Seed Baseline机制",
-    "content": "# Seed Baseline机制\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nSeed Baseline机制是一种软件开发中的初始化策略，用于确保项目在不同环境或时间点上的可重复性与一致性。它通过记录项目的初始状态（包括代码库、依赖项版本等）来实现这一点，并允许开发者从这个基线出发进行开发和测试。关键要点包括：1) 基于Git或其他版本控制系统；2) 自动化脚本用于创建和更新种子基线；3) 促进团队协作与项目透明度；4) 提高回归测试的效率，确保代码更改不会破坏现有功能。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# Seed Baseline机制\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nSeed Baseline机制是一种用于软件开发过程中的版本控制策略，旨在确保项目在特定时间点的状态被准确记录和回溯。其核心在于创建一个“种子基线”，即项目的初始稳定版本，在后续开发中作为参考点。关键要点包括：1) 基线定义明确的项目状态；2) 便于团队协作与问题定位；3) 支持灵活的变更管理和历史追溯，确保项目可追踪性与可靠性。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\Seed Baseline机制.md",
-    "created": "2026-04-09T16:15:20.901046"
+    "created": "2026-04-09T20:12:35.726999"
   },
   {
     "title": "wiki 知识库",
     "content": "# wiki 知识库\n\n> 来源: articles\\karpathy-workflow.md\n> 分类: AI\n> 生成时间: 2026-04-09 08:18\n\n# Wiki 知识库工作流 —— Karpathy 方法\n\n## 什么是 Wiki 知识库？\n\nWiki 知识库是一种利用大型语言模型（LLM）将原始资料编译成结构化知识的方式，以提升信息检索和理解效率。\n\n[[知识管理]] 是一种系统性地创建、组织和维护知识资源的方法。而 [[RAG]] 则是通过检索与生成结合来增强 LLM 的能力。\n\n## 工作流三步曲\n\n### STEP 01: 收集\n- **raw/ 目录**：存放原始资料，包括论文、文章、GitHub 代码、数据集和截图。\n- 使用 [[Obsidian Web Clipper]] 保存网页内容至 raw/ 文件夹。\n\n### STEP 02: 编译\n- LLM 读取 raw/ 目录下的所有文件。\n- 提取出核心概念并生成结构化的 wiki 文章，建立双向链接以增强知识网络的连贯性。\n\n### STEP 03: 查询\n- 可直接向 LLM 提问获取答案。\n- LLM 在 wiki/ 文件夹中查找相关信息，并将好的答案归档回知识库。\n\n## 为什么不需要 RAG？\n\n在规模为 100 篇、40 万字的资料下，LLM 的上下文窗口足够大，可以直接将所有 wiki 内容放入 context 中进行处理。因此，在这种情况下，无需使用 [[RAG]] 来增强 LLM 的检索能力。\n\n## 相关概念\n\n- **[[LLM]]**：大型语言模型。\n- **[[Obsidian]]**：一个开源的桌面应用程序，用于创建和管理知识库。\n- **[[知识管理]]**：系统性地创建、组织和维护知识资源的方法。\n- **[[RAG]]**：检索与生成结合的技术，增强 LLM 的能力。\n\n---\n\n## 摘要\n\nKarpathy 工作流通过 LLM 将多种格式的原始资料整理成结构化的 wiki，支持收集、编译和查询。\n\n## 相关概念\n\n- [[LLM]]\n- [[Obsidian]]\n- [[知识管理]]\n- [[RAG]]\n\n---\n\n*由 Karpathy 知识库系统自动生成 | 2026-04-09 08:18*\n",
     "path": "概念\\wiki 知识库.md",
-    "created": "2026-04-09T16:15:20.901046"
+    "created": "2026-04-09T20:12:35.726999"
   },
   {
     "title": "wiki",
-    "content": "# wiki\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\nWiki（维基）是一种基于网络的知识共享平台，允许用户协作编辑和维护内容。其核心特点是开放性、实时更新以及版本控制。维基通常用于创建在线百科全书、项目文档或社区论坛等。最著名的例子是维基百科，一个免费的多语言在线百科全书。关键要点包括：1）基于Web的技术；2）多人协作编辑；3）易于访问和修改；4）支持结构化和非结构化内容。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# wiki\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\nWiki（维基）是一种基于网络的知识共享平台，允许用户协作编辑和维护内容。它通常以开放式编辑模式运行，鼓励社区成员共同创建、修改文本或多媒体信息。维基的核心理念是“知识的集体智慧”，强调透明度与参与性。最著名的例子是维基百科，一个免费在线百科全书。关键要点包括：开放编辑、协作创作、版本历史记录和持续更新。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\wiki.md",
-    "created": "2026-04-09T16:15:20.901562"
+    "created": "2026-04-09T20:12:35.726999"
   },
   {
     "title": "wiki文章生成",
     "content": "# wiki文章生成\n\n> 分类：概念\n> 创建时间：2026-04-09 08:34\n\nwiki文章生成是指利用自动化工具或软件，根据特定主题自动生成维基格式的文章内容的过程。这一过程通常涉及自然语言处理技术、模板填充以及语义理解等环节。其关键要点包括：1) 高效性与准确性；2) 内容的可编辑性和更新性；3) 用户友好界面支持；4) 适应多种主题和领域需求的能力。通过这种方式，可以快速创建或更新维基页面内容，提高信息传播效率。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料编译]]\n- [[双向链接]]\n- [[查询]]\n- [[上下文窗口]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\wiki文章生成.md",
-    "created": "2026-04-09T16:15:20.902078"
+    "created": "2026-04-09T20:12:35.728592"
   },
   {
     "title": "上下文窗口",
     "content": "# 上下文窗口\n\n> 分类：概念\n> 创建时间：2026-04-09 15:37\n\n上下文窗口是指在自然语言处理中用于捕捉文本信息范围的概念。它通常指的是模型在处理每个输入时能够访问和考虑的连续字符或单词的数量。关键要点包括：1）大小影响模型的理解能力；2）增加窗口大小可以提高复杂语境理解，但可能增加计算成本；3）广泛应用于机器翻译、情感分析等任务中。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[知识管理]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\上下文窗口.md",
-    "created": "2026-04-09T16:15:20.902078"
+    "created": "2026-04-09T20:12:35.728592"
   },
   {
     "title": "使用方式",
     "content": "# 使用方式\n\n> 分类：概念\n> 创建时间：2026-04-09 15:29\n\n使用方式是指用户如何正确、有效地操作或利用某一产品、服务或系统的方法与步骤。它通常包括启动程序、设置参数、执行任务等基本操作，并提供解决常见问题的指导。关键要点包括：明确目标用户群体；详细描述每一步骤，确保易于理解；提供示例和截图以增强说明效果；强调安全注意事项和潜在风险；定期更新文档以适应产品变化。\n\n## 相关概念\n- [[原始资料层]]\n- [[目录结构]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\使用方式.md",
-    "created": "2026-04-09T16:15:20.902078"
+    "created": "2026-04-09T20:12:35.730103"
   },
   {
     "title": "原则",
-    "content": "# 原则\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n在项目管理和开发中，“原则”是指指导决策和行为的基本理念或规则。它们通常基于经验教训、最佳实践或价值观，并用于确保项目的成功实施。关键要点包括：明确性（原则应清晰明了）、适用性（适用于多种情况）、可操作性（易于理解和执行）以及灵活性（在特定情况下可以调整）。通过遵循这些原则，团队能够保持一致性和高效性，同时促进创新和改进。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[README.md]]\n- [[compile.py]]\n- [[wiki]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 原则\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n在软件开发与项目管理中，“原则”是指指导决策和行为的基本信念或规则。它帮助团队保持一致性和高效性，确保项目目标的一致实现。关键要点包括：明确表达、易于理解、广泛适用、促进良好实践、支持长期成功。通过确立核心原则，可以为复杂问题提供清晰的解决方案，并在面对不确定性时提供指导方向。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\原则.md",
-    "created": "2026-04-09T16:15:20.903080"
+    "created": "2026-04-09T20:12:35.731198"
   },
   {
     "title": "原始资料",
-    "content": "# 原始资料\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n原始资料，又称一手资料或直接资料，是指通过亲历事件、实验研究、调查访问等方式直接获得的第一手信息。它具有真实性高、针对性强的特点，在学术研究、市场调研等领域中扮演着重要角色。关键要点包括：数据收集方法的多样性（如问卷调查、深度访谈等）、时间上的即时性以及对后续分析和结论形成的重要支撑作用。原始资料的价值在于其直接性和客观性，能够为研究提供坚实的基础。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 原始资料\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n在项目管理和研究中，“原始资料”指的是直接从源头获取的第一手信息或数据，未经任何加工处理。这类资料通常包括调查问卷、访谈记录、实验结果等。原始资料的关键在于其真实性和直接性，能够提供最接近事实的信息。使用原始资料进行分析和研究时，确保正确标注来源和收集方法至关重要，以保证研究的可靠性和可信度。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\原始资料.md",
-    "created": "2026-04-09T16:15:20.903080"
+    "created": "2026-04-09T20:12:35.731198"
   },
   {
     "title": "原始资料层",
-    "content": "# 原始资料层\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n原始资料层是数据管理系统中的基础层级，它直接存储来自各种来源的未经处理或初步整理的数据。这一层的关键在于保留了数据的原始状态，确保分析人员能够访问最接近源头的信息，从而进行深入研究而不受中间处理的影响。原始资料层通常包括日志、交易记录和传感器数据等。在设计时需考虑数据的安全性和完整性，并且要明确哪些数据可以被存入此层以及如何管理这些数据以满足合规性要求。\n\n## 相关概念\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[README.md]]\n- [[compile.py]]\n- [[wiki]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 原始资料层\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n原始资料层是数据管理架构中的基础层级，负责存储未经处理或初步整理的数据源。这一层直接与外部系统交互，确保实时获取最新信息。其关键要点包括：1) 数据的原始性，未经过任何转换或清洗；2) 高效的数据访问能力，以满足快速响应需求；3) 确保数据的一致性和完整性，为后续处理提供可靠依据；4) 与外部系统的紧密集成，支持实时数据交换。\n\n## 相关概念\n- [[只读]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\原始资料层.md",
-    "created": "2026-04-09T16:15:20.903592"
+    "created": "2026-04-09T20:12:35.731198"
   },
   {
     "title": "原始资料编译",
     "content": "# 原始资料编译\n\n> 分类：概念\n> 创建时间：2026-04-09 08:34\n\n原始资料编译是指将原始数据或信息进行整理、分析并转化为结构化文档的过程。这一过程通常涉及从多种来源收集数据，对其进行筛选、分类，并最终形成易于理解的格式。关键要点包括：确保数据准确无误；保持内容客观公正；注重数据分析与解释；以及清晰地呈现编译结果以满足特定需求或支持决策制定。原始资料编译在科研、市场调研和项目管理等领域具有广泛应用价值。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[wiki文章生成]]\n- [[双向链接]]\n- [[查询]]\n- [[上下文窗口]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\原始资料编译.md",
-    "created": "2026-04-09T16:15:20.903592"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "双向链接",
-    "content": "# 双向链接\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n双向链接是一种网页设计与优化技术，允许两个页面互相引用对方，形成相互链接的关系。这种链接方式不仅增强了网站内部结构的连贯性，还能提高搜索引擎对网站内容的理解度和收录率。关键要点包括：提升用户体验、增强搜索引擎友好度、促进页面间的流量循环以及改善整体网站导航系统。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 双向链接\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n双向链接是指在网页设计中，两个页面相互之间建立超链接的关系，即页面A可以跳转到页面B，同时页面B也可以反向跳转回页面A。这种结构有助于提升网站的导航性和用户体验，同时也对搜索引擎优化（SEO）有益，因为双向链接能够增强页面之间的相关性与重要性。关键要点包括：提高用户流动、促进内容发现、增强页面权重和改善整体网站结构。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[查询]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\双向链接.md",
-    "created": "2026-04-09T16:15:20.904596"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "只读",
-    "content": "# 只读\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n在计算机科学中，“只读”（Read-Only）是指数据或文件只能被读取而不能进行修改的状态。这种状态通常用于保护重要信息不被意外更改或损坏。只读属性常见于操作系统、数据库以及各种存储设备上的文件管理。设置为只读的文件或系统区域，用户仅能查看内容而不允许对其进行任何编辑操作。在程序设计中，只读变量一旦初始化后其值不可改变，有助于提高代码的安全性和可预测性。\n\n## 相关概念\n- [[原始资料层]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[README.md]]\n- [[compile.py]]\n- [[wiki]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 只读\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n只读（Read-Only）是指数据或文件只能被读取而不能进行修改的状态。在计算机系统中，设置为只读可以保护重要信息不被意外更改或删除。关键要点包括：1. 保障数据安全与完整性；2. 在某些应用和环境中用于防止误操作导致的数据损坏；3. 可通过操作系统权限管理实现；4. 常见于配置文件、系统日志等敏感数据的保护中。\n\n## 相关概念\n- [[原始资料层]]\n- [[目录结构]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\只读.md",
-    "created": "2026-04-09T16:15:20.905108"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "多模态推荐任务",
-    "content": "# 多模态推荐任务\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n多模态推荐任务是指在推荐系统中同时利用多种类型的数据（如文本、图像、音频等）来提高推荐准确性和用户满意度的一种方法。其核心在于如何有效地融合不同模态的信息，并将其转化为对用户的个性化推荐。关键要点包括：数据融合技术的选择与优化，跨模态特征表示的学习，以及多模态信息的一致性与互补性的最大化利用。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 多模态推荐任务\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n多模态推荐任务是指在推荐系统中同时考虑多种类型的数据或信息源进行个性化推荐的过程。这种推荐方法能够综合文本、图像、音频等多种数据形式，以提供更加准确和个性化的用户内容推荐。其关键要点包括：1) 数据融合技术，用于整合不同模态的信息；2) 多模态特征表示学习，通过深度神经网络等模型构建统一的多模态特征空间；3) 个性化建模策略，针对用户的偏好进行优化调整；4) 实时性和可扩展性，确保推荐系统的高效运行和适应大规模数据处理。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\多模态推荐任务.md",
-    "created": "2026-04-09T16:15:20.905626"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "实验环境搭建",
     "content": "# 实验环境搭建\n\n> 分类：概念\n> 创建时间：2026-04-09 10:16\n\n实验环境搭建是指为了进行软件测试或验证特定技术而创建的一个模拟工作环境的过程。其主要目的是确保测试结果的有效性和可靠性。关键要点包括：确定需求、选择硬件与软件配置、设置网络拓扑结构、安装必要的工具和库、配置安全设置以及定期备份数据以防止数据丢失。搭建过程需考虑兼容性、可扩展性和安全性等因素，以满足实验或项目的具体要求。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[超参数配置]]\n- [[结果收集与分析]]\n- [[迭代优化循环]]\n- [[科研流程自动化]]\n- [[框架设计与核心开发]]\n- [[Python 环境]]\n- [[Alchemy（炼丹炉）]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[OpenClaw]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\实验环境搭建.md",
-    "created": "2026-04-09T16:15:20.905626"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "工程自动化",
-    "content": "# 工程自动化\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n工程自动化是指利用软件工具和技术来自动执行工程流程中的重复性任务，以提高效率、减少人为错误并加速产品开发周期。其关键要点包括：采用建模与仿真技术优化设计过程；使用代码生成器自动生成部分或全部源代码；集成测试框架实现持续集成和部署；通过配置管理工具确保版本控制和环境一致性。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 工程自动化\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n工程自动化是指利用软件工具和技术来自动执行工程项目中的重复性任务或复杂计算的过程。其核心在于提高效率、减少人为错误并加速项目交付时间。关键要点包括：1）使用脚本语言和配置管理工具（如Ansible, Chef）；2）实施持续集成/持续部署(CI/CD)管道以自动化测试与发布流程；3）通过API接口实现系统间的无缝交互；4）确保自动化过程的安全性和可追溯性。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\工程自动化.md",
-    "created": "2026-04-09T16:15:20.905626"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "收集",
     "content": "# 收集\n\n> 来源: articles\\karpathy-workflow.md\n> 分类: AI\n> 生成时间: 2026-04-09 08:18\n\n# 收集\n\n## 概念简介\n\n收集是 Karpathy 工作流中的第一步，用于整理和保存原始资料（如论文、文章、代码等），为后续的编译和查询做准备。\n\n## 详细步骤\n\n### STEP 01: 收集\n\n- **存放位置**：使用 `raw/` 目录来存储所有原始资料。\n- **支持类型**：\n  - 论文\n  - 文章\n  - GitHub 代码\n  - 数据集\n  - 截图\n- **工具应用**：通过 Obsidian Web Clipper 插件保存网页内容，方便快捷地收集互联网上的信息。\n\n## 实例\n\n假设你正在研究一个新发布的机器学习论文。你可以将该论文的 PDF 文件、相关 GitHub 代码链接以及一些关键截图都存放在 `raw/` 目录中，并使用 Obsidian Web Clipper 快速保存论文中的重要网页片段，确保所有资料齐全且易于访问。\n\n## 与其他步骤的关系\n\n- **与编译（STEP 02）**：收集阶段完成后，LLM 将读取 `raw/` 目录下的所有文件进行处理。[[编译]]过程将提取核心概念并生成结构化的 wiki 文章。\n- **与查询（STEP 03）**：通过直接向 LLM 提问，可以快速获取所需信息。如果 LLM 在 wiki 中找到了答案，则这些好答案会被归档回 wiki，以供后续参考。\n\n## 相关概念\n\n[[LLM]]：大型语言模型，用于处理和生成文本。\n[[Obsidian]]：一个强大的知识管理工具，支持笔记、链接管理和插件扩展。\n[[知识管理]]：一种系统化的方法来组织、存储和检索信息。\n[[RAG]]（Retrieval-Augmented Generation）：一种结合检索与生成技术的模型，用于增强 LLM 的查询能力。\n\n通过上述步骤和概念的理解，你可以高效地构建一个结构化的知识库，并利用 LLM 实现高效的查询和学习。\n\n---\n\n## 摘要\n\nKarpathy 工作流通过 LLM 将多种格式的原始资料整理成结构化的 wiki，支持收集、编译和查询。\n\n## 相关概念\n\n- [[LLM]]\n- [[Obsidian]]\n- [[知识管理]]\n- [[RAG]]\n\n---\n\n*由 Karpathy 知识库系统自动生成 | 2026-04-09 08:18*\n",
     "path": "概念\\收集.md",
-    "created": "2026-04-09T16:15:20.905626"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "查询",
-    "content": "# 查询\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n在信息技术领域中，“查询”是指用户或系统向数据库、信息库或其他数据存储请求特定信息的过程。查询通常通过SQL语言（结构化查询语言）来实现，用于从数据库中检索所需的数据。关键要点包括：1) 查询可以是简单的单条记录查找，也可以是复杂的多表关联；2) 优化查询性能对于提高系统效率至关重要；3) 安全性是执行查询时必须考虑的重要因素，以防止未授权访问敏感数据。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 查询\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n查询是指在数据库、搜索引擎或其他信息管理系统中检索特定数据或信息的过程。它通常通过编写SQL语句、使用API接口或者构建搜索条件来实现。关键要点包括：明确的查询目标、高效的查询优化策略以及对结果准确性的要求。良好的查询设计能够提高系统的响应速度和用户体验，同时减少资源消耗。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\查询.md",
-    "created": "2026-04-09T16:15:20.906141"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "框架设计与核心开发",
     "content": "# 框架设计与核心开发\n\n> 分类：概念\n> 创建时间：2026-04-09 10:16\n\n框架设计与核心开发是指在软件项目中，通过预先规划和构建基础结构来支持后续功能模块的设计与实现过程。这一阶段的关键在于确定系统的架构、选择合适的技术栈以及制定开发规范。核心要点包括：1) 确保可扩展性和维护性；2) 采用敏捷方法进行迭代开发；3) 强调代码质量和团队协作；4) 集成测试和持续集成以保证软件质量。通过这些步骤，可以有效提高开发效率并减少后期维护成本。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[实验环境搭建]]\n- [[超参数配置]]\n- [[结果收集与分析]]\n- [[迭代优化循环]]\n- [[科研流程自动化]]\n- [[Python 环境]]\n- [[Alchemy（炼丹炉）]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[OpenClaw]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\框架设计与核心开发.md",
-    "created": "2026-04-09T16:15:20.906141"
+    "created": "2026-04-09T20:12:35.732223"
   },
   {
     "title": "目录结构",
-    "content": "# 目录结构\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n目录结构是指文件或项目中各层级内容组织的方式，通常以树状图形式展现。它帮助用户快速定位所需信息，确保文档层次清晰、逻辑连贯。关键要点包括：明确的层级划分（如一、二级标题）、合理的分组与命名规则、便于导航的索引或侧边栏目录以及保持一致性和简洁性。良好的目录结构能显著提升用户体验和内容可访问性。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[编译]]\n- [[原则]]\n- [[README.md]]\n- [[compile.py]]\n- [[wiki]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 目录结构\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n目录结构是指文件或项目中各类内容组织的方式，通常以树状形式展现，便于用户快速定位信息。它包括层级分明的标题、子标题及其对应的内容页面。关键要点有：清晰的层次划分；合理使用标题级别（如H1, H2, H3）；确保逻辑连贯性；便于搜索和导航；有助于提高文档可读性和用户体验。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[编译]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\目录结构.md",
-    "created": "2026-04-09T16:15:20.906141"
+    "created": "2026-04-09T20:12:35.733246"
   },
   {
     "title": "知识图谱",
-    "content": "# 知识图谱\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n知识图谱是一种以图形方式表示实体及其关系的知识库。它通过节点（代表实体）和边（代表关系）来构建复杂的网络结构，用于描述现实世界中的概念、实体以及它们之间的关联。知识图谱的关键在于能够从大量数据中抽取有价值的信息，并通过可视化的方式展示出来，支持更深入的分析与应用。在技术实现上，知识图谱依赖于自然语言处理和机器学习等技术来自动构建和维护其结构。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 知识图谱\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n知识图谱是一种结构化的知识表示方法，通过实体、关系及其属性来描述现实世界中的概念及它们之间的联系。它以图形的形式展示信息，节点代表实体或概念，边则表示实体间的关联性。知识图谱能够帮助用户更好地理解和利用数据间的关系，提高信息检索和处理的效率。关键要点包括：结构化数据表示、语义网络构建、机器学习与自然语言处理技术的应用、支持大规模数据集管理等。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\知识图谱.md",
-    "created": "2026-04-09T16:15:20.906141"
+    "created": "2026-04-09T20:12:35.733246"
   },
   {
     "title": "知识库",
     "content": "# 知识库\n\n> 分类：概念\n> 创建时间：2026-04-09 14:39\n\n知识库是一种结构化存储、管理和检索组织内部或特定领域专业知识的系统。它通过集中化的资源提高信息访问效率，促进知识共享与再利用。关键要点包括：1）内容涵盖广泛，如文档、数据、标准操作程序等；2）支持协作编辑和版本控制；3）有助于提升决策质量，加速问题解决过程；4）促进企业文化的创新氛围建设。\n\n## 相关概念\n- [[LLM]]\n- [[wiki]]\n- [[双向链接]]\n- [[上下文窗口]]\n- [[Karpathy 知识库工作流]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\知识库.md",
-    "created": "2026-04-09T16:15:20.906141"
+    "created": "2026-04-09T20:12:35.733246"
   },
   {
     "title": "知识库工作流",
-    "content": "# 知识库工作流\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n知识库工作流是指在企业或组织中，通过自动化流程管理和优化信息获取、存储与共享的过程。它涉及从数据收集到知识创造、管理及应用的整个生命周期。关键要点包括：明确的知识分类体系；高效的检索机制；持续更新的内容管理系统；以及促进团队协作和决策支持的功能。这种工作流能够提高工作效率，增强组织的学习能力，并促进创新。\n\n## 相关概念\n- [[LLM]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy 知识库]]\n- [[Obsidian Web Clipper]]\n- [[raw/目录]]\n- [[wiki/]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 知识库工作流\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n知识库工作流是指在企业或组织中，通过自动化流程管理和优化信息资源利用的一系列步骤和技术。它包括数据收集、整理、存储、检索及更新等环节，旨在提高知识管理效率与质量。关键要点包括：明确的知识分类体系；高效的数据录入与审核机制；灵活的查询与检索功能；定期的知识库维护和更新策略；以及促进知识共享的文化建设。\n\n## 相关概念\n- [[LLM]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[查询]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\知识库工作流.md",
-    "created": "2026-04-09T16:15:20.906656"
+    "created": "2026-04-09T20:12:35.733246"
   },
   {
     "title": "知识管理",
     "content": "# 知识管理\n\n> 分类：概念\n> 创建时间：2026-04-09 15:37\n\n知识管理是指组织或个人系统地收集、整理、存储、共享和应用知识的过程，以提高工作效率和创新能力。其关键要点包括：建立知识库，促进知识共享文化，实施有效的知识管理系统和技术工具，以及定期评估知识管理的效果与价值。通过这些措施，知识管理能够帮助组织和个人更好地利用现有资源，加速学习过程，并推动持续改进和发展。\n\n## 相关概念\n- [[LLM]]\n- [[知识库工作流]]\n- [[原始资料]]\n- [[wiki]]\n- [[双向链接]]\n- [[上下文窗口]]\n- [[Karpathy]]\n- [[Obsidian Web Clipper]]\n- [[LLM]]\n- [[RAG]]\n\n## 来源\n- [[2026-04-09-articles\\karpathy-workflow.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\知识管理.md",
-    "created": "2026-04-09T16:15:20.906656"
+    "created": "2026-04-09T20:12:35.733246"
   },
   {
     "title": "研究环境执行层",
-    "content": "# 研究环境执行层\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n研究环境执行层是指在软件开发与测试过程中，用于支持和管理实验、验证及优化等环节的技术框架或平台。它负责提供一个可控且灵活的工作环境，确保研究项目能够在一致的条件下进行，并能方便地记录和回溯实验过程。关键要点包括：1) 环境一致性保障；2) 高度灵活性与可配置性；3) 支持自动化测试与部署；4) 实验数据管理与分析能力；5) 跨平台兼容性，支持多种编程语言与工具集成。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 研究环境执行层\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n研究环境执行层是指在软件开发与测试过程中，用于管理和优化各种资源（如计算、存储和网络）的抽象层。它位于硬件之上，为应用程序提供一个统一且高效的运行平台。关键要点包括：1) 资源管理：动态分配和回收计算资源；2) 性能优化：通过调度策略提高系统性能；3) 兼容性支持：确保不同软件能在同一环境中稳定运行；4) 可扩展性：易于添加或移除硬件资源以适应需求变化。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[算法开发层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\研究环境执行层.md",
-    "created": "2026-04-09T16:15:20.906656"
+    "created": "2026-04-09T20:12:35.733765"
   },
   {
     "title": "科研基础设施",
-    "content": "# 科研基础设施\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n科研基础设施是指为了支持科学研究而建立的一系列硬件、软件和技术服务系统。它包括实验室设备、计算资源、数据存储与分析平台以及合作研究网络等。这些设施为科学家提供必要的工具和技术支持，促进知识创新和科学发现。关键要点包括：1）硬件与软件资源；2）技术支持与维护；3）跨学科协作能力；4）数据管理与共享机制；5）可持续发展策略。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 科研基础设施\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n科研基础设施是指为科学研究提供硬件、软件和技术支持的系统性资源。它包括实验室设备、计算平台、数据存储与分析工具等。关键要点在于：1）促进知识创新；2）确保研究质量和效率；3）跨学科合作的基础；4）需定期维护和升级以适应新技术发展。科研基础设施不仅提升科学研究水平，还推动技术进步和社会经济发展。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\科研基础设施.md",
-    "created": "2026-04-09T16:15:20.906656"
+    "created": "2026-04-09T20:12:35.733765"
   },
   {
     "title": "科研流程自动化",
     "content": "# 科研流程自动化\n\n> 分类：概念\n> 创建时间：2026-04-09 10:16\n\n科研流程自动化是指通过软件工具和技术手段实现科学研究中重复性高、耗时长的工作步骤的自动化处理。这一过程能够显著提高研究效率与准确性，并释放研究人员更多的时间用于创新思考与复杂问题解决。其关键要点包括：1）数据收集与管理；2）实验设计与执行；3）结果分析与报告生成；4）知识图谱构建与智能检索；5）持续优化与迭代改进。通过自动化科研流程，不仅能够提高研究的可靠性和效率，还能促进跨学科合作和知识共享。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[实验环境搭建]]\n- [[超参数配置]]\n- [[结果收集与分析]]\n- [[迭代优化循环]]\n- [[框架设计与核心开发]]\n- [[Python 环境]]\n- [[Alchemy（炼丹炉）]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[OpenClaw]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\科研流程自动化.md",
-    "created": "2026-04-09T16:15:20.906656"
+    "created": "2026-04-09T20:12:35.733765"
   },
   {
     "title": "端侧推理",
-    "content": "# 端侧推理\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n端侧推理是指在边缘设备（如智能手机、物联网设备或嵌入式系统）上直接进行机器学习模型的计算与决策过程的技术。这一方法显著减少了对云端资源的依赖，降低了延迟，并提高了数据隐私保护水平。其关键要点包括：本地处理能力增强、减少网络带宽需求、提高实时响应速度以及确保敏感数据的安全性。通过在设备端执行推理任务，端侧推理为边缘计算环境中的智能应用提供了强有力的支持。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 端侧推理\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n端侧推理是指在设备本地进行模型推理的过程，它允许智能设备（如智能手机、物联网设备等）直接处理传感器数据或用户输入，而无需将数据上传至云端服务器。这一过程的关键要点包括：减少延迟、保护隐私、降低网络依赖性以及提高能源效率。通过利用边缘计算技术，端侧推理能够实现实时决策和响应，适用于需要快速反馈的场景，如自动驾驶汽车、智能医疗设备等。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[知识图谱]]\n- [[系统提示词]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\端侧推理.md",
-    "created": "2026-04-09T16:15:20.907187"
+    "created": "2026-04-09T20:12:35.733765"
   },
   {
     "title": "算法开发层",
-    "content": "# 算法开发层\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n算法开发层是指在软件开发中专门用于设计、实现和测试算法的一层。它位于应用层与基础技术层之间，为开发者提供了一系列现成的算法工具和库，以加速问题解决过程并提高代码质量。这一层的关键要点包括：1) 提供多种数据结构和算法实现；2) 支持高效的数据处理和分析；3) 促进跨学科知识的应用与融合；4) 加强软件开发的灵活性和可维护性。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 算法开发层\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n算法开发层是指软件架构中专注于算法设计与实现的一层。它位于应用层之下、数据处理层之上，主要负责复杂问题的解决策略制定。该层的关键要点包括：1) 高效性：确保算法在性能上的优化；2) 可扩展性：支持未来功能的无缝集成；3) 灵活性：适应不同应用场景的需求变化；4) 易用性：提供简洁、直观的接口供上层调用。通过合理设计和实现，算法开发层能够显著提升系统的智能化水平与处理能力。\n\n## 相关概念\n- [[AI Scientist]]\n- [[Alchemy框架]]\n- [[科研基础设施]]\n- [[研究环境执行层]]\n- [[Seed Baseline机制]]\n- [[多模态推荐任务]]\n- [[工程自动化]]\n- [[Alchemy（炼丹炉）]]\n- [[清华人工智能学院]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\算法开发层.md",
-    "created": "2026-04-09T16:15:20.907187"
+    "created": "2026-04-09T20:12:35.733765"
   },
   {
     "title": "系统提示词",
-    "content": "# 系统提示词\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n系统提示词是一种用于指导或控制计算机系统的指令性语言，通常由用户输入以触发特定功能或操作。它广泛应用于人工智能、自然语言处理以及人机交互领域。关键要点包括：简洁明了的表达方式；能够被系统准确理解和执行的能力；支持多样的应用场景和需求；有助于提升用户体验与效率。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 系统提示词\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n系统提示词是指在人机交互中用于引导或指示用户进行特定操作的文字指令或说明。它通常出现在软件、应用程序或智能设备的人机界面中，旨在帮助用户理解当前状态并指导下一步行动。关键要点包括：简洁明了、易于理解、针对性强以及与整体用户体验的一致性。合理运用系统提示词可以显著提升用户的使用体验和满意度。\n\n## 相关概念\n- [[AI 编程 Agent]]\n- [[端侧推理]]\n- [[知识图谱]]\n- [[Claude Code]]\n- [[OpenCode]]\n- [[LiteRT-LM]]\n- [[GitNexus]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\系统提示词.md",
-    "created": "2026-04-09T16:15:20.907187"
+    "created": "2026-04-09T20:12:35.733765"
   },
   {
     "title": "结果收集与分析",
     "content": "# 结果收集与分析\n\n> 分类：概念\n> 创建时间：2026-04-09 10:16\n\n结果收集与分析是指在实验或项目完成后，对所得数据进行整理、评估的过程。这一过程包括使用适当的方法和技术来确保数据的有效性和可靠性，并通过统计方法或其他分析工具识别模式、趋势及异常值。关键要点在于确保数据的准确采集、适当的处理和解释，以及基于分析结果提出有意义的结论或建议。有效的结果收集与分析对于验证假设、改进流程或产品至关重要。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[实验环境搭建]]\n- [[超参数配置]]\n- [[迭代优化循环]]\n- [[科研流程自动化]]\n- [[框架设计与核心开发]]\n- [[Python 环境]]\n- [[Alchemy（炼丹炉）]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[OpenClaw]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\结果收集与分析.md",
-    "created": "2026-04-09T16:15:20.907187"
+    "created": "2026-04-09T20:12:35.734280"
   },
   {
     "title": "编译",
-    "content": "# 编译\n\n> 分类：概念\n> 创建时间：2026-04-09 16:10\n\n编译：将高级编程语言代码转换成计算机可以直接执行的目标代码的过程。关键要点包括：输入源代码、输出可执行文件或目标代码、涉及词法分析、语法分析、优化等步骤、支持多种编程语言如C++、Java等。此过程确保程序逻辑正确并提高运行效率。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[原则]]\n- [[README.md]]\n- [[compile.py]]\n- [[wiki]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
+    "content": "# 编译\n\n> 分类：概念\n> 创建时间：2026-04-09 20:03\n\n编译：一种将高级编程语言代码转换成机器语言的过程。通过编译器执行，源代码被分析并优化，最终生成可直接在计算机上运行的目标代码。关键要点包括：输入为人类可读的高级语言；输出为目标机器的语言；涉及词法分析、语法分析、语义分析等步骤；可以一次性完成整个程序或模块化处理；支持多种编程语言如C++、Java等。\n\n## 相关概念\n- [[原始资料层]]\n- [[只读]]\n- [[目录结构]]\n- [[原则]]\n- [[articles/]]\n- [[papers/]]\n- [[github/]]\n- [[datasets/]]\n- [[素材/]]\n\n## 来源\n- [[2026-04-09-README.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\编译.md",
-    "created": "2026-04-09T16:15:20.907187"
+    "created": "2026-04-09T20:12:35.734280"
   },
   {
     "title": "超参数配置",
     "content": "# 超参数配置\n\n> 分类：概念\n> 创建时间：2026-04-09 10:16\n\n超参数配置是指在机器学习模型训练前设定且不通过模型误差反向调整的参数集合。这些参数通常包括学习率、正则化系数、网络层数等。正确选择超参数对于提高模型性能至关重要，但其优化往往需要大量的实验和时间成本。关键要点在于：1）超参数的选择直接影响模型性能；2）常见的搜索方法有网格搜索、随机搜索及贝叶斯优化等；3）合理利用先验知识可以有效减少搜索空间并提升效率。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[实验环境搭建]]\n- [[结果收集与分析]]\n- [[迭代优化循环]]\n- [[科研流程自动化]]\n- [[框架设计与核心开发]]\n- [[Python 环境]]\n- [[Alchemy（炼丹炉）]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[OpenClaw]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\超参数配置.md",
-    "created": "2026-04-09T16:15:20.907702"
+    "created": "2026-04-09T20:12:35.734280"
   },
   {
     "title": "迭代优化循环",
     "content": "# 迭代优化循环\n\n> 分类：概念\n> 创建时间：2026-04-09 10:16\n\n迭代优化循环是一种软件开发方法论中的核心流程，旨在通过反复的小周期改进来提升产品质量和效率。该过程通常包括需求分析、设计规划、编码实现、测试验证以及反馈调整五个阶段。其关键在于持续收集用户反馈与数据，并据此进行快速修正与升级，从而确保产品能够不断适应市场变化和技术进步，最终达到最优状态。迭代优化循环强调灵活性与响应性，有助于团队高效协作并有效管理复杂项目。\n\n## 相关概念\n- [[AI Scientist]]\n- [[算法开发层]]\n- [[研究环境执行层]]\n- [[Seed Baseline]]\n- [[多模态推荐任务]]\n- [[科研基础设施]]\n- [[实验环境搭建]]\n- [[超参数配置]]\n- [[结果收集与分析]]\n- [[科研流程自动化]]\n- [[框架设计与核心开发]]\n- [[Python 环境]]\n- [[Alchemy（炼丹炉）]]\n- [[清华 AI 科研自动化框架]]\n- [[李佳（助理教授）]]\n- [[李乐晖]]\n- [[蔡立一]]\n- [[OpenClaw]]\n\n## 来源\n- [[2026-04-09-github\\2026-04-09-Alchemy-清华AI科研自动化框架.md]]\n\n---\n*由 Karpathy 知识库系统自动生成*\n",
     "path": "概念\\迭代优化循环.md",
-    "created": "2026-04-09T16:15:20.907702"
+    "created": "2026-04-09T20:12:35.734280"
   }
 ]

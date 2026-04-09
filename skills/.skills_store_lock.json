@@ -84,6 +84,12 @@
       "zip_url": "https://lightmake.site/api/v1/download?slug=auto-publisher",
       "source": "skillhub",
       "version": "1.0.0"
+    },
+    "feishu-smart-doc-writer": {
+      "name": "feishu-smart-doc-writer",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=feishu-smart-doc-writer",
+      "source": "skillhub",
+      "version": "1.4.1"
     }
   }
 }

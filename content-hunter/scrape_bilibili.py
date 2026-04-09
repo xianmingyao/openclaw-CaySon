@@ -1,106 +1,150 @@
 #!/usr/bin/env python3
-"""B站 AI技术内容抓取 - API方式 (改进版)"""
-import urllib.request
-import urllib.parse
-import json
-import time
-import os
-import random
+"""B站AI内容抓取 - 使用Playwright"""
+import os, json, re
+from datetime import datetime
+from playwright.sync_api import sync_playwright
 
-def scrape_bilibili(keyword="AI人工智能", target_count=100, pagesize=20):
-    """抓取B站视频搜索结果，带重试"""
+DATA_DIR = r"E:\workspace\content-hunter\data"
+os.makedirs(DATA_DIR, exist_ok=True)
+
+def clean_html(text):
+    """清理HTML实体"""
+    entities = {'&amp;': '&', '&lt;': '<', '&gt;': '>', '&#32;': ' ', '&#39;': "'"}
+    for k, v in entities.items():
+        text = text.replace(k, v)
+    return text
+
+def scrape_bilibili_ai(keyword="AI人工智能", pages=5):
+    """抓取B站AI相关内容"""
     results = []
-    page = 1
-    max_pages = 50  # 最多50页 = 1000条
-    consecutive_fail = 0
-    max_consecutive_fail = 3
     
-    while len(results) < target_count and page <= max_pages:
-        url = f'https://api.bilibili.com/x/web-interface/search/type?keyword={urllib.parse.quote(keyword)}&search_type=video&order=hot&page={page}&pagesize={pagesize}&platform=web'
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled'])
+        context = browser.new_context(
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            viewport={'width': 1920, 'height': 1080}
+        )
+        page = context.new_page()
         
-        headers = {
-            'User-Agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(115, 125)}.0.0.{random.randint(0, 9)} Safari/537.36',
-            'Referer': 'https://search.bilibili.com/',
-            'Origin': 'https://search.bilibili.com',
-            'Accept': 'application/json, text/plain, */*',
-            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-        }
-        
-        req = urllib.request.Request(url, headers=headers)
-        try:
-            resp = urllib.request.urlopen(req, timeout=15)
-            data = json.loads(resp.read().decode('utf-8'))
+        for page_num in range(1, pages + 1):
+            print(f"  抓取第 {page_num}/{pages} 页...")
+            url = f"https://search.bilibili.com/all?keyword={keyword}&page={page_num}&type=video"
+            page.goto(url, wait_until='networkidle', timeout=30000)
+            page.wait_for_timeout(2000)
             
-            if data.get('code') == 0:
-                results_raw = data.get('data', {}).get('result', [])
-                if not results_raw:
-                    print(f"第{page}页: 空结果，停止")
-                    break
-                    
-                consecutive_fail = 0
-                print(f"第{page}页: 获得 {len(results_raw)} 条 (累计{len(results)})")
-                
-                for r in results_raw:
-                    title = r.get('title', '').replace('<em class="keyword">', '').replace('</em>', '')
+            # 提取视频卡片
+            videos = page.query_selector_all('.video-item')
+            if not videos:
+                # 备选：查找更多选择器
+                videos = page.query_selector_all('[class*="video-item"]')
+                if not videos:
+                    videos = page.query_selector_all('li, .bili-video-card')
+            
+            print(f"    找到 {len(videos)} 个元素")
+            
+            # 尝试提取文本内容
+            page_text = page.inner_text('body')
+            lines = [l.strip() for l in page_text.split('\n') if l.strip() and len(l.strip()) > 5]
+            
+            for i, line in enumerate(lines):
+                # 过滤明显不是视频标题的行
+                if any(skip in line for skip in ['登录', '注册', '下载', 'bilibili', 'Copyright', '沪ICP备', '隐私', '用户协议', '关于']):
+                    continue
+                if len(line) < 10:
+                    continue
+                # 检查是否有播放量/点赞等数字
+                if re.search(r'[\d万]+', line):
                     results.append({
-                        'title': title,
-                        'author': r.get('author', ''),
-                        'play': r.get('play', 0),
-                        'danmaku': r.get('video_review', 0),
-                        'likes': r.get('like', 0),
-                        'coins': r.get('coin', 0),
-                        'favs': r.get('favorites', 0),
-                        'duration': r.get('duration', ''),
-                        'mid': r.get('mid', ''),
-                        'aid': r.get('aid', ''),
-                        'description': r.get('description', ''),
+                        'title': line[:200],
+                        'platform': 'bilibili',
+                        'keyword': keyword,
+                        'page': page_num,
+                        'raw': line[:300]
                     })
-            else:
-                print(f"第{page}页 API错误: {data.get('message', 'unknown')}")
-                consecutive_fail += 1
-        except Exception as e:
-            print(f"第{page}页 请求失败: {e}")
-            consecutive_fail += 1
         
-        if consecutive_fail >= max_consecutive_fail:
-            print(f"连续失败{max_consecutive_fail}次，停止")
-            break
-            
-        page += 1
-        time.sleep(random.uniform(0.5, 1.5))
+        browser.close()
     
     return results
 
-def save_to_markdown(results, filepath):
-    """保存为markdown格式（追加模式）"""
-    content = f"# B站 AI技术热门内容\n\n"
-    content += f"抓取时间: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-    content += f"总条数: {len(results)}\n\n"
+def scrape_bilibili_rank_ai():
+    """从B站排行榜-知识分类抓AI内容"""
+    results = []
     
-    for i, item in enumerate(results, 1):
-        content += f"### 第{i}条\n"
-        content += f"- 标题: {item['title']}\n"
-        content += f"- UP主: {item['author']}\n"
-        content += f"- 播放: {item['play']}\n"
-        content += f"- 弹幕: {item['danmaku']}\n"
-        content += f"- 点赞: {item['likes']}\n"
-        content += f"- 投币: {item['coins']}\n"
-        content += f"- 收藏: {item['favs']}\n"
-        content += f"- 时长: {item['duration']}\n"
-        desc = item['description'][:200] if item['description'] else '暂无描述'
-        content += f"- 内容总结: {desc}...\n\n"
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled'])
+        page = browser.new_page()
+        
+        # 知识分类排行
+        print("  抓取B站知识分类排行榜...")
+        page.goto('https://www.bilibili.com/v/popular/rank/knowledge', wait_until='networkidle', timeout=30000)
+        page.wait_for_timeout(3000)
+        
+        # 提取排行榜内容
+        items = page.query_selector_all('li')
+        for item in items:
+            try:
+                title_el = item.query_selector('a.title, .title, [class*="title"]')
+                author_el = item.query_selector('.author, [class*="author"], .up-name')
+                stat_el = item.query_selector('.stat, [class*="stat"]')
+                
+                title = title_el.inner_text() if title_el else ''
+                author = author_el.inner_text() if author_el else ''
+                stats = stat_el.inner_text() if stat_el else ''
+                
+                if title and len(title) > 5:
+                    # 检查是否与AI相关
+                    ai_keywords = ['AI', '人工智能', '机器学习', '深度学习', '神经网络', '大模型', 'LLM', 'ChatGPT', 'GPT', 'AIGC', 'AGI', '算法', '编程', '代码', 'Python', '数据科学', 'LLM', 'Gemma', 'Claude', 'DeepSeek', 'OpenAI', 'Midjourney', 'Sora', 'StableDiffusion']
+                    if any(kw.lower() in title.lower() for kw in ai_keywords):
+                        results.append({
+                            'title': title.strip(),
+                            'author': author.strip(),
+                            'stats': stats.strip(),
+                            'platform': 'bilibili',
+                            'category': 'knowledge_rank'
+                        })
+            except Exception as e:
+                continue
+        
+        browser.close()
     
-    with open(filepath, 'a', encoding='utf-8') as f:
-        f.write(content)
-    
-    print(f"已追加保存 {len(results)} 条到 {filepath}")
+    return results
 
 if __name__ == '__main__':
-    results = scrape_bilibili(keyword="AI人工智能", target_count=100)
+    print("=== B站AI内容抓取 ===")
     
-    data_dir = os.path.join(os.path.expanduser('~'), '.openclaw', 'workspace', 'content-hunter', 'data')
-    os.makedirs(data_dir, exist_ok=True)
+    # 方法1: 从知识排行榜获取
+    print("\n[方法1] 从B站知识排行榜获取...")
+    rank_results = scrape_bilibili_rank_ai()
+    print(f"  排行榜找到 {len(rank_results)} 条AI相关内容")
     
-    filepath = os.path.join(data_dir, 'bilibili.md')
-    save_to_markdown(results, filepath)
-    print(f"完成! 共抓取 {len(results)} 条B站内容")
+    # 方法2: 搜索方式
+    print("\n[方法2] 从B站搜索获取...")
+    search_results = scrape_bilibili_ai(pages=5)
+    print(f"  搜索找到 {len(search_results)} 条结果")
+    
+    # 合并去重
+    all_results = rank_results + search_results
+    titles_seen = set()
+    unique_results = []
+    for r in all_results:
+        title = r.get('title', '')[:50]
+        if title and title not in titles_seen:
+            titles_seen.add(title)
+            unique_results.append(r)
+    
+    print(f"\n去重后共 {len(unique_results)} 条")
+    
+    # 写入文件（追加模式）
+    output_file = os.path.join(DATA_DIR, 'bilibili-ai.md')
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+    with open(output_file, 'a', encoding='utf-8') as f:
+        f.write(f"\n\n## B站AI内容抓取报告 - {timestamp}\n")
+        f.write(f"总计: {len(unique_results)} 条\n\n")
+        for i, r in enumerate(unique_results, 1):
+            f.write(f"{i}. **{r.get('title', 'N/A')}**\n")
+            f.write(f"   - 作者: {r.get('author', 'N/A')}\n")
+            f.write(f"   - 数据: {r.get('stats', 'N/A')}\n")
+            f.write(f"   - 来源: {r.get('platform', 'bilibili')} | {r.get('category', 'search')}\n\n")
+    
+    print(f"\n✅ 已追加到: {output_file}")

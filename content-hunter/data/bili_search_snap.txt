@@ -1,0 +1,850 @@
+﻿- generic
+  - generic
+    - list
+      - listitem [level=1]
+        - link "棣栭〉" [ref=e94]
+          - image
+          - StaticText "棣栭〉"
+          - image
+      - listitem [level=1]
+        - link "鐣墽" [ref=e95]
+      - listitem [level=1]
+        - link "鐩存挱" [ref=e96]
+      - listitem [level=1]
+        - link "娓告垙涓績" [ref=e97]
+      - listitem [level=1]
+        - link "浼氬憳璐? [ref=e98]
+      - listitem [level=1]
+        - link "婕敾" [ref=e99]
+      - listitem [level=1]
+        - link "璧涗簨" [ref=e100]
+      - listitem [level=1]
+    - list
+      - listitem [level=1, ref=e56] clickable [cursor:pointer]
+        - listitem [level=1]
+          - StaticText "鐧诲綍"
+          - paragraph
+            - StaticText "鐧诲綍鍚庝綘鍙互锛?
+          - image
+          - StaticText "鍏嶈垂鐪嬮珮娓呰棰?
+          - image
+          - StaticText "澶氱鍚屾鎾斁璁板綍"
+          - image
+          - StaticText "鍙戣〃寮瑰箷/璇勮"
+          - image
+          - StaticText "鐑棬鐣墽褰辫鐪嬩笉鍋?
+          - StaticText "绔嬪嵆鐧诲綍"
+          - generic
+            - StaticText "棣栨浣跨敤锛?"
+            - StaticText "鐐规垜娉ㄥ唽"
+      - listitem [level=1, ref=e57] clickable [cursor:pointer]
+        - listitem [level=1]
+          - link [ref=e191]
+            - image
+      - listitem [level=1, ref=e58] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e59] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e60] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e61] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e62] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e63] clickable [cursor:pointer]
+        - listitem [level=1]
+          - image
+  - generic
+    - image
+    - image [ref=e17] clickable [cursor:pointer]
+    - textbox "杈撳叆鍏抽敭瀛楁悳绱? [ref=e18]: AI浜哄伐鏅鸿兘
+      - StaticText "AI浜哄伐鏅鸿兘"
+    - button "鎼滅储" [ref=e19]
+  - navigation
+    - list
+      - listitem [level=1]
+        - StaticText "缁煎悎"
+      - listitem [level=1]
+        - StaticText "瑙嗛"
+        - StaticText "99+"
+      - listitem [level=1]
+        - StaticText "鐣墽"
+        - StaticText "0"
+      - listitem [level=1]
+        - StaticText "褰辫"
+        - StaticText "3"
+      - listitem [level=1]
+        - StaticText "鐩存挱"
+        - StaticText "8"
+      - listitem [level=1]
+        - StaticText "涓撴爮"
+        - StaticText "99+"
+      - listitem [level=1]
+        - StaticText "鐢ㄦ埛"
+        - StaticText "99+"
+  - separator
+  - button "缁煎悎鎺掑簭" [ref=e1]
+  - button "鏈€澶氭挱鏀? [ref=e2]
+  - button "鏈€鏂板彂甯? [ref=e3]
+  - button "鏈€澶氬脊骞? [ref=e4]
+  - button "鏈€澶氭敹钘? [ref=e5]
+  - button "鏇村绛涢€?" [ref=e6]
+    - StaticText "鏇村绛涢€?"
+    - image
+  - generic
+    - link "銆愭暣鏁?00闆嗐€戞竻鍗庡ぇ瀛?96灏忔椂璁插畬鐨凙I浜哄伐鏅鸿兘浠庡叆闂ㄥ埌绮鹃€氬叏濂楁暀绋嬶紝鍏ㄧ▼骞茶揣鏃犲簾璇濓紒瀛﹀畬鍙樺ぇ浣紒杩欒繕瀛︿笉浼氾紝鎴戦€€鍑篒T鍦堬紒鏈哄櫒瀛︿範-娣卞害瀛︿範-opencv 62.8涓?7145 54:19:28" [ref=e64]
+      - generic
+        - generic
+          - image "銆愭暣鏁?00闆嗐€戞竻鍗庡ぇ瀛?96灏忔椂璁插畬鐨凙I浜哄伐鏅鸿兘浠庡叆闂ㄥ埌绮鹃€氬叏濂楁暀绋嬶紝鍏ㄧ▼骞茶揣鏃犲簾璇濓紒瀛﹀畬鍙樺ぇ浣紒杩欒繕瀛︿笉浼氾紝鎴戦€€鍑篒T鍦堬紒鏈哄櫒瀛︿範-娣卞害瀛︿範-opencv"
+        - generic
+          - image
+          - StaticText "62.8涓?
+          - image
+          - StaticText "7145"
+          - StaticText "54:19:28"
+    - generic
+      - link "銆愭暣鏁?00闆嗐€戞竻鍗庡ぇ瀛?96灏忔椂璁插畬鐨凙I浜哄伐鏅鸿兘浠庡叆闂ㄥ埌绮鹃€氬叏濂楁暀绋嬶紝鍏ㄧ▼骞茶揣鏃犲簾璇濓紒瀛﹀畬鍙樺ぇ浣紒杩欒繕瀛︿笉浼氾紝鎴戦€€鍑篒T鍦堬紒鏈哄櫒瀛︿範-娣卞害瀛︿範-opencv" [ref=e101]
+        - heading "銆愭暣鏁?00闆嗐€戞竻鍗庡ぇ瀛?96灏忔椂璁插畬鐨凙I浜哄伐鏅鸿兘浠庡叆闂ㄥ埌绮鹃€氬叏濂楁暀绋嬶紝鍏ㄧ▼骞茶揣鏃犲簾璇濓紒瀛﹀畬鍙樺ぇ浣紒杩欒繕瀛︿笉浼氾紝鎴戦€€鍑篒T鍦堬紒鏈哄櫒瀛︿範-娣卞害瀛︿範-opencv" [level=3, ref=e161]
+          - StaticText "銆愭暣鏁?00闆嗐€戞竻鍗庡ぇ瀛?96灏忔椂璁插畬鐨?
+          - emphasis
+            - StaticText "AI浜哄伐鏅鸿兘"
+          - StaticText "浠庡叆闂ㄥ埌绮鹃€氬叏濂楁暀绋嬶紝鍏ㄧ▼骞茶揣鏃犲簾璇濓紒瀛﹀畬鍙樺ぇ浣紒杩欒繕瀛︿笉浼氾紝鎴戦€€鍑篒T鍦堬紒鏈哄櫒瀛︿範-娣卞害瀛︿範-opencv"
+      - link "IT鐣屾墰闇稿瓙 路 2025-11-28" [ref=e102]
+        - image
+        - StaticText "IT鐣屾墰闇稿瓙"
+        - StaticText "路 2025-11-28"
+  - generic
+    - link "銆愬紶闆嘲璋堜汉宸ユ櫤鑳姐€戜汉宸ユ櫤鑳藉涔犲帇鍔涢潪甯稿ぇ锛佷綘鑳芥壙鍙楃殑浜嗗悧锛熼獋閱掍竴涓槸涓€涓紒锛佸垵瀛﹁€呭叆闂ㄤ汉宸ユ櫤鑳藉繀鐪嬶紝灏戣蛋99%鐨勫集璺紒 8涓?146 06:21" [ref=e65]
+      - generic
+        - generic
+          - image "銆愬紶闆嘲璋堜汉宸ユ櫤鑳姐€戜汉宸ユ櫤鑳藉涔犲帇鍔涢潪甯稿ぇ锛佷綘鑳芥壙鍙楃殑浜嗗悧锛熼獋閱掍竴涓槸涓€涓紒锛佸垵瀛﹁€呭叆闂ㄤ汉宸ユ櫤鑳藉繀鐪嬶紝灏戣蛋99%鐨勫集璺紒"
+        - generic
+          - image
+          - StaticText "8涓?
+          - image
+          - StaticText "146"
+          - StaticText "06:21"
+    - generic
+      - link "銆愬紶闆嘲璋堜汉宸ユ櫤鑳姐€戜汉宸ユ櫤鑳藉涔犲帇鍔涢潪甯稿ぇ锛佷綘鑳芥壙鍙楃殑浜嗗悧锛熼獋閱掍竴涓槸涓€涓紒锛佸垵瀛﹁€呭叆闂ㄤ汉宸ユ櫤鑳藉繀鐪嬶紝灏戣蛋99%鐨勫集璺紒" [ref=e103]
+        - heading "銆愬紶闆嘲璋堜汉宸ユ櫤鑳姐€戜汉宸ユ櫤鑳藉涔犲帇鍔涢潪甯稿ぇ锛佷綘鑳芥壙鍙楃殑浜嗗悧锛熼獋閱掍竴涓槸涓€涓紒锛佸垵瀛﹁€呭叆闂ㄤ汉宸ユ櫤鑳藉繀鐪嬶紝灏戣蛋99%鐨勫集璺紒" [level=3, ref=e162]
+          - StaticText "銆愬紶闆嘲璋?
+          - emphasis
+            - StaticText "浜哄伐鏅鸿兘"
+          - StaticText "銆?
+          - emphasis
+            - StaticText "浜哄伐鏅鸿兘"
+          - StaticText "瀛︿範鍘嬪姏闈炲父澶э紒浣犺兘鎵垮彈鐨勪簡鍚楋紵楠傞啋涓€涓槸涓€涓紒锛佸垵瀛﹁€呭叆闂?
+          - emphasis
+            - StaticText "浜哄伐鏅鸿兘"
+          - StaticText "蹇呯湅锛屽皯璧?9%鐨勫集璺紒"
+      - link "鍝斿摡浜哄伐鏅鸿兘瀛﹂櫌 路 2025-06-06" [ref=e104]
+        - image
+        - StaticText "鍝斿摡浜哄伐鏅鸿兘瀛﹂櫌"
+        - StaticText "路 2025-06-06"
+  - generic
+    - link "2澶╁浼欰I鍙樼幇锛堥檮鍏ㄥ璧勬枡鏃犲伩鍒嗕韩 189.1涓?119 02:46" [ref=e66]
+      - generic
+        - generic
+          - image "2澶╁浼欰I鍙樼幇锛堥檮鍏ㄥ璧勬枡鏃犲伩鍒嗕韩"
+        - generic
+          - image
+          - StaticText "189.1涓?
+          - image
+          - StaticText "119"
+          - StaticText "02:46"
+    - generic
+      - link "2澶╁浼欰I鍙樼幇锛堥檮鍏ㄥ璧勬枡鏃犲伩鍒嗕韩" [ref=e105]
+        - heading "2澶╁浼欰I鍙樼幇锛堥檮鍏ㄥ璧勬枡鏃犲伩鍒嗕韩" [level=3, ref=e163]
+      - link "GenJi鏄湡鎯虫暀浼氫綘AI 路 2025-06-19" [ref=e106]
+        - image
+        - StaticText "GenJi鏄湡鎯虫暀浼氫綘AI"
+        - StaticText "路 2025-06-19"
+  - generic
+    - link "銆愯繋鏄ョ壒鎯犮€慉I缁樼敾杞绘澗鎺屾帶Midjourney 10.2涓? [ref=e67]
+      - generic
+        - generic
+          - image "銆愯繋鏄ョ壒鎯犮€慉I缁樼敾杞绘澗鎺屾帶Midjourney"
+        - generic
+          - image
+          - StaticText "10.2涓?
+    - generic
+      - link "銆愯繋鏄ョ壒鎯犮€慉I缁樼敾杞绘澗鎺屾帶Midjourney" [ref=e107]
+        - heading "銆愯繋鏄ョ壒鎯犮€慉I缁樼敾杞绘澗鎺屾帶Midjourney" [level=3, ref=e164]
+          - StaticText "銆愯繋鏄ョ壒鎯犮€?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "缁樼敾杞绘澗鎺屾帶Midjourney"
+      - link "AI灏忕帇瀛怞ay 路 鍏?4璇炬椂" [ref=e108]
+        - image
+        - StaticText "AI灏忕帇瀛怞ay"
+        - StaticText "路 鍏?4璇炬椂"
+  - generic
+    - link "姘歌繙鏄叏鐞傾I纭煡璇嗗拰瑙ｈ 189 绉戞妧路绉戝" [ref=e68]
+      - generic
+        - generic
+          - image "姘歌繙鏄叏鐞傾I纭煡璇嗗拰瑙ｈ"
+        - generic
+          - image
+          - StaticText "189"
+          - StaticText "绉戞妧路绉戝"
+    - generic
+      - link "姘歌繙鏄叏鐞傾I纭煡璇嗗拰瑙ｈ" [ref=e109]
+        - heading "姘歌繙鏄叏鐞傾I纭煡璇嗗拰瑙ｈ" [level=3, ref=e165]
+          - StaticText "姘歌繙鏄叏鐞?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "纭煡璇嗗拰瑙ｈ"
+      - link "鐩存挱涓?鐩存挱涓?闆剧嚎涔嬩笂" [ref=e110]
+        - image "鐩存挱涓?
+        - StaticText "鐩存挱涓?
+        - StaticText "闆剧嚎涔嬩笂"
+  - generic
+    - link "2026Python锛坅i鍒涙柊瀹炴垬鐗堬級 26 绉戞妧路绉戝" [ref=e69]
+      - generic
+        - generic
+          - image "2026Python锛坅i鍒涙柊瀹炴垬鐗堬級"
+        - generic
+          - image
+          - StaticText "26"
+          - StaticText "绉戞妧路绉戝"
+    - generic
+      - link "2026Python锛坅i鍒涙柊瀹炴垬鐗堬級" [ref=e111]
+        - heading "2026Python锛坅i鍒涙柊瀹炴垬鐗堬級" [level=3, ref=e166]
+          - StaticText "2026Python锛?
+          - emphasis
+            - StaticText "ai"
+          - StaticText "鍒涙柊瀹炴垬鐗堬級"
+      - link "鐩存挱涓?鐩存挱涓?鏉ㄦ窇濞烶ython" [ref=e112]
+        - image "鐩存挱涓?
+        - StaticText "鐩存挱涓?
+        - StaticText "鏉ㄦ窇濞烶ython"
+  - generic
+    - link "灏戝効AI浜哄伐鏅鸿兘璇剧▼锛氫粠鍩虹姒傚康閫愭娣卞叆鍒版牳蹇冩妧鏈?鍩瑰吇鍏ㄩ潰鐨凙I绱犲吇 5.5涓?83 02:08:38" [ref=e70]
+      - generic
+        - generic
+          - image "灏戝効AI浜哄伐鏅鸿兘璇剧▼锛氫粠鍩虹姒傚康閫愭娣卞叆鍒版牳蹇冩妧鏈?鍩瑰吇鍏ㄩ潰鐨凙I绱犲吇"
+        - generic
+          - image
+          - StaticText "5.5涓?
+          - image
+          - StaticText "83"
+          - StaticText "02:08:38"
+    - generic
+      - link "灏戝効AI浜哄伐鏅鸿兘璇剧▼锛氫粠鍩虹姒傚康閫愭娣卞叆鍒版牳蹇冩妧鏈?鍩瑰吇鍏ㄩ潰鐨凙I绱犲吇" [ref=e113]
+        - heading "灏戝効AI浜哄伐鏅鸿兘璇剧▼锛氫粠鍩虹姒傚康閫愭娣卞叆鍒版牳蹇冩妧鏈?鍩瑰吇鍏ㄩ潰鐨凙I绱犲吇" [level=3, ref=e167]
+          - StaticText "灏戝効"
+          - emphasis
+            - StaticText "AI浜哄伐鏅鸿兘"
+          - StaticText "璇剧▼锛氫粠鍩虹姒傚康閫愭娣卞叆鍒版牳蹇冩妧鏈?鍩瑰吇鍏ㄩ潰鐨?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "绱犲吇"
+      - link "鐜嬪厛鐢熺殑鎬濈淮鍥?路 2025-09-04" [ref=e114]
+        - image
+        - StaticText "鐜嬪厛鐢熺殑鎬濈淮鍥?
+        - StaticText "路 2025-09-04"
+  - generic
+    - link "灏忛箍绾緼I璁粌甯堟渤鍖楃嚎涓嬬彮鐩存挱涓?319 鏁欒偛瀛︿範" [ref=e71]
+      - generic
+        - generic
+          - image "灏忛箍绾緼I璁粌甯堟渤鍖楃嚎涓嬬彮鐩存挱涓?
+        - generic
+          - image
+          - StaticText "319"
+          - StaticText "鏁欒偛瀛︿範"
+    - generic
+      - link "灏忛箍绾緼I璁粌甯堟渤鍖楃嚎涓嬬彮鐩存挱涓? [ref=e115]
+        - heading "灏忛箍绾緼I璁粌甯堟渤鍖楃嚎涓嬬彮鐩存挱涓? [level=3, ref=e168]
+          - StaticText "灏忛箍绾?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "璁粌甯堟渤鍖楃嚎涓嬬彮鐩存挱涓?
+      - link "鐩存挱涓?鐩存挱涓?灏忛箍绾?娌冲寳绾夸笅鐝? [ref=e116]
+        - image "鐩存挱涓?
+        - StaticText "鐩存挱涓?
+        - StaticText "灏忛箍绾?娌冲寳绾夸笅鐝?
+  - generic
+    - link "銆愬叏748闆嗐€戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑AI澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?025鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒 351.2涓?9853 15:31:47" [ref=e72]
+      - generic
+        - generic
+          - image "銆愬叏748闆嗐€戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑AI澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?025鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒"
+        - generic
+          - image
+          - StaticText "351.2涓?
+          - image
+          - StaticText "9853"
+          - StaticText "15:31:47"
+    - generic
+      - link "銆愬叏748闆嗐€戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑AI澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?025鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒" [ref=e117]
+        - heading "銆愬叏748闆嗐€戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑AI澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?025鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒" [level=3, ref=e169]
+          - StaticText "銆愬叏748闆嗐€戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?025鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒"
+      - link "澶фā鍨嬪畼鏂硅绋?路 2024-12-20" [ref=e118]
+        - image
+        - StaticText "澶фā鍨嬪畼鏂硅绋?
+        - StaticText "路 2024-12-20"
+  - generic
+    - link "#ai褰辫#ai瑙嗛 2445 0 00:59" [ref=e73]
+      - generic
+        - generic
+          - image "#ai褰辫#ai瑙嗛"
+        - generic
+          - image
+          - StaticText "2445"
+          - image
+          - StaticText "0"
+          - StaticText "00:59"
+    - generic
+      - link "#ai褰辫#ai瑙嗛" [ref=e119]
+        - heading "#ai褰辫#ai瑙嗛" [level=3, ref=e170]
+          - StaticText "#"
+          - emphasis
+            - StaticText "ai"
+          - StaticText "褰辫#"
+          - emphasis
+            - StaticText "ai"
+          - StaticText "瑙嗛"
+      - link "aigc鍏冨畤瀹?路 鏄ㄥぉ" [ref=e120]
+        - image
+        - StaticText "aigc鍏冨畤瀹?
+        - StaticText "路 鏄ㄥぉ"
+  - generic
+    - link "鍓嶄簹椹€夾I璐熻矗浜猴細涓€骞翠箣鍐咃紝AI浣跨敤鑰呬笌鍏朵粬浜轰箣闂寸殑宸窛灏嗗彉寰椾笉鍙€嗚浆 152 0 59:17" [ref=e74]
+      - generic
+        - generic
+          - image "鍓嶄簹椹€夾I璐熻矗浜猴細涓€骞翠箣鍐咃紝AI浣跨敤鑰呬笌鍏朵粬浜轰箣闂寸殑宸窛灏嗗彉寰椾笉鍙€嗚浆"
+        - generic
+          - image
+          - StaticText "152"
+          - image
+          - StaticText "0"
+          - StaticText "59:17"
+    - generic
+      - link "鍓嶄簹椹€夾I璐熻矗浜猴細涓€骞翠箣鍐咃紝AI浣跨敤鑰呬笌鍏朵粬浜轰箣闂寸殑宸窛灏嗗彉寰椾笉鍙€嗚浆" [ref=e121]
+        - heading "鍓嶄簹椹€夾I璐熻矗浜猴細涓€骞翠箣鍐咃紝AI浣跨敤鑰呬笌鍏朵粬浜轰箣闂寸殑宸窛灏嗗彉寰椾笉鍙€嗚浆" [level=3, ref=e171]
+          - StaticText "鍓嶄簹椹€?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "璐熻矗浜猴細涓€骞翠箣鍐咃紝"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "浣跨敤鑰呬笌鍏朵粬浜轰箣闂寸殑宸窛灏嗗彉寰椾笉鍙€嗚浆"
+      - link "YouTube绮鹃€夐€熼€?路 3灏忔椂鍓? [ref=e122]
+        - image
+        - StaticText "YouTube绮鹃€夐€熼€?
+        - StaticText "路 3灏忔椂鍓?
+  - generic
+    - link "銆怉I闆跺熀纭€鍏ラ棬銆?026骞存渶鍏ㄤ汉宸ユ櫤鑳借绋嬶紙Python銆佹繁搴﹀涔犵畻娉曘€佺缁忕綉缁溿€丳yTorch銆佹満鍣ㄥ涔犮€佽绠楁満瑙嗚銆丯LP锛変竴鍙ｆ皵瀛﹀畬锛佸揩閫熷叆闂ㄦ瀬绠€鍗?129.7涓?1278 37:41:34" [ref=e75]
+      - generic
+        - generic
+          - image "銆怉I闆跺熀纭€鍏ラ棬銆?026骞存渶鍏ㄤ汉宸ユ櫤鑳借绋嬶紙Python銆佹繁搴﹀涔犵畻娉曘€佺缁忕綉缁溿€丳yTorch銆佹満鍣ㄥ涔犮€佽绠楁満瑙嗚銆丯LP锛変竴鍙ｆ皵瀛﹀畬锛佸揩閫熷叆闂ㄦ瀬绠€鍗?
+        - generic
+          - image
+          - StaticText "129.7涓?
+          - image
+          - StaticText "1278"
+          - StaticText "37:41:34"
+    - generic
+      - link "銆怉I闆跺熀纭€鍏ラ棬銆?026骞存渶鍏ㄤ汉宸ユ櫤鑳借绋嬶紙Python銆佹繁搴﹀涔犵畻娉曘€佺缁忕綉缁溿€丳yTorch銆佹満鍣ㄥ涔犮€佽绠楁満瑙嗚銆丯LP锛変竴鍙ｆ皵瀛﹀畬锛佸揩閫熷叆闂ㄦ瀬绠€鍗? [ref=e123]
+        - heading "銆怉I闆跺熀纭€鍏ラ棬銆?026骞存渶鍏ㄤ汉宸ユ櫤鑳借绋嬶紙Python銆佹繁搴﹀涔犵畻娉曘€佺缁忕綉缁溿€丳yTorch銆佹満鍣ㄥ涔犮€佽绠楁満瑙嗚銆丯LP锛変竴鍙ｆ皵瀛﹀畬锛佸揩閫熷叆闂ㄦ瀬绠€鍗? [level=3, ref=e172]
+          - StaticText "銆?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "闆跺熀纭€鍏ラ棬銆?026骞存渶鍏?
+          - emphasis
+            - StaticText "浜哄伐鏅鸿兘"
+          - StaticText "璇剧▼锛圥ython銆佹繁搴﹀涔犵畻娉曘€佺缁忕綉缁溿€丳yTorch銆佹満鍣ㄥ涔犮€佽绠楁満瑙嗚銆丯LP锛変竴鍙ｆ皵瀛﹀畬锛佸揩閫熷叆闂ㄦ瀬绠€鍗?
+      - link "鏈哄櫒瀛︿範鏁欑▼ 路 2025-10-13" [ref=e124]
+        - image
+        - StaticText "鏈哄櫒瀛︿範鏁欑▼"
+        - StaticText "路 2025-10-13"
+  - generic
+    - link "銆愪汉宸ユ櫤鑳姐€戞竻鍗庢暀鎺堝甫浣犱粠鍏ラ棬鍒拌繘闃?4637 0 02:10" [ref=e76]
+      - generic
+        - generic
+          - image "銆愪汉宸ユ櫤鑳姐€戞竻鍗庢暀鎺堝甫浣犱粠鍏ラ棬鍒拌繘闃?
+        - generic
+          - image
+          - StaticText "4637"
+          - image
+          - StaticText "0"
+          - StaticText "02:10"
+    - generic
+      - link "銆愪汉宸ユ櫤鑳姐€戞竻鍗庢暀鎺堝甫浣犱粠鍏ラ棬鍒拌繘闃? [ref=e125]
+        - heading "銆愪汉宸ユ櫤鑳姐€戞竻鍗庢暀鎺堝甫浣犱粠鍏ラ棬鍒拌繘闃? [level=3, ref=e173]
+      - link "浜哄伐鏅鸿兘鐭ヨ瘑璇惧爞 路 03-25" [ref=e126]
+        - image
+        - StaticText "浜哄伐鏅鸿兘鐭ヨ瘑璇惧爞"
+        - StaticText "路 03-25"
+  - generic
+    - link "鑰侀珮涓庡皬鑼夋渶鏂拌棰戙€愭垬鍦轰笂鐨勬櫤鑳芥鍣ㄣ€戞彮绉樻垬浜変腑鐨勫悇绉岮I鏅鸿兘姝﹀櫒鏃犱汉鏈簗鑰侀珮鍜屽皬鑼夋棤灏鹃煶瑙嗛 1110 2 20:50" [ref=e77]
+      - generic
+        - generic
+          - image "鑰侀珮涓庡皬鑼夋渶鏂拌棰戙€愭垬鍦轰笂鐨勬櫤鑳芥鍣ㄣ€戞彮绉樻垬浜変腑鐨勫悇绉岮I鏅鸿兘姝﹀櫒鏃犱汉鏈簗鑰侀珮鍜屽皬鑼夋棤灏鹃煶瑙嗛"
+        - generic
+          - image
+          - StaticText "1110"
+          - image
+          - StaticText "2"
+          - StaticText "20:50"
+    - generic
+      - link "鑰侀珮涓庡皬鑼夋渶鏂拌棰戙€愭垬鍦轰笂鐨勬櫤鑳芥鍣ㄣ€戞彮绉樻垬浜変腑鐨勫悇绉岮I鏅鸿兘姝﹀櫒鏃犱汉鏈簗鑰侀珮鍜屽皬鑼夋棤灏鹃煶瑙嗛" [ref=e127]
+        - heading "鑰侀珮涓庡皬鑼夋渶鏂拌棰戙€愭垬鍦轰笂鐨勬櫤鑳芥鍣ㄣ€戞彮绉樻垬浜変腑鐨勫悇绉岮I鏅鸿兘姝﹀櫒鏃犱汉鏈簗鑰侀珮鍜屽皬鑼夋棤灏鹃煶瑙嗛" [level=3, ref=e174]
+          - StaticText "鑰侀珮涓庡皬鑼夋渶鏂拌棰戙€愭垬鍦轰笂鐨勬櫤鑳芥鍣ㄣ€戞彮绉樻垬浜変腑鐨勫悇绉?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "鏅鸿兘姝﹀櫒鏃犱汉鏈簗鑰侀珮鍜屽皬鑼夋棤灏鹃煶瑙嗛"
+      - link "鑰侀珮灏忚寜鏂拌棰?路 13灏忔椂鍓? [ref=e128]
+        - image
+        - StaticText "鑰侀珮灏忚寜鏂拌棰?
+        - StaticText "路 13灏忔椂鍓?
+  - generic
+    - link "銆怉I鏁欑▼銆戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑AI澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?026鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒锛?37涓?1017 39:57:22" [ref=e78]
+      - generic
+        - generic
+          - image "銆怉I鏁欑▼銆戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑AI澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?026鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒锛?
+        - generic
+          - image
+          - StaticText "37涓?
+          - image
+          - StaticText "1017"
+          - StaticText "39:57:22"
+    - generic
+      - link "銆怉I鏁欑▼銆戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑AI澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?026鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒锛? [ref=e129]
+        - heading "銆怉I鏁欑▼銆戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑AI澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?026鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒锛? [level=3, ref=e175]
+          - StaticText "銆?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "鏁欑▼銆戠洰鍓岯绔欐渶鍏ㄦ渶缁嗙殑"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "澶фā鍨嬮浂鍩虹鍏ㄥ鏁欑▼锛?026鏈€鏂扮増锛屽寘鍚墍鏈夊共璐э紒涓冨ぉ灏辫兘浠庡皬鐧藉埌澶х锛佸皯璧?9%鐨勫集璺紒瀛樹笅鍚э紒寰堥毦鎵惧叏鐨勶紒锛?
+      - link "澶фā鍨嬪紑鍙?路 03-10" [ref=e130]
+        - image
+        - StaticText "澶фā鍨嬪紑鍙?
+        - StaticText "路 03-10"
+  - generic
+    - link "MemPalace锛氱敤鈥滆蹇嗗娈库€濊В鍐矨I璁板繂闅鹃 286 0 15:38" [ref=e79]
+      - generic
+        - generic
+          - image "MemPalace锛氱敤鈥滆蹇嗗娈库€濊В鍐矨I璁板繂闅鹃"
+        - generic
+          - image
+          - StaticText "286"
+          - image
+          - StaticText "0"
+          - StaticText "15:38"
+    - generic
+      - link "MemPalace锛氱敤鈥滆蹇嗗娈库€濊В鍐矨I璁板繂闅鹃" [ref=e131]
+        - heading "MemPalace锛氱敤鈥滆蹇嗗娈库€濊В鍐矨I璁板繂闅鹃" [level=3, ref=e176]
+          - StaticText "MemPalace锛氱敤鈥滆蹇嗗娈库€濊В鍐?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "璁板繂闅鹃"
+      - link "灏忓ぉ鑰佸笀鐨凙I澶ц鍫?路 20灏忔椂鍓? [ref=e132]
+        - image
+        - StaticText "灏忓ぉ鑰佸笀鐨凙I澶ц鍫?
+        - StaticText "路 20灏忔椂鍓?
+  - generic
+    - link "銆婁汉宸ユ櫤鑳藉璁恒€?灏忔椂鏈熸湯閫熸垚璇撅紒鏈熸湯閫熸垚涓ㄨ€冨墠绐佸嚮涓ㄦ湡鏈笉鎸傜涓ㄨ€冪偣鎬荤粨 44.2涓?1288 03:55:42" [ref=e80]
+      - generic
+        - generic
+          - image "銆婁汉宸ユ櫤鑳藉璁恒€?灏忔椂鏈熸湯閫熸垚璇撅紒鏈熸湯閫熸垚涓ㄨ€冨墠绐佸嚮涓ㄦ湡鏈笉鎸傜涓ㄨ€冪偣鎬荤粨"
+        - generic
+          - image
+          - StaticText "44.2涓?
+          - image
+          - StaticText "1288"
+          - StaticText "03:55:42"
+    - generic
+      - link "銆婁汉宸ユ櫤鑳藉璁恒€?灏忔椂鏈熸湯閫熸垚璇撅紒鏈熸湯閫熸垚涓ㄨ€冨墠绐佸嚮涓ㄦ湡鏈笉鎸傜涓ㄨ€冪偣鎬荤粨" [ref=e133]
+        - heading "銆婁汉宸ユ櫤鑳藉璁恒€?灏忔椂鏈熸湯閫熸垚璇撅紒鏈熸湯閫熸垚涓ㄨ€冨墠绐佸嚮涓ㄦ湡鏈笉鎸傜涓ㄨ€冪偣鎬荤粨" [level=3, ref=e177]
+          - StaticText "銆?
+          - emphasis
+            - StaticText "浜哄伐鏅鸿兘"
+          - StaticText "瀵艰銆?灏忔椂鏈熸湯閫熸垚璇撅紒鏈熸湯閫熸垚涓ㄨ€冨墠绐佸嚮涓ㄦ湡鏈笉鎸傜涓ㄨ€冪偣鎬荤粨"
+      - link "鏁板寤烘ā鑰佸摜 路 2024-12-21" [ref=e134]
+        - image
+        - StaticText "鏁板寤烘ā鑰佸摜"
+        - StaticText "路 2024-12-21"
+  - generic
+    - link "Insider: 浜哄伐鏅鸿兘 AI DeepMind 鍒涘浜哄搱钀ㄦ瘮鏂笓璁垮畬鏁寸増 189 0 26:23" [ref=e81]
+      - generic
+        - generic
+          - image "Insider: 浜哄伐鏅鸿兘 AI DeepMind 鍒涘浜哄搱钀ㄦ瘮鏂笓璁垮畬鏁寸増"
+        - generic
+          - image
+          - StaticText "189"
+          - image
+          - StaticText "0"
+          - StaticText "26:23"
+    - generic
+      - link "Insider: 浜哄伐鏅鸿兘 AI DeepMind 鍒涘浜哄搱钀ㄦ瘮鏂笓璁垮畬鏁寸増" [ref=e135]
+        - heading "Insider: 浜哄伐鏅鸿兘 AI DeepMind 鍒涘浜哄搱钀ㄦ瘮鏂笓璁垮畬鏁寸増" [level=3, ref=e178]
+          - StaticText "Insider: "
+          - emphasis
+            - StaticText "浜哄伐鏅鸿兘"
+          - StaticText " "
+          - emphasis
+            - StaticText "AI"
+          - StaticText " DeepMind 鍒涘浜哄搱钀ㄦ瘮鏂笓璁垮畬鏁寸増"
+      - link "椋庣悍绾烽洦娼囨絿 路 14灏忔椂鍓? [ref=e136]
+        - image
+        - StaticText "椋庣悍绾烽洦娼囨絿"
+        - StaticText "路 14灏忔椂鍓?
+  - generic
+    - link "銆怉i鏁欑▼銆?00闆嗭紙鍏級浠庨浂寮€濮嬪illustrator杞欢鍩虹 (Ai2025鏂版墜鍏ラ棬瀹炵敤鐗?Ai2025闆跺熀纭€鍏ラ棬鏁欑▼锛侊紒锛?79.5涓?1449 13:32:28" [ref=e82]
+      - generic
+        - generic
+          - image "銆怉i鏁欑▼銆?00闆嗭紙鍏級浠庨浂寮€濮嬪illustrator杞欢鍩虹 (Ai2025鏂版墜鍏ラ棬瀹炵敤鐗?Ai2025闆跺熀纭€鍏ラ棬鏁欑▼锛侊紒锛?
+        - generic
+          - image
+          - StaticText "79.5涓?
+          - image
+          - StaticText "1449"
+          - StaticText "13:32:28"
+    - generic
+      - link "銆怉i鏁欑▼銆?00闆嗭紙鍏級浠庨浂寮€濮嬪illustrator杞欢鍩虹 (Ai2025鏂版墜鍏ラ棬瀹炵敤鐗?Ai2025闆跺熀纭€鍏ラ棬鏁欑▼锛侊紒锛? [ref=e137]
+        - heading "銆怉i鏁欑▼銆?00闆嗭紙鍏級浠庨浂寮€濮嬪illustrator杞欢鍩虹 (Ai2025鏂版墜鍏ラ棬瀹炵敤鐗?Ai2025闆跺熀纭€鍏ラ棬鏁欑▼锛侊紒锛? [level=3, ref=e179]
+          - StaticText "銆?
+          - emphasis
+            - StaticText "Ai"
+          - StaticText "鏁欑▼銆?00闆嗭紙鍏級浠庨浂寮€濮嬪illustrator杞欢鍩虹 ("
+          - emphasis
+            - StaticText "Ai"
+          - StaticText "2025鏂版墜鍏ラ棬瀹炵敤鐗?"
+          - emphasis
+            - StaticText "Ai"
+          - StaticText "2025闆跺熀纭€鍏ラ棬鏁欑▼锛侊紒锛?
+      - link "澶╂墠AI璁捐椴?路 2025-08-14" [ref=e138]
+        - image
+        - StaticText "澶╂墠AI璁捐椴?
+        - StaticText "路 2025-08-14"
+  - generic
+    - link "锛堝叏49闆嗭級宸茬粡鏇垮ぇ瀹朵粯杩囪垂浜嗭紒鑺?980涔扮殑AI瑙嗛鍒朵綔鍏ㄥ鏁欑▼锛岄€艰嚜宸?鏈堝浼氾紝AI姘村钩鏆存定锛佷粠0鍩虹灏忕櫧鍒癆I瑙嗛澶х鐪嬭繖濂楀氨澶熶簡锛岀洿鎺ユ嬁璧颁笉璋紒 350 17 36:21:03" [ref=e83]
+      - generic
+        - generic
+          - image "锛堝叏49闆嗭級宸茬粡鏇垮ぇ瀹朵粯杩囪垂浜嗭紒鑺?980涔扮殑AI瑙嗛鍒朵綔鍏ㄥ鏁欑▼锛岄€艰嚜宸?鏈堝浼氾紝AI姘村钩鏆存定锛佷粠0鍩虹灏忕櫧鍒癆I瑙嗛澶х鐪嬭繖濂楀氨澶熶簡锛岀洿鎺ユ嬁璧颁笉璋紒"
+        - generic
+          - image
+          - StaticText "350"
+          - image
+          - StaticText "17"
+          - StaticText "36:21:03"
+    - generic
+      - link "锛堝叏49闆嗭級宸茬粡鏇垮ぇ瀹朵粯杩囪垂浜嗭紒鑺?980涔扮殑AI瑙嗛鍒朵綔鍏ㄥ鏁欑▼锛岄€艰嚜宸?鏈堝浼氾紝AI姘村钩鏆存定锛佷粠0鍩虹灏忕櫧鍒癆I瑙嗛澶х鐪嬭繖濂楀氨澶熶簡锛岀洿鎺ユ嬁璧颁笉璋紒" [ref=e139]
+        - heading "锛堝叏49闆嗭級宸茬粡鏇垮ぇ瀹朵粯杩囪垂浜嗭紒鑺?980涔扮殑AI瑙嗛鍒朵綔鍏ㄥ鏁欑▼锛岄€艰嚜宸?鏈堝浼氾紝AI姘村钩鏆存定锛佷粠0鍩虹灏忕櫧鍒癆I瑙嗛澶х鐪嬭繖濂楀氨澶熶簡锛岀洿鎺ユ嬁璧颁笉璋紒" [level=3, ref=e180]
+          - StaticText "锛堝叏49闆嗭級宸茬粡鏇垮ぇ瀹朵粯杩囪垂浜嗭紒鑺?980涔扮殑"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "瑙嗛鍒朵綔鍏ㄥ鏁欑▼锛岄€艰嚜宸?鏈堝浼氾紝"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "姘村钩鏆存定锛佷粠0鍩虹灏忕櫧鍒?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "瑙嗛澶х鐪嬭繖濂楀氨澶熶簡锛岀洿鎺ユ嬁璧颁笉璋紒"
+      - link "钖囪枃瀹夊濮?路 2灏忔椂鍓? [ref=e140]
+        - image
+        - StaticText "钖囪枃瀹夊濮?
+        - StaticText "路 2灏忔椂鍓?
+  - generic
+    - link "UP鏈墦绠楀紑鍙戜竴娆鹃娴嬫湭鏉ョ殑AI浜у搧锛岀粨鏋滃拰5浣岮I鍚靛嚭浜嗕竴涓湡姝ｈ兘钀藉湴鐨勬柟鍚?170 0 19:31" [ref=e84]
+      - generic
+        - generic
+          - image "UP鏈墦绠楀紑鍙戜竴娆鹃娴嬫湭鏉ョ殑AI浜у搧锛岀粨鏋滃拰5浣岮I鍚靛嚭浜嗕竴涓湡姝ｈ兘钀藉湴鐨勬柟鍚?
+        - generic
+          - image
+          - StaticText "170"
+          - image
+          - StaticText "0"
+          - StaticText "19:31"
+    - generic
+      - link "UP鏈墦绠楀紑鍙戜竴娆鹃娴嬫湭鏉ョ殑AI浜у搧锛岀粨鏋滃拰5浣岮I鍚靛嚭浜嗕竴涓湡姝ｈ兘钀藉湴鐨勬柟鍚? [ref=e141]
+        - heading "UP鏈墦绠楀紑鍙戜竴娆鹃娴嬫湭鏉ョ殑AI浜у搧锛岀粨鏋滃拰5浣岮I鍚靛嚭浜嗕竴涓湡姝ｈ兘钀藉湴鐨勬柟鍚? [level=3, ref=e181]
+          - StaticText "UP鏈墦绠楀紑鍙戜竴娆鹃娴嬫湭鏉ョ殑"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "浜у搧锛岀粨鏋滃拰5浣?
+          - emphasis
+            - StaticText "AI"
+          - StaticText "鍚靛嚭浜嗕竴涓湡姝ｈ兘钀藉湴鐨勬柟鍚?
+      - link "寮€閿佸ぇ甯?绱㈡媺 路 11灏忔椂鍓? [ref=e142]
+        - image
+        - StaticText "寮€閿佸ぇ甯?绱㈡媺"
+        - StaticText "路 11灏忔椂鍓?
+  - generic
+    - link "韪忕┖姣斾簭閽辫繕闅惧彈锛佷粖澶╀綘涓婅溅浜嗗悧锛?4793 7 06:39" [ref=e85]
+      - generic
+        - generic
+          - image "韪忕┖姣斾簭閽辫繕闅惧彈锛佷粖澶╀綘涓婅溅浜嗗悧锛?
+        - generic
+          - image
+          - StaticText "4793"
+          - image
+          - StaticText "7"
+          - StaticText "06:39"
+    - generic
+      - link "韪忕┖姣斾簭閽辫繕闅惧彈锛佷粖澶╀綘涓婅溅浜嗗悧锛? [ref=e143]
+        - heading "韪忕┖姣斾簭閽辫繕闅惧彈锛佷粖澶╀綘涓婅溅浜嗗悧锛? [level=3, ref=e182]
+      - link "瓒嬪娍澶ф嬁 路 18灏忔椂鍓? [ref=e144]
+        - image
+        - StaticText "瓒嬪娍澶ф嬁"
+        - StaticText "路 18灏忔椂鍓?
+  - generic
+    - link "IT鍗辨満锛佽繖涓冨ぇ缂栫▼鏂瑰悜鎭愬皢娣樻卑锛屾櫘閫氱▼搴忓憳鍗冧竾鍒锛丣ava銆乸hp銆乬o銆乧 16.9涓?528 05:38:32" [ref=e86]
+      - generic
+        - generic
+          - image "IT鍗辨満锛佽繖涓冨ぇ缂栫▼鏂瑰悜鎭愬皢娣樻卑锛屾櫘閫氱▼搴忓憳鍗冧竾鍒锛丣ava銆乸hp銆乬o銆乧"
+        - generic
+          - image
+          - StaticText "16.9涓?
+          - image
+          - StaticText "528"
+          - StaticText "05:38:32"
+    - generic
+      - link "IT鍗辨満锛佽繖涓冨ぇ缂栫▼鏂瑰悜鎭愬皢娣樻卑锛屾櫘閫氱▼搴忓憳鍗冧竾鍒锛丣ava銆乸hp銆乬o銆乧" [ref=e145]
+        - heading "IT鍗辨満锛佽繖涓冨ぇ缂栫▼鏂瑰悜鎭愬皢娣樻卑锛屾櫘閫氱▼搴忓憳鍗冧竾鍒锛丣ava銆乸hp銆乬o銆乧" [level=3, ref=e183]
+      - link "椹＋鍏礗T璇惧爞 路 01-06" [ref=e146]
+        - image
+        - StaticText "椹＋鍏礗T璇惧爞"
+        - StaticText "路 01-06"
+  - generic
+    - link "2025骞磋嚜涓诲紡AI宸ョ▼澶у笀鐝?60 0 06:33:05" [ref=e87]
+      - generic
+        - generic
+          - image "2025骞磋嚜涓诲紡AI宸ョ▼澶у笀鐝?
+        - generic
+          - image
+          - StaticText "60"
+          - image
+          - StaticText "0"
+          - StaticText "06:33:05"
+    - generic
+      - link "2025骞磋嚜涓诲紡AI宸ョ▼澶у笀鐝? [ref=e147]
+        - heading "2025骞磋嚜涓诲紡AI宸ョ▼澶у笀鐝? [level=3, ref=e184]
+          - StaticText "2025骞磋嚜涓诲紡"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "宸ョ▼澶у笀鐝?
+      - link "澶у彿瀛︿範閾哄瓙 路 14灏忔椂鍓? [ref=e148]
+        - image
+        - StaticText "澶у彿瀛︿範閾哄瓙"
+        - StaticText "路 14灏忔椂鍓?
+  - generic
+    - link "娲涘厠鐜嬪浗涓栫晫AI浜哄伐鏅鸿兘鍏ㄨ嚜鍔ㄨ窇鍥鹃噰闆嗘寲鐭?1.9涓?0 01:43" [ref=e88]
+      - generic
+        - generic
+          - image "娲涘厠鐜嬪浗涓栫晫AI浜哄伐鏅鸿兘鍏ㄨ嚜鍔ㄨ窇鍥鹃噰闆嗘寲鐭?
+        - generic
+          - image
+          - StaticText "1.9涓?
+          - image
+          - StaticText "0"
+          - StaticText "01:43"
+    - generic
+      - link "娲涘厠鐜嬪浗涓栫晫AI浜哄伐鏅鸿兘鍏ㄨ嚜鍔ㄨ窇鍥鹃噰闆嗘寲鐭? [ref=e149]
+        - heading "娲涘厠鐜嬪浗涓栫晫AI浜哄伐鏅鸿兘鍏ㄨ嚜鍔ㄨ窇鍥鹃噰闆嗘寲鐭? [level=3, ref=e185]
+          - StaticText "娲涘厠鐜嬪浗涓栫晫"
+          - emphasis
+            - StaticText "AI浜哄伐鏅鸿兘"
+          - StaticText "鍏ㄨ嚜鍔ㄨ窇鍥鹃噰闆嗘寲鐭?
+      - link "闈炲父VB鍞辨瓕 路 04-06" [ref=e150]
+        - image
+        - StaticText "闈炲父VB鍞辨瓕"
+        - StaticText "路 04-06"
+  - generic
+    - link "2023骞村搱浣汣S50AI浜哄伐鏅鸿兘鍏紑璇句腑鑻卞瓧骞曠増 1.3涓?17 11:49:01" [ref=e89]
+      - generic
+        - generic
+          - image "2023骞村搱浣汣S50AI浜哄伐鏅鸿兘鍏紑璇句腑鑻卞瓧骞曠増"
+        - generic
+          - image
+          - StaticText "1.3涓?
+          - image
+          - StaticText "17"
+          - StaticText "11:49:01"
+    - generic
+      - link "2023骞村搱浣汣S50AI浜哄伐鏅鸿兘鍏紑璇句腑鑻卞瓧骞曠増" [ref=e151]
+        - heading "2023骞村搱浣汣S50AI浜哄伐鏅鸿兘鍏紑璇句腑鑻卞瓧骞曠増" [level=3, ref=e186]
+          - StaticText "2023骞村搱浣汣S50"
+          - emphasis
+            - StaticText "AI浜哄伐鏅鸿兘"
+          - StaticText "鍏紑璇句腑鑻卞瓧骞曠増"
+      - link "silas23 路 2023-12-08" [ref=e152]
+        - image
+        - StaticText "silas23"
+        - StaticText "路 2023-12-08"
+  - generic
+    - link "2026骞存渶寮烘棤闄愬埗ai鑱婂ぉ杞欢锛屾瘡澶╅兘鍙互鍏嶈垂鐣呯帺锛屽牚姣旈厭棣嗗拰鐢靛瓙榄呴瓟鐨勫厤璐规棤闄愬埗ai锛屽唴缃绉嶆ā鍨嬬嚎璺紝鏃犺鏄?*杩樻槸鍓ф儏閮藉彲闅忔剰鐖界帺锛?2.8涓?75 02:17" [ref=e90]
+      - generic
+        - generic
+          - image "2026骞存渶寮烘棤闄愬埗ai鑱婂ぉ杞欢锛屾瘡澶╅兘鍙互鍏嶈垂鐣呯帺锛屽牚姣旈厭棣嗗拰鐢靛瓙榄呴瓟鐨勫厤璐规棤闄愬埗ai锛屽唴缃绉嶆ā鍨嬬嚎璺紝鏃犺鏄?*杩樻槸鍓ф儏閮藉彲闅忔剰鐖界帺锛?
+        - generic
+          - image
+          - StaticText "2.8涓?
+          - image
+          - StaticText "75"
+          - StaticText "02:17"
+    - generic
+      - link "2026骞存渶寮烘棤闄愬埗ai鑱婂ぉ杞欢锛屾瘡澶╅兘鍙互鍏嶈垂鐣呯帺锛屽牚姣旈厭棣嗗拰鐢靛瓙榄呴瓟鐨勫厤璐规棤闄愬埗ai锛屽唴缃绉嶆ā鍨嬬嚎璺紝鏃犺鏄?*杩樻槸鍓ф儏閮藉彲闅忔剰鐖界帺锛? [ref=e153]
+        - heading "2026骞存渶寮烘棤闄愬埗ai鑱婂ぉ杞欢锛屾瘡澶╅兘鍙互鍏嶈垂鐣呯帺锛屽牚姣旈厭棣嗗拰鐢靛瓙榄呴瓟鐨勫厤璐规棤闄愬埗ai锛屽唴缃绉嶆ā鍨嬬嚎璺紝鏃犺鏄?*杩樻槸鍓ф儏閮藉彲闅忔剰鐖界帺锛? [level=3, ref=e187]
+          - StaticText "2026骞存渶寮烘棤闄愬埗"
+          - emphasis
+            - StaticText "ai"
+          - StaticText "鑱婂ぉ杞欢锛屾瘡澶╅兘鍙互鍏嶈垂鐣呯帺锛屽牚姣旈厭棣嗗拰鐢靛瓙榄呴瓟鐨勫厤璐规棤闄愬埗"
+          - emphasis
+            - StaticText "ai"
+          - StaticText "锛屽唴缃绉嶆ā鍨嬬嚎璺紝鏃犺鏄?*杩樻槸鍓ф儏閮藉彲闅忔剰鐖界帺锛?
+      - link "鍏嶈垂鏃犻檺鍒禔I瀵硅瘽 路 03-22" [ref=e154]
+        - image
+        - StaticText "鍏嶈垂鏃犻檺鍒禔I瀵硅瘽"
+        - StaticText "路 03-22"
+  - generic
+    - link "閫嗗ぉ锛佸浗浜у紑婧怗LM-5.1浠婂ぉ灞犳鍏ㄧ悆锛屾妸Claude銆丟PT銆丟emini鍏ㄨ俯浜嗏€斺€斿悓涓€澶╅┈鏂厠瀹ｅ竷xAI 7涓ā鍨嬪湪璁洿鎺ュ鎴橈綔AI鏃ユ姤 绗叚鏈?4鏈?鏃?4083 11 09:02" [ref=e91]
+      - generic
+        - generic
+          - image "閫嗗ぉ锛佸浗浜у紑婧怗LM-5.1浠婂ぉ灞犳鍏ㄧ悆锛屾妸Claude銆丟PT銆丟emini鍏ㄨ俯浜嗏€斺€斿悓涓€澶╅┈鏂厠瀹ｅ竷xAI 7涓ā鍨嬪湪璁洿鎺ュ鎴橈綔AI鏃ユ姤 绗叚鏈?4鏈?鏃?
+        - generic
+          - image
+          - StaticText "4083"
+          - image
+          - StaticText "11"
+          - StaticText "09:02"
+    - generic
+      - link "閫嗗ぉ锛佸浗浜у紑婧怗LM-5.1浠婂ぉ灞犳鍏ㄧ悆锛屾妸Claude銆丟PT銆丟emini鍏ㄨ俯浜嗏€斺€斿悓涓€澶╅┈鏂厠瀹ｅ竷xAI 7涓ā鍨嬪湪璁洿鎺ュ鎴橈綔AI鏃ユ姤 绗叚鏈?4鏈?鏃? [ref=e155]
+        - heading "閫嗗ぉ锛佸浗浜у紑婧怗LM-5.1浠婂ぉ灞犳鍏ㄧ悆锛屾妸Claude銆丟PT銆丟emini鍏ㄨ俯浜嗏€斺€斿悓涓€澶╅┈鏂厠瀹ｅ竷xAI 7涓ā鍨嬪湪璁洿鎺ュ鎴橈綔AI鏃ユ姤 绗叚鏈?4鏈?鏃? [level=3, ref=e188]
+          - StaticText "閫嗗ぉ锛佸浗浜у紑婧怗LM-5.1浠婂ぉ灞犳鍏ㄧ悆锛屾妸Claude銆丟PT銆丟emini鍏ㄨ俯浜嗏€斺€斿悓涓€澶╅┈鏂厠瀹ｅ竷xAI 7涓ā鍨嬪湪璁洿鎺ュ鎴橈綔"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "鏃ユ姤 绗叚鏈?4鏈?鏃?
+      - link "鏌愬畤AI 路 20灏忔椂鍓? [ref=e156]
+        - image
+        - StaticText "鏌愬畤AI"
+        - StaticText "路 20灏忔椂鍓?
+  - generic
+    - link "ai 18.1涓?53 00:11" [ref=e92]
+      - generic
+        - generic
+          - image "ai"
+        - generic
+          - image
+          - StaticText "18.1涓?
+          - image
+          - StaticText "53"
+          - StaticText "00:11"
+    - generic
+      - link "ai" [ref=e157]
+        - heading "ai" [level=3, ref=e189]
+          - emphasis
+            - StaticText "ai"
+      - link "骞哥缇庢弧h6 路 2025-09-15" [ref=e158]
+        - image
+        - StaticText "骞哥缇庢弧h6"
+        - StaticText "路 2025-09-15"
+  - generic
+    - link "鐨煡浼婅皥璋锋瓕AI鍗佸勾锛氭湭鏉ュ竷灞€涓庡叧閿喅绛栭娆″叕寮€ 315 0 01:09:33" [ref=e93]
+      - generic
+        - generic
+          - image "鐨煡浼婅皥璋锋瓕AI鍗佸勾锛氭湭鏉ュ竷灞€涓庡叧閿喅绛栭娆″叕寮€"
+        - generic
+          - image
+          - StaticText "315"
+          - image
+          - StaticText "0"
+          - StaticText "01:09:33"
+    - generic
+      - link "鐨煡浼婅皥璋锋瓕AI鍗佸勾锛氭湭鏉ュ竷灞€涓庡叧閿喅绛栭娆″叕寮€" [ref=e159]
+        - heading "鐨煡浼婅皥璋锋瓕AI鍗佸勾锛氭湭鏉ュ竷灞€涓庡叧閿喅绛栭娆″叕寮€" [level=3, ref=e190]
+          - StaticText "鐨煡浼婅皥璋锋瓕"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "鍗佸勾锛氭湭鏉ュ竷灞€涓庡叧閿喅绛栭娆″叕寮€"
+      - link "XDx_鍏堣繘鐢熶骇鍔?路 13灏忔椂鍓? [ref=e160]
+        - image
+        - StaticText "XDx_鍏堣繘鐢熶骇鍔?
+        - StaticText "路 13灏忔椂鍓?
+  - button "涓婁竴椤? [disabled, ref=e7]
+  - button "1" [ref=e8]
+  - button "2" [ref=e9]
+  - button "3" [ref=e10]
+  - button "4" [ref=e11]
+  - button "5" [ref=e12]
+  - button "6" [ref=e13]
+  - button "7" [ref=e14]
+  - StaticText "..."
+  - button "34" [ref=e15]
+  - button "涓嬩竴椤? [ref=e16]
+  - StaticText "bilibili"
+  - generic
+    - link "鍏充簬鎴戜滑" [ref=e23]
+    - link "鑱旂郴鎴戜滑" [ref=e24]
+    - link "鐢ㄦ埛鍗忚" [ref=e25]
+    - link "鍔犲叆鎴戜滑" [ref=e26]
+    - link "闅愮鍗忚" [ref=e27]
+    - link "bilibili璁よ瘉" [ref=e28]
+    - link "Investor Relations" [ref=e29]
+  - StaticText "浼犻€侀棬"
+  - generic
+    - link "鍗忚姹囨€? [ref=e30]
+    - link "娲诲姩涓績" [ref=e31]
+    - link "娲诲姩涓撻椤? [ref=e32]
+    - link "渚垫潈鐢宠瘔" [ref=e33]
+    - link "甯姪涓績" [ref=e34]
+    - link "绀惧尯涓績" [ref=e35]
+    - link "澹佺焊绔? [ref=e36]
+    - link "骞垮憡鍚堜綔" [ref=e37]
+    - link "鍚嶄汉鍫? [ref=e38]
+    - link "MCN绠＄悊涓績" [ref=e39]
+    - link "楂樼骇寮瑰箷" [ref=e40]
+    - link "鍝佺墝鍙峰畼缃? [ref=e41]
+  - link "涓嬭浇APP" [ref=e20]
+    - image
+    - paragraph
+      - StaticText "涓嬭浇APP"
+  - link "鍏泭" [ref=e21]
+    - image
+    - paragraph
+      - StaticText "鍏泭"
+  - link "瀹樻柟寰崥" [ref=e22]
+    - image
+    - paragraph
+      - StaticText "瀹樻柟寰崥"
+  - generic
+    - image
+    - paragraph
+      - StaticText "瀹樻柟寰俊"
+  - generic
+    - link "钀ヤ笟鎵х収" [ref=e42]
+    - StaticText "淇℃伅缃戠粶浼犳挱瑙嗗惉鑺傜洰璁稿彲璇侊細0910417"
+    - link "缃戠粶鏂囧寲缁忚惀璁稿彲璇?娌綉鏂囥€?025銆?258-085鍙? [ref=e43]
+    - StaticText "骞挎挱鐢佃鑺傜洰鍒朵綔缁忚惀璁稿彲璇侊細锛堟勃锛夊瓧绗?1248鍙峰鍊肩數淇′笟鍔＄粡钀ヨ鍙瘉 娌狟2-20100043"
+  - generic
+    - link "浜掕仈缃慖CP澶囨锛氭勃ICP澶?3002172鍙?3" [ref=e44]
+    - link "鍑虹増鐗╃粡钀ヨ鍙瘉 娌壒瀛楃U6699 鍙? [ref=e45]
+    - StaticText "浜掕仈缃戣嵂鍝佷俊鎭湇鍔¤祫鏍艰瘉 娌?闈炵粡钀ユ€?2022-0011钀ヤ笟鎬ф紨鍑鸿鍙瘉 娌競鏂囨紨锛堢粡锛?0-2253 |"
+  - generic
+    - link "涓嶈壇淇℃伅涓炬姤閭锛歨elp@bilibili.com" [ref=e46]
+    - link "娑夋湭鎴愬勾涓炬姤閭锛歵eenprotect@bilibili.com" [ref=e47]
+    - StaticText "涓嶈壇淇℃伅涓炬姤鐢佃瘽锛?006262233杞?"
+    - link "涓婃捣浜掕仈缃戜妇鎶ヤ腑蹇?|" [ref=e48]
+    - link "12345鏀垮姟鏈嶅姟渚挎皯鐑嚎 |" [ref=e49]
+  - generic
+    - link "娌叕缃戝畨澶?1011002002436鍙?|" [ref=e50]
+    - link "鍎跨鑹叉儏淇℃伅涓炬姤涓撳尯 |" [ref=e51]
+    - link "鎵粍鎵撻潪涓炬姤" [ref=e52]
+  - generic
+    - link "缃戜俊绠楀310110764385705230011鍙? [ref=e53]
+    - link "缃戜俊绠楀310110764385702230013鍙? [ref=e54]
+  - generic
+    - StaticText "缃戜笂鏈夊淇℃伅涓炬姤涓撳尯锛?
+    - link "涓浗浜掕仈缃戣繚娉曞拰涓嶈壇淇℃伅涓炬姤涓績" [ref=e55]
+    - StaticText "浜茬埍鐨勫競姘戞湅鍙嬶紝涓婃捣璀︽柟鍙嶈瘓鍔濋樆鐢佃瘽\"96110\"绯讳笓闂ㄩ拡瀵归伩鍏嶆偍璐骇琚獥鍙楁崯鑰岃锛岃鎮ㄤ竴鏃︽敹鍒版潵鐢碉紝绔嬪嵆鎺ュ惉銆?
+  - generic
+    - StaticText "鍏徃鍚嶇О锛氫笂娴峰濞辨暟鐮佺鎶€鏈夐檺鍏徃 |鍏徃鍦板潃锛氫笂娴峰競鏉ㄦ郸鍖烘斂绔嬭矾489鍙?|鐢佃瘽锛?21-25099888"
+  - generic
+    - image
+    - image
+    - image

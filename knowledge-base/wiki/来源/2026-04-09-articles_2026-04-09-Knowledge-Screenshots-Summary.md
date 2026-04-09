@@ -1,11 +1,11 @@
 # 来源摘要：articles\2026-04-09-Knowledge-Screenshots-Summary.md
 
 > 原始路径：raw/articles\2026-04-09-Knowledge-Screenshots-Summary.md
-> 摄入时间：2026-04-09 16:10
+> 摄入时间：2026-04-09 20:03
 
 ## 核心观点
 
-该文件整理了2026年4月9日的知识库截图，重点介绍了Karpathy的LLM Wiki知识管理方法、MemPalace AI记忆系统及Chrome DevTools MCP等项目。
+该文件整理了2026年4月9日的知识库截图，主要内容包括Karpathy的LLM知识管理方法、MemPalace AI记忆系统和Chrome DevTools MCP等。
 
 ## 关键细节
 

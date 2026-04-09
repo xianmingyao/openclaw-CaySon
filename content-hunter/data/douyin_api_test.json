@@ -1,0 +1,29 @@
+{
+  "status_code": 0,
+  "aweme_list": null,
+  "has_more": 0,
+  "cursor": 20,
+  "extra": {
+    "now": 1775701230000,
+    "logid": "202604091020307D47F819C4166D7A74AB",
+    "fatal_item_ids": [],
+    "search_request_id": "",
+    "scenes": null
+  },
+  "log_pb": {
+    "impr_id": "202604091020307D47F819C4166D7A74AB"
+  },
+  "search_nil_info": {
+    "search_nil_type": "verify_check",
+    "is_load_more": "first_flush",
+    "search_nil_item": "verify_check",
+    "text_type": 9
+  },
+  "backtrace": "mliddjkA37kbl9lUZL4hmJWtIoMWHALGrFl9h9w+O3UnMJ1TcfeQMy5HqviVfu9a3ZzNPhIk11JzbvM5ZyJ7DdG/VyYt5bQXmAgzsBLFb1VT/LCtef7dhsx9GjrhWAFBcKRrKA3QZ4yOtLbW6oM69Q==",
+  "data": [],
+  "global_doodle_config": {
+    "keyword": "AI人工智能"
+  },
+  "path": "/aweme/v1/web/search/item/",
+  "mock_recall_path": "/aweme/v1/web/search/item/"
+}

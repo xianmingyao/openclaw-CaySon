@@ -114,6 +114,24 @@ python E:\workspace\scripts\mem0_dual_write.py search "查询内容"
 python E:\workspace\scripts\show_memories.py
 ```
 
+### 行为准则规范 v2.0
+
+**触发**：处理文件/图片/任务执行/记忆读取/检索时必须遵循
+
+**记忆检索优先级**：
+1. 云端 Milvus (`8.137.122.11:19530`) - 首选，30秒超时降级
+2. 本地 ChromaDB - 仅 Milvus 故障/超时时降级
+
+**知识验证**：Karpathy知识库(raw/index/概念/来源/CLAUDE.md) + Notion 双向验证
+
+**存储要求**：Karpathy(raw/附件) + Wiki + 飞书 + Notion + 云端Milvus + 本地ChromaDB 全链路同步
+
+**浏览器**：必须 `--headed` 有头模式
+
+**Skill安全**：安装前必须 edgeone-clawscan 检测，安装后24小时必须实际测试
+
+详见：`knowledge/behavior-guidelines.md`
+
 ### 记忆写入策略
 
 - 新记忆：**双写**（同时写入Milvus + ChromaDB）

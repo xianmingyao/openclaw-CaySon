@@ -1,12 +1,12 @@
 # 知识库索引
 
-> 生成时间：2026-04-09 16:10
+> 生成时间：2026-04-09 20:03
 
 ## 统计
 
 - 总文件数：7
-- 总概念数：44
-- 总实体数：32
+- 总概念数：43
+- 总实体数：33
 
 ## 来源列表
 
@@ -25,10 +25,12 @@
 - [[AI Scientist]]
 - [[AI 科研]]
 - [[AI 科研自动化]]
+- [[AI 科研自动化框架]]
 - [[AI 编程 Agent]]
 - [[Alchemy 框架]]
 - [[Alchemy]]
 - [[Alchemy框架]]
+- [[Alchemy（炼丹炉）]]
 - [[articles_karpathy-workflow]]
 - [[Constraint Engine]]
 - [[Context Engineering]]
@@ -86,6 +88,7 @@
 - [[AAAII 2025 论文《Mind Individual Information!》]]
 - [[AAAII 2025论文级别的基线算法]]
 - [[AI Scientist 系统]]
+- [[Alchemy]]
 - [[Alchemy（炼丹炉）]]
 - [[algorithm.py]]
 - [[Anthropic]]
@@ -105,6 +108,7 @@
 - [[LiteRT-LM]]
 - [[LLM]]
 - [[MemPalace (milla-jovovich_mempalace)]]
+- [[MemPalace-milla-jovovich-mempalace]]
 - [[Obsidian Web Clipper]]
 - [[OpenAI]]
 - [[OpenClaw]]

@@ -9,10 +9,47 @@
 - 代码必须落地到文件，不能只存在对话中
 - 铁律1：实事求是，数据说话
 - 铁律2：代码质量 > 代码速度 > 代码炫技
+- **TDD测试文件锁**：Claude Code会改测试期望值让测试通过 → 测试文件需加锁不给AI修改权限
 
 ## 记忆检索铁律（重要！）
 1. 首选 → 云端 Milvus (8.137.122.11:19530)
 2. 备选 → 本地 ChromaDB (Milvus 故障时降级)
+
+## 调教🦞 行为准则规范
+
+> 处理文件、图片、任务执行、对话记忆读取或记忆检索操作时，必须遵循以下流程：
+
+### 1. 记忆检索优先级
+- **首先使用云端 Milvus 向量数据库**（8.137.122.11:19530）进行检索
+- 仅当 Milvus 连接失败时，才允许使用本地 ChromaDB 查询
+
+### 2. 知识验证与整合流程
+无论记忆检索结果如何，都必须同时在以下系统验证：
+
+| 检索源 | 路径/链接 |
+|--------|-----------|
+| Karpathy 原始资料 | `E:\workspace\knowledge-base\raw\` |
+| Karpathy 内容索引 | `E:\workspace\knowledge-base\wiki\index.md` |
+| Karpathy 概念 | `E:\workspace\knowledge-base\wiki\概念\` |
+| Karpathy 来源 | `E:\workspace\knowledge-base\wiki\来源\` |
+| Karpathy Schema | `E:\workspace\knowledge-base\CLAUDE.md` |
+| **Notion 个人知识库** | https://www.notion.so/33d2bb5417c380f6baaff3467dea91c8 |
+
+### 3. 知识处理与存储要求
+
+**若检索到历史个人知识点：**
+- 深入研究、剖析、整理和总结
+
+**若未检索到历史个人知识点：**
+- 创建新的整理总结内容
+
+**必须执行的操作：**
+1. 整理内容整合到 Karpathy 知识库系统
+2. 文件/截图附件存入 `raw/` 目录
+3. 整理成 Wiki 笔记
+4. 同步至飞书文档
+5. 同步至 Notion 笔记
+6. 上传至云端 Milvus 记忆库
 
 ## 日报格式逻辑
 
@@ -148,7 +185,120 @@ YYYY.MM.DD(日报)
 ### 下午记忆上传
 - 已上传7条记忆到云端Milvus + 本地ChromaDB
 
-## 2026-04-08 Skills安装（09:14-09:19）
+## 2026-04-08 上午研究成果（08:00-09:00）
+
+### awesome-design-md 项目分析
+- 仓库：VoltAgent/awesome-design-md，24.4k Stars
+- 58个平台设计系统开源（Linear/Vercel/Cursor等）
+- 核心理念：DESIGN.md格式让AI编程工具直接生成像素级UI
+- 格式规范：9大章节标准格式
+- 文档：knowledge/awesome-design-md-analysis.md
+
+### Karpathy 知识库编译工作流
+- 三步曲：收集(raw/) → 编译(LLM) → 查询(直接答)
+- 100篇/40万字规模下不需要RAG
+- 工具：Obsidian Web Clipper
+- 文档：knowledge/karpathy-wiki-knowledge-base-workflow.md
+
+### LangChain 三层学习框架
+- Agent持续学习三层面：Model层(权重)/Harness层(执行框架)/Context层(运行时配置)
+- 神级类比：Model=引擎/Harness=底盘/Context=GPS
+- Context层=Skills=OpenClaw热更新能力
+- 文档：knowledge/agent-continual-learning-three-layers.md
+
+### OpenClaw 可观测性Trace系统
+- Trace是三层学习的共同原料
+- Trace数据结构：event_id/timestamp/session_id/event_type/data
+- 文档：knowledge/openclaw-observability-trace-system.md
+
+### AI周报第439期（产品君）
+- 11条重大新闻：GPT-Image-2/Project Stagecraft/Gemma4/Qwen3.5-Omni/Sakana AI Marlin等
+- 文档：knowledge/ai-weekly-report-2026-04-05.md
+
+### 记忆上传
+- 已上传9条记忆到云端Milvus + 本地ChromaDB
+- 脚本：scripts/upload_today_memories.py
+
+## 2026-04-08 下午研究成果（08:45-10:20）
+
+### SDD开发教程 + Red/Green TDD方法论
+- OpenSpec SDD最小闭环：init→explore→propose→apply→archive
+- Simon Willison TDD流程：RED写测试→GREEN写代码→REFACTOR重构
+- **重要避坑**：Claude Code会改测试期望值让测试通过，测试文件需加锁
+- 文档：knowledge/openspec-sdd-dev-workflow.md
+
+### Harness Engineering（@从小就坏）
+- 核心理念：AI不确定性需控制系统，Prompt=系统宪法
+- 心跳机制：一次性API调用 → 持续运行循环
+- 以驾驭系统为中心，非以模型为中心
+
+### Agent-Reach v1.4.0（16.3k Stars）
+- 17平台支持：网页/YouTube/RSS/GitHub/Twitter/小红书/抖音/Reddit/LinkedIn/微信公众号/微博/V2EX/雪球/小宇宙播客
+- MIT License，完全免费
+- 文档：知识库
+
+### GitHub一周star排行TOP20（赛博笔记）
+- 本周主题：AI基础设施+Agent工具+开发者效率
+- 系列推荐：第3集(everything-claude-code)1.5万点赞、第7集1859点赞
+
+### jingmai-agent-cli 技能复刻与删除
+- 读取源码 → skill-creator创建 → 测试通过 → 因需求变更已删除
+
+## 2026-04-08 晚间任务（Karpathy风格知识库搭建）
+
+### 目录结构
+```
+knowledge-base/
+├── raw/               # 原始资料（不修改）
+├── wiki/              # 编译后的知识库
+├── altpus/            # AI 答案报告
+└── CLOD.md           # 指令文件
+```
+
+### 核心脚本
+| 脚本 | 功能 |
+|------|------|
+| compile.py | raw → wiki 编译 |
+| sync_feishu.py | 飞书同步 |
+| sync_notion.py | Notion 同步 |
+| upload_mem0.py | 云端 Milvus 同步 |
+
+### 已完成
+- ✅ 目录结构创建
+- ✅ 编译脚本 compile.py（测试通过）
+- ✅ 飞书文档创建（2个文档）
+- ✅ 云端 Milvus 上传（2条记忆，验证成功）
+
+### 待完成
+- [ ] 飞书文档内容写入（需要 docx:document.block:convert 权限）
+- [ ] Notion API 配置
+- [ ] 实际收集更多 raw 材料
+
+## 内容捕手状态（2026-04-06 更新）
+
+### 执行结果
+| 平台 | 状态 | 数据量 | 问题 |
+|------|------|--------|------|
+| B站 | ✅ 成功 | 326条 | 有412限流，需重试 |
+| 抖音 | ⚠️ 受阻 | 172条 | 需要msToken/X-Bogus签名 |
+
+### 待解决
+- [ ] human-browser skill绕过抖音验证码
+- [ ] agent-reach技能抖音通道
+- 脚本：scrape_bilibili.py（已优化带重试）/ scrape_douyin.py（需解决签名）
+
+## 2026-04-03 Skills研究（待安装）
+
+### MindsDB - AI分析查询引擎
+- 一条SQL查遍200+数据源
+- 安装：Docker或PyPI
+- 文档：knowledge/mindsdb.md
+
+### OpenMAIC - 清华开源AI课堂
+- 一键生成完整课堂（课件+测验+视频）
+- 文档：knowledge/openmaic.md
+
+## 2026-04-08 Skills安装总结
 
 ### AI干货局6个必备Skill
 | # | Skill | Stars | 状态 |
@@ -160,7 +310,7 @@ YYYY.MM.DD(日报)
 | 5 | azure-ai | - | ⚠️ 未找到 |
 | 6 | frontend-design-pro | - | ⚠️ 限流未安装 |
 
-### 当前已安装Skills（10个）
+### 当前已安装Skills（共9个）
 | Skill | Stars | 用途 |
 |-------|-------|------|
 | agent-reach | 16.3k | 17平台互联网能力 |
@@ -172,8 +322,30 @@ YYYY.MM.DD(日报)
 | windows-control | - | Windows自动化 |
 | frontend-design | - | 前端设计 |
 | ui-design | - | UI设计 |
-| windows-control | - | Windows自动化 |
 - 上传脚本：scripts/upload_20260408_research.py
+
+## 2026-03-31 今日AI热点（重要！）
+
+### 1. 企业微信正式开源CLI ⭐⭐⭐⭐⭐
+- 微信官方支持AI Agent调用企微7大办公能力（消息、审批、邮件等）
+- 技术价值：企业级AI Agent工作流打通告微生态，CLI降低接入门槛
+- 应用场景：企业内部AI助手、智能办公自动化、跨系统工作流编排
+
+### 2. Midjourney Pretext ⭐⭐⭐⭐⭐
+- 15KB轻量库实现网页排版渲染千倍提速
+- 前端性能优化突破性进展，AI驱动排版算法革新
+
+### 3. 微软VibeVoice ⭐⭐⭐⭐
+- 长音频语音识别模型，单次处理可达60分钟
+- 会议记录、电话录音处理、长视频字幕生成
+
+### 4. UniPat AI EchoZ预测系统 ⭐⭐⭐⭐
+- 专用预测模型在垂直领域超越通用大模型
+- 金融预测、库存预测、需求预测等商业预测场景
+
+### 5. 港科大AI气味戒指 ⭐⭐⭐⭐⭐
+- 多模态AI + 可穿戴设备，通过皮肤代谢气味监测健康
+- 交叉学科创新：传感 + AI + 生物化学
 
 ## 2026-04-03 技术研究成果（新增）
 
@@ -443,7 +615,7 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 ### Cron任务状态
 | 任务 | ID | 时间 | 状态 |
 |------|-----|------|------|
-| dream-nightly | 421b1f35 | 每天03:00 | ✅ 新建 |
+| dream-nightly | 421b1f35 | 每天03:00 | ✅ ok |
 | daily-git-commit | 1690b963 | 每天22:30 | ✅ ok |
 | 内容捕手-汇报 | f27317c4 | 每天18:00 | ✅ 已修复 |
 | daily-skill-security-scan | 5227d14e | 每天00:30 | ✅ ok |

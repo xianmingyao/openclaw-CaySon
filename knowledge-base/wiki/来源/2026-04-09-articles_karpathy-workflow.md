@@ -1,11 +1,11 @@
 # 来源摘要：articles\karpathy-workflow.md
 
 > 原始路径：raw/articles\karpathy-workflow.md
-> 摄入时间：2026-04-09 16:10
+> 摄入时间：2026-04-09 20:03
 
 ## 核心观点
 
-Karpathy 提出使用 LLM 将原始资料编译成结构化的 wiki 知识库，通过三步工作流实现知识管理。
+Karpathy的工作流使用LLM将各种原始资料编译成结构化的wiki知识库，并通过双向链接和直接查询来管理和获取信息。
 
 ## 关键细节
 
@@ -46,10 +46,9 @@ Karpathy 提出使用 LLM 将原始资料编译成结构化的 wiki 知识库，
 
 
 ## 相关实体
-- [[Karpathy 知识库]]
+- [[Karpathy]]
 - [[Obsidian Web Clipper]]
-- [[raw/目录]]
-- [[wiki/]]
+- [[LLM]]
 - [[RAG]]
 
 ## 相关概念

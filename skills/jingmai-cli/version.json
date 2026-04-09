@@ -1,0 +1,15 @@
+{
+  "app_name": "Jingmai UFO CLI Tool",
+  "version": "1.0.0",
+  "build_date": "2026/04/09 周四 17:29:50.04",
+  "entry_file": "main.py",
+  "executable": "jingmai-cli.exe",
+  "output_dir": "release",
+  "external_files": [
+    {"name": ".env", "description": "Config file (editable)"},
+    {"name": "resources/", "description": "Skills directory (editable)"},
+    {"name": "logs/", "description": "Logs directory"},
+    {"name": "README.md", "description": "Documentation"}
+  ]
+}
+ECHO 处于关闭状态。

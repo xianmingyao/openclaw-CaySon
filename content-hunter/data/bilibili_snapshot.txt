@@ -1,0 +1,877 @@
+- generic
+  - generic
+    - list
+      - listitem [level=1]
+        - link "首页" [ref=e94]
+          - image
+          - StaticText "首页"
+          - image
+      - listitem [level=1]
+        - link "番剧" [ref=e95]
+      - listitem [level=1]
+        - link "直播" [ref=e96]
+      - listitem [level=1]
+        - link "游戏中心" [ref=e97]
+      - listitem [level=1]
+        - link "会员购" [ref=e98]
+      - listitem [level=1]
+        - link "漫画" [ref=e99]
+      - listitem [level=1]
+        - link "赛事" [ref=e100]
+      - listitem [level=1]
+    - list
+      - listitem [level=1, ref=e56] clickable [cursor:pointer]
+        - listitem [level=1]
+          - StaticText "登录"
+          - paragraph
+            - StaticText "登录后你可以："
+          - image
+          - StaticText "免费看高清视频"
+          - image
+          - StaticText "多端同步播放记录"
+          - image
+          - StaticText "发表弹幕/评论"
+          - image
+          - StaticText "热门番剧影视看不停"
+          - StaticText "立即登录"
+          - generic
+            - StaticText "首次使用？ "
+            - StaticText "点我注册"
+      - listitem [level=1, ref=e57] clickable [cursor:pointer]
+        - listitem [level=1]
+          - link [ref=e191]
+            - image
+      - listitem [level=1, ref=e58] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e59] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e60] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e61] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e62] clickable [cursor:pointer]
+        - image
+      - listitem [level=1, ref=e63] clickable [cursor:pointer]
+        - listitem [level=1]
+          - image
+  - generic
+    - image
+    - image [ref=e17] clickable [cursor:pointer]
+    - textbox "输入关键字搜索" [ref=e18]: AI人工智能
+      - StaticText "AI人工智能"
+    - button "搜索" [ref=e19]
+  - navigation
+    - list
+      - listitem [level=1]
+        - StaticText "综合"
+      - listitem [level=1]
+        - StaticText "视频"
+        - StaticText "99+"
+      - listitem [level=1]
+        - StaticText "番剧"
+        - StaticText "0"
+      - listitem [level=1]
+        - StaticText "影视"
+        - StaticText "3"
+      - listitem [level=1]
+        - StaticText "直播"
+        - StaticText "5"
+      - listitem [level=1]
+        - StaticText "专栏"
+        - StaticText "99+"
+      - listitem [level=1]
+        - StaticText "用户"
+        - StaticText "99+"
+  - separator
+  - button "综合排序" [ref=e1]
+  - button "最多播放" [ref=e2]
+  - button "最新发布" [ref=e3]
+  - button "最多弹幕" [ref=e4]
+  - button "最多收藏" [ref=e5]
+  - button "更多筛选 " [ref=e6]
+    - StaticText "更多筛选 "
+    - image
+  - generic
+    - link "AI漫剧零基础入门教程，剧本+分镜+静帧+视频+配音+剪辑，保持人物一致性！手把手教你ComfyUI+豆包+即梦AI玩转AI漫剧赛道，学会AI视频生成+AI短剧 3万 145 02:20:50" [ref=e64]
+      - generic
+        - generic
+          - image "AI漫剧零基础入门教程，剧本+分镜+静帧+视频+配音+剪辑，保持人物一致性！手把手教你ComfyUI+豆包+即梦AI玩转AI漫剧赛道，学会AI视频生成+AI短剧"
+        - generic
+          - image
+          - StaticText "3万"
+          - image
+          - StaticText "145"
+          - StaticText "02:20:50"
+    - generic
+      - link "AI漫剧零基础入门教程，剧本+分镜+静帧+视频+配音+剪辑，保持人物一致性！手把手教你ComfyUI+豆包+即梦AI玩转AI漫剧赛道，学会AI视频生成+AI短剧" [ref=e101]
+        - heading "AI漫剧零基础入门教程，剧本+分镜+静帧+视频+配音+剪辑，保持人物一致性！手把手教你ComfyUI+豆包+即梦AI玩转AI漫剧赛道，学会AI视频生成+AI短剧" [level=3, ref=e161]
+          - emphasis
+            - StaticText "AI"
+          - StaticText "漫剧零基础入门教程，剧本+分镜+静帧+视频+配音+剪辑，保持人物一致性！手把手教你ComfyUI+豆包+即梦"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "玩转"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "漫剧赛道，学会"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "视频生成+"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "短剧"
+      - link "AI漫剧零基础入门教程 · 03-24" [ref=e102]
+        - image
+        - StaticText "AI漫剧零基础入门教程"
+        - StaticText "· 03-24"
+  - generic
+    - link "《杨澜访谈录》人工智能系列纪录片——《探寻人工智能》 12.1万 1865 04:27:40" [ref=e65]
+      - generic
+        - generic
+          - image "《杨澜访谈录》人工智能系列纪录片——《探寻人工智能》"
+        - generic
+          - image
+          - StaticText "12.1万"
+          - image
+          - StaticText "1865"
+          - StaticText "04:27:40"
+    - generic
+      - link "《杨澜访谈录》人工智能系列纪录片——《探寻人工智能》" [ref=e103]
+        - heading "《杨澜访谈录》人工智能系列纪录片——《探寻人工智能》" [level=3, ref=e162]
+          - StaticText "《杨澜访谈录》"
+          - emphasis
+            - StaticText "人工智能"
+          - StaticText "系列纪录片——《探寻"
+          - emphasis
+            - StaticText "人工智能"
+          - StaticText "》"
+      - link "知识小助手 · 2017-12-06" [ref=e104]
+        - image
+        - StaticText "知识小助手"
+        - StaticText "· 2017-12-06"
+  - generic
+    - link "【人工智能】清华教授带你从入门到进阶 4958 0 02:37" [ref=e66]
+      - generic
+        - generic
+          - image "【人工智能】清华教授带你从入门到进阶"
+        - generic
+          - image
+          - StaticText "4958"
+          - image
+          - StaticText "0"
+          - StaticText "02:37"
+    - generic
+      - link "【人工智能】清华教授带你从入门到进阶" [ref=e105]
+        - heading "【人工智能】清华教授带你从入门到进阶" [level=3, ref=e163]
+      - link "人工智能知识课堂 · 03-03" [ref=e106]
+        - image
+        - StaticText "人工智能知识课堂"
+        - StaticText "· 03-03"
+  - generic
+    - link "人工智能/机器学习必修课：经典AI算法与编程实战 19.7万" [ref=e67]
+      - generic
+        - generic
+          - image "人工智能/机器学习必修课：经典AI算法与编程实战"
+        - generic
+          - image
+          - StaticText "19.7万"
+    - generic
+      - link "人工智能/机器学习必修课：经典AI算法与编程实战" [ref=e107]
+        - heading "人工智能/机器学习必修课：经典AI算法与编程实战" [level=3, ref=e164]
+          - emphasis
+            - StaticText "人工智能"
+          - StaticText "/机器学习必修课：经典"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "算法与编程实战"
+      - link "梗直哥丶 · 共120课时" [ref=e108]
+        - image
+        - StaticText "梗直哥丶"
+        - StaticText "· 共120课时"
+  - generic
+    - link "永远是全球AI硬知识和解读 83 科技·科学" [ref=e68]
+      - generic
+        - generic
+          - image "永远是全球AI硬知识和解读"
+        - generic
+          - image
+          - StaticText "83"
+          - StaticText "科技·科学"
+    - generic
+      - link "永远是全球AI硬知识和解读" [ref=e109]
+        - heading "永远是全球AI硬知识和解读" [level=3, ref=e165]
+          - StaticText "永远是全球"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "硬知识和解读"
+      - link "直播中 直播中 雾线之上" [ref=e110]
+        - image "直播中"
+        - StaticText "直播中"
+        - StaticText "雾线之上"
+  - generic
+    - link "少儿AI人工智能课程：从基础概念逐步深入到核心技术 培养全面的AI素养 5.5万 82 02:08:38" [ref=e69]
+      - generic
+        - generic
+          - image "少儿AI人工智能课程：从基础概念逐步深入到核心技术 培养全面的AI素养"
+        - generic
+          - image
+          - StaticText "5.5万"
+          - image
+          - StaticText "82"
+          - StaticText "02:08:38"
+    - generic
+      - link "少儿AI人工智能课程：从基础概念逐步深入到核心技术 培养全面的AI素养" [ref=e111]
+        - heading "少儿AI人工智能课程：从基础概念逐步深入到核心技术 培养全面的AI素养" [level=3, ref=e166]
+          - StaticText "少儿"
+          - emphasis
+            - StaticText "AI人工智能"
+          - StaticText "课程：从基础概念逐步深入到核心技术 培养全面的"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "素养"
+      - link "王先生的思维图 · 2025-09-04" [ref=e112]
+        - image
+        - StaticText "王先生的思维图"
+        - StaticText "· 2025-09-04"
+  - generic
+    - link "（全30集）已经替大家付过费了！花7980买的AI漫剧制作全套教程，逼自己一周学会，AI水平暴涨！从0基础小白到AI视频大神看这套就够了，直接拿走不谢！ 522 2 03:55:31" [ref=e70]
+      - generic
+        - generic
+          - image "（全30集）已经替大家付过费了！花7980买的AI漫剧制作全套教程，逼自己一周学会，AI水平暴涨！从0基础小白到AI视频大神看这套就够了，直接拿走不谢！"
+        - generic
+          - image
+          - StaticText "522"
+          - image
+          - StaticText "2"
+          - StaticText "03:55:31"
+    - generic
+      - link "（全30集）已经替大家付过费了！花7980买的AI漫剧制作全套教程，逼自己一周学会，AI水平暴涨！从0基础小白到AI视频大神看这套就够了，直接拿走不谢！" [ref=e113]
+        - heading "（全30集）已经替大家付过费了！花7980买的AI漫剧制作全套教程，逼自己一周学会，AI水平暴涨！从0基础小白到AI视频大神看这套就够了，直接拿走不谢！" [level=3, ref=e167]
+          - StaticText "（全30集）已经替大家付过费了！花7980买的"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "漫剧制作全套教程，逼自己一周学会，"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "水平暴涨！从0基础小白到"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "视频大神看这套就够了，直接拿走不谢！"
+      - link "AI视频短片教程 · 11小时前" [ref=e114]
+        - image
+        - StaticText "AI视频短片教程"
+        - StaticText "· 11小时前"
+  - generic
+    - link "【全30集】即梦+豆包+剪映，2小时快速掌握AI视频制作技巧，手把手教你从0到1制作AI短片！AI生成视频零基础入门保姆级教程 带你从零基础入门到精通！ 2433 66 03:59:07" [ref=e71]
+      - generic
+        - generic
+          - image "【全30集】即梦+豆包+剪映，2小时快速掌握AI视频制作技巧，手把手教你从0到1制作AI短片！AI生成视频零基础入门保姆级教程 带你从零基础入门到精通！"
+        - generic
+          - image
+          - StaticText "2433"
+          - image
+          - StaticText "66"
+          - StaticText "03:59:07"
+    - generic
+      - link "【全30集】即梦+豆包+剪映，2小时快速掌握AI视频制作技巧，手把手教你从0到1制作AI短片！AI生成视频零基础入门保姆级教程 带你从零基础入门到精通！" [ref=e115]
+        - heading "【全30集】即梦+豆包+剪映，2小时快速掌握AI视频制作技巧，手把手教你从0到1制作AI短片！AI生成视频零基础入门保姆级教程 带你从零基础入门到精通！" [level=3, ref=e168]
+          - StaticText "【全30集】即梦+豆包+剪映，2小时快速掌握"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "视频制作技巧，手把手教你从0到1制作"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "短片！"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "生成视频零基础入门保姆级教程 带你从零基础入门到精通！"
+      - link "0基础AI智能体 · 22小时前" [ref=e116]
+        - image
+        - StaticText "0基础AI智能体"
+        - StaticText "· 22小时前"
+  - generic
+    - link "【迎春特惠】AI绘画轻松掌控Midjourney 10.2万" [ref=e72]
+      - generic
+        - generic
+          - image "【迎春特惠】AI绘画轻松掌控Midjourney"
+        - generic
+          - image
+          - StaticText "10.2万"
+    - generic
+      - link "【迎春特惠】AI绘画轻松掌控Midjourney" [ref=e117]
+        - heading "【迎春特惠】AI绘画轻松掌控Midjourney" [level=3, ref=e169]
+          - StaticText "【迎春特惠】"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "绘画轻松掌控Midjourney"
+      - link "AI小王子Jay · 共34课时" [ref=e118]
+        - image
+        - StaticText "AI小王子Jay"
+        - StaticText "· 共34课时"
+  - generic
+    - link "完整版大放送！欢迎来到AI时代！ 13.5万 260 07:52" [ref=e73]
+      - generic
+        - generic
+          - image "完整版大放送！欢迎来到AI时代！"
+        - generic
+          - image
+          - StaticText "13.5万"
+          - image
+          - StaticText "260"
+          - StaticText "07:52"
+    - generic
+      - link "完整版大放送！欢迎来到AI时代！" [ref=e119]
+        - heading "完整版大放送！欢迎来到AI时代！" [level=3, ref=e170]
+          - StaticText "完整版大放送！欢迎来到"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "时代！"
+      - link "土豆逗严肃科普 · 2025-05-16" [ref=e120]
+        - image
+        - StaticText "土豆逗严肃科普"
+        - StaticText "· 2025-05-16"
+  - generic
+    - link "【AI教程】目前B站最全最细的AI大模型零基础全套教程，2026最新版，包含所有干货！七天就能从小白到大神！少走99%的弯路！存下吧！很难找全的！！ 36.7万 1006 39:57:22" [ref=e74]
+      - generic
+        - generic
+          - image "【AI教程】目前B站最全最细的AI大模型零基础全套教程，2026最新版，包含所有干货！七天就能从小白到大神！少走99%的弯路！存下吧！很难找全的！！"
+        - generic
+          - image
+          - StaticText "36.7万"
+          - image
+          - StaticText "1006"
+          - StaticText "39:57:22"
+    - generic
+      - link "【AI教程】目前B站最全最细的AI大模型零基础全套教程，2026最新版，包含所有干货！七天就能从小白到大神！少走99%的弯路！存下吧！很难找全的！！" [ref=e121]
+        - heading "【AI教程】目前B站最全最细的AI大模型零基础全套教程，2026最新版，包含所有干货！七天就能从小白到大神！少走99%的弯路！存下吧！很难找全的！！" [level=3, ref=e171]
+          - StaticText "【"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "教程】目前B站最全最细的"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "大模型零基础全套教程，2026最新版，包含所有干货！七天就能从小白到大神！少走99%的弯路！存下吧！很难找全的！！"
+      - link "大模型开发 · 03-10" [ref=e122]
+        - image
+        - StaticText "大模型开发"
+        - StaticText "· 03-10"
+  - generic
+    - link "人工智能国语配音版 3297 5 02:25:10" [ref=e75]
+      - generic
+        - generic
+          - image "人工智能国语配音版"
+        - generic
+          - image
+          - StaticText "3297"
+          - image
+          - StaticText "5"
+          - StaticText "02:25:10"
+    - generic
+      - link "人工智能国语配音版" [ref=e123]
+        - heading "人工智能国语配音版" [level=3, ref=e172]
+          - emphasis
+            - StaticText "人工智能"
+          - StaticText "国语配音版"
+      - link "凡事不平凡N · 01-25" [ref=e124]
+        - image
+        - StaticText "凡事不平凡N"
+        - StaticText "· 01-25"
+  - generic
+    - link "别瞎学！AI学得好，不是靠自学和跟风！ 189万 119 02:46" [ref=e76]
+      - generic
+        - generic
+          - image "别瞎学！AI学得好，不是靠自学和跟风！"
+        - generic
+          - image
+          - StaticText "189万"
+          - image
+          - StaticText "119"
+          - StaticText "02:46"
+    - generic
+      - link "别瞎学！AI学得好，不是靠自学和跟风！" [ref=e125]
+        - heading "别瞎学！AI学得好，不是靠自学和跟风！" [level=3, ref=e173]
+      - link "GenJi是真想教会你AI · 2025-06-19" [ref=e126]
+        - image
+        - StaticText "GenJi是真想教会你AI"
+        - StaticText "· 2025-06-19"
+  - generic
+    - link "「打死也不碰AI」的人，拿下B站AI大赛冠军的100万元大奖 107.4万 126 11:47" [ref=e77]
+      - generic
+        - generic
+          - image "「打死也不碰AI」的人，拿下B站AI大赛冠军的100万元大奖"
+        - generic
+          - image
+          - StaticText "107.4万"
+          - image
+          - StaticText "126"
+          - StaticText "11:47"
+    - generic
+      - link "「打死也不碰AI」的人，拿下B站AI大赛冠军的100万元大奖" [ref=e127]
+        - heading "「打死也不碰AI」的人，拿下B站AI大赛冠军的100万元大奖" [level=3, ref=e174]
+          - StaticText "「打死也不碰"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "」的人，拿下B站"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "大赛冠军的100万元大奖"
+      - link "林慈丰AI · 03-31" [ref=e128]
+        - image
+        - StaticText "林慈丰AI"
+        - StaticText "· 03-31"
+  - generic
+    - link "【AI短剧】即梦+豆包+剪映全套教程，2小时快速掌握AI短剧，漫剧视频制作，从剧本+分镜+文生图+图生视频+配音+配乐，7天让你从小白变大神！带你玩转AI赛道！ 1.1万 57 07:58:01" [ref=e78]
+      - generic
+        - generic
+          - image "【AI短剧】即梦+豆包+剪映全套教程，2小时快速掌握AI短剧，漫剧视频制作，从剧本+分镜+文生图+图生视频+配音+配乐，7天让你从小白变大神！带你玩转AI赛道！"
+        - generic
+          - image
+          - StaticText "1.1万"
+          - image
+          - StaticText "57"
+          - StaticText "07:58:01"
+    - generic
+      - link "【AI短剧】即梦+豆包+剪映全套教程，2小时快速掌握AI短剧，漫剧视频制作，从剧本+分镜+文生图+图生视频+配音+配乐，7天让你从小白变大神！带你玩转AI赛道！" [ref=e129]
+        - heading "【AI短剧】即梦+豆包+剪映全套教程，2小时快速掌握AI短剧，漫剧视频制作，从剧本+分镜+文生图+图生视频+配音+配乐，7天让你从小白变大神！带你玩转AI赛道！" [level=3, ref=e175]
+          - StaticText "【"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "短剧】即梦+豆包+剪映全套教程，2小时快速掌握"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "短剧，漫剧视频制作，从剧本+分镜+文生图+图生视频+配音+配乐，7天让你从小白变大神！带你玩转"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "赛道！"
+      - link "AI视频系统教学 · 04-07" [ref=e130]
+        - image
+        - StaticText "AI视频系统教学"
+        - StaticText "· 04-07"
+  - generic
+    - link "C哥AI成长圈之每个人的人工智能普及课 8365" [ref=e79]
+      - generic
+        - generic
+          - image "C哥AI成长圈之每个人的人工智能普及课"
+        - generic
+          - image
+          - StaticText "8365"
+    - generic
+      - link "C哥AI成长圈之每个人的人工智能普及课" [ref=e131]
+        - heading "C哥AI成长圈之每个人的人工智能普及课" [level=3, ref=e176]
+          - StaticText "C哥"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "成长圈之每个人的"
+          - emphasis
+            - StaticText "人工智能"
+          - StaticText "普及课"
+      - link "C哥聊科技 · 共85课时" [ref=e132]
+        - image
+        - StaticText "C哥聊科技"
+        - StaticText "· 共85课时"
+  - generic
+    - link "【整整600集】清华大学196小时讲完的AI人工智能从入门到精通全套教程，全程干货无废话！学完变大佬！这还学不会，我退出IT圈！机器学习-深度学习-opencv 62.7万 7145 54:19:28" [ref=e80]
+      - generic
+        - generic
+          - image "【整整600集】清华大学196小时讲完的AI人工智能从入门到精通全套教程，全程干货无废话！学完变大佬！这还学不会，我退出IT圈！机器学习-深度学习-opencv"
+        - generic
+          - image
+          - StaticText "62.7万"
+          - image
+          - StaticText "7145"
+          - StaticText "54:19:28"
+    - generic
+      - link "【整整600集】清华大学196小时讲完的AI人工智能从入门到精通全套教程，全程干货无废话！学完变大佬！这还学不会，我退出IT圈！机器学习-深度学习-opencv" [ref=e133]
+        - heading "【整整600集】清华大学196小时讲完的AI人工智能从入门到精通全套教程，全程干货无废话！学完变大佬！这还学不会，我退出IT圈！机器学习-深度学习-opencv" [level=3, ref=e177]
+          - StaticText "【整整600集】清华大学196小时讲完的"
+          - emphasis
+            - StaticText "AI人工智能"
+          - StaticText "从入门到精通全套教程，全程干货无废话！学完变大佬！这还学不会，我退出IT圈！机器学习-深度学习-opencv"
+      - link "IT界扛霸子 · 2025-11-28" [ref=e134]
+        - image
+        - StaticText "IT界扛霸子"
+        - StaticText "· 2025-11-28"
+  - generic
+    - link "【AI零基础入门】2026年最全人工智能课程（Python、深度学习算法、神经网络、PyTorch、机器学习、计算机视觉、NLP）一口气学完！快速入门极简单 129.6万 1277 37:41:34" [ref=e81]
+      - generic
+        - generic
+          - image "【AI零基础入门】2026年最全人工智能课程（Python、深度学习算法、神经网络、PyTorch、机器学习、计算机视觉、NLP）一口气学完！快速入门极简单"
+        - generic
+          - image
+          - StaticText "129.6万"
+          - image
+          - StaticText "1277"
+          - StaticText "37:41:34"
+    - generic
+      - link "【AI零基础入门】2026年最全人工智能课程（Python、深度学习算法、神经网络、PyTorch、机器学习、计算机视觉、NLP）一口气学完！快速入门极简单" [ref=e135]
+        - heading "【AI零基础入门】2026年最全人工智能课程（Python、深度学习算法、神经网络、PyTorch、机器学习、计算机视觉、NLP）一口气学完！快速入门极简单" [level=3, ref=e178]
+          - StaticText "【"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "零基础入门】2026年最全"
+          - emphasis
+            - StaticText "人工智能"
+          - StaticText "课程（Python、深度学习算法、神经网络、PyTorch、机器学习、计算机视觉、NLP）一口气学完！快速入门极简单"
+      - link "机器学习教程 · 2025-10-13" [ref=e136]
+        - image
+        - StaticText "机器学习教程"
+        - StaticText "· 2025-10-13"
+  - generic
+    - link "【全748集】这绝对是2026讲的最好的AI智能应用零基础入门教程，七天就能从小白到大神！全程干货无废话！让你少走 99% 的弯路！AI应用|LLM|AI教程 3368 97 37:52:43" [ref=e82]
+      - generic
+        - generic
+          - image "【全748集】这绝对是2026讲的最好的AI智能应用零基础入门教程，七天就能从小白到大神！全程干货无废话！让你少走 99% 的弯路！AI应用|LLM|AI教程"
+        - generic
+          - image
+          - StaticText "3368"
+          - image
+          - StaticText "97"
+          - StaticText "37:52:43"
+    - generic
+      - link "【全748集】这绝对是2026讲的最好的AI智能应用零基础入门教程，七天就能从小白到大神！全程干货无废话！让你少走 99% 的弯路！AI应用|LLM|AI教程" [ref=e137]
+        - heading "【全748集】这绝对是2026讲的最好的AI智能应用零基础入门教程，七天就能从小白到大神！全程干货无废话！让你少走 99% 的弯路！AI应用|LLM|AI教程" [level=3, ref=e179]
+          - StaticText "【全748集】这绝对是2026讲的最好的"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "智能应用零基础入门教程，七天就能从小白到大神！全程干货无废话！让你少走 99% 的弯路！"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "应用|LLM|"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "教程"
+      - link "大模型零基础入门课程 · 04-07" [ref=e138]
+        - image
+        - StaticText "大模型零基础入门课程"
+        - StaticText "· 04-07"
+  - generic
+    - link "Insider: 人工智能 AI DeepMind 创始人哈萨比斯专访完整版 122 0 26:23" [ref=e83]
+      - generic
+        - generic
+          - image "Insider: 人工智能 AI DeepMind 创始人哈萨比斯专访完整版"
+        - generic
+          - image
+          - StaticText "122"
+          - image
+          - StaticText "0"
+          - StaticText "26:23"
+    - generic
+      - link "Insider: 人工智能 AI DeepMind 创始人哈萨比斯专访完整版" [ref=e139]
+        - heading "Insider: 人工智能 AI DeepMind 创始人哈萨比斯专访完整版" [level=3, ref=e180]
+          - StaticText "Insider: "
+          - emphasis
+            - StaticText "人工智能"
+          - StaticText " "
+          - emphasis
+            - StaticText "AI"
+          - StaticText " DeepMind 创始人哈萨比斯专访完整版"
+      - link "风纷纷雨潇潇 · 11小时前" [ref=e140]
+        - image
+        - StaticText "风纷纷雨潇潇"
+        - StaticText "· 11小时前"
+  - generic
+    - link "面壁智能发布并开源VOXCPM2模型 | 4月9日AI日报第360期 5822 39 02:03" [ref=e84]
+      - generic
+        - generic
+          - image "面壁智能发布并开源VOXCPM2模型 | 4月9日AI日报第360期"
+        - generic
+          - image
+          - StaticText "5822"
+          - image
+          - StaticText "39"
+          - StaticText "02:03"
+    - generic
+      - link "面壁智能发布并开源VOXCPM2模型 | 4月9日AI日报第360期" [ref=e141]
+        - heading "面壁智能发布并开源VOXCPM2模型 | 4月9日AI日报第360期" [level=3, ref=e181]
+          - StaticText "面壁智能发布并开源VOXCPM2模型 | 4月9日"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "日报第360期"
+      - link "infinite灵感港 · 12小时前" [ref=e142]
+        - image
+        - StaticText "infinite灵感港"
+        - StaticText "· 12小时前"
+  - generic
+    - link "（开源）AI智能工作台-HydroAgent 330 0 17:44" [ref=e85]
+      - generic
+        - generic
+          - image "（开源）AI智能工作台-HydroAgent"
+        - generic
+          - image
+          - StaticText "330"
+          - image
+          - StaticText "0"
+          - StaticText "17:44"
+    - generic
+      - link "（开源）AI智能工作台-HydroAgent" [ref=e143]
+        - heading "（开源）AI智能工作台-HydroAgent" [level=3, ref=e182]
+          - StaticText "（开源）"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "智能工作台-HydroAgent"
+      - link "星云数海 · 16小时前" [ref=e144]
+        - image
+        - StaticText "星云数海"
+        - StaticText "· 16小时前"
+  - generic
+    - link "【2026面试攻略】Java高级面试八股文（含PDF答案），一套搞定offer！ 47.7万 1256 25:00:59" [ref=e86]
+      - generic
+        - generic
+          - image "【2026面试攻略】Java高级面试八股文（含PDF答案），一套搞定offer！"
+        - generic
+          - image
+          - StaticText "47.7万"
+          - image
+          - StaticText "1256"
+          - StaticText "25:00:59"
+    - generic
+      - link "【2026面试攻略】Java高级面试八股文（含PDF答案），一套搞定offer！" [ref=e145]
+        - heading "【2026面试攻略】Java高级面试八股文（含PDF答案），一套搞定offer！" [level=3, ref=e183]
+      - link "马士兵IT课堂 · 2025-02-08" [ref=e146]
+        - image
+        - StaticText "马士兵IT课堂"
+        - StaticText "· 2025-02-08"
+  - generic
+    - link "GPT新模型“Squd”前瞻，性能暴涨40%，上下文高达200万 | 4月6日AI日报第357期 4.9万 48 01:29" [ref=e87]
+      - generic
+        - generic
+          - image "GPT新模型“Squd”前瞻，性能暴涨40%，上下文高达200万 | 4月6日AI日报第357期"
+        - generic
+          - image
+          - StaticText "4.9万"
+          - image
+          - StaticText "48"
+          - StaticText "01:29"
+    - generic
+      - link "GPT新模型“Squd”前瞻，性能暴涨40%，上下文高达200万 | 4月6日AI日报第357期" [ref=e147]
+        - heading "GPT新模型“Squd”前瞻，性能暴涨40%，上下文高达200万 | 4月6日AI日报第357期" [level=3, ref=e184]
+          - StaticText "GPT新模型“Squd”前瞻，性能暴涨40%，上下文高达200万 | 4月6日"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "日报第357期"
+      - link "infinite灵感港 · 04-05" [ref=e148]
+        - image
+        - StaticText "infinite灵感港"
+        - StaticText "· 04-05"
+  - generic
+    - link "盘点一周AI大事(4月5日)｜叫AI老公多干活 1.6万 34 03:14" [ref=e88]
+      - generic
+        - generic
+          - image "盘点一周AI大事(4月5日)｜叫AI老公多干活"
+        - generic
+          - image
+          - StaticText "1.6万"
+          - image
+          - StaticText "34"
+          - StaticText "03:14"
+    - generic
+      - link "盘点一周AI大事(4月5日)｜叫AI老公多干活" [ref=e149]
+        - heading "盘点一周AI大事(4月5日)｜叫AI老公多干活" [level=3, ref=e185]
+          - StaticText "盘点一周"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "大事(4月5日)｜叫"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "老公多干活"
+      - link "产品君 · 04-05" [ref=e150]
+        - image
+        - StaticText "产品君"
+        - StaticText "· 04-05"
+  - generic
+    - link "Anthropic 发布 Claude Mythos 模型；智谱正式发布并开源 GLM-5.1 模型【AI 早报 2026-04-08】 5.6万 62 04:57" [ref=e89]
+      - generic
+        - generic
+          - image "Anthropic 发布 Claude Mythos 模型；智谱正式发布并开源 GLM-5.1 模型【AI 早报 2026-04-08】"
+        - generic
+          - image
+          - StaticText "5.6万"
+          - image
+          - StaticText "62"
+          - StaticText "04:57"
+    - generic
+      - link "Anthropic 发布 Claude Mythos 模型；智谱正式发布并开源 GLM-5.1 模型【AI 早报 2026-04-08】" [ref=e151]
+        - heading "Anthropic 发布 Claude Mythos 模型；智谱正式发布并开源 GLM-5.1 模型【AI 早报 2026-04-08】" [level=3, ref=e186]
+          - StaticText "Anthropic 发布 Claude Mythos 模型；智谱正式发布并开源 GLM-5.1 模型【"
+          - emphasis
+            - StaticText "AI"
+          - StaticText " 早报 2026-04-08】"
+      - link "橘鸦Juya · 昨天" [ref=e152]
+        - image
+        - StaticText "橘鸦Juya"
+        - StaticText "· 昨天"
+  - generic
+    - link "英文演讲：人工智能 2.3万 39 03:23" [ref=e90]
+      - generic
+        - generic
+          - image "英文演讲：人工智能"
+        - generic
+          - image
+          - StaticText "2.3万"
+          - image
+          - StaticText "39"
+          - StaticText "03:23"
+    - generic
+      - link "英文演讲：人工智能" [ref=e153]
+        - heading "英文演讲：人工智能" [level=3, ref=e187]
+          - StaticText "英文演讲："
+          - emphasis
+            - StaticText "人工智能"
+      - link "用英语讲中国故事 · 2024-12-16" [ref=e154]
+        - image
+        - StaticText "用英语讲中国故事"
+        - StaticText "· 2024-12-16"
+  - generic
+    - link "如何在人工智能时代超越99%的人：迪恩·格拉齐奥西的成功启示 826 0 01:20:39" [ref=e91]
+      - generic
+        - generic
+          - image "如何在人工智能时代超越99%的人：迪恩·格拉齐奥西的成功启示"
+        - generic
+          - image
+          - StaticText "826"
+          - image
+          - StaticText "0"
+          - StaticText "01:20:39"
+    - generic
+      - link "如何在人工智能时代超越99%的人：迪恩·格拉齐奥西的成功启示" [ref=e155]
+        - heading "如何在人工智能时代超越99%的人：迪恩·格拉齐奥西的成功启示" [level=3, ref=e188]
+          - StaticText "如何在"
+          - emphasis
+            - StaticText "人工智能"
+          - StaticText "时代超越99%的人：迪恩·格拉齐奥西的成功启示"
+      - link "Web3天空之城 · 8小时前" [ref=e156]
+        - image
+        - StaticText "Web3天空之城"
+        - StaticText "· 8小时前"
+  - generic
+    - link "逆天！国产开源GLM-5.1今天屠榜全球，把Claude、GPT、Gemini全踩了——同一天马斯克宣布xAI 7个模型在训直接宣战｜AI日报 第六期 4月8日 3606 11 09:02" [ref=e92]
+      - generic
+        - generic
+          - image "逆天！国产开源GLM-5.1今天屠榜全球，把Claude、GPT、Gemini全踩了——同一天马斯克宣布xAI 7个模型在训直接宣战｜AI日报 第六期 4月8日"
+        - generic
+          - image
+          - StaticText "3606"
+          - image
+          - StaticText "11"
+          - StaticText "09:02"
+    - generic
+      - link "逆天！国产开源GLM-5.1今天屠榜全球，把Claude、GPT、Gemini全踩了——同一天马斯克宣布xAI 7个模型在训直接宣战｜AI日报 第六期 4月8日" [ref=e157]
+        - heading "逆天！国产开源GLM-5.1今天屠榜全球，把Claude、GPT、Gemini全踩了——同一天马斯克宣布xAI 7个模型在训直接宣战｜AI日报 第六期 4月8日" [level=3, ref=e189]
+          - StaticText "逆天！国产开源GLM-5.1今天屠榜全球，把Claude、GPT、Gemini全踩了——同一天马斯克宣布xAI 7个模型在训直接宣战｜"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "日报 第六期 4月8日"
+      - link "某宇AI · 17小时前" [ref=e158]
+        - image
+        - StaticText "某宇AI"
+        - StaticText "· 17小时前"
+  - generic
+    - link "【全68集】0基础0成本！AI动画电影制作，12个作品涨粉50万，手把手教你ComfyUI+豆包+即梦AI玩转AI短剧赛道 288 20 02:28:08" [ref=e93]
+      - generic
+        - generic
+          - image "【全68集】0基础0成本！AI动画电影制作，12个作品涨粉50万，手把手教你ComfyUI+豆包+即梦AI玩转AI短剧赛道"
+        - generic
+          - image
+          - StaticText "288"
+          - image
+          - StaticText "20"
+          - StaticText "02:28:08"
+    - generic
+      - link "【全68集】0基础0成本！AI动画电影制作，12个作品涨粉50万，手把手教你ComfyUI+豆包+即梦AI玩转AI短剧赛道" [ref=e159]
+        - heading "【全68集】0基础0成本！AI动画电影制作，12个作品涨粉50万，手把手教你ComfyUI+豆包+即梦AI玩转AI短剧赛道" [level=3, ref=e190]
+          - StaticText "【全68集】0基础0成本！"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "动画电影制作，12个作品涨粉50万，手把手教你ComfyUI+豆包+即梦"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "玩转"
+          - emphasis
+            - StaticText "AI"
+          - StaticText "短剧赛道"
+      - link "AI漫剧制作全流程 · 14小时前" [ref=e160]
+        - image
+        - StaticText "AI漫剧制作全流程"
+        - StaticText "· 14小时前"
+  - button "上一页" [disabled, ref=e7]
+  - button "1" [ref=e8]
+  - button "2" [ref=e9]
+  - button "3" [ref=e10]
+  - button "4" [ref=e11]
+  - button "5" [ref=e12]
+  - button "6" [ref=e13]
+  - button "7" [ref=e14]
+  - StaticText "..."
+  - button "34" [ref=e15]
+  - button "下一页" [ref=e16]
+  - StaticText "bilibili"
+  - generic
+    - link "关于我们" [ref=e23]
+    - link "联系我们" [ref=e24]
+    - link "用户协议" [ref=e25]
+    - link "加入我们" [ref=e26]
+    - link "隐私协议" [ref=e27]
+    - link "bilibili认证" [ref=e28]
+    - link "Investor Relations" [ref=e29]
+  - StaticText "传送门"
+  - generic
+    - link "协议汇总" [ref=e30]
+    - link "活动中心" [ref=e31]
+    - link "活动专题页" [ref=e32]
+    - link "侵权申诉" [ref=e33]
+    - link "帮助中心" [ref=e34]
+    - link "社区中心" [ref=e35]
+    - link "壁纸站" [ref=e36]
+    - link "广告合作" [ref=e37]
+    - link "名人堂" [ref=e38]
+    - link "MCN管理中心" [ref=e39]
+    - link "高级弹幕" [ref=e40]
+    - link "品牌号官网" [ref=e41]
+  - link "下载APP" [ref=e20]
+    - image
+    - paragraph
+      - StaticText "下载APP"
+  - link "公益" [ref=e21]
+    - image
+    - paragraph
+      - StaticText "公益"
+  - link "官方微博" [ref=e22]
+    - image
+    - paragraph
+      - StaticText "官方微博"
+  - generic
+    - image
+    - paragraph
+      - StaticText "官方微信"
+  - generic
+    - link "营业执照" [ref=e42]
+    - StaticText "信息网络传播视听节目许可证：0910417"
+    - link "网络文化经营许可证 沪网文【2025】0258-085号" [ref=e43]
+    - StaticText "广播电视节目制作经营许可证：（沪）字第01248号增值电信业务经营许可证 沪B2-20100043"
+  - generic
+    - link "互联网ICP备案：沪ICP备13002172号-3" [ref=e44]
+    - link "出版物经营许可证 沪批字第U6699 号" [ref=e45]
+    - StaticText "互联网药品信息服务资格证 沪-非经营性-2022-0011营业性演出许可证 沪市文演（经）00-2253 |"
+  - generic
+    - link "不良信息举报邮箱：help@bilibili.com" [ref=e46]
+    - link "涉未成年举报邮箱：teenprotect@bilibili.com" [ref=e47]
+    - StaticText "不良信息举报电话：4006262233转3"
+    - link "上海互联网举报中心 |" [ref=e48]
+    - link "12345政务服务便民热线 |" [ref=e49]
+  - generic
+    - link "沪公网安备31011002002436号 |" [ref=e50]
+    - link "儿童色情信息举报专区 |" [ref=e51]
+    - link "扫黄打非举报" [ref=e52]
+  - generic
+    - link "网信算备310110764385705230011号" [ref=e53]
+    - link "网信算备310110764385702230013号" [ref=e54]
+  - generic
+    - StaticText "网上有害信息举报专区："
+    - link "中国互联网违法和不良信息举报中心" [ref=e55]
+    - StaticText "亲爱的市民朋友，上海警方反诈劝阻电话\"96110\"系专门针对避免您财产被骗受损而设，请您一旦收到来电，立即接听。"
+  - generic
+    - StaticText "公司名称：上海宽娱数码科技有限公司 |公司地址：上海市杨浦区政立路489号 |电话：021-25099888"
+  - generic
+    - image
+    - image
+    - image

@@ -1,28 +1,28 @@
 # AI Scientist 系统
 
 > 类型：实体
-> 创建时间：2026-04-09 20:03
+> 创建时间：2026-04-10 20:04
 
 ## 简介
 
-Alchemy 是由清华大学人工智能学院李佳助理教授课题组开发的 AI 科研自动化框架，旨在减轻科研工程负担，实现高效科研。用户只需提供算法代码和配置文件，Alchemy 负责搭建实验环境、优化算法。
+Alchemy 是由清华大学开发的 AI 科研自动化框架，旨在减轻工程负担，提高科研效率。
 
 ## 相关概念
-- [[AI 科研自动化框架]]
-- [[Alchemy（炼丹炉）]]
+- [[Alchemy]]
+- [[AI Scientist]]
 - [[算法开发层]]
 - [[研究环境执行层]]
-- [[Seed Baseline 机制]]
+- [[Seed Baseline]]
 - [[多模态推荐任务]]
-- [[Alchemy]]
-- [[清华 AI 科研自动化框架]]
+- [[Alchemy（炼丹炉）]]
+- [[清华大学人工智能学院]]
 - [[李佳助理教授课题组]]
 - [[李乐晖]]
 - [[蔡立一]]
 - [[AAAI 2025 论文《Mind Individual Information!》]]
 
 ## 来源
-- [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

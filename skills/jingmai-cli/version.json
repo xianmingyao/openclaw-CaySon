@@ -1,7 +1,7 @@
 {
   "app_name": "Jingmai UFO CLI Tool",
   "version": "1.0.0",
-  "build_date": "2026/04/09 周四 17:29:50.04",
+  "build_date": "2026/04/10 周五 16:39:01.09",
   "entry_file": "main.py",
   "executable": "jingmai-cli.exe",
   "output_dir": "release",

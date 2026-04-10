@@ -1,26 +1,27 @@
 # AI Agent
 
 > 分类：概念
-> 创建时间：2026-04-09 20:03
+> 创建时间：2026-04-10 20:03
 
-AI Agent是一种能够自主执行任务或与环境交互的人工智能实体。它具备感知、决策和行动的能力，并能根据环境反馈进行学习和适应。关键要点包括：自主性（能够在没有人类直接干预的情况下工作）、适应性（能够根据新信息调整行为策略）以及效率（在资源限制下实现目标）。AI Agent广泛应用于游戏、机器人技术、自动化系统等领域，是现代智能系统的重要组成部分。
+AI Agent是一种能够自主执行任务并作出决策的人工智能实体。它能够在特定环境中感知、推理和行动，并根据目标优化其行为。关键要点包括：自主性（能独立完成任务）、适应性（可根据环境变化调整策略）以及学习能力（通过经验改进性能）。AI Agent广泛应用于游戏、机器人技术及自动化系统等领域，是实现智能化的关键组件之一。
 
 ## 相关概念
-- [[Agent]]
-- [[Harness Engineering]]
-- [[Constraint Engine]]
-- [[Feedback System]]
-- [[Control Loop]]
-- [[Prompt Engineering]]
-- [[Context Engineering]]
-- [[LLM]]
-- [[Anthropic]]
-- [[OpenAI]]
-- [[DeepMind]]
-- [[字节跳动]]
+- [[OpenCLI]]
+- [[CLI工具]]
+- [[网页控制]]
+- [[命令行界面]]
+- [[抖音]]
+- [[硅基棱镜]]
+- [[Bilibili]]
+- [[知乎]]
+- [[小红书]]
+- [[Twitter]]
+- [[Reddit]]
+- [[YouTube]]
+- [[Antigravity Ultra]]
 
 ## 来源
-- [[2026-04-09-articles\2026-04-09-Harness-Engineering.md]]
+- [[2026-04-10-articles\opencli-siliconprism.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

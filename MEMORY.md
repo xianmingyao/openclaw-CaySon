@@ -173,7 +173,8 @@ YYYY.MM.DD(日报)
 - 京麦智能体、知识库、OpenClaw系统
 
 ## 项目记忆
-- 京麦智能体：搭建中，进度 **78%**（2026-04-09宁兄日报：78%）
+- 京麦智能体：搭建中，进度 **78%**（2026-04-10宁兄日报：78%）
+- Seeduplex（2025-JQ03-W1237）：✅ 已结束归档（2026-04-10通知）
 - OpenClaw：多渠道AI助手，持续运行
 
 ## Karpathy 知识库系统（2026-04-09 完整搭建完成）⭐
@@ -198,6 +199,13 @@ knowledge-base/
 | sync_notion.py | Notion同步（114文档） | ✅ |
 | upload_mem0.py | Milvus云端同步（114条） | ✅ |
 
+### 同步状态（2026-04-09）
+- 飞书Database ID：33d2bb5417c380f6baaff3467dea91c8
+- 飞书同步：114文档 ✅
+- Notion同步：114文档 ✅
+- Milvus云端：114条 ✅
+- Cron定时同步：每天20:00 ✅
+
 ### 知识库Database ID
 - 飞书：33d2bb5417c380f6baaff3467dea91c8
 - Notion：已配置API Token + Database ID
@@ -209,6 +217,16 @@ knowledge-base/
 - MemPalace（23.6k stars）：AI记忆系统
 - chrome-devtools-mcp：Chrome DevTools MCP
 - MCP生态全景图（12+服务）
+
+### 新增内容（2026-04-10）
+- **Hermes Agent**（Nous Research，33.3k Stars）：内置闭环学习系统，自动创建Skills，跨会话记忆
+- **GitNexus**：Graph RAG可视化代码工具，预防AI瞎改，可视化依赖/调用链
+- **OpenMAIC**（清华THU-MAIC，13.6k Stars）：PDF转课堂，AI教师，白板互动
+- **OpenCLI**：任意网站/Electron应用转CLI工具
+- **TTS横评**：LongCat AudioDiT胜出（3.5B/12GB显存/6秒生成）
+- **Coze扣子平台**：1500万+用户，OpenClaw已入驻可一键部署
+- **AgentSkills技术规范**：SKILL.md格式（YAML头部/Description/CoT思维链），命中率45%→92%
+- **Karpathy流程升级**：raw→wiki→飞书→Notion→Milvus全链路同步
 
 ### 避坑记录
 - 飞书 docx:document.block:convert 权限 → 手动申请开通 ✅

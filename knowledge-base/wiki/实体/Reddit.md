@@ -1,18 +1,18 @@
 # Reddit
 
 > 类型：实体
-> 创建时间：2026-04-10 20:03
+> 创建时间：2026-04-11 20:03
 
 ## 简介
 
-OpenCLI 是一个将网站、Electron 应用或本地工具变成命令行界面的工具，支持多种平台和技术。
+OpenCLI 是一个将网站、Electron 应用或本地工具变成命令行界面的工具，支持多种平台并专为 AI Agent 设计。
 
 ## 相关概念
 - [[OpenCLI]]
 - [[CLI工具]]
 - [[AI Agent]]
+- [[自动化]]
 - [[网页控制]]
-- [[命令行界面]]
 - [[抖音]]
 - [[硅基棱镜]]
 - [[Bilibili]]
@@ -23,7 +23,7 @@ OpenCLI 是一个将网站、Electron 应用或本地工具变成命令行界面
 - [[Antigravity Ultra]]
 
 ## 来源
-- [[2026-04-10-articles\opencli-siliconprism.md]]
+- [[2026-04-11-articles\opencli-siliconprism.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

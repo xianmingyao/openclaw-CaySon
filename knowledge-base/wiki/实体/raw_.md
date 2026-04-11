@@ -1,25 +1,25 @@
 # raw_
 
 > 类型：实体
-> 创建时间：2026-04-09 08:34
+> 创建时间：2026-04-11 20:03
 
 ## 简介
 
-Karpathy 工作流利用 LLM 将原始资料编译成结构化的 wiki 知识库，通过收集、编译和查询三个步骤实现高效的知识管理。
+Karpathy 工作流利用 LLM 将原始资料编译成 wiki，通过三步曲实现知识管理。
 
 ## 相关概念
 - [[LLM]]
 - [[知识库]]
 - [[wiki]]
+- [[工作流]]
 - [[双向链接]]
-- [[上下文窗口]]
 - [[Karpathy 知识库工作流]]
 - [[Obsidian Web Clipper]]
 - [[wiki/]]
 - [[RAG]]
 
 ## 来源
-- [[2026-04-09-articles\karpathy-workflow.md]]
+- [[2026-04-11-articles\karpathy-workflow.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

@@ -177,6 +177,21 @@ YYYY.MM.DD(日报)
 - Seeduplex（2025-JQ03-W1237）：✅ 已结束归档（2026-04-10通知）
 - OpenClaw：多渠道AI助手，持续运行
 
+## 2026-04-12 Dream 整合记录
+
+### 整合范围
+- 扫描文件：2026-04-06 / 2026-04-07 / 2026-04-08 / 2026-04-09 / 2026-04-10（5个文件）
+
+### MEMORY.md 更新
+1. 京麦智能体进度 78% 已确认
+2. Seeduplex 2025-JQ03-W1237 已结束归档
+3. 知识库 compile.py 存在 SIGKILL 问题（内存/超时），飞书114文档同步完成
+4. 内容捕手抖音受阻（需登录），B站成功326条
+5. OpenMAIC/AgentSkills/Hermes Agent/GitNexus 研究成果已归档
+
+### 旧日志标记
+- 2026-03-27.md / 2026-03-28.md / 2026-03-31.md 已标记 consolidation
+
 ## 2026-04-10 新增研究成果（宁兄日报）
 
 ### Hermes Agent（Nous Research，33.3k Stars）
@@ -226,7 +241,7 @@ knowledge-base/
 ### 核心组件（全部完成）
 | 组件 | 功能 | 状态 |
 |------|------|------|
-| compile.py | INGEST摄入（raw→wiki） | ✅ |
+| compile.py | INGEST摄入（raw→wiki） | ⚠️ LLM编译存在SIGKILL问题（内存/超时），需优化 |
 | lint.py | 健康检查 | ✅ |
 | query.py | 问答查询 | ✅ |
 | sync_feishu.py | 飞书同步（114文档） | ✅ |

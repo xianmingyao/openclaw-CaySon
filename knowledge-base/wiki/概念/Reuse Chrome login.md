@@ -1,21 +1,21 @@
 # Reuse Chrome login
 
 > 分类：概念
-> 创建时间：2026-04-11 20:04
+> 创建时间：2026-04-12 20:05
 
-Reuse Chrome Login 是一种功能，允许用户在多台设备之间共享同一Google账户登录信息，无需重新输入用户名和密码。通过启用此功能，用户可以保持其浏览历史、书签、设置等的连续性。关键要点包括：1) 支持跨设备同步；2) 提高使用便利性；3) 依赖于Google账户进行身份验证；4) 需要确保网络安全以防止未授权访问。
+Reuse Chrome Login 是一种功能，允许用户在多台设备上使用同一组 Google 账户登录 Chrome 浏览器，无需重新输入用户名和密码。这不仅简化了跨设备同步书签、设置和个人化内容的过程，还提高了使用的便捷性与安全性。关键要点包括：支持多种操作系统（Windows, macOS, Linux）；确保数据安全性和隐私保护；提高用户在不同设备间切换时的体验流畅度。
 
 ## 相关概念
 - [[Zero risk]]
 - [[AI-powered discovery]]
 - [[Universal CLI Hub]]
 - [[@硅基棱镜]]
-- [[opencli]]
+- [[opencli list]]
 - [[AGENT.md]]
 - [[.cursorrules]]
 
 ## 来源
-- [[2026-04-11-github\opencli-douyin-20260410.md]]
+- [[2026-04-12-github\opencli-douyin-20260410.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

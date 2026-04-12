@@ -1,29 +1,20 @@
 # Hermes Agent
 
 > 类型：实体
-> 创建时间：2026-04-11 20:04
+> 创建时间：2026-04-12 20:05
 
 ## 简介
 
-Hermes Agent是NousResearch开发的具有33.3k Stars的自进化AI框架，支持自动创建技能和跨会话记忆。
+介绍了名为Hermes Agent的自进化AI框架，拥有33.3k Stars和4.3k Forks。
 
 ## 相关概念
 - [[自进化AI Agent]]
 - [[开源AI]]
 - [[@AI真用法]]
 - [[nousresearch/hermes-agent]]
-- [[33.3k Stars]]
-- [[4.3k Forks]]
-- [[3,474 Commits]]
-- [[601个分支]]
-- [[内嵌闭环学习系统]]
-- [[自动生成Skills]]
-- [[跨会话记忆]]
-- [[模型无关架构]]
-- [[多平台支持]]
 
 ## 来源
-- [[2026-04-11-github\hermes-agent-douyin-20260410.md]]
+- [[2026-04-12-github\hermes-agent-douyin-20260410.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

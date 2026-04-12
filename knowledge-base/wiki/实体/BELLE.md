@@ -1,7 +1,7 @@
 # BELLE
 
 > 类型：实体
-> 创建时间：2026-04-11 20:03
+> 创建时间：2026-04-12 20:03
 
 ## 简介
 
@@ -27,7 +27,7 @@
 - [[InfinityInstruct]]
 
 ## 来源
-- [[2026-04-11-articles\llm-training-data-sources.md]]
+- [[2026-04-12-articles\llm-training-data-sources.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

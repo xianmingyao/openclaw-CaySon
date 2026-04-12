@@ -1,7 +1,7 @@
 # Bilibili
 
 > 类型：实体
-> 创建时间：2026-04-11 20:03
+> 创建时间：2026-04-12 20:03
 
 ## 简介
 
@@ -23,7 +23,7 @@ OpenCLI 是一个将网站、Electron 应用或本地工具变成命令行界面
 - [[Antigravity Ultra]]
 
 ## 来源
-- [[2026-04-11-articles\opencli-siliconprism.md]]
+- [[2026-04-12-articles\opencli-siliconprism.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

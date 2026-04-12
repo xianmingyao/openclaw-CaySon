@@ -177,6 +177,40 @@ YYYY.MM.DD(日报)
 - Seeduplex（2025-JQ03-W1237）：✅ 已结束归档（2026-04-10通知）
 - OpenClaw：多渠道AI助手，持续运行
 
+## 2026-04-10 新增研究成果（宁兄日报）
+
+### Hermes Agent（Nous Research，33.3k Stars）
+- 内置闭环学习系统，自动创建Skills，跨会话记忆
+- 文档：`knowledge/Hermes-Agent-深度研究报告.md`
+
+### GitNexus（Graph RAG可视化代码工具）
+- 预防AI瞎改，可视化代码结构/依赖/调用链
+- 文档：`knowledge/GitNexus-编程救星预防AI瞎改.md`
+
+### OpenMAIC（清华THU-MAIC，13.6k Stars）
+- PDF转课堂，AI教师，白板互动
+- 文档：`knowledge/openmaic.md`
+
+### OpenCLI（网页/Electron → CLI）
+- 任意网站/Electron应用转CLI工具
+
+### TTS横评：LongCat AudioDiT胜出
+- LongCat AudioDiT: 3.5B, 12GB显存, 6秒生成, 音质很好
+- Qwen2-TTS: 0.6B, 5GB, 33秒
+- Fish Audio S2 Pro: 4B, 20GB, >60秒
+
+### Coze扣子编程平台
+- 1500万+用户，Vibe Coding平台
+- **OpenClaw已入驻扣子！可一键部署**
+- 对比：扣子更易用，OpenClaw更灵活
+- 文档：`knowledge/Coze扣子编程平台研究报告.md`
+
+### AgentSkills SKILL.md技术规范
+- Skills本质：把人类经验写成说明书
+- YAML头部：Name唯一性 + Description意图路由（命中率45%→92%）
+- CoT思维链：判定条件 + 分步指南 + 异常分支
+- 文档：`knowledge/AgentSkills-SKILL技术规范详解.md`
+
 ## Karpathy 知识库系统（2026-04-09 完整搭建完成）⭐
 
 ### 系统架构
@@ -232,17 +266,17 @@ knowledge-base/
 - 飞书 docx:document.block:convert 权限 → 手动申请开通 ✅
 - Notion 集成Database权限 → 在Database页面添加连接 ✅
 
-## 内容捕手状态（2026-04-09 更新）
+## 内容捕手状态（2026-04-10 更新）
 
 | 平台 | 状态 | 数据量 | 待解决 |
 |------|------|--------|--------|
 | B站 | ✅ 成功 | 326条 | 有412限流，需重试 |
-| 抖音 | ⚠️ 受阻 | 172条 | 需第三方API或Cookie同步 |
+| 抖音 | ⚠️ 受阻 | 172条 | 需登录/cookie-sync |
 
 ### 待解决
-- 方案A（推荐）：微播易/蝉妈妈 + B站开放平台API
-- 方案B：cookie-sync skill 同步Chrome已登录Cookie
-- 方案C：human-browser / agent-reach 抖音通道
+- 方案A：cookie-sync skill 同步Chrome已登录Cookie（已安装）
+- 方案B：human-browser / agent-reach 抖音通道
+- 方案C：蝉妈妈/微播易 第三方API
 
 ## ELUCKY 账号矩阵（2026-04-07 更新）
 

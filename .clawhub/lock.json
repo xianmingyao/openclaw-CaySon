@@ -176,6 +176,10 @@
     "memory-dream": {
       "version": "1.0.3",
       "installedAt": 1775522251321
+    },
+    "opencli-agent": {
+      "version": "1.0.1",
+      "installedAt": 1776052303747
     }
   }
 }

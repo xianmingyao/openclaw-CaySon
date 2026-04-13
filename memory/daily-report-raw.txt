@@ -1,34 +1,38 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-10 17:32:58
+Date: 2026-04-13 17:40:19
 --- GIT COMMITS ---
-  (none today)
+  565e1ac6 docs: Hermes Agent閮ㄧ讲+缁撳悎OpenClaw+娴嬭瘯瀹炴垬鎵嬪唽 - 鍚玽0.8.0/涓€閿縼绉?缁勫悎鏋舵瀯
+  6c68c42b docs: Hermes Agent鎶€鏈繁鎸栨姤鍛?- DSPy+GEPA鑷繘鍖?涓夊眰璁板繂/鏋舵瀯鎷嗚В
+  fadf2fb6 chore: remove jingmai-cli.exe from git (exceeds 100MB limit)
+  59d4433d dream-nightly memory consolidation 2026-04-13
 --- FILES MODIFIED ---
-  17:04 | skills\jingmai-cli\logs\app.log
-  17:04 | skills\jingmai-cli\logs\main.log
-  17:02 | skills\jingmai-cli\resources\screenshots\20260410_170238_754607_post_act.png
-  17:02 | skills\jingmai-cli\resources\screenshots\20260410_170220_574769_page_verify.png
-  17:02 | skills\jingmai-cli\resources\screenshots\20260410_170216_178902_pre_click.png
-  17:01 | skills\jingmai-cli\resources\screenshots\20260410_170147_360196_page_verify.png
-  17:01 | skills\jingmai-cli\resources\screenshots\20260410_170143_007469_pre_click.png
-  17:01 | skills\jingmai-cli\resources\screenshots\20260410_170113_934062_page_verify.png
-  17:00 | skills\jingmai-cli\resources\screenshots\20260410_170002_956779_coord.png
-  16:59 | skills\jingmai-cli\resources\screenshots\20260410_165948_427156_pre_act.png
-  16:57 | skills\jingmai-cli\resources\screenshots\20260410_165722_081762_plan.png
-  16:56 | skills\jingmai-cli\resources\screenshots\20260410_165625_951674_pre_act.png
-  16:56 | skills\jingmai-cli\resources\screenshots\20260410_165603_415332_plan.png
-  16:46 | skills\jingmai-cli\resources\screenshots\20260410_164609_547872_post_act.png
-  16:45 | skills\jingmai-cli\resources\screenshots\20260410_164538_955683_page_verify.png
-  16:45 | skills\jingmai-cli\resources\screenshots\20260410_164534_556104_pre_click.png
-  16:44 | skills\jingmai-cli\resources\screenshots\20260410_164455_849025_page_verify.png
-  16:44 | skills\jingmai-cli\resources\screenshots\20260410_164451_479357_pre_click.png
-  16:44 | skills\jingmai-cli\resources\screenshots\20260410_164429_898345_page_verify.png
-  16:43 | skills\jingmai-cli\resources\screenshots\20260410_164319_500195_coord.png
+  11:51 | .clawhub\lock.json
+  11:51 | skills\opencli-agent\.clawhub\origin.json
+  11:51 | skills\opencli-agent\_meta.json
+  11:51 | skills\opencli-agent\SKILL.md
+  11:51 | skills\opencli-agent\scripts\check_setup.sh
+  11:51 | skills\opencli-agent\references\command_reference.md
+  11:51 | skills\opencli-agent\Opencli skill\.codebuddy\skills\opencli-agent\SKILL.md
+  11:51 | skills\opencli-agent\Opencli skill\.codebuddy\skills\opencli-agent\scripts\check_setup.sh
+  11:51 | skills\opencli-agent\Opencli skill\.codebuddy\skills\opencli-agent\references\command_reference.md
+  10:38 | skills\jingmai-cli\resources\screenshots\20260413_104300_check2.png
+  10:36 | skills\jingmai-cli\resources\screenshots\20260413_104200_after_activate.png
+  10:35 | skills\jingmai-cli\resources\screenshots\20260413_104100_pyautogui.png
+  10:33 | logs\app.log
+  10:29 | skills\jingmai-cli\logs\app.log
+  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102855_572468_page_verify.png
+  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102852_235384_pre_click.png
+  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102847_311805_coord.png
+  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102846_128086_pre_act.png
+  10:28 | skills\jingmai-cli\logs\main.log
+  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102827_580116_think.png
 --- SESSIONS ---
   Count: 8
-  - 01b2d46c-5111-4d35-b6d5-f7cd5c271e72.jsonl [09:02]
-  - 2ca28a16-d6ef-42ea-8a88-7780ecd19e94.jsonl [10:51]
-  - 3e8089a1-dd22-4b7c-b0d4-0515148b766c.jsonl [00:37]
+  - 0672e9b8-eb44-4427-91e1-c587dca021eb.jsonl [15:22]
+  - 10984435-f600-42dc-b8bf-541886a70c4d.jsonl [15:06]
+  - 56072ae3-4745-46a3-a958-6c18d931b8c1.jsonl [03:14]
 --- SKILLS ---
   + jingmai-cli
+  + opencli-agent
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-cli"],"dayOfWeek":"Friday","sessionCount":8,"modifiedFiles":["E:\\workspace\\skills\\jingmai-cli\\logs\\app.log","E:\\workspace\\skills\\jingmai-cli\\logs\\main.log","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_170238_754607_post_act.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_170220_574769_page_verify.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_170216_178902_pre_click.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_170147_360196_page_verify.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_170143_007469_pre_click.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_170113_934062_page_verify.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_170002_956779_coord.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_165948_427156_pre_act.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_165722_081762_plan.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_165625_951674_pre_act.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_165603_415332_plan.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_164609_547872_post_act.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_164538_955683_page_verify.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_164534_556104_pre_click.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_164455_849025_page_verify.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_164451_479357_pre_click.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_164429_898345_page_verify.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260410_164319_500195_coord.png"],"gitCommits":[],"date":"2026.04.10"}
+{"skillsUpdated":["jingmai-cli","opencli-agent"],"dayOfWeek":"Monday","sessionCount":8,"modifiedFiles":["E:\\workspace\\.clawhub\\lock.json","E:\\workspace\\skills\\opencli-agent\\.clawhub\\origin.json","E:\\workspace\\skills\\opencli-agent\\_meta.json","E:\\workspace\\skills\\opencli-agent\\SKILL.md","E:\\workspace\\skills\\opencli-agent\\scripts\\check_setup.sh","E:\\workspace\\skills\\opencli-agent\\references\\command_reference.md","E:\\workspace\\skills\\opencli-agent\\Opencli skill\\.codebuddy\\skills\\opencli-agent\\SKILL.md","E:\\workspace\\skills\\opencli-agent\\Opencli skill\\.codebuddy\\skills\\opencli-agent\\scripts\\check_setup.sh","E:\\workspace\\skills\\opencli-agent\\Opencli skill\\.codebuddy\\skills\\opencli-agent\\references\\command_reference.md","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_104300_check2.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_104200_after_activate.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_104100_pyautogui.png","E:\\workspace\\logs\\app.log","E:\\workspace\\skills\\jingmai-cli\\logs\\app.log","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102855_572468_page_verify.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102852_235384_pre_click.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102847_311805_coord.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102846_128086_pre_act.png","E:\\workspace\\skills\\jingmai-cli\\logs\\main.log","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102827_580116_think.png"],"gitCommits":["565e1ac6 docs: Hermes Agent閮ㄧ讲+缁撳悎OpenClaw+娴嬭瘯瀹炴垬鎵嬪唽 - 鍚玽0.8.0/涓€閿縼绉?缁勫悎鏋舵瀯","6c68c42b docs: Hermes Agent鎶€鏈繁鎸栨姤鍛?- DSPy+GEPA鑷繘鍖?涓夊眰璁板繂/鏋舵瀯鎷嗚В","fadf2fb6 chore: remove jingmai-cli.exe from git (exceeds 100MB limit)","59d4433d dream-nightly memory consolidation 2026-04-13"],"date":"2026.04.13"}

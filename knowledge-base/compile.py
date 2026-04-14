@@ -320,7 +320,10 @@ def update_index(entries: list):
     for c in sorted(concepts): content += f"- [[{c}]]\n"
     
     content += "\n## 实体\n\n"
-    for e in sorted(entities) if entities else "*（暂无实体）*\n"
+    if entities:
+        for e in sorted(entities): content += f"- [[{e}]]\n"
+    else:
+        content += "*（暂无实体）*\n"
     
     (WIKI_DIR / "index.md").write_text(content, encoding='utf-8')
     print(f"\n      [OK] 索引已更新")
@@ -489,7 +492,7 @@ def run_lint() -> Dict:
     if all_issues:
         print(f"\n[问题详情]")
         for i, issue in enumerate(all_issues[:20], 1):
-            print(f"  {i}. [{issue['severity']]}] {issue['message']}")
+            print(f"  {i}. [{issue['severity']}] {issue['message']}")
     
     # 保存报告
     report_file = get_cache_dir() / "lint_report.json"
@@ -698,9 +701,246 @@ def export_to_obsidian():
         encoding='utf-8')
     
     print(f"\n[DONE] 导出完成!")
-    print(f"📁 位置: {OUTPUT_DIR}")
-    print(f"📊 概念: {len(concepts)} | 实体: {len(entities)} | 来源: {len(sources)}")
-    print(f"🔗 节点: {graph_data['stats']['total_nodes']} | 链接: {graph_data['stats']['total_links']}")
+    print(f"[F] 位置: {OUTPUT_DIR}")
+    print(f"[=] 概念: {len(concepts)} | 实体: {len(entities)} | 来源: {len(sources)}")
+    print(f"[L] 节点: {graph_data['stats']['total_nodes']} | 链接: {graph_data['stats']['total_links']}")
+
+# ========== SKILL 模板生成 ==========
+
+SKILL_TEMPLATE = '''# {name}
+
+> Skill类型：{skill_type}
+> 创建时间：{created_at}
+> 模式：{pattern}
+> 用途：{use_case}
+
+## 触发条件
+
+当用户请求与以下关键词匹配时触发此Skill：
+- {keywords}
+
+## 行为控制（核心）
+
+### 阶段1：{stage1_name}
+**目标**：{stage1_goal}
+
+**执行步骤**：
+1. {step1}
+2. {step2}
+3. {step3}
+
+**检查清单（Revere模式）**：
+- [ ] {check1}
+- [ ] {check2}
+- [ ] {check3}
+
+### 阶段2：{stage2_name}
+**目标**：{stage2_goal}
+
+### 阶段3：{stage3_name}
+**目标**：{stage3_goal}
+
+## 输入控制
+
+**允许的输入格式**：
+- {input_format}
+
+**禁止的输入格式**：
+- {forbidden_input}
+
+## 输出规范
+
+**输出格式**：
+- {output_format}
+
+**质量标准**：
+- [ ] 符合{standard1}
+- [ ] 符合{standard2}
+
+## 异常处理
+
+### 常见错误
+| 错误类型 | 解决方案 |
+|---------|---------|
+| {error1} | {solution1} |
+| {error2} | {solution2} |
+
+### 回退策略
+当{main_flow}失败时：
+1. {fallback1}
+2. {fallback2}
+3. {fallback3}
+
+## 上下文要求
+
+**必需信息**：
+- {required_context}
+
+**可选信息**：
+- {optional_context}
+
+## 组合模式
+
+此Skill可与其他Skill组合：
+- [[skill-name-1]] - 组合场景：{scenario1}
+- [[skill-name-2]] - 组合场景：{scenario2}
+
+## 示例
+
+### 示例1：{example1_title}
+**输入**：
+```
+{example1_input}
+```
+
+**输出**：
+```
+{example1_output}
+```
+
+---
+*由 Karpathy 知识库系统自动生成*
+*基于 Google Agent Skills 五大模式设计*
+'''
+
+SKILL_SIMPLE_TEMPLATE = '''# {name}
+
+> Skill类型：{skill_type}
+> 创建时间：{created_at}
+> 模式：{pattern}
+
+## 触发条件
+{keywords}
+
+## 行为流程
+{steps}
+
+## 输入输出
+**输入**：{input}
+**输出**：{output}
+
+## 检查清单
+{checklist}
+
+## 示例
+{example}
+
+---
+*由 Karpathy 知识库系统自动生成*
+'''
+
+def generate_skill_template(name, skill_type="通用", pattern="Revere",
+                          use_case="", keywords="", steps="",
+                          input_format="", output_format="",
+                          checklist="", example="", simple=False, output_path=None):
+    """生成Skill模板文件"""
+    created_at = datetime.now().strftime('%Y-%m-%d')
+    
+    if simple:
+        content = SKILL_SIMPLE_TEMPLATE.format(
+            name=name, skill_type=skill_type, created_at=created_at,
+            pattern=pattern, keywords=keywords, steps=steps,
+            input=input_format, output=output_format,
+            checklist=checklist, example=example
+        )
+    else:
+        content = SKILL_TEMPLATE.format(
+            name=name, skill_type=skill_type, created_at=created_at,
+            pattern=pattern, use_case=use_case, keywords=keywords,
+            stage1_name="准备阶段", stage1_goal="",
+            step1="", step2="", step3="",
+            check1="", check2="", check3="",
+            stage2_name="执行阶段", stage2_goal="",
+            stage3_name="收尾阶段", stage3_goal="",
+            input_format=input_format, forbidden_input="",
+            output_format=output_format, standard1="", standard2="",
+            error1="", solution1="", error2="", solution2="",
+            main_flow="", fallback1="", fallback2="", fallback3="",
+            required_context="", optional_context="",
+            scenario1="", scenario2="",
+            example1_title="", example1_input="", example1_output=""
+        )
+    
+    if output_path:
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+        Path(output_path).write_text(content, encoding='utf-8')
+        print(f"[OK] Skill模板已生成: {output_path}")
+    
+    return content
+
+def print_skill_guide():
+    """打印Skill写作指南"""
+    print("""
+================================================================================
+Skill 写作规范指南 (基于 Google Agent Skills 五大模式)
+================================================================================
+
+[!] 核心观点
+--------------------------------------------------------------------------------
+1. Skill不是"知识补丁"，而是"行为控制器"
+2. Skill从提示工程附件 -> Agent行为工程核心
+3. 真正成熟的Skill可能是多个结构的组合
+
+[*] 三种控制模式
+--------------------------------------------------------------------------------
+
+[Revere 模式] 检查清单模式
+  - 通过Checklist和指令控制模型行为
+  - 实现不同审查目标
+  - 适用场景：代码审查、文档审核、内容合规检查
+
+[Inversion 模式] 阶段提问模式
+  - 强制模型按阶段提问，减少脑补前提问题
+  - 适用场景：需求澄清、问题诊断、复杂任务拆解
+
+[Pipeline 模式] 工作流模式
+  - 定义工作流，通过关卡控制模型行为
+  - 适用场景：多步骤任务、审批流程、数据处理管道
+
+[D] SKILL.md 标准结构
+--------------------------------------------------------------------------------
+
+1. 头部元数据（YAML风格）
+   - name: 唯一标识符
+   - description: 描述（用于意图路由，45%->92%命中率提升）
+   - triggers: 触发条件
+
+2. 行为控制（核心）
+   - 阶段划分：准备->执行->收尾
+   - 检查清单：Revere模式
+   - 强制提问：Inversion模式
+   - 工作流关卡：Pipeline模式
+
+3. 输入输出规范
+   - 允许的输入格式
+   - 禁止的输入格式
+   - 输出格式和质量标准
+
+4. 异常处理
+   - 常见错误和解决方案
+   - 回退策略（Fallback）
+
+5. 上下文要求
+   - 必需信息
+   - 状态维护
+
+6. 组合模式
+   - 可与其他Skill组合的场景
+
+[>] 快速生成模板
+--------------------------------------------------------------------------------
+
+命令：
+  python compile.py --skill "技能名称" [--simple]
+
+示例：
+  python compile.py --skill "代码审查" --simple
+
+输出：
+  在当前目录生成 skill-name/SKILL.md
+
+================================================================================
+""")
 
 # ========== CLI ==========
 
@@ -721,11 +961,24 @@ def main():
     parser.add_argument('--export', '-e', action='store_true', help='导出Obsidian')
     parser.add_argument('--all', '-a', action='store_true', help='执行全部操作')
     parser.add_argument('--model', '-m', type=str, default=LLM_MODEL, help='LLM模型')
+    parser.add_argument('--skill', '-s', type=str, help='生成Skill模板')
+    parser.add_argument('--simple', action='store_true', help='使用简化模板')
+    parser.add_argument('--guide', action='store_true', help='显示Skill写作指南')
     
     args = parser.parse_args()
     globals()['LLM_MODEL'] = args.model
     
-    if args.all:
+    if args.guide:
+        print_skill_guide()
+    elif args.skill:
+        skill_name = args.skill.lower().replace(' ', '-').replace('_', '-')
+        output_path = Path(skill_name) / "SKILL.md"
+        generate_skill_template(
+            name=args.skill,
+            simple=args.simple,
+            output_path=str(output_path)
+        )
+    elif args.all:
         run_ingest(force=args.force, batch_size=args.batch)
         print()
         run_lint()

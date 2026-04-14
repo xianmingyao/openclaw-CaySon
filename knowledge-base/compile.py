@@ -1,24 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Karpathy 知识库编译脚本 v4 (优化版)
-解决问题：
-1. P0: SIGKILL - 分批处理 + 增量更新
-2. P0: 增量Ingest - 只处理新增/变更文件
-3. P1: RAG语义检索 - 对接Milvus
-4. P1: Lint Cron自动化
-5. P2: Obsidian可视化
-6. P2: 验收机制
+Karpathy 知识库编译器 v5 (整合版)
+一个文件搞定所有：compile + lint + review + obsidian导出
+
+使用方法：
+  python compile.py                  # 增量摄入
+  python compile.py --force          # 全量摄入
+  python compile.py --lint          # 健康检查
+  python compile.py --review         # 验收管理
+  python compile.py --export        # 导出Obsidian
+  python compile.py --all           # 全部执行
 """
 
 import os
+import sys
 import json
 import hashlib
+import shutil
 import requests
+import re
 from pathlib import Path
 from datetime import datetime
-from typing import Optional, Set
-import re
+from typing import Optional, List, Dict, Set
+from collections import defaultdict
+from enum import Enum
 
 # ========== 配置 ==========
 RAW_DIR = Path(__file__).parent / "raw"
@@ -28,6 +34,7 @@ WIKI_SOURCES = WIKI_DIR / "来源"
 WIKI_ENTITIES = WIKI_DIR / "实体"
 LOG_FILE = WIKI_DIR / "log.md"
 CACHE_DIR = Path(__file__).parent / ".compile_cache"
+OUTPUT_DIR = Path.home() / "Obsidian Vaults" / "Karpathy Wiki"
 
 # LLM 配置
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
@@ -35,76 +42,42 @@ LLM_MODEL = os.environ.get("LLM_MODEL", "qwen2.5:7b")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "nomic-embed-text")
 
 # 编译配置
-BATCH_SIZE = 5  # 每批处理文件数
-MAX_RETRIES = 2  # 最大重试次数
-REQUEST_TIMEOUT = 60  # 单次请求超时(秒)
-CHUNK_SIZE = 2000  # 内容分块大小
-
+BATCH_SIZE = 5
+MAX_RETRIES = 2
+REQUEST_TIMEOUT = 60
 SUPPORTED_EXTENSIONS = {'.md', '.txt', '.json', '.csv'}
 
 # ========== 缓存管理 ==========
 
 def get_cache_dir() -> Path:
-    """获取缓存目录"""
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     return CACHE_DIR
 
 def get_file_hash(file_path: Path) -> str:
-    """获取文件hash"""
     m = hashlib.sha256()
-    m.update(str(file_path).encode())
+    m.update(str(file_path).as_posix().encode())
     m.update(str(file_path.stat().st_mtime).encode())
     return m.hexdigest()[:16]
 
 def load_processed_cache() -> dict:
-    """加载已处理文件缓存"""
     cache_file = get_cache_dir() / "processed_files.json"
     if cache_file.exists():
         return json.loads(cache_file.read_text(encoding='utf-8'))
     return {}
 
 def save_processed_cache(cache: dict):
-    """保存已处理文件缓存"""
     cache_file = get_cache_dir() / "processed_files.json"
     cache_file.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding='utf-8')
-
-def is_file_changed(file_path: Path, cache: dict) -> bool:
-    """检查文件是否变更"""
-    current_hash = get_file_hash(file_path)
-    rel_path = str(file_path.relative_to(RAW_DIR))
-    return cache.get(rel_path) != current_hash
-
-# ========== 增量Ingest ==========
-
-def get_files_to_process(raw_files: list, cache: dict, force: bool = False) -> list:
-    """获取需要处理的文件列表（增量模式）"""
-    if force:
-        print("      [MODE] 全量模式 - 处理所有文件")
-        return raw_files
-    
-    to_process = []
-    for f in raw_files:
-        rel_path = str(f.relative_to(RAW_DIR))
-        if rel_path not in cache or is_file_changed(f, cache):
-            to_process.append(f)
-    
-    if to_process:
-        print(f"      [MODE] 增量模式 - {len(to_process)}/{len(raw_files)} 文件需要处理")
-    else:
-        print(f"      [MODE] 增量模式 - 所有文件已是最新")
-    
-    return to_process
 
 # ========== 核心LLM调用 ==========
 
 def call_llm_stream(prompt: str, model: str = LLM_MODEL, system: str = None) -> str:
-    """流式调用LLM（避免大响应超时）"""
     url = f"{OLLAMA_URL}/api/generate"
     data = {
         "model": model,
-        "prompt": prompt[:8000],  # 限制输入长度
+        "prompt": prompt[:8000],
         "stream": True,
-        "options": {"temperature": 0.3, "num_predict": 1024}  # 限制输出长度
+        "options": {"temperature": 0.3, "num_predict": 1024}
     }
     if system:
         data["system"] = system[:2000]
@@ -112,7 +85,6 @@ def call_llm_stream(prompt: str, model: str = LLM_MODEL, system: str = None) -> 
     try:
         response = requests.post(url, json=data, timeout=REQUEST_TIMEOUT, stream=True)
         response.raise_for_status()
-        
         result = []
         for line in response.iter_lines():
             if line:
@@ -122,41 +94,29 @@ def call_llm_stream(prompt: str, model: str = LLM_MODEL, system: str = None) -> 
                         result.append(obj['response'])
                 except:
                     pass
-        
-        full_response = ''.join(result)
-        return full_response.strip()
+        return ''.join(result).strip()
     except Exception as e:
         return f"[LLM Error: {e}]"
 
 def call_llm(prompt: str, model: str = LLM_MODEL, system: str = None) -> str:
-    """普通调用LLM（带重试）"""
     for retry in range(MAX_RETRIES):
         try:
             return call_llm_stream(prompt, model, system)
         except Exception as e:
             if retry < MAX_RETRIES - 1:
-                print(f"         重试 {retry+1}/{MAX_RETRIES}...")
-                import time
-                time.sleep(2 ** retry)
+                import time; time.sleep(2 ** retry)
             else:
                 return f"[LLM Error after {MAX_RETRIES} retries: {e}]"
 
 # ========== 内容分析 ==========
 
 def extract_json_from_response(response: str) -> Optional[dict]:
-    """从LLM响应中提取JSON"""
-    # 尝试多种JSON提取方式
-    patterns = [
-        r'\{[\s\S]*\}',  # 最宽松
-        r'```json\n([\s\S]*?)\n```',  # 代码块
-        r'"concepts"[\s\S]*',  # 从concepts开始
-    ]
-    
+    patterns = [r'\{[\s\S]*\}', r'```json\n([\s\S]*?)\n```']
     for pattern in patterns:
         m = re.search(pattern, response)
         if m:
             try:
-                json_str = m.group() if '```' not in m.group() else re.search(r'```json\n([\s\S]*?)\n```', response).group(1)
+                json_str = m.group(1) if '```' in m.group() else m.group()
                 return json.loads(json_str)
             except:
                 continue
@@ -165,17 +125,39 @@ def extract_json_from_response(response: str) -> Optional[dict]:
 SYSTEM_PROMPT = """你是一个知识整理专家。严格输出JSON格式：
 {"concepts":["概念1","概念2"],"entities":["实体1","实体2"],"summary":"50字摘要","category":"分类"}"""
 
+# ========== 文件操作 ==========
+
+def read_file_content(file_path: Path) -> str:
+    try:
+        if file_path.suffix == '.md':
+            return file_path.read_text(encoding='utf-8')
+        elif file_path.suffix == '.txt':
+            return file_path.read_text(encoding='utf-8')
+        elif file_path.suffix == '.json':
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return json.dumps(json.load(f), ensure_ascii=False, indent=2)
+        elif file_path.suffix == '.csv':
+            return file_path.read_text(encoding='utf-8')
+        return f"[Binary file: {file_path.name}]"
+    except Exception as e:
+        return f"[Error reading {file_path.name}: {e}]"
+
+def scan_raw_files() -> list:
+    files = []
+    for ext in SUPPORTED_EXTENSIONS:
+        files.extend(RAW_DIR.rglob(f"*{ext}"))
+    return sorted(files)
+
+# ========== 编译单个文件 ==========
+
 def compile_single_file(file_path: Path) -> Optional[dict]:
-    """编译单个文件（带分块处理）"""
     rel_path = file_path.relative_to(RAW_DIR)
     print(f"\n      [{rel_path}]")
     
-    # 读取内容（限制长度避免超时）
     content = read_file_content(file_path)
     if len(content) > 15000:
         content = content[:15000] + "\n\n[内容过长已截断...]"
     
-    # 调用LLM
     prompt = f"""分析以下文件，提取概念和实体。
 
 文件: {rel_path}
@@ -194,58 +176,28 @@ def compile_single_file(file_path: Path) -> Optional[dict]:
     data = extract_json_from_response(result_text)
     
     if not data:
-        print(f"      [WARN] 无法解析LLM响应，使用默认结构")
-        data = {
-            "concepts": [],
-            "entities": [],
-            "summary": f"来自 {rel_path}",
-            "category": "其他"
-        }
+        print(f"      [WARN] 无法解析LLM响应")
+        data = {"concepts": [], "entities": [], "summary": f"来自 {rel_path}", "category": "其他"}
     
     data['file_name'] = str(rel_path)
-    data['raw_content'] = content[:2000]  # 保存部分原文用于参考
+    data['raw_content'] = content[:2000]
     
-    concepts = data.get("concepts", [])
-    entities = data.get("entities", [])
-    print(f"      [OK] 概念: {concepts[:3] if concepts else '无'} | 实体: {entities[:3] if entities else '无'}")
-    
+    print(f"      [OK] 概念: {data.get('concepts', [])[:3] or '无'} | 实体: {data.get('entities', [])[:3] or '无'}")
     return data
 
-# ========== 文件操作 ==========
-
-def read_file_content(file_path: Path) -> str:
-    """读取文件内容"""
-    try:
-        if file_path.suffix == '.md':
-            return file_path.read_text(encoding='utf-8')
-        elif file_path.suffix == '.txt':
-            return file_path.read_text(encoding='utf-8')
-        elif file_path.suffix == '.json':
-            with open(file_path, 'r', encoding='utf-8') as f:
-                return json.dumps(json.load(f), ensure_ascii=False, indent=2)
-        elif file_path.suffix == '.csv':
-            return file_path.read_text(encoding='utf-8')
-        else:
-            return f"[Binary file: {file_path.name}]"
-    except Exception as e:
-        return f"[Error reading {file_path.name}: {e}]"
+# ========== 保存Wiki页面 ==========
 
 def save_source_page(entry: dict):
-    """保存来源摘要页"""
     file_name = entry.get('file_name', 'unknown')
     date_prefix = datetime.now().strftime('%Y-%m-%d')
     safe_name = re.sub(r'[/\\:?*"<>|]', '_', file_name).replace('.md', '')
     filename = f"{date_prefix}-{safe_name}.md"
     
-    # 验收状态标记
-    review_status = entry.get('review_status', 'pending')
-    status_icon = '⏳' if review_status == 'pending' else '✅' if review_status == 'approved' else '❌'
-    
     content = f"""# 来源摘要：{file_name}
 
 > 原始路径：raw/{file_name}
 > 摄入时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}
-> 验收状态：{status_icon} {review_status}
+> 验收状态：⏳ pending
 
 ## 核心观点
 
@@ -267,30 +219,24 @@ def save_source_page(entry: dict):
     content += f"\n---\n*由 Karpathy 知识库系统自动生成*\n"
     
     WIKI_SOURCES.mkdir(parents=True, exist_ok=True)
-    path = WIKI_SOURCES / filename
-    path.write_text(content, encoding='utf-8')
+    (WIKI_SOURCES / filename).write_text(content, encoding='utf-8')
 
 def save_concept_page(concept: str, entry: dict):
-    """保存概念页"""
     safe_name = re.sub(r'[/\\:?*"<>|]', '_', concept).replace('[[', '').replace(']]', '')
     if not safe_name:
         return
     
-    # 调用LLM生成简短段落
-    article = call_llm(f"""为概念「{safe_name}」生成简短的 wiki 段落，100字以内，包含定义。""",
+    article = call_llm(f"为概念「{safe_name}」生成简短的 wiki 段落，100字以内，包含定义。",
         system="你是技术文档写作专家，输出简洁的段落。")
     
     if article.startswith("[LLM Error]"):
         article = f"关于 {safe_name} 的概念页。"
     
-    review_status = entry.get('review_status', 'pending')
-    status_icon = '⏳' if review_status == 'pending' else '✅' if review_status == 'approved' else '❌'
-    
     content = f"""# {safe_name}
 
 > 分类：概念
 > 创建时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}
-> AI生成：{status_icon} 待验收
+> AI生成：⏳ pending
 
 {article}
 
@@ -299,7 +245,6 @@ def save_concept_page(concept: str, entry: dict):
     for c in entry.get('concepts', []):
         if c != concept:
             content += f"- [[{c}]]\n"
-    
     for e in entry.get('entities', []):
         content += f"- [[{e}]]\n"
     
@@ -312,11 +257,9 @@ def save_concept_page(concept: str, entry: dict):
 """
     
     WIKI_CONCEPTS.mkdir(parents=True, exist_ok=True)
-    path = WIKI_CONCEPTS / f"{safe_name}.md"
-    path.write_text(content, encoding='utf-8')
+    (WIKI_CONCEPTS / f"{safe_name}.md").write_text(content, encoding='utf-8')
 
 def save_entity_page(entity: str, entry: dict):
-    """保存实体页"""
     safe_name = re.sub(r'[/\\:?*"<>|]', '_', entity).replace('[[', '').replace(']]', '')
     if not safe_name:
         return
@@ -334,7 +277,6 @@ def save_entity_page(entity: str, entry: dict):
 """
     for c in entry.get('concepts', []):
         content += f"- [[{c}]]\n"
-    
     for e in entry.get('entities', []):
         if e != entity:
             content += f"- [[{e}]]\n"
@@ -348,53 +290,19 @@ def save_entity_page(entity: str, entry: dict):
 """
     
     WIKI_ENTITIES.mkdir(parents=True, exist_ok=True)
-    path = WIKI_ENTITIES / f"{safe_name}.md"
-    path.write_text(content, encoding='utf-8')
-
-# ========== RAG语义检索（对接Milvus）==========
-"""
-RAG功能预留接口 - 需要时可启用
-使用示例：
-from compile import embed_and_search
-results = embed_and_search("什么是Agent Skills", top_k=5)
-"""
-
-def get_embeddings(texts: list, model: str = EMBED_MODEL) -> list:
-    """获取文本嵌入向量"""
-    url = f"{OLLAMA_URL}/api/embeddings"
-    embeddings = []
-    
-    for text in texts:
-        try:
-            response = requests.post(url, json={
-                "model": model,
-                "prompt": text[:4000]
-            }, timeout=30)
-            emb = response.json().get('embedding', [])
-            embeddings.append(emb)
-        except Exception as e:
-            print(f"[WARN] Embedding failed: {e}")
-            embeddings.append([])
-    
-    return embeddings
+    (WIKI_ENTITIES / f"{safe_name}.md").write_text(content, encoding='utf-8')
 
 # ========== 索引和日志 ==========
 
 def update_index(entries: list):
-    """更新索引页"""
-    concepts = set()
-    entities = set()
-    
+    concepts, entities = set(), set()
     for e in entries:
-        for c in e.get('concepts', []):
-            concepts.add(c)
-        for en in e.get('entities', []):
-            entities.add(en)
+        for c in e.get('concepts', []): concepts.add(c)
+        for en in e.get('entities', []): entities.add(en)
     
     content = f"""# 知识库索引
 
 > 生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}
-> 增量更新：{'是' if entries else '否'}
 
 ## 统计
 
@@ -409,30 +317,17 @@ def update_index(entries: list):
         content += f"- [[{p.get('file_name', 'unknown')}]]\n"
     
     content += "\n## 概念\n\n"
-    for c in sorted(concepts):
-        content += f"- [[{c}]]\n"
+    for c in sorted(concepts): content += f"- [[{c}]]\n"
     
     content += "\n## 实体\n\n"
-    if entities:
-        for e in sorted(entities):
-            content += f"- [[{e}]]\n"
-    else:
-        content += "*（暂无实体）*\n"
+    for e in sorted(entities) if entities else "*（暂无实体）*\n"
     
     (WIKI_DIR / "index.md").write_text(content, encoding='utf-8')
     print(f"\n      [OK] 索引已更新")
 
 def append_log(action: str, details: str):
-    """追加操作日志"""
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
-    
-    entry = f"""
-
-## {timestamp} - {action}
-
-{details}
-
-"""
+    entry = f"\n## {timestamp} - {action}\n{details}\n"
     
     if LOG_FILE.exists():
         existing = LOG_FILE.read_text(encoding='utf-8')
@@ -441,57 +336,14 @@ def append_log(action: str, details: str):
     
     LOG_FILE.write_text(existing + entry, encoding='utf-8')
 
-# ========== Obsidian导出 ==========
-
-def export_to_obsidian(output_dir: Path = None):
-    """导出为Obsidian兼容格式"""
-    if output_dir is None:
-        output_dir = Path.home() / "Obsidian Vaults" / "Karpathy Wiki"
-    
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
-    # 复制wiki内容
-    import shutil
-    
-    for item in (WIKI_DIR / "概念").glob("*.md"):
-        shutil.copy(item, output_dir / "Concepts" / item.name)
-    
-    for item in (WIKI_DIR / "实体").glob("*.md"):
-        shutil.copy(item, output_dir / "Entities" / item.name)
-    
-    for item in (WIKI_DIR / "来源").glob("*.md"):
-        shutil.copy(item, output_dir / "Sources" / item.name)
-    
-    # 创建Obsidian配置文件
-    obsidian_config = {
-        "vault": "Karpathy Wiki",
-        "created": datetime.now().isoformat(),
-        "source": str(WIKI_DIR)
-    }
-    (output_dir / ".karpathy-meta.json").write_text(
-        json.dumps(obsidian_config, ensure_ascii=False, indent=2),
-        encoding='utf-8'
-    )
-    
-    print(f"      [OK] 已导出到 Obsidian: {output_dir}")
-
-# ========== 主流程 ==========
-
-def scan_raw_files():
-    """扫描raw目录"""
-    files = []
-    for ext in SUPPORTED_EXTENSIONS:
-        files.extend(RAW_DIR.rglob(f"*{ext}"))
-    return sorted(files)
+# ========== 主摄入流程 ==========
 
 def run_ingest(force: bool = False, batch_size: int = BATCH_SIZE):
-    """执行摄入流程"""
     print("=" * 60)
-    print("Karpathy 知识库编译器 v4 (优化版)")
+    print("Karpathy 知识库编译器 v5 (整合版)")
     print(f"LLM: {LLM_MODEL}")
     print("=" * 60)
     
-    # 扫描
     print("\n[1/5] 扫描 raw 目录...")
     raw_files = scan_raw_files()
     print(f"      找到 {len(raw_files)} 个文件")
@@ -500,16 +352,16 @@ def run_ingest(force: bool = False, batch_size: int = BATCH_SIZE):
         print("      [WARN] 没有找到文件")
         return
     
-    # 增量检查
     print("\n[2/5] 检查增量文件...")
     cache = load_processed_cache()
-    to_process = get_files_to_process(raw_files, cache, force)
+    to_process = [f for f in raw_files if force or str(f.relative_to(RAW_DIR)) not in cache or get_file_hash(f) != cache.get(str(f.relative_to(RAW_DIR)))]
     
     if not to_process:
-        print("      [SKIP] 没有新文件需要处理")
+        print("      [SKIP] 所有文件已是最新")
         return
     
-    # 分批处理
+    print(f"      模式：{'全量' if force else '增量'} - {len(to_process)}/{len(raw_files)} 文件需要处理")
+    
     print(f"\n[3/5] 分批编译 (每批 {batch_size} 个)...")
     entries = []
     total_batches = (len(to_process) + batch_size - 1) // batch_size
@@ -524,54 +376,369 @@ def run_ingest(force: bool = False, batch_size: int = BATCH_SIZE):
             if entry:
                 entries.append(entry)
                 save_source_page(entry)
-                for concept in entry.get('concepts', []):
-                    save_concept_page(concept, entry)
-                for entity in entry.get('entities', []):
-                    save_entity_page(entity, entry)
+                for concept in entry.get('concepts', []): save_concept_page(concept, entry)
+                for entity in entry.get('entities', []): save_entity_page(entity, entry)
         
-        # 批次间休息
         if i + batch_size < len(to_process):
             print(f"\n      [WAIT] 批次间隔 3秒...")
             import time; time.sleep(3)
     
-    # 更新缓存
     print("\n[4/5] 更新处理缓存...")
     for f in to_process:
-        rel_path = str(f.relative_to(RAW_DIR))
-        cache[rel_path] = get_file_hash(f)
+        cache[str(f.relative_to(RAW_DIR))] = get_file_hash(f)
     save_processed_cache(cache)
     
-    # 更新索引
     print("\n[5/5] 更新索引...")
     update_index(entries)
     
-    # 记录日志
-    append_log("INGEST 摄入 (v4优化版)", 
+    append_log("INGEST 摄入 (v5整合版)", 
         f"处理 {len(entries)}/{len(to_process)} 个文件，"
-        f"提取 {sum(len(e.get('concepts',[])) for e in entries)} 个概念，"
-        f"{sum(len(e.get('entities',[])) for e in entries)} 个实体。"
+        f"概念 {sum(len(e.get('concepts',[])) for e in entries)}，"
+        f"实体 {sum(len(e.get('entities',[])) for e in entries)}。"
         f"模式：{'全量' if force else '增量'}")
     
-    print(f"\n[DONE] 编译完成!")
-    print(f"      处理: {len(entries)} 个文件")
-    print(f"      概念: {sum(len(e.get('concepts',[])) for e in entries)}")
-    print(f"      实体: {sum(len(e.get('entities',[])) for e in entries})")
+    print(f"\n[DONE] 编译完成! 处理 {len(entries)} 个文件")
+
+# ========== LINT 检查 ==========
+
+def check_orphan_links() -> List[Dict]:
+    issues = []
+    all_links, existing_pages = set(), set()
+    
+    for wiki_dir in [WIKI_CONCEPTS, WIKI_SOURCES, WIKI_ENTITIES]:
+        if not wiki_dir.exists(): continue
+        for md_file in wiki_dir.glob("*.md"):
+            existing_pages.add(md_file.stem)
+            for link in re.findall(r'\[\[([^\]]+)\]\]', md_file.read_text(encoding='utf-8')):
+                all_links.add(link.strip())
+    
+    for link in all_links:
+        if link not in existing_pages:
+            issues.append({"type": "orphan_link", "link": link, "severity": "warning",
+                          "message": f"链接 [[{link}]] 指向不存在的页面"})
+    return issues
+
+def check_empty_pages() -> List[Dict]:
+    issues = []
+    for wiki_dir in [WIKI_CONCEPTS, WIKI_SOURCES, WIKI_ENTITIES]:
+        if not wiki_dir.exists(): continue
+        for md_file in wiki_dir.glob("*.md"):
+            text = re.sub(r'[#*_\[\]`>\n]', '', md_file.read_text(encoding='utf-8')).strip()
+            if len(text) < 100:
+                issues.append({"type": "empty_page", "file": str(md_file.relative_to(WIKI_DIR)),
+                             "severity": "warning", "message": f"页面过短 ({len(text)} 字符)"})
+    return issues
+
+def check_duplicate_titles() -> List[Dict]:
+    issues = []
+    titles = defaultdict(list)
+    
+    for wiki_dir in [WIKI_CONCEPTS, WIKI_SOURCES, WIKI_ENTITIES]:
+        if not wiki_dir.exists(): continue
+        for md_file in wiki_dir.glob("*.md"):
+            if m := re.search(r'^#\s+(.+)$', md_file.read_text(encoding='utf-8'), re.MULTILINE):
+                titles[m.group(1).strip().lower()].append(str(md_file.relative_to(WIKI_DIR)))
+    
+    for title, files in titles.items():
+        if len(files) > 1:
+            issues.append({"type": "duplicate_title", "title": title, "files": files,
+                          "severity": "warning", "message": f"标题 '{title}' 重复 {len(files)} 次"})
+    return issues
+
+def check_unreviewed_pages() -> List[Dict]:
+    issues = []
+    for wiki_dir in [WIKI_CONCEPTS, WIKI_SOURCES, WIKI_ENTITIES]:
+        if not wiki_dir.exists(): continue
+        for md_file in wiki_dir.glob("*.md"):
+            content = md_file.read_text(encoding='utf-8')
+            if '⏳' in content or 'pending' in content.lower():
+                issues.append({"type": "unreviewed", "file": str(md_file.relative_to(WIKI_DIR)),
+                             "severity": "info", "message": f"待验收页面: {md_file.name}"})
+    return issues
+
+def run_lint() -> Dict:
+    print("=" * 60)
+    print("Karpathy 知识库 Lint 检查")
+    print(f"时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 60)
+    
+    checks = [
+        ("孤儿链接", check_orphan_links),
+        ("空页面", check_empty_pages),
+        ("重复标题", check_duplicate_titles),
+        ("未验收页面", check_unreviewed_pages),
+    ]
+    
+    all_issues = []
+    for name, check_func in checks:
+        print(f"\n  - {name}...")
+        try:
+            issues = check_func()
+            all_issues.extend(issues)
+            print(f"    发现 {len(issues)} 个问题")
+        except Exception as e:
+            print(f"    [ERROR] {e}")
+    
+    counts = defaultdict(int)
+    for issue in all_issues: counts[issue['severity']] += 1
+    
+    print(f"\n[结果] 总问题: {len(all_issues)}")
+    print(f"  🟡 warning: {counts.get('warning', 0)}")
+    print(f"  🔵 info: {counts.get('info', 0)}")
+    
+    if all_issues:
+        print(f"\n[问题详情]")
+        for i, issue in enumerate(all_issues[:20], 1):
+            print(f"  {i}. [{issue['severity']]}] {issue['message']}")
+    
+    # 保存报告
+    report_file = get_cache_dir() / "lint_report.json"
+    report_file.write_text(json.dumps({
+        "timestamp": datetime.now().isoformat(),
+        "total_issues": len(all_issues),
+        "by_severity": dict(counts),
+        "issues": all_issues
+    }, ensure_ascii=False, indent=2), encoding='utf-8')
+    print(f"\n[报告已保存] {report_file}")
+    
+    return {"total": len(all_issues), "issues": all_issues}
+
+# ========== REVIEW 验收 ==========
+
+class ReviewStatus(Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+def get_page_status(content: str) -> ReviewStatus:
+    if '✅' in content or 'approved' in content.lower(): return ReviewStatus.APPROVED
+    elif '❌' in content or 'rejected' in content.lower(): return ReviewStatus.REJECTED
+    return ReviewStatus.PENDING
+
+def update_page_status(file_path: Path, new_status: ReviewStatus, note: str = "") -> bool:
+    try:
+        content = file_path.read_text(encoding='utf-8')
+        
+        # 替换状态
+        icons = {'pending': '⏳', 'approved': '✅', 'rejected': '❌'}
+        content = re.sub(r'[⏳✅❌]\s*\w+', f'{icons[new_status.value]} {new_status.value}', content)
+        
+        if '> 验收状态' in content or '> AI生成' in content:
+            content = re.sub(r'(> (?:验收状态|AI生成)[:\s]*).*', 
+                           rf'\g<1>{icons[new_status.value]} {new_status.value}', content)
+        else:
+            content = content.strip() + f"\n> 验收状态：{icons[new_status.value]} {new_status.value}"
+        
+        if note: content += f"\n> 验收备注：{note}"
+        content += f"\n> 验收时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}"
+        
+        file_path.write_text(content, encoding='utf-8')
+        return True
+    except Exception as e:
+        print(f"[ERROR] {e}")
+        return False
+
+def list_pages(status: str = None) -> List[Dict]:
+    pages = []
+    for wiki_dir in [WIKI_CONCEPTS, WIKI_SOURCES, WIKI_ENTITIES]:
+        if not wiki_dir.exists(): continue
+        for md_file in wiki_dir.glob("*.md"):
+            content = md_file.read_text(encoding='utf-8')
+            page_status = get_page_status(content)
+            if status is None or page_status.value == status:
+                pages.append({"file": str(md_file.relative_to(WIKI_DIR)), "path": md_file, "status": page_status})
+    return sorted(pages, key=lambda x: (x['status'].value, x['file']))
+
+def batch_approve(pattern: str = "*.md") -> int:
+    count = 0
+    for page in list_pages('pending'):
+        if re.match(pattern.replace('*', '.*'), page['file']):
+            if update_page_status(page['path'], ReviewStatus.APPROVED):
+                count += 1
+                print(f"  [OK] ✅ {page['file']}")
+    return count
+
+def run_review(args) -> Dict:
+    print("=" * 60)
+    print("Karpathy 知识库 验收管理")
+    print("=" * 60)
+    
+    if args.list:
+        status = args.status
+        pages = list_pages(status)
+        print(f"\n[页面列表{' (' + status + ')' if status else ''}]")
+        icons = {'pending': '⏳', 'approved': '✅', 'rejected': '❌'}
+        for page in pages:
+            print(f"  {icons[page['status'].value]} {page['file']}")
+        print(f"\n共 {len(pages)} 个页面")
+        
+        # 统计
+        all_pages = list_pages()
+        stats = {'pending': 0, 'approved': 0, 'rejected': 0}
+        for p in all_pages: stats[p['status'].value] += 1
+        print(f"\n[统计] ⏳ {stats['pending']} | ✅ {stats['approved']} | ❌ {stats['rejected']} | 总计 {len(all_pages)}")
+        
+    elif args.approve_all:
+        count = batch_approve()
+        print(f"\n[DONE] 批量验收 {count} 个页面")
+        
+    elif args.approve:
+        file_path = WIKI_DIR / args.approve
+        if file_path.exists():
+            if update_page_status(file_path, ReviewStatus.APPROVED, args.note or ""):
+                print(f"[OK] ✅ 已验收: {args.approve}")
+        else:
+            print(f"[ERROR] 文件不存在: {args.approve}")
+    
+    elif args.generate_report:
+        all_pages = list_pages()
+        pending = [p for p in all_pages if p['status'].value == 'pending']
+        
+        report = f"""# 知识库验收报告
+
+> 生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}
+
+## 统计
+
+| 状态 | 数量 | 占比 |
+|------|------|------|
+| ⏳ 待验收 | {len([p for p in all_pages if p['status'].value == 'pending'])} | {len([p for p in all_pages if p['status'].value == 'pending'])/len(all_pages)*100:.1f}% |
+| ✅ 已验收 | {len([p for p in all_pages if p['status'].value == 'approved'])} | {len([p for p in all_pages if p['status'].value == 'approved'])/len(all_pages)*100:.1f}% |
+| ❌ 需修改 | {len([p for p in all_pages if p['status'].value == 'rejected'])} | {len([p for p in all_pages if p['status'].value == 'rejected'])/len(all_pages)*100:.1f}% |
+| **总计** | **{len(all_pages)}** | 100% |
+
+## 待验收页面
+
+"""
+        for page in pending[:50]:
+            report += f"- [[{page['file']}]]\n"
+        if len(pending) > 50:
+            report += f"\n_... 还有 {len(pending) - 50} 个页面_\n"
+        
+        report += f"\n---\n*由 Karpathy 知识库验收系统自动生成*\n"
+        
+        report_file = WIKI_DIR / "验收报告.md"
+        report_file.write_text(report, encoding='utf-8')
+        print(f"\n[报告已保存] {report_file}")
+    
+    return {}
+
+# ========== OBSIDIAN 导出 ==========
+
+def generate_graph_data() -> Dict:
+    nodes, links, seen_nodes, seen_links = [], [], set(), set()
+    
+    def add_node(name: str, n_type: str):
+        if name not in seen_nodes:
+            seen_nodes.add(name)
+            nodes.append({"id": name, "label": name, "type": n_type})
+    
+    def add_link(src: str, tgt: str):
+        link_id = f"{src}->{tgt}"
+        if link_id not in seen_links:
+            seen_links.add(link_id)
+            links.append({"source": src, "target": tgt})
+    
+    for wiki_dir, n_type in [(WIKI_CONCEPTS, "concept"), (WIKI_ENTITIES, "entity"), (WIKI_SOURCES, "source")]:
+        if not wiki_dir.exists(): continue
+        for md_file in wiki_dir.glob("*.md"):
+            content = md_file.read_text(encoding='utf-8')
+            add_node(md_file.stem, n_type)
+            for link in re.findall(r'\[\[([^\]]+)\]\]', content):
+                add_node(link.strip(), "linked")
+                add_link(md_file.stem, link.strip())
+    
+    return {"nodes": nodes, "links": links, "stats": {
+        "total_nodes": len(nodes), "total_links": len(links),
+        "concepts": len([n for n in nodes if n['type'] == 'concept']),
+        "entities": len([n for n in nodes if n['type'] == 'entity']),
+    }}
+
+def export_to_obsidian():
+    print("=" * 60)
+    print("Karpathy Wiki → Obsidian 导出")
+    print("=" * 60)
+    
+    # 备份
+    if OUTPUT_DIR.exists() and any(OUTPUT_DIR.iterdir()):
+        backup_dir = OUTPUT_DIR.parent / f"Karpathy_Wiki_backup_{datetime.now().strftime('%Y%m%d_%H%M')}"
+        print(f"\n[BACKUP] 备份到 {backup_dir}")
+        shutil.move(str(OUTPUT_DIR), str(backup_dir))
+    
+    # 创建目录
+    for d in [OUTPUT_DIR, OUTPUT_DIR/"概念", OUTPUT_DIR/"实体", OUTPUT_DIR/"来源"]:
+        d.mkdir(parents=True, exist_ok=True)
+    
+    # 导出
+    for wiki_dir, out_dir in [(WIKI_CONCEPTS, OUTPUT_DIR/"概念"), (WIKI_ENTITIES, OUTPUT_DIR/"实体"), (WIKI_SOURCES, OUTPUT_DIR/"来源")]:
+        if not wiki_dir.exists(): continue
+        for md_file in wiki_dir.glob("*.md"):
+            content = md_file.read_text(encoding='utf-8')
+            content = re.sub(r'^---\n[\s\S]*?\n---\n', '', content)
+            if not content.strip().startswith('#'):
+                content = f"# {md_file.stem}\n\n{content}"
+            (out_dir / md_file.name).write_text(content, encoding='utf-8')
+    
+    # Graph数据
+    graph_data = generate_graph_data()
+    (OUTPUT_DIR / "graph-data.json").write_text(json.dumps(graph_data, ensure_ascii=False, indent=2), encoding='utf-8')
+    
+    # 索引
+    concepts = [f.stem for f in WIKI_CONCEPTS.glob("*.md")] if WIKI_CONCEPTS.exists() else []
+    entities = [f.stem for f in WIKI_ENTITIES.glob("*.md")] if WIKI_ENTITIES.exists() else []
+    sources = [f.stem for f in WIKI_SOURCES.glob("*.md")] if WIKI_SOURCES.exists() else []
+    
+    (OUTPUT_DIR / "概念" / "概念索引.md").write_text(
+        f"# 概念索引\n\n> 生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n" +
+        "\n".join(f"- [[{c}]]" for c in sorted(concepts)), encoding='utf-8')
+    
+    (OUTPUT_DIR / "Karpathy_Wiki_索引.md").write_text(
+        f"# Karpathy Wiki\n\n> 生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n"
+        f"## 统计\n- 概念: {len(concepts)}\n- 实体: {len(entities)}\n- 来源: {len(sources)}\n- 节点: {graph_data['stats']['total_nodes']}\n- 链接: {graph_data['stats']['total_links']}\n",
+        encoding='utf-8')
+    
+    print(f"\n[DONE] 导出完成!")
+    print(f"📁 位置: {OUTPUT_DIR}")
+    print(f"📊 概念: {len(concepts)} | 实体: {len(entities)} | 来源: {len(sources)}")
+    print(f"🔗 节点: {graph_data['stats']['total_nodes']} | 链接: {graph_data['stats']['total_links']}")
 
 # ========== CLI ==========
 
-if __name__ == '__main__':
+def main():
     import argparse
     
-    parser = argparse.ArgumentParser(description='Karpathy 知识库编译器 v4')
-    parser.add_argument('--force', '-f', action='store_true', help='全量模式（忽略缓存）')
-    parser.add_argument('--batch', '-b', type=int, default=BATCH_SIZE, help=f'每批处理数量 (默认{BATCH_SIZE})')
-    parser.add_argument('--export-obsidian', '-o', action='store_true', help='导出到Obsidian')
-    parser.add_argument('--model', '-m', type=str, default=LLM_MODEL, help=f'LLM模型 (默认{LLM_MODEL})')
+    parser = argparse.ArgumentParser(description='Karpathy 知识库编译器 v5 (整合版)')
+    parser.add_argument('--force', '-f', action='store_true', help='全量摄入')
+    parser.add_argument('--batch', '-b', type=int, default=BATCH_SIZE, help=f'每批数量')
+    parser.add_argument('--lint', '-l', action='store_true', help='执行Lint检查')
+    parser.add_argument('--review', action='store_true', help='验收管理')
+    parser.add_argument('--list', action='store_true', help='列出页面')
+    parser.add_argument('--status', choices=['pending', 'approved', 'rejected'], help='按状态筛选')
+    parser.add_argument('--approve', type=str, help='验收指定文件')
+    parser.add_argument('--approve-all', action='store_true', help='批量验收')
+    parser.add_argument('--note', '-n', type=str, default='', help='验收备注')
+    parser.add_argument('--generate-report', action='store_true', help='生成验收报告')
+    parser.add_argument('--export', '-e', action='store_true', help='导出Obsidian')
+    parser.add_argument('--all', '-a', action='store_true', help='执行全部操作')
+    parser.add_argument('--model', '-m', type=str, default=LLM_MODEL, help='LLM模型')
     
     args = parser.parse_args()
-    LLM_MODEL = args.model
+    globals()['LLM_MODEL'] = args.model
     
-    if args.export_obsidian:
+    if args.all:
+        run_ingest(force=args.force, batch_size=args.batch)
+        print()
+        run_lint()
+        print()
+        export_to_obsidian()
+    elif args.lint:
+        run_lint()
+    elif args.review or args.list or args.approve or args.approve_all or args.generate_report:
+        run_review(args)
+    elif args.export:
         export_to_obsidian()
     else:
         run_ingest(force=args.force, batch_size=args.batch)
+
+if __name__ == '__main__':
+    main()

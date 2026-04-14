@@ -1,38 +1,43 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-13 17:40:19
+Date: 2026-04-14 17:20:26
 --- GIT COMMITS ---
-  565e1ac6 docs: Hermes Agent閮ㄧ讲+缁撳悎OpenClaw+娴嬭瘯瀹炴垬鎵嬪唽 - 鍚玽0.8.0/涓€閿縼绉?缁勫悎鏋舵瀯
-  6c68c42b docs: Hermes Agent鎶€鏈繁鎸栨姤鍛?- DSPy+GEPA鑷繘鍖?涓夊眰璁板繂/鏋舵瀯鎷嗚В
-  fadf2fb6 chore: remove jingmai-cli.exe from git (exceeds 100MB limit)
-  59d4433d dream-nightly memory consolidation 2026-04-13
+  25688bc7 fix: compile.py emoji缂栫爜闂淇
+  92546de8 docs: 鏇存柊MEMORY.md璁板綍Skill鍐欎綔瑙勮寖瀛︿範
+  c51d84e6 docs: 娣诲姞Skill鍐欎綔瑙勮寖鎸囧崡锛堢嫭绔嬫枃妗ｏ級
+  53fa972d docs: 鏇存柊MEMORY.md璁板綍Skill妯℃澘鍔熻兘
+  da7913f5 feat: compile.py娣诲姞Skill妯℃澘鐢熸垚鍔熻兘
+  0fd47d9d refactor: 鏁村悎鎵€鏈夊姛鑳藉埌compile.py鍗曚竴鏂囦欢
+  5e613864 feat: 鐭ヨ瘑搴?澶т紭鍖栧叏閮ㄥ畬鎴?b5894a17 docs: add Karpathy LLM Wiki analysis and optimization suggestions
+  94572211 chore: remove 149MB jingmai-cli.exe over GitHub limit
+  28f804b5 fix: remove 149MB exe file over GitHub limit + add .gitattributes
+  d38cf90e docs: add GitHub TOP20 2026 Week15 璧涘崥绗旇鏁寸悊
 --- FILES MODIFIED ---
-  11:51 | .clawhub\lock.json
-  11:51 | skills\opencli-agent\.clawhub\origin.json
-  11:51 | skills\opencli-agent\_meta.json
-  11:51 | skills\opencli-agent\SKILL.md
-  11:51 | skills\opencli-agent\scripts\check_setup.sh
-  11:51 | skills\opencli-agent\references\command_reference.md
-  11:51 | skills\opencli-agent\Opencli skill\.codebuddy\skills\opencli-agent\SKILL.md
-  11:51 | skills\opencli-agent\Opencli skill\.codebuddy\skills\opencli-agent\scripts\check_setup.sh
-  11:51 | skills\opencli-agent\Opencli skill\.codebuddy\skills\opencli-agent\references\command_reference.md
-  10:38 | skills\jingmai-cli\resources\screenshots\20260413_104300_check2.png
-  10:36 | skills\jingmai-cli\resources\screenshots\20260413_104200_after_activate.png
-  10:35 | skills\jingmai-cli\resources\screenshots\20260413_104100_pyautogui.png
-  10:33 | logs\app.log
-  10:29 | skills\jingmai-cli\logs\app.log
-  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102855_572468_page_verify.png
-  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102852_235384_pre_click.png
-  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102847_311805_coord.png
-  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102846_128086_pre_act.png
-  10:28 | skills\jingmai-cli\logs\main.log
-  10:28 | skills\jingmai-cli\resources\screenshots\20260413_102827_580116_think.png
+  17:13 | DREAMS.md
+  17:12 | memory\.dreams\phase-signals.json
+  17:12 | memory\.dreams\events.jsonl
+  17:12 | memory\2026-04-14.md
+  17:12 | memory\.dreams\session-ingestion.json
+  17:12 | memory\.dreams\short-term-recall.json
+  17:12 | memory\.dreams\session-corpus\2026-04-14.txt
+  17:12 | memory\.dreams\daily-ingestion.json
+  09:14 | .git\index
+  09:14 | knowledge-base\wiki\实体\github_.md
+  09:14 | knowledge-base\wiki\实体\papers_.md
+  09:14 | knowledge-base\wiki\实体\datasets_.md
+  09:14 | knowledge-base\wiki\概念\原则.md
+  09:14 | knowledge-base\wiki\实体\README.md.md
+  09:14 | knowledge-base\wiki\实体\rticles_.md
+  09:14 | knowledge-base\wiki\概念\素材.md
+  09:14 | .git\refs\heads\main
+  09:14 | .git\logs\HEAD
+  09:14 | .git\logs\refs\heads\main
+  09:14 | .git\objects\25\688bc7fa87efbe753d82f69d213fa675aca3d1
 --- SESSIONS ---
-  Count: 8
-  - 0672e9b8-eb44-4427-91e1-c587dca021eb.jsonl [15:22]
-  - 10984435-f600-42dc-b8bf-541886a70c4d.jsonl [15:06]
-  - 56072ae3-4745-46a3-a958-6c18d931b8c1.jsonl [03:14]
+  Count: 39
+  - 0d86f5c1-7929-4877-bfa4-717af425c698.jsonl [13:42]
+  - 106bcd04-c182-4299-8950-56548e4cbc73.jsonl [14:12]
+  - 12bd593b-dc71-4c9c-8bbf-b04869e9e937.jsonl [03:02]
 --- SKILLS ---
   + jingmai-cli
-  + opencli-agent
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-cli","opencli-agent"],"dayOfWeek":"Monday","sessionCount":8,"modifiedFiles":["E:\\workspace\\.clawhub\\lock.json","E:\\workspace\\skills\\opencli-agent\\.clawhub\\origin.json","E:\\workspace\\skills\\opencli-agent\\_meta.json","E:\\workspace\\skills\\opencli-agent\\SKILL.md","E:\\workspace\\skills\\opencli-agent\\scripts\\check_setup.sh","E:\\workspace\\skills\\opencli-agent\\references\\command_reference.md","E:\\workspace\\skills\\opencli-agent\\Opencli skill\\.codebuddy\\skills\\opencli-agent\\SKILL.md","E:\\workspace\\skills\\opencli-agent\\Opencli skill\\.codebuddy\\skills\\opencli-agent\\scripts\\check_setup.sh","E:\\workspace\\skills\\opencli-agent\\Opencli skill\\.codebuddy\\skills\\opencli-agent\\references\\command_reference.md","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_104300_check2.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_104200_after_activate.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_104100_pyautogui.png","E:\\workspace\\logs\\app.log","E:\\workspace\\skills\\jingmai-cli\\logs\\app.log","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102855_572468_page_verify.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102852_235384_pre_click.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102847_311805_coord.png","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102846_128086_pre_act.png","E:\\workspace\\skills\\jingmai-cli\\logs\\main.log","E:\\workspace\\skills\\jingmai-cli\\resources\\screenshots\\20260413_102827_580116_think.png"],"gitCommits":["565e1ac6 docs: Hermes Agent閮ㄧ讲+缁撳悎OpenClaw+娴嬭瘯瀹炴垬鎵嬪唽 - 鍚玽0.8.0/涓€閿縼绉?缁勫悎鏋舵瀯","6c68c42b docs: Hermes Agent鎶€鏈繁鎸栨姤鍛?- DSPy+GEPA鑷繘鍖?涓夊眰璁板繂/鏋舵瀯鎷嗚В","fadf2fb6 chore: remove jingmai-cli.exe from git (exceeds 100MB limit)","59d4433d dream-nightly memory consolidation 2026-04-13"],"date":"2026.04.13"}
+{"skillsUpdated":["jingmai-cli"],"dayOfWeek":"Tuesday","sessionCount":39,"modifiedFiles":["E:\\workspace\\DREAMS.md","E:\\workspace\\memory\\.dreams\\phase-signals.json","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\2026-04-14.md","E:\\workspace\\memory\\.dreams\\session-ingestion.json","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\memory\\.dreams\\session-corpus\\2026-04-14.txt","E:\\workspace\\memory\\.dreams\\daily-ingestion.json","E:\\workspace\\.git\\index","E:\\workspace\\knowledge-base\\wiki\\实体\\github_.md","E:\\workspace\\knowledge-base\\wiki\\实体\\papers_.md","E:\\workspace\\knowledge-base\\wiki\\实体\\datasets_.md","E:\\workspace\\knowledge-base\\wiki\\概念\\原则.md","E:\\workspace\\knowledge-base\\wiki\\实体\\README.md.md","E:\\workspace\\knowledge-base\\wiki\\实体\\rticles_.md","E:\\workspace\\knowledge-base\\wiki\\概念\\素材.md","E:\\workspace\\.git\\refs\\heads\\main","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\logs\\refs\\heads\\main","E:\\workspace\\.git\\objects\\25\\688bc7fa87efbe753d82f69d213fa675aca3d1"],"gitCommits":["25688bc7 fix: compile.py emoji缂栫爜闂淇","92546de8 docs: 鏇存柊MEMORY.md璁板綍Skill鍐欎綔瑙勮寖瀛︿範","c51d84e6 docs: 娣诲姞Skill鍐欎綔瑙勮寖鎸囧崡锛堢嫭绔嬫枃妗ｏ級","53fa972d docs: 鏇存柊MEMORY.md璁板綍Skill妯℃澘鍔熻兘","da7913f5 feat: compile.py娣诲姞Skill妯℃澘鐢熸垚鍔熻兘","0fd47d9d refactor: 鏁村悎鎵€鏈夊姛鑳藉埌compile.py鍗曚竴鏂囦欢","5e613864 feat: 鐭ヨ瘑搴?澶т紭鍖栧叏閮ㄥ畬鎴?b5894a17 docs: add Karpathy LLM Wiki analysis and optimization suggestions","94572211 chore: remove 149MB jingmai-cli.exe over GitHub limit","28f804b5 fix: remove 149MB exe file over GitHub limit + add .gitattributes","d38cf90e docs: add GitHub TOP20 2026 Week15 璧涘崥绗旇鏁寸悊"],"date":"2026.04.14"}

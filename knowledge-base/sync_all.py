@@ -30,7 +30,7 @@ print()
 print("[1/4] Compiling raw -> wiki")
 print("-" * 40)
 from compile import main as compile_main
-asyncio.run(compile_main())
+compile_main()
 print()
 
 # 2. 同步到飞书

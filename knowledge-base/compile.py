@@ -55,7 +55,7 @@ def get_cache_dir() -> Path:
 
 def get_file_hash(file_path: Path) -> str:
     m = hashlib.sha256()
-    m.update(str(file_path).as_posix().encode())
+    m.update(file_path.as_posix().encode())
     m.update(str(file_path.stat().st_mtime).encode())
     return m.hexdigest()[:16]
 

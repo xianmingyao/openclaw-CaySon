@@ -1,7 +1,7 @@
 # MetaMathQA
 
 > 类型：实体
-> 创建时间：2026-04-13 20:01
+> 创建时间：2026-04-14 20:00
 
 ## 简介
 
@@ -27,7 +27,7 @@
 - [[InfinityInstruct]]
 
 ## 来源
-- [[2026-04-13-articles\llm-training-data-sources.md]]
+- [[2026-04-14-articles\llm-training-data-sources.md]]
 
 ---
 *由 Karpathy 知识库系统自动生成*

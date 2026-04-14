@@ -189,32 +189,42 @@ YYYY.MM.DD(日报)
 | 🟢 P2 | Obsidian可视化 | ✅ | export_obsidian.py |
 | 🟢 P2 | 验收机制 | ✅ | review.py |
 
-### compile.py v4 优化点
+### compile.py v5 整合版（单一文件）
+一个文件搞定所有功能：
+- compile: 增量/全量摄入
+- lint: 健康检查
+- review: 验收管理
+- export: Obsidian导出
+- **skill: Skill模板生成（新增！）**
+
+**使用方式：**
+```bash
+python compile.py                  # 增量摄入
+python compile.py --force         # 全量摄入
+python compile.py --lint          # Lint健康检查
+python compile.py --list          # 列出待验收页面
+python compile.py --approve-all   # 批量验收
+python compile.py --export        # 导出Obsidian
+python compile.py --all           # 全部操作
+
+# Skill模板生成（基于Google Agent Skills五大模式）
+python compile.py --guide         # 显示写作指南
+python compile.py --skill "名称"   # 生成完整模板
+python compile.py --skill "名称" --simple  # 生成简化模板
+```
+
+**核心优化（v5）：**
 - 分批处理(BATCH_SIZE=5)避免超时
 - 增量模式：只处理新增/变更文件
 - 流式LLM调用(timeout=60s)
-- 进度缓存：.compile_cache/processed_files.json
-- 验收状态标记：⏳待验收/✅已验收
+- 验收状态标记：⏳待验收/✅已验收/❌需修改
+- Obsidian双向链接和Graph图谱导出
 
-### lint_cron.py 检查项
-- 孤儿链接检测
-- 空页面检测
-- 矛盾说法检测
-- 重复页面检测
-- 过时来源检测
-- 未验收页面检测
-
-### Cron任务
-- **知识库Lint检查**: 每周一0点执行
-- Job ID: `715fe40f-e2e9-44c5-809b-d77ed5a08d11`
-
-### review.py 验收流程
-```bash
-python review.py list --status pending  # 列出待验收页面
-python review.py approve <file>          # 验收通过
-python review.py approve --all          # 批量验收
-python review.py report                 # 生成报告
-```
+**Skill三大模式（宇哥AI精读第4集）：**
+- **Revere**: 检查清单模式 - 通过Checklist控制模型行为
+- **Inversion**: 阶段提问模式 - 强制按阶段提问，减少脑补
+- **Pipeline**: 工作流关卡模式 - 定义工作流控制模型行为
+- **核心观点**: Skill不是"知识补丁"，而是"行为控制器"
 
 ## 2026-04-14 GitHub TOP20 第15周整理
 

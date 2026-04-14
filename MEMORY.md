@@ -177,6 +177,57 @@ YYYY.MM.DD(日报)
 - Seeduplex（2025-JQ03-W1237）：✅ 已结束归档（2026-04-10通知）
 - OpenClaw：多渠道AI助手，持续运行
 
+## 2026-04-14 GitHub TOP20 第15周整理
+
+### 赛博笔记抖音扒榜
+- **视频：** 第14集 | Github一周热门项目TOP20【2026第15周】
+- **链接：** https://v.douyin.com/CWIZs7F4-jA/
+- **数据：** 4931点赞 / 4913收藏 / 238评论 / 918分享 / 时长04:33
+
+### 本周核心亮点
+1. **TOP3全部易主** - 新项目强势登顶
+2. **降Token项目首次登场** - caveman降65-75% Token
+3. **技能工程化爆发** - graphify/nuwa-skill等多个.skill项目
+4. **代理效能优化** - everything-claude-code等Harness项目
+
+### TOP5项目
+| 排名 | 项目 | Stars | 简介 |
+|:---:|------|-------|------|
+| 1 | MemPalace/mempalace | 44.8k | 史上最高分AI记忆系统，96.6%准确率 |
+| 2 | santifer/career-ops | 32.6k | AI求职系统，14种技能模式 |
+| 3 | JuliusBrussee/caveman | 26k | 降75%输出Token！caveman风格 |
+| 4 | safishamsi/graphify | 25k | 代码→知识图谱，71.5x更少Token |
+| 5 | Gitlawb/openclaude | 21k | 开源Claude coding-agent CLI |
+
+### 重点项目深度解析
+- **caveman：** 四种模式(Lite/Full/Ultra/文言文)，降75% Token
+- **MemPalace：** 宫殿记忆法架构，96.6% LongMemEval |
+- **graphify：** 23种语言支持，代码秒变知识图谱
+- **nuwa-skill：** 女娲.skill，蒸馏乔布斯/芒格/马斯克思维
+- **OpenHarness：** 港大Agent Harness，43+工具
+
+### 文档
+- `knowledge/github-top20-2026-week15.md` ✅ 已写入并commit
+
+### Git状态
+- commit成功: `d38cf90e`
+- push被SIGKILL（网络问题），待手动push
+
+## 2026-04-13 Dream 整合记录
+
+### 重大事件
+- **Cron Session 故障**：knowledge-base-sync (ID: 7c7f5f69) 系统性 Abort
+- **异步任务 SIGKILL**：tidal-gl (163/395 blocks)、glow-slu 均被杀死
+- **Dream 成功运行**：03:00 + 19:00 两次
+
+### 待处理
+- [ ] 检查 Cron Agent 健康状态
+- [ ] 手动补跑知识库同步
+- [ ] 文章抓取剩余 232/395 blocks
+
+### 旧日志标记
+- 2026-03-27.md / 2026-03-28.md / 2026-03-31.md 已标记 consolidation
+
 ## 2026-04-12 Dream 整合记录
 
 ### 整合范围
@@ -188,9 +239,6 @@ YYYY.MM.DD(日报)
 3. 知识库 compile.py 存在 SIGKILL 问题（内存/超时），飞书114文档同步完成
 4. 内容捕手抖音受阻（需登录），B站成功326条
 5. OpenMAIC/AgentSkills/Hermes Agent/GitNexus 研究成果已归档
-
-### 旧日志标记
-- 2026-03-27.md / 2026-03-28.md / 2026-03-31.md 已标记 consolidation
 
 ## 2026-04-10 新增研究成果（宁兄日报）
 

@@ -197,7 +197,7 @@ def save_source_page(entry: dict):
 
 > 原始路径：raw/{file_name}
 > 摄入时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}
-> 验收状态：⏳ pending
+> 验收状态：[~] pending
 
 ## 核心观点
 
@@ -236,7 +236,7 @@ def save_concept_page(concept: str, entry: dict):
 
 > 分类：概念
 > 创建时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}
-> AI生成：⏳ pending
+> AI生成：[~] pending
 
 {article}
 
@@ -454,7 +454,7 @@ def check_unreviewed_pages() -> List[Dict]:
         if not wiki_dir.exists(): continue
         for md_file in wiki_dir.glob("*.md"):
             content = md_file.read_text(encoding='utf-8')
-            if '⏳' in content or 'pending' in content.lower():
+            if '[~]' in content or 'pending' in content.lower():
                 issues.append({"type": "unreviewed", "file": str(md_file.relative_to(WIKI_DIR)),
                              "severity": "info", "message": f"待验收页面: {md_file.name}"})
     return issues
@@ -486,8 +486,8 @@ def run_lint() -> Dict:
     for issue in all_issues: counts[issue['severity']] += 1
     
     print(f"\n[结果] 总问题: {len(all_issues)}")
-    print(f"  🟡 warning: {counts.get('warning', 0)}")
-    print(f"  🔵 info: {counts.get('info', 0)}")
+    print(f"  [Y] warning: {counts.get('warning', 0)}")
+    print(f"  [B] info: {counts.get('info', 0)}")
     
     if all_issues:
         print(f"\n[问题详情]")
@@ -514,8 +514,8 @@ class ReviewStatus(Enum):
     REJECTED = "rejected"
 
 def get_page_status(content: str) -> ReviewStatus:
-    if '✅' in content or 'approved' in content.lower(): return ReviewStatus.APPROVED
-    elif '❌' in content or 'rejected' in content.lower(): return ReviewStatus.REJECTED
+    if '[OK]' in content or 'approved' in content.lower(): return ReviewStatus.APPROVED
+    elif '[X]' in content or 'rejected' in content.lower(): return ReviewStatus.REJECTED
     return ReviewStatus.PENDING
 
 def update_page_status(file_path: Path, new_status: ReviewStatus, note: str = "") -> bool:
@@ -523,8 +523,8 @@ def update_page_status(file_path: Path, new_status: ReviewStatus, note: str = ""
         content = file_path.read_text(encoding='utf-8')
         
         # 替换状态
-        icons = {'pending': '⏳', 'approved': '✅', 'rejected': '❌'}
-        content = re.sub(r'[⏳✅❌]\s*\w+', f'{icons[new_status.value]} {new_status.value}', content)
+        icons = {'pending': '[~]', 'approved': '[OK]', 'rejected': '[X]'}
+        content = re.sub(r'[[~][OK][X]]\s*\w+', f'{icons[new_status.value]} {new_status.value}', content)
         
         if '> 验收状态' in content or '> AI生成' in content:
             content = re.sub(r'(> (?:验收状态|AI生成)[:\s]*).*', 
@@ -558,7 +558,7 @@ def batch_approve(pattern: str = "*.md") -> int:
         if re.match(pattern.replace('*', '.*'), page['file']):
             if update_page_status(page['path'], ReviewStatus.APPROVED):
                 count += 1
-                print(f"  [OK] ✅ {page['file']}")
+                print(f"  [OK] [OK] {page['file']}")
     return count
 
 def run_review(args) -> Dict:
@@ -570,7 +570,7 @@ def run_review(args) -> Dict:
         status = args.status
         pages = list_pages(status)
         print(f"\n[页面列表{' (' + status + ')' if status else ''}]")
-        icons = {'pending': '⏳', 'approved': '✅', 'rejected': '❌'}
+        icons = {'pending': '[~]', 'approved': '[OK]', 'rejected': '[X]'}
         for page in pages:
             print(f"  {icons[page['status'].value]} {page['file']}")
         print(f"\n共 {len(pages)} 个页面")
@@ -579,7 +579,7 @@ def run_review(args) -> Dict:
         all_pages = list_pages()
         stats = {'pending': 0, 'approved': 0, 'rejected': 0}
         for p in all_pages: stats[p['status'].value] += 1
-        print(f"\n[统计] ⏳ {stats['pending']} | ✅ {stats['approved']} | ❌ {stats['rejected']} | 总计 {len(all_pages)}")
+        print(f"\n[统计] [~] {stats['pending']} | [OK] {stats['approved']} | [X] {stats['rejected']} | 总计 {len(all_pages)}")
         
     elif args.approve_all:
         count = batch_approve()
@@ -589,7 +589,7 @@ def run_review(args) -> Dict:
         file_path = WIKI_DIR / args.approve
         if file_path.exists():
             if update_page_status(file_path, ReviewStatus.APPROVED, args.note or ""):
-                print(f"[OK] ✅ 已验收: {args.approve}")
+                print(f"[OK] [OK] 已验收: {args.approve}")
         else:
             print(f"[ERROR] 文件不存在: {args.approve}")
     
@@ -605,9 +605,9 @@ def run_review(args) -> Dict:
 
 | 状态 | 数量 | 占比 |
 |------|------|------|
-| ⏳ 待验收 | {len([p for p in all_pages if p['status'].value == 'pending'])} | {len([p for p in all_pages if p['status'].value == 'pending'])/len(all_pages)*100:.1f}% |
-| ✅ 已验收 | {len([p for p in all_pages if p['status'].value == 'approved'])} | {len([p for p in all_pages if p['status'].value == 'approved'])/len(all_pages)*100:.1f}% |
-| ❌ 需修改 | {len([p for p in all_pages if p['status'].value == 'rejected'])} | {len([p for p in all_pages if p['status'].value == 'rejected'])/len(all_pages)*100:.1f}% |
+| [~] 待验收 | {len([p for p in all_pages if p['status'].value == 'pending'])} | {len([p for p in all_pages if p['status'].value == 'pending'])/len(all_pages)*100:.1f}% |
+| [OK] 已验收 | {len([p for p in all_pages if p['status'].value == 'approved'])} | {len([p for p in all_pages if p['status'].value == 'approved'])/len(all_pages)*100:.1f}% |
+| [X] 需修改 | {len([p for p in all_pages if p['status'].value == 'rejected'])} | {len([p for p in all_pages if p['status'].value == 'rejected'])/len(all_pages)*100:.1f}% |
 | **总计** | **{len(all_pages)}** | 100% |
 
 ## 待验收页面

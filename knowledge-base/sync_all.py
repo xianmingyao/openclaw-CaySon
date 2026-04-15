@@ -26,11 +26,17 @@ print("=" * 60)
 print(f"Start: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 print()
 
-# 1. 编译
-print("[1/4] Compiling raw -> wiki")
+# 1. 编译（使用优化版本 v6）
+print("[1/4] Compiling raw -> wiki (v6 optimized)")
 print("-" * 40)
-from compile import main as compile_main
-compile_main()
+try:
+    from compile_optimized import run_ingest
+    run_ingest(force=False, batch_size=10)
+except ImportError:
+    # 降级：使用原版本
+    print("   [INFO] compile_optimized 不可用，使用原版本")
+    from compile import main as compile_main
+    compile_main()
 print()
 
 # 2. 同步到飞书

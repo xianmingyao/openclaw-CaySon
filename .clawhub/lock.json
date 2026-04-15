@@ -184,6 +184,10 @@
     "web-access": {
       "version": "1.0.0",
       "installedAt": 1776212573229
+    },
+    "prd-writer": {
+      "version": "1.0.1",
+      "installedAt": 1776215484514
     }
   }
 }

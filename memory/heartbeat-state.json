@@ -1,0 +1,16 @@
+{
+  "lastChecks": {
+    "channel-status": 1744682575
+  },
+  "findings": {
+    "2026-04-15": {
+      "wechat-channel": {
+        "status": "not-configured",
+        "running": false,
+        "issue": "openclaw-weixin channel enabled but not configured, service stopped",
+        "impact": "morning-wechat-login-check cron job cannot send WeChat notifications",
+        "recommendation": "Either configure WeChat channel or disable the cron job"
+      }
+    }
+  }
+}

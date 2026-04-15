@@ -269,6 +269,33 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 - 行为准则更新 → 写进 `AGENTS.md` 或 `TOOLS.md`
 - 错误教训 → 写进对应 Skill 的注释或 AGENTS.md
 
+### 🚀 Skill自动沉淀机制（Hermes风格）
+
+**触发条件（满足任一）：**
+1. 复杂任务成功完成（>30分钟）
+2. 重复任务超过3次
+3. 踩坑记录（避坑指南）
+4. 宁兄明确要求沉淀
+
+**沉淀流程：**
+```
+执行任务 → 主动记录 → 自动沉淀 → 持续优化
+```
+
+**沉淀位置：**
+- 通用技能 → `knowledge/skills/shared/`
+- 宁兄专属 → `knowledge/skills/ningsk/`
+- 踩坑记录 → `knowledge/anti-patterns/`
+
+**Skill文档必须包含：**
+```markdown
+## 思考过程（必须）
+- 我遇到的问题是：xxx
+- 我最初的想法是：xxx
+- 为什么成功/失败：xxx
+- 下次遇到类似问题：xxx
+```
+
 ### 📋 Skill 学习追踪表
 
 当前已安装技能状态：
@@ -278,6 +305,9 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 | `agent-browser` | 2026-03-27 | ⭐ 精通 | ✅ 需加 `--headed` 参数 |
 | `skill-vetter` | 2026-03-27 | 🔰 刚装 | - |
 | `self-improving` | 2026-03-27 | 🔰 刚装 | - |
+| `web-access` | 2026-04-15 | 🔰 刚装 | CDP Proxy模式待配置 |
+| `summarize` | 2026-04-02 | ⭐ 精通 | - |
+| `nano-banana-pro` | 2026-04-02 | ⭐ 精通 | - |
 
 ### 📝 学习记录规则
 

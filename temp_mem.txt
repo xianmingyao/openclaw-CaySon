@@ -1,0 +1,38 @@
+lawb/openclaude | 21k | 开源Claude coding-agent CLI |
+
+### 重点项目深度解析
+- **caveman：** 四种模式(Lite/Full/Ultra/文言文)，降75% Token
+- **MemPalace：** 宫殿记忆法架构，96.6% LongMemEval |
+- **graphify：** 23种语言支持，代码秒变知识图谱
+- **nuwa-skill：** 女娲.skill，蒸馏乔布斯/芒格/马斯克思维
+- **OpenHarness：** 港大Agent Harness，43+工具
+
+### 文档
+- `knowledge/github-top20-2026-week15.md` ✅ 已写入并commit
+
+### Git状态
+- commit成功: `d38cf90e`
+- push被SIGKILL（网络问题），待手动push
+
+## 2026-04-13 Dream 整合记录
+
+### 重大事件
+- **Cron Session 故障**：knowledge-base-sync (ID: 7c7f5f69) 系统性 Abort
+- **异步任务 SIGKILL**：tidal-gl (163/395 blocks)、glow-slu 均被杀死
+- **Dream 成功运行**：03:00 + 19:00 两次
+
+### 待处理
+- [ ] 检查 Cron Agent 健康状态
+- [ ] 手动补跑知识库同步
+- [ ] 文章抓取剩余 232/395 blocks
+
+### 旧日志标记
+- 2026-03-27.md / 2026-03-28.md / 2026-03-31.md 已标记 consolidation
+
+## 2026-04-12 Dream 整合记录
+
+### 整合范围
+- 扫描文件：2026-04-06 / 2026-04-07 / 2026-04-08 / 2026-04-09 / 2026-04-10（5个文件）
+
+### MEMORY.md 更新
+1. 京麦智能体进度 78%

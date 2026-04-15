@@ -180,6 +180,10 @@
     "opencli-agent": {
       "version": "1.0.1",
       "installedAt": 1776052303747
+    },
+    "web-access": {
+      "version": "1.0.0",
+      "installedAt": 1776212573229
     }
   }
 }

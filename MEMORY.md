@@ -1157,3 +1157,51 @@ pip install openspec
 - **文档**：`knowledge/deerflow-elucky-integration.md`
 - **融合Phase**：DeerFlow Harness Core → LangGraph重构 → OpenSpace进化 → 灰度发布
 - **融合价值**：成熟Harness运行时 + 沙箱隔离 + 多层次记忆系统
+
+---
+
+## 2026-04-15 技术热点（抖音扒取）
+
+### 已安装Skills
+| Skill | 版本 | 用途 |
+|-------|------|------|
+| web-access | 1.0.0 | 联网增强，CDP Proxy |
+| prd-writer | 1.0.1 | PRD写作+原型生成 |
+
+### GitHub热门项目（新发现）
+| 项目 | Stars | 亮点 |
+|------|-------|------|
+| fireworks-tech-graph | 2.4k | Claude Code Skill，AI生成SVG+PNG架构图，7种风格，14种UML图 |
+| clawflows | 1.5k | OpenClaw Superpowers，强大预建Agent工作流 |
+| OPC CLI | - | TTS/ASR/剪口播，本地多模态模型 |
+| prd-writer-skill | 15 | PRD写作+原型生成，两步写作法+三视角诊断 |
+
+### AI周报第439集（4月12日）
+- Claude Mythos（Anthropic最强模型）
+- Claude Managed Agents（Agent包工头）
+- GLM-5.1（智谱最强开源）
+- HappyHorse-1.0（阿里视频模型）
+- ACE-Step-1.5-xl（Ace音乐模型）
+- Vanast（虚拟试穿模型）
+
+### OpenClaw vs Hermes对比（五维）
+| 维度 | OpenClaw | Hermes |
+|------|----------|--------|
+| 工程重心 | 管入口和秩序 | 管执行和经验 |
+| Skill | 人工编写，治理分层 | 自动生成，经验沉淀 |
+| 记忆 | 文件即记忆，结构化 | 三层系统，主动召回 |
+| 安全 | 信任模型+配置审计 | 纵深防御+容器隔离 |
+| 场景 | 个人助理/团队治理 | 科研工作流/长期任务 |
+
+### 行为准则升级（Hermes风格）
+- 新增 Skill自动沉淀机制（P0执行完成）
+- 目录结构：knowledge/skills/shared/ningsk/anti-patterns
+- 触发条件：>30分钟/重复3次/踩坑/宁兄要求
+- 复盘模板：knowledge/memory/review-TEMPLATE.md
+
+### 文档
+- `knowledge/skills/shared/抖音视频扒取.md`
+- `knowledge/skills/shared/架构图生成.md`
+- `knowledge/skills/shared/PRD-Writer-Skill.md`
+- `knowledge/anti-patterns/抖音页面SIGKILL.md`
+- `knowledge/Hermes-借鉴升级建议.md`

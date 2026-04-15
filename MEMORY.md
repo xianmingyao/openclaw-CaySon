@@ -177,6 +177,52 @@ YYYY.MM.DD(日报)
 - Seeduplex（2025-JQ03-W1237）：✅ 已结束归档（2026-04-10通知）
 - OpenClaw：多渠道AI助手，持续运行
 
+## 2026-04-15 今日学习总结
+
+### 新安装Skills
+| Skill | 版本 | 用途 |
+|-------|------|------|
+| web-access | 1.0.0 | 联网增强，CDP Proxy模式 |
+| prd-writer | 1.0.1 | PRD写作+原型生成，两步写作法+三视角诊断 |
+
+### GitHub热门项目（新发现）
+| 项目 | Stars | 亮点 |
+|------|-------|------|
+| fireworks-tech-graph | 2.4k | Claude Code Skill，AI生成SVG+PNG架构图，7种风格14种UML图 |
+| clawflows | 1.5k | OpenClaw Superpowers，预建Agent工作流 |
+| OPC CLI | - | TTS/ASR/剪口播，本地多模态模型，AI Agent专用 |
+
+### AI周报第439集（2026-04-12）
+- Claude Mythos（Anthropic最强模型）
+- Claude Managed Agents（Agent包工头）
+- GLM-5.1（智谱最强开源）
+- HappyHorse-1.0（阿里视频模型）
+- ACE-Step-1.5-xl（Ace音乐模型）
+- Vanast（虚拟试穿模型）
+
+### OpenClaw vs Hermes五维对比
+| 维度 | OpenClaw | Hermes |
+|------|----------|--------|
+| 工程重心 | 管入口和秩序 | 管执行和经验 |
+| Skill | 人工编写，治理分层 | 自动生成，经验沉淀 |
+| 记忆 | 文件即记忆，结构化 | 三层系统，主动召回 |
+| 安全 | 信任模型+配置审计 | 纵深防御+容器隔离 |
+| 场景 | 个人助理/团队治理 | 科研工作流/长期任务 |
+
+### 行为准则升级（Hermes风格）
+- 新增Skill自动沉淀机制（触发：>30分钟/重复3次/踩坑/宁兄要求）
+- 目录结构：knowledge/skills/shared/ningsk/anti-patterns
+- 复盘模板：knowledge/memory/review-TEMPLATE.md
+
+### 知识库文档
+- `knowledge/skills/shared/抖音视频扒取.md`
+- `knowledge/skills/shared/架构图生成.md`
+- `knowledge/skills/shared/PRD-Writer-Skill.md`
+- `knowledge/anti-patterns/抖音页面SIGKILL.md`
+- `knowledge/Hermes-借鉴升级建议.md`
+
+---
+
 ## 2026-04-14 知识库6大优化完成
 
 ### 优化完成情况
@@ -1205,3 +1251,33 @@ pip install openspec
 - `knowledge/skills/shared/PRD-Writer-Skill.md`
 - `knowledge/anti-patterns/抖音页面SIGKILL.md`
 - `knowledge/Hermes-借鉴升级建议.md`
+
+---
+
+## 2026-04-15 AI热点速递（周三5条）
+
+### 1. MiniMax Agent - Pocket + Computer Use
+- Pocket：接入飞书/微信/企微/Slack，IM唤起远程执行
+- Computer Use：四工具域（Desktop/WM/Browser/Clipboard）
+- 60+工具，截图-验证-行动循环，IM权限授权
+
+### 2. 面壁智能 - Lantay文档智能体工作台
+- 类Cursor的文档智能体工作台
+
+### 3. 谷歌DeepMind - 设立AI哲学家岗位
+- 人选：Henry Shevlin（剑桥大学，5月入职）
+- 研究：机器意识、人机关系、AGI准备度
+- 观点：AI意识是被几亿用户使用习惯倒逼的社会问题
+
+### 4. 智在无界 - Being-H0.7最强具身世界模型
+- 20万小时人类视频预训练
+- 屠榜6大国际评测（4项第一）
+- 基于潜空间推理（不是逐像素预测）
+
+### 5. OpenAI备忘录炮轰Anthropic
+- 三点批评：算力不足/产品单一/营收注水80亿
+- 战略转型：从卖模型 → 打造平台生态
+- 金句："像平台公司思考，拥有多个入口"
+
+### 文档
+- `knowledge/ai-news-2026-04-15.md` - 完整热点速递

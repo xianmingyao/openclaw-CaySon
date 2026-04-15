@@ -1,43 +1,37 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-14 17:20:26
+Date: 2026-04-15 17:36:05
 --- GIT COMMITS ---
-  25688bc7 fix: compile.py emoji缂栫爜闂淇
-  92546de8 docs: 鏇存柊MEMORY.md璁板綍Skill鍐欎綔瑙勮寖瀛︿範
-  c51d84e6 docs: 娣诲姞Skill鍐欎綔瑙勮寖鎸囧崡锛堢嫭绔嬫枃妗ｏ級
-  53fa972d docs: 鏇存柊MEMORY.md璁板綍Skill妯℃澘鍔熻兘
-  da7913f5 feat: compile.py娣诲姞Skill妯℃澘鐢熸垚鍔熻兘
-  0fd47d9d refactor: 鏁村悎鎵€鏈夊姛鑳藉埌compile.py鍗曚竴鏂囦欢
-  5e613864 feat: 鐭ヨ瘑搴?澶т紭鍖栧叏閮ㄥ畬鎴?b5894a17 docs: add Karpathy LLM Wiki analysis and optimization suggestions
-  94572211 chore: remove 149MB jingmai-cli.exe over GitHub limit
-  28f804b5 fix: remove 149MB exe file over GitHub limit + add .gitattributes
-  d38cf90e docs: add GitHub TOP20 2026 Week15 璧涘崥绗旇鏁寸悊
+  cf84e0dd feat: AI鐑偣閫熼€?2026-04-15
+  40d10442 perf: knowledge-base compile v6 optimized - 鎵归噺LLM璋冪敤+鏂偣缁紶+璺宠繃宸插瓨鍦?b1a0f7e1 feat: 2026-04-15 鎶€鏈儹鐐规暣鐞?6442d370 '瀹氭椂鑷姩鎻愪氦'
+  7f24e465 feat: Hermes椋庢牸Skill娌夋穩鏈哄埗鍗囩骇
 --- FILES MODIFIED ---
-  17:13 | DREAMS.md
-  17:12 | memory\.dreams\phase-signals.json
-  17:12 | memory\.dreams\events.jsonl
-  17:12 | memory\2026-04-14.md
-  17:12 | memory\.dreams\session-ingestion.json
-  17:12 | memory\.dreams\short-term-recall.json
-  17:12 | memory\.dreams\session-corpus\2026-04-14.txt
-  17:12 | memory\.dreams\daily-ingestion.json
-  09:14 | .git\index
-  09:14 | knowledge-base\wiki\实体\github_.md
-  09:14 | knowledge-base\wiki\实体\papers_.md
-  09:14 | knowledge-base\wiki\实体\datasets_.md
-  09:14 | knowledge-base\wiki\概念\原则.md
-  09:14 | knowledge-base\wiki\实体\README.md.md
-  09:14 | knowledge-base\wiki\实体\rticles_.md
-  09:14 | knowledge-base\wiki\概念\素材.md
-  09:14 | .git\refs\heads\main
-  09:14 | .git\logs\HEAD
-  09:14 | .git\logs\refs\heads\main
-  09:14 | .git\objects\25\688bc7fa87efbe753d82f69d213fa675aca3d1
+  17:34 | memory\daily-report-raw.txt
+  12:00 | knowledge-base\.sync_state.json
+  11:40 | knowledge-base\sync_feishu_resume.py
+  11:38 | .git\logs\refs\remotes\origin\main
+  11:38 | .git\refs\remotes\origin\main
+  10:52 | knowledge-base\memory\knowledge-base.json
+  10:12 | knowledge-base\sync_all.py
+  10:11 | knowledge-base\sync_batch.py
+  10:10 | .git\refs\heads\main
+  10:10 | .git\logs\HEAD
+  10:10 | .git\logs\refs\heads\main
+  10:10 | .git\objects\cf\84e0ddb378c01aea0adc6bdd2d84e1e090a693
+  10:10 | .git\COMMIT_EDITMSG
+  10:10 | .git\index
+  10:10 | .git\objects\35\c85f29b985f57d4a076008256540f959690f03
+  10:10 | .git\objects\5d\ed5fa012fd827aa714546f195061d7c16deba9
+  10:10 | .git\objects\15\a53e9b6d45e51a3011b73047af87837a80dedd
+  10:10 | .git\objects\06\93f18ca9f7fcbb7fd464f426191dfe9f700bfe
+  10:10 | .git\objects\3b\22249b2206da89591ea59cf3f0339e92dd6ded
+  10:10 | .git\objects\05\35ab1c7ebc84dfe74bc50f0ed6b55086058083
 --- SESSIONS ---
-  Count: 39
-  - 0d86f5c1-7929-4877-bfa4-717af425c698.jsonl [13:42]
-  - 106bcd04-c182-4299-8950-56548e4cbc73.jsonl [14:12]
-  - 12bd593b-dc71-4c9c-8bbf-b04869e9e937.jsonl [03:02]
+  Count: 19
+  - 07390596-a316-48cd-b7ca-a74361fc16b9.jsonl [17:35]
+  - 078f0fcd-bcf6-4433-82de-c4aca1e01689.jsonl [09:41]
+  - 2dc9b047-4ce6-44e2-8448-634ffba54c16.checkpoint.3e90733d-be3a-4b2a-bcb9-aa3912c6dac9.jsonl [09:59]
 --- SKILLS ---
-  + jingmai-cli
+  + prd-writer
+  + web-access
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-cli"],"dayOfWeek":"Tuesday","sessionCount":39,"modifiedFiles":["E:\\workspace\\DREAMS.md","E:\\workspace\\memory\\.dreams\\phase-signals.json","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\2026-04-14.md","E:\\workspace\\memory\\.dreams\\session-ingestion.json","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\memory\\.dreams\\session-corpus\\2026-04-14.txt","E:\\workspace\\memory\\.dreams\\daily-ingestion.json","E:\\workspace\\.git\\index","E:\\workspace\\knowledge-base\\wiki\\实体\\github_.md","E:\\workspace\\knowledge-base\\wiki\\实体\\papers_.md","E:\\workspace\\knowledge-base\\wiki\\实体\\datasets_.md","E:\\workspace\\knowledge-base\\wiki\\概念\\原则.md","E:\\workspace\\knowledge-base\\wiki\\实体\\README.md.md","E:\\workspace\\knowledge-base\\wiki\\实体\\rticles_.md","E:\\workspace\\knowledge-base\\wiki\\概念\\素材.md","E:\\workspace\\.git\\refs\\heads\\main","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\logs\\refs\\heads\\main","E:\\workspace\\.git\\objects\\25\\688bc7fa87efbe753d82f69d213fa675aca3d1"],"gitCommits":["25688bc7 fix: compile.py emoji缂栫爜闂淇","92546de8 docs: 鏇存柊MEMORY.md璁板綍Skill鍐欎綔瑙勮寖瀛︿範","c51d84e6 docs: 娣诲姞Skill鍐欎綔瑙勮寖鎸囧崡锛堢嫭绔嬫枃妗ｏ級","53fa972d docs: 鏇存柊MEMORY.md璁板綍Skill妯℃澘鍔熻兘","da7913f5 feat: compile.py娣诲姞Skill妯℃澘鐢熸垚鍔熻兘","0fd47d9d refactor: 鏁村悎鎵€鏈夊姛鑳藉埌compile.py鍗曚竴鏂囦欢","5e613864 feat: 鐭ヨ瘑搴?澶т紭鍖栧叏閮ㄥ畬鎴?b5894a17 docs: add Karpathy LLM Wiki analysis and optimization suggestions","94572211 chore: remove 149MB jingmai-cli.exe over GitHub limit","28f804b5 fix: remove 149MB exe file over GitHub limit + add .gitattributes","d38cf90e docs: add GitHub TOP20 2026 Week15 璧涘崥绗旇鏁寸悊"],"date":"2026.04.14"}
+{"skillsUpdated":["prd-writer","web-access"],"dayOfWeek":"Wednesday","sessionCount":19,"modifiedFiles":["E:\\workspace\\memory\\daily-report-raw.txt","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\knowledge-base\\sync_feishu_resume.py","E:\\workspace\\.git\\logs\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\refs\\remotes\\origin\\main","E:\\workspace\\knowledge-base\\memory\\knowledge-base.json","E:\\workspace\\knowledge-base\\sync_all.py","E:\\workspace\\knowledge-base\\sync_batch.py","E:\\workspace\\.git\\refs\\heads\\main","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\logs\\refs\\heads\\main","E:\\workspace\\.git\\objects\\cf\\84e0ddb378c01aea0adc6bdd2d84e1e090a693","E:\\workspace\\.git\\COMMIT_EDITMSG","E:\\workspace\\.git\\index","E:\\workspace\\.git\\objects\\35\\c85f29b985f57d4a076008256540f959690f03","E:\\workspace\\.git\\objects\\5d\\ed5fa012fd827aa714546f195061d7c16deba9","E:\\workspace\\.git\\objects\\15\\a53e9b6d45e51a3011b73047af87837a80dedd","E:\\workspace\\.git\\objects\\06\\93f18ca9f7fcbb7fd464f426191dfe9f700bfe","E:\\workspace\\.git\\objects\\3b\\22249b2206da89591ea59cf3f0339e92dd6ded","E:\\workspace\\.git\\objects\\05\\35ab1c7ebc84dfe74bc50f0ed6b55086058083"],"gitCommits":["cf84e0dd feat: AI鐑偣閫熼€?2026-04-15","40d10442 perf: knowledge-base compile v6 optimized - 鎵归噺LLM璋冪敤+鏂偣缁紶+璺宠繃宸插瓨鍦?b1a0f7e1 feat: 2026-04-15 鎶€鏈儹鐐规暣鐞?6442d370 \u0027瀹氭椂鑷姩鎻愪氦\u0027","7f24e465 feat: Hermes椋庢牸Skill娌夋穩鏈哄埗鍗囩骇"],"date":"2026.04.15"}

@@ -1,37 +1,34 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-15 17:36:05
+Date: 2026-04-16 17:20:28
 --- GIT COMMITS ---
-  cf84e0dd feat: AI鐑偣閫熼€?2026-04-15
-  40d10442 perf: knowledge-base compile v6 optimized - 鎵归噺LLM璋冪敤+鏂偣缁紶+璺宠繃宸插瓨鍦?b1a0f7e1 feat: 2026-04-15 鎶€鏈儹鐐规暣鐞?6442d370 '瀹氭椂鑷姩鎻愪氦'
-  7f24e465 feat: Hermes椋庢牸Skill娌夋穩鏈哄埗鍗囩骇
+  ee0debce '瀹氭椂鑷姩鎻愪氦'
 --- FILES MODIFIED ---
-  17:34 | memory\daily-report-raw.txt
-  12:00 | knowledge-base\.sync_state.json
-  11:40 | knowledge-base\sync_feishu_resume.py
-  11:38 | .git\logs\refs\remotes\origin\main
-  11:38 | .git\refs\remotes\origin\main
-  10:52 | knowledge-base\memory\knowledge-base.json
-  10:12 | knowledge-base\sync_all.py
-  10:11 | knowledge-base\sync_batch.py
-  10:10 | .git\refs\heads\main
-  10:10 | .git\logs\HEAD
-  10:10 | .git\logs\refs\heads\main
-  10:10 | .git\objects\cf\84e0ddb378c01aea0adc6bdd2d84e1e090a693
-  10:10 | .git\COMMIT_EDITMSG
-  10:10 | .git\index
-  10:10 | .git\objects\35\c85f29b985f57d4a076008256540f959690f03
-  10:10 | .git\objects\5d\ed5fa012fd827aa714546f195061d7c16deba9
-  10:10 | .git\objects\15\a53e9b6d45e51a3011b73047af87837a80dedd
-  10:10 | .git\objects\06\93f18ca9f7fcbb7fd464f426191dfe9f700bfe
-  10:10 | .git\objects\3b\22249b2206da89591ea59cf3f0339e92dd6ded
-  10:10 | .git\objects\05\35ab1c7ebc84dfe74bc50f0ed6b55086058083
+  17:20 | skills\desktop-control-cli\desktop-control\.pytest_cache\v\cache\lastfailed
+  17:20 | skills\desktop-control-cli\desktop-control\.pytest_cache\v\cache\nodeids
+  17:17 | skills\desktop-control-cli\desktop-control\logs\bridge_sessions.json
+  17:16 | skills\desktop-control-cli\desktop-control\screenshot.png
+  17:16 | skills\desktop-control-cli\desktop-control\.desktop_control.db
+  17:15 | skills\desktop-control-cli\desktop-control\tests\integration\mcp\__pycache__\test_mcp_integration.cpython-312-pytest-9.0.3.pyc
+  17:15 | skills\desktop-control-cli\desktop-control\README.md
+  17:14 | skills\desktop-control-cli\desktop-control\tests\integration\mcp\test_mcp_integration.py
+  17:14 | skills\desktop-control-cli\.idea\workspace.xml
+  17:13 | DREAMS.md
+  17:13 | memory\.dreams\phase-signals.json
+  17:13 | memory\.dreams\events.jsonl
+  17:13 | memory\2026-04-16.md
+  17:13 | memory\.dreams\session-ingestion.json
+  17:13 | memory\.dreams\short-term-recall.json
+  17:13 | memory\.dreams\session-corpus\2026-04-16.txt
+  17:13 | memory\.dreams\daily-ingestion.json
+  17:10 | skills\desktop-control-cli\test_ufo_commands.py
+  17:10 | skills\desktop-control-cli\desktop-control\app\services\__init__.py
+  17:05 | skills\desktop-control-cli\desktop-control\app\ufo\service\__pycache__\ufo_service.cpython-312.pyc
 --- SESSIONS ---
-  Count: 19
-  - 07390596-a316-48cd-b7ca-a74361fc16b9.jsonl [17:35]
-  - 078f0fcd-bcf6-4433-82de-c4aca1e01689.jsonl [09:41]
-  - 2dc9b047-4ce6-44e2-8448-634ffba54c16.checkpoint.3e90733d-be3a-4b2a-bcb9-aa3912c6dac9.jsonl [09:59]
+  Count: 33
+  - 07052f11-ed5f-4001-bfba-cfc7846a8fb1.jsonl [17:13]
+  - 07d30ec5-65a1-40b2-b339-48c80342985d.jsonl [16:13]
+  - 0f0bf160-d774-4ad5-a954-db76655bbc06.jsonl [17:20]
 --- SKILLS ---
-  + prd-writer
-  + web-access
+  + desktop-control-cli
 --- STRUCTURED ---
-{"skillsUpdated":["prd-writer","web-access"],"dayOfWeek":"Wednesday","sessionCount":19,"modifiedFiles":["E:\\workspace\\memory\\daily-report-raw.txt","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\knowledge-base\\sync_feishu_resume.py","E:\\workspace\\.git\\logs\\refs\\remotes\\origin\\main","E:\\workspace\\.git\\refs\\remotes\\origin\\main","E:\\workspace\\knowledge-base\\memory\\knowledge-base.json","E:\\workspace\\knowledge-base\\sync_all.py","E:\\workspace\\knowledge-base\\sync_batch.py","E:\\workspace\\.git\\refs\\heads\\main","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\logs\\refs\\heads\\main","E:\\workspace\\.git\\objects\\cf\\84e0ddb378c01aea0adc6bdd2d84e1e090a693","E:\\workspace\\.git\\COMMIT_EDITMSG","E:\\workspace\\.git\\index","E:\\workspace\\.git\\objects\\35\\c85f29b985f57d4a076008256540f959690f03","E:\\workspace\\.git\\objects\\5d\\ed5fa012fd827aa714546f195061d7c16deba9","E:\\workspace\\.git\\objects\\15\\a53e9b6d45e51a3011b73047af87837a80dedd","E:\\workspace\\.git\\objects\\06\\93f18ca9f7fcbb7fd464f426191dfe9f700bfe","E:\\workspace\\.git\\objects\\3b\\22249b2206da89591ea59cf3f0339e92dd6ded","E:\\workspace\\.git\\objects\\05\\35ab1c7ebc84dfe74bc50f0ed6b55086058083"],"gitCommits":["cf84e0dd feat: AI鐑偣閫熼€?2026-04-15","40d10442 perf: knowledge-base compile v6 optimized - 鎵归噺LLM璋冪敤+鏂偣缁紶+璺宠繃宸插瓨鍦?b1a0f7e1 feat: 2026-04-15 鎶€鏈儹鐐规暣鐞?6442d370 \u0027瀹氭椂鑷姩鎻愪氦\u0027","7f24e465 feat: Hermes椋庢牸Skill娌夋穩鏈哄埗鍗囩骇"],"date":"2026.04.15"}
+{"skillsUpdated":["desktop-control-cli"],"dayOfWeek":"Thursday","sessionCount":33,"modifiedFiles":["E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.pytest_cache\\v\\cache\\lastfailed","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.pytest_cache\\v\\cache\\nodeids","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\logs\\bridge_sessions.json","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\screenshot.png","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.desktop_control.db","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\tests\\integration\\mcp\\__pycache__\\test_mcp_integration.cpython-312-pytest-9.0.3.pyc","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\README.md","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\tests\\integration\\mcp\\test_mcp_integration.py","E:\\workspace\\skills\\desktop-control-cli\\.idea\\workspace.xml","E:\\workspace\\DREAMS.md","E:\\workspace\\memory\\.dreams\\phase-signals.json","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\2026-04-16.md","E:\\workspace\\memory\\.dreams\\session-ingestion.json","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\memory\\.dreams\\session-corpus\\2026-04-16.txt","E:\\workspace\\memory\\.dreams\\daily-ingestion.json","E:\\workspace\\skills\\desktop-control-cli\\test_ufo_commands.py","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\services\\__init__.py","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\ufo\\service\\__pycache__\\ufo_service.cpython-312.pyc"],"gitCommits":"ee0debce \u0027瀹氭椂鑷姩鎻愪氦\u0027","date":"2026.04.16"}

@@ -6,6 +6,7 @@ The best ever possible responsive desktop control for OpenClaw
 import pyautogui
 import time
 import sys
+import subprocess
 from typing import Tuple, Optional, List, Union
 from pathlib import Path
 import logging
@@ -207,14 +208,14 @@ class DesktopController:
     
     # ========== SCREEN OPERATIONS ==========
     
-    def screenshot(self, region: Optional[Tuple[int, int, int, int]] = None,
-                   filename: Optional[str] = None):
+    def screenshot(self, filename: Optional[str] = None,
+                   region: Optional[Tuple[int, int, int, int]] = None):
         """
         Capture screen or region.
         
         Args:
-            region: (left, top, width, height) for partial capture
             filename: Path to save image (None = return PIL Image)
+            region: (left, top, width, height) for partial capture
             
         Returns:
             PIL Image object (if filename is None)
@@ -325,6 +326,119 @@ class DesktopController:
             logger.error(f"Error activating window: {e}")
             return False
     
+    def activate_window_by_process(self, process_name: str) -> bool:
+        """
+        Bring window to front by process name (more reliable for Chinese titles).
+        
+        Args:
+            process_name: Process name without .exe (e.g., 'QQMusic' or 'chrome')
+            
+        Returns:
+            True if window was activated, False otherwise
+        """
+        try:
+            ps_script = f'''
+Add-Type @" 
+using System; 
+using System.Runtime.InteropServices; 
+public class Win32 {{ 
+    [DllImport("user32.dll")] 
+    public static extern bool SetForegroundWindow(IntPtr hWnd); 
+    [DllImport("user32.dll")] 
+    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow); 
+    [DllImport("user32.dll")] 
+    public static extern bool IsIconic(IntPtr hWnd); 
+    public const int SW_RESTORE = 9; 
+}} 
+"@
+$proc = Get-Process -Name "{process_name}" -ErrorAction SilentlyContinue
+if ($proc -and $proc.MainWindowHandle -ne [IntPtr]::Zero) {{
+    $hwnd = $proc.MainWindowHandle 
+    if ([Win32]::IsIconic($hwnd)) {{ [Win32]::ShowWindow($hwnd, [Win32]::SW_RESTORE) }}
+    [Win32]::SetForegroundWindow($hwnd) | Out-Null
+    Write-Output "SUCCESS"
+}} else {{ Write-Output "FAILED" }}
+'''
+            result = subprocess.run(
+                ['powershell', '-Command', ps_script],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            success = "SUCCESS" in result.stdout
+            logger.info(f"activate_window_by_process({process_name}): {'OK' if success else 'FAILED'}")
+            return success
+        except Exception as e:
+            logger.error(f"Error activating window by process: {e}")
+            return False
+    
+    def click_and_wait(self, x: int, y: int, wait_ms: float = 0.5) -> None:
+        """
+        Click and wait for the click to take effect.
+        
+        Args:
+            x, y: Coordinates to click
+            wait_ms: Milliseconds to wait after click
+        """
+        pyautogui.click(x=x, y=y)
+        time.sleep(wait_ms / 1000)
+        logger.debug(f"Clicked at ({x}, {y}) and waited {wait_ms}ms")
+    
+    def verify_active_window(self, expected_title_part: str) -> bool:
+        """
+        Verify that the active window contains expected title part.
+        
+        Args:
+            expected_title_part: Expected substring in window title
+            
+        Returns:
+            True if verification passed
+        """
+        try:
+            import pygetwindow as gw
+            active = gw.getActiveWindow()
+            if active and expected_title_part.lower() in active.title.lower():
+                return True
+            # Try UTF-8 encoded match
+            if active:
+                try:
+                    encoded = active.title.encode('gbk', errors='ignore').decode('gbk', errors='ignore')
+                    if expected_title_part.lower() in encoded.lower():
+                        return True
+                except:
+                    pass
+            return False
+        except Exception as e:
+            logger.warning(f"verify_active_window failed: {e}")
+            return False
+    
+    def click_verify_focus(self, x: int, y: int, expected_window_part: str,
+                           max_retries: int = 3, retry_delay_ms: float = 300) -> bool:
+        """
+        Click and verify the correct window has focus.
+        
+        Args:
+            x, y: Coordinates to click
+            expected_window_part: Expected substring in window title after click
+            max_retries: Maximum retry attempts
+            retry_delay_ms: Delay between retries in milliseconds
+            
+        Returns:
+            True if focus was verified
+        """
+        for attempt in range(max_retries):
+            pyautogui.click(x=x, y=y)
+            time.sleep(retry_delay_ms / 1000)
+            
+            if self.verify_active_window(expected_window_part):
+                logger.info(f"Click verified: window containing '{expected_window_part}' has focus")
+                return True
+            
+            logger.debug(f"Click attempt {attempt + 1}: focus verification failed, retrying...")
+        
+        logger.warning(f"Failed to verify focus after {max_retries} attempts")
+        return False
+    
     def get_active_window(self) -> Optional[str]:
         """
         Get title of currently focused window.
@@ -341,6 +455,45 @@ class DesktopController:
             return None
         except Exception as e:
             logger.error(f"Error getting active window: {e}")
+            return None
+    
+    def get_active_window_process(self) -> Optional[str]:
+        """
+        Get process name of currently focused window.
+        
+        Returns:
+            Process name string, or None if error
+        """
+        try:
+            import pygetwindow as gw
+            active = gw.getActiveWindow()
+            if active and active._hWnd:
+                # Get process ID from window handle
+                ps_script = f'''
+$hwnd = {active._hWnd}
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {{
+    [DllImport("user32.dll")]
+    public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+}}
+"@
+$pid = 0
+[Win32]::GetWindowThreadProcessId([IntPtr]$hwnd, [ref]$pid) | Out-Null
+$proc = Get-Process -Id $pid -ErrorAction SilentlyContinue
+if ($proc) {{ Write-Output $proc.ProcessName }}
+'''
+                result = subprocess.run(
+                    ['powershell', '-Command', ps_script],
+                    capture_output=True,
+                    text=True,
+                    timeout=5
+                )
+                return result.stdout.strip() if result.stdout else None
+            return None
+        except Exception as e:
+            logger.warning(f"get_active_window_process failed: {e}")
             return None
     
     # ========== CLIPBOARD OPERATIONS ==========

@@ -1,5 +1,6 @@
 """
-QQ音乐自动化 - 使用技能的焦点验证方法
+QQ音乐自动化 - 搜索并播放《发如雪》
+使用 desktop-control 技能
 """
 import pyautogui
 import time
@@ -22,7 +23,7 @@ def load_skill():
     return module
 
 def main():
-    print("=== QQ音乐自动化 - 最终版 ===")
+    print("=== QQ音乐自动化 - 搜索发如雪 ===")
     
     dc = load_skill().DesktopController()
     
@@ -31,55 +32,56 @@ def main():
     subprocess.Popen([DESKTOP_APP_PATH])
     time.sleep(6)
     
-    # 2. 使用技能方法激活窗口
-    print("[2] 激活窗口...")
+    # 2. 激活窗口
+    print("[2] 激活QQ音乐窗口...")
     dc.activate_window_by_process("QQMusic")
     time.sleep(1)
     
-    # 3. 关闭弹窗
+    # 3. 关闭可能存在的弹窗
     print("[3] 关闭弹窗...")
     pyautogui.press('esc')
     time.sleep(0.5)
     dc.activate_window_by_process("QQMusic")
     time.sleep(0.5)
     
-    # 4. 点击搜索框并输入
-    print("[4] 搜索...")
-    dc.click_verify_focus(242, 22, "QQMusic", max_retries=3)
-    time.sleep(0.5)
+    # 4. 点击搜索框 (242, 22)
+    print("[4] 点击搜索框...")
+    dc.click(242, 22)
+    time.sleep(1)
+    
+    # 5. 输入搜索词
+    print("[5] 输入搜索词: 发如雪...")
     dc.type_text("faruxue", interval=0.08)
-    time.sleep(0.3)
+    time.sleep(0.5)
+    
+    # 6. 按回车搜索
+    print("[6] 执行搜索...")
     dc.activate_window_by_process("QQMusic")
-    time.sleep(0.3)
+    time.sleep(0.5)
     dc.press("enter")
     time.sleep(5)
     
-    # 5. 截图确认搜索结果
-    dc.screenshot(os.path.join(SCREENSHOT_DIR, 'final_result.png'))
+    # 7. 截图确认搜索结果
+    dc.screenshot(os.path.join(SCREENSHOT_DIR, 'result_search.png'))
     
-    # 6. 点击歌曲 - 使用焦点验证
-    print("[5] 点击歌曲...")
-    # 先确保QQ音乐窗口有焦点
+    # 8. 点击第一首歌（发如雪）
+    print("[7] 点击《发如雪》...")
+    dc.click(300, 436)
+    time.sleep(1)
+    
+    # 9. 双击播放
+    print("[8] 双击播放...")
+    dc.double_click(300, 436)
+    time.sleep(3)
+    
+    # 10. 最终确认
+    print("[9] 最终确认...")
     dc.activate_window_by_process("QQMusic")
-    time.sleep(0.5)
-    
-    # 单击选中歌曲（使用验证焦点方法）
-    success = dc.click_verify_focus(300, 303, "QQMusic", max_retries=2)
-    print(f"   Click verified: {success}")
-    time.sleep(0.5)
-    
-    # 双击播放
-    print("[6] 双击播放...")
-    pyautogui.doubleClick(300, 303)
-    time.sleep(4)
-    
-    # 7. 最终确认
-    print("[7] 最终确认...")
-    dc.activate_window_by_process("QQMusic")
-    time.sleep(2)
-    dc.screenshot(os.path.join(SCREENSHOT_DIR, 'final_play.png'))
+    time.sleep(3)
+    dc.screenshot(os.path.join(SCREENSHOT_DIR, 'result_final.png'))
     
     print("=== 完成 ===")
+    print(f"截图保存于: {SCREENSHOT_DIR}")
 
 if __name__ == "__main__":
     main()

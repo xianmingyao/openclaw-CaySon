@@ -1909,6 +1909,406 @@
       "doc_id": "C10AdSXuOonnzDxWCTrc7nDInYd",
       "url": "https://feishu.cn/docx/C10AdSXuOonnzDxWCTrc7nDInYd",
       "synced_at": "2026-04-15T12:00:37.790844"
+    },
+    "2026-04-12-articles_opencli-siliconprism": {
+      "doc_id": "CKb2dTqcloJAD2xMYVPcJTPunKf",
+      "url": "https://feishu.cn/docx/CKb2dTqcloJAD2xMYVPcJTPunKf",
+      "synced_at": "2026-04-16T10:33:27.143544"
+    },
+    "2026-04-12-github_2026-04-09-Alchemy-清华AI科研自动化框架": {
+      "doc_id": "LGJvdGKmPoalOXxYVwHcipIOnIC",
+      "url": "https://feishu.cn/docx/LGJvdGKmPoalOXxYVwHcipIOnIC",
+      "synced_at": "2026-04-16T10:33:30.917562"
+    },
+    "2026-04-12-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周": {
+      "doc_id": "IOQ5dVQkVoFupCxzN0kcqqi0n6g",
+      "url": "https://feishu.cn/docx/IOQ5dVQkVoFupCxzN0kcqqi0n6g",
+      "synced_at": "2026-04-16T10:33:34.504456"
+    },
+    "2026-04-12-github_gitnexus-douyin-20260410": {
+      "doc_id": "FxFvdGQdQoKGhox4TZWc34iNnee",
+      "url": "https://feishu.cn/docx/FxFvdGQdQoKGhox4TZWc34iNnee",
+      "synced_at": "2026-04-16T10:33:38.346717"
+    },
+    "2026-04-12-github_hermes-agent-douyin-20260410": {
+      "doc_id": "ZH33dqwbOoCmtzxZzaocCFjBnAf",
+      "url": "https://feishu.cn/docx/ZH33dqwbOoCmtzxZzaocCFjBnAf",
+      "synced_at": "2026-04-16T10:33:42.120793"
+    },
+    "2026-04-12-github_opencli-douyin-20260410": {
+      "doc_id": "NwKydPkA8orvzrxplThcl4inneb",
+      "url": "https://feishu.cn/docx/NwKydPkA8orvzrxplThcl4inneb",
+      "synced_at": "2026-04-16T10:33:45.400167"
+    },
+    "2026-04-12-README": {
+      "doc_id": "YRMFdfDa2oozWExl0iIctiVXnDb",
+      "url": "https://feishu.cn/docx/YRMFdfDa2oozWExl0iIctiVXnDb",
+      "synced_at": "2026-04-16T10:33:48.934751"
+    },
+    "2026-04-13-articles_bytedance-seeduplex-voice-model": {
+      "doc_id": "UVandspdZoNRuyxu7ucctgWanPI",
+      "url": "https://feishu.cn/docx/UVandspdZoNRuyxu7ucctgWanPI",
+      "synced_at": "2026-04-16T10:33:52.101277"
+    },
+    "2026-04-13-articles_hermes-agent-ai真用法": {
+      "doc_id": "Ie1BdENSPotnHAxKbLWcTe6ZnCc",
+      "url": "https://feishu.cn/docx/Ie1BdENSPotnHAxKbLWcTe6ZnCc",
+      "synced_at": "2026-04-16T10:33:55.661405"
+    },
+    "2026-04-13-articles_karpathy-rag-critique-aidianliao": {
+      "doc_id": "SaBpdOdRtotOuXx32jdcCSq3nwf",
+      "url": "https://feishu.cn/docx/SaBpdOdRtotOuXx32jdcCSq3nwf",
+      "synced_at": "2026-04-16T10:33:58.807919"
+    },
+    "2026-04-13-articles_karpathy-workflow": {
+      "doc_id": "UfLGdgYmqo2lurxyBkGcws6xn4c",
+      "url": "https://feishu.cn/docx/UfLGdgYmqo2lurxyBkGcws6xn4c",
+      "synced_at": "2026-04-16T10:34:02.697870"
+    },
+    "2026-04-13-articles_llm-training-data-sources": {
+      "doc_id": "SY9idmm51opkS5xRLfScrCPYnSb",
+      "url": "https://feishu.cn/docx/SY9idmm51opkS5xRLfScrCPYnSb",
+      "synced_at": "2026-04-16T10:34:06.630554"
+    },
+    "2026-04-13-articles_opencli-siliconprism": {
+      "doc_id": "EYSjdKJBpoAECaxuDMfcufaTnWd",
+      "url": "https://feishu.cn/docx/EYSjdKJBpoAECaxuDMfcufaTnWd",
+      "synced_at": "2026-04-16T10:34:10.423322"
+    },
+    "2026-04-13-articles_openlearn-certification-dayang": {
+      "doc_id": "GMb6dLSi7oKgxXxARRFckMLwnue",
+      "url": "https://feishu.cn/docx/GMb6dLSi7oKgxXxARRFckMLwnue",
+      "synced_at": "2026-04-16T10:34:13.626971"
+    },
+    "2026-04-13-articles_openmaic-dayang": {
+      "doc_id": "Q98JdthpLo0Phoxgzo3cTqRdnmg",
+      "url": "https://feishu.cn/docx/Q98JdthpLo0Phoxgzo3cTqRdnmg",
+      "synced_at": "2026-04-16T10:34:17.370132"
+    },
+    "2026-04-13-articles_tts-models-comparison-20260410": {
+      "doc_id": "Zyo1duyvvoYQ6AxyS2DcDUyQnjh",
+      "url": "https://feishu.cn/docx/Zyo1duyvvoYQ6AxyS2DcDUyQnjh",
+      "synced_at": "2026-04-16T10:34:20.544135"
+    },
+    "2026-04-13-articles_第三集基于Dify平台的AgentSkills使用.pdf": {
+      "doc_id": "IhWjdeAyXoxOz8x9wIhcDK0nnsf",
+      "url": "https://feishu.cn/docx/IhWjdeAyXoxOz8x9wIhcDK0nnsf",
+      "synced_at": "2026-04-16T10:34:22.920570"
+    },
+    "2026-04-13-github_2026-04-09-Alchemy-Tsinghua-AI-Science": {
+      "doc_id": "QK0ydQzInoDdI8xM7z2cqleWnuc",
+      "url": "https://feishu.cn/docx/QK0ydQzInoDdI8xM7z2cqleWnuc",
+      "synced_at": "2026-04-16T10:34:26.566730"
+    },
+    "2026-04-13-github_2026-04-09-Alchemy-清华AI科研自动化框架": {
+      "doc_id": "VDYGdNJzhoALaPxarY4cWADTnpe",
+      "url": "https://feishu.cn/docx/VDYGdNJzhoALaPxarY4cWADTnpe",
+      "synced_at": "2026-04-16T10:34:30.368815"
+    },
+    "2026-04-13-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周": {
+      "doc_id": "HQzrdhsRroHn1dxKbm0cLqmynqb",
+      "url": "https://feishu.cn/docx/HQzrdhsRroHn1dxKbm0cLqmynqb",
+      "synced_at": "2026-04-16T10:34:33.483101"
+    },
+    "2026-04-13-github_hermes-agent-ai-zhenyongfa": {
+      "doc_id": "RAL5drcCToQhF8xxtricmI0Hnqb",
+      "url": "https://feishu.cn/docx/RAL5drcCToQhF8xxtricmI0Hnqb",
+      "synced_at": "2026-04-16T10:34:37.596602"
+    },
+    "2026-04-13-github_hermes-agent-douyin-20260410": {
+      "doc_id": "QO1md3FYbo5Olfxfib3cdSEsnCe",
+      "url": "https://feishu.cn/docx/QO1md3FYbo5Olfxfib3cdSEsnCe",
+      "synced_at": "2026-04-16T10:34:41.745786"
+    },
+    "2026-04-13-github_opencli-douyin-20260410": {
+      "doc_id": "K13adc9l7otCwrxQ18Xc7qCjnQb",
+      "url": "https://feishu.cn/docx/K13adc9l7otCwrxQ18Xc7qCjnQb",
+      "synced_at": "2026-04-16T10:34:46.496151"
+    },
+    "2026-04-13-github_openmaic-douyin-20260410": {
+      "doc_id": "OrmGdvMMJomAGlxzqkBch1yQnnb",
+      "url": "https://feishu.cn/docx/OrmGdvMMJomAGlxzqkBch1yQnnb",
+      "synced_at": "2026-04-16T10:34:50.005060"
+    },
+    "2026-04-13-README": {
+      "doc_id": "S2Nwd446OoaqPAxoyNicUGPfnCI",
+      "url": "https://feishu.cn/docx/S2Nwd446OoaqPAxoyNicUGPfnCI",
+      "synced_at": "2026-04-16T10:34:53.150779"
+    },
+    "2026-04-14-articles_bytedance-seeduplex-voice-model": {
+      "doc_id": "G0JSdbBqLo0CqyxapOYcr90Dnhg",
+      "url": "https://feishu.cn/docx/G0JSdbBqLo0CqyxapOYcr90Dnhg",
+      "synced_at": "2026-04-16T10:34:56.589315"
+    },
+    "2026-04-14-articles_karpathy-rag-critique-aidianliao": {
+      "doc_id": "JFHXdVWrfofvEGxTp90cNINWnFg",
+      "url": "https://feishu.cn/docx/JFHXdVWrfofvEGxTp90cNINWnFg",
+      "synced_at": "2026-04-16T10:35:02.816622"
+    },
+    "2026-04-14-articles_karpathy-workflow": {
+      "doc_id": "KOxJdrrg3oS9pWxQOnDcXtOwnyg",
+      "url": "https://feishu.cn/docx/KOxJdrrg3oS9pWxQOnDcXtOwnyg",
+      "synced_at": "2026-04-16T10:35:06.756370"
+    },
+    "2026-04-14-articles_llm-training-data-sources": {
+      "doc_id": "GYWtdTTLOo6zTCx5wZ8cDhJ4nfh",
+      "url": "https://feishu.cn/docx/GYWtdTTLOo6zTCx5wZ8cDhJ4nfh",
+      "synced_at": "2026-04-16T10:35:11.066138"
+    },
+    "2026-04-14-articles_openmaic-dayang": {
+      "doc_id": "J9L3d7Yykomav8xSZVycWLUcnbf",
+      "url": "https://feishu.cn/docx/J9L3d7Yykomav8xSZVycWLUcnbf",
+      "synced_at": "2026-04-16T10:35:14.781318"
+    },
+    "2026-04-14-articles_tts-model-comparison-longcat": {
+      "doc_id": "Zp47dIY5moformxPybVcBkYEnUc",
+      "url": "https://feishu.cn/docx/Zp47dIY5moformxPybVcBkYEnUc",
+      "synced_at": "2026-04-16T10:35:18.804087"
+    },
+    "2026-04-14-articles_tts-models-comparison-20260410": {
+      "doc_id": "XzAWde00So4Y4ax2WzxcL1PMnHb",
+      "url": "https://feishu.cn/docx/XzAWde00So4Y4ax2WzxcL1PMnHb",
+      "synced_at": "2026-04-16T10:35:22.295428"
+    },
+    "2026-04-14-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周": {
+      "doc_id": "IfFYd2TK9o3y5cxJWA1crqu0n3g",
+      "url": "https://feishu.cn/docx/IfFYd2TK9o3y5cxJWA1crqu0n3g",
+      "synced_at": "2026-04-16T10:35:34.259970"
+    },
+    "2026-04-14-github_gitnexus-agan": {
+      "doc_id": "DbL7dVMFZoPLIExXM8ocZWB8n5m",
+      "url": "https://feishu.cn/docx/DbL7dVMFZoPLIExXM8ocZWB8n5m",
+      "synced_at": "2026-04-16T10:35:38.087131"
+    },
+    "2026-04-14-github_gitnexus-douyin-20260410": {
+      "doc_id": "Mhtfdp6IVoJLe3x5gvucwSP5nte",
+      "url": "https://feishu.cn/docx/Mhtfdp6IVoJLe3x5gvucwSP5nte",
+      "synced_at": "2026-04-16T10:35:41.774474"
+    },
+    "2026-04-14-github_hermes-agent-ai-zhenyongfa": {
+      "doc_id": "HtHed0P6DozdCyxJnwHcP7fTnRb",
+      "url": "https://feishu.cn/docx/HtHed0P6DozdCyxJnwHcP7fTnRb",
+      "synced_at": "2026-04-16T10:35:45.975188"
+    },
+    "2026-04-14-github_hermes-agent-douyin-20260410": {
+      "doc_id": "WTbtdoC1tofPlPx3DTdcHIh0nGb",
+      "url": "https://feishu.cn/docx/WTbtdoC1tofPlPx3DTdcHIh0nGb",
+      "synced_at": "2026-04-16T10:35:50.028051"
+    },
+    "2026-04-14-README": {
+      "doc_id": "Y7PwdDuBBovgZvxQID9cTtXCnBf",
+      "url": "https://feishu.cn/docx/Y7PwdDuBBovgZvxQID9cTtXCnBf",
+      "synced_at": "2026-04-16T10:35:53.184019"
+    },
+    "2026-04-15-articles_2026-04-09-Knowledge-Screenshots-Summary": {
+      "doc_id": "QHE4d4Gjkoaj79xjqCicqR9anfd",
+      "url": "https://feishu.cn/docx/QHE4d4Gjkoaj79xjqCicqR9anfd",
+      "synced_at": "2026-04-16T10:36:01.514593"
+    },
+    "2026-04-15-articles_hermes-agent-ai真用法": {
+      "doc_id": "WjmtdLd2eodM7fxU71OcULlfnWb",
+      "url": "https://feishu.cn/docx/WjmtdLd2eodM7fxU71OcULlfnWb",
+      "synced_at": "2026-04-16T10:36:05.511332"
+    },
+    "2026-04-15-articles_karpathy-rag-critique-aidianliao": {
+      "doc_id": "QcREdS2VCo22YhxnkxWccQ7Xntf",
+      "url": "https://feishu.cn/docx/QcREdS2VCo22YhxnkxWccQ7Xntf",
+      "synced_at": "2026-04-16T10:36:09.020832"
+    },
+    "2026-04-15-articles_karpathy-workflow": {
+      "doc_id": "I8opd7cYNoUFPbxmemzc434qn9W",
+      "url": "https://feishu.cn/docx/I8opd7cYNoUFPbxmemzc434qn9W",
+      "synced_at": "2026-04-16T10:36:12.687717"
+    },
+    "2026-04-15-articles_opencli-siliconprism": {
+      "doc_id": "WLdkdVm8To9CspxvoCMcK0Ejnxb",
+      "url": "https://feishu.cn/docx/WLdkdVm8To9CspxvoCMcK0Ejnxb",
+      "synced_at": "2026-04-16T10:36:20.370146"
+    },
+    "2026-04-15-articles_openlearn-certification-dayang": {
+      "doc_id": "FxAydPzlZoeH61xicbLc1EYpnZF",
+      "url": "https://feishu.cn/docx/FxAydPzlZoeH61xicbLc1EYpnZF",
+      "synced_at": "2026-04-16T10:36:23.532098"
+    },
+    "2026-04-15-articles_openmaic-dayang": {
+      "doc_id": "CT71dH1hqocN1FxFeT2cATSMnWe",
+      "url": "https://feishu.cn/docx/CT71dH1hqocN1FxFeT2cATSMnWe",
+      "synced_at": "2026-04-16T10:36:26.936635"
+    },
+    "2026-04-15-github_2026-04-09-Alchemy-Tsinghua-AI-Science": {
+      "doc_id": "Dr3RdS2BQogoSnxbWNLcl59DnYc",
+      "url": "https://feishu.cn/docx/Dr3RdS2BQogoSnxbWNLcl59DnYc",
+      "synced_at": "2026-04-16T10:36:31.937430"
+    },
+    "2026-04-15-github_2026-04-09-Alchemy-清华AI科研自动化框架": {
+      "doc_id": "PyHVdCMDJoFX5zxUrr8cLuxQnzf",
+      "url": "https://feishu.cn/docx/PyHVdCMDJoFX5zxUrr8cLuxQnzf",
+      "synced_at": "2026-04-16T10:36:36.413962"
+    },
+    "2026-04-15-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周": {
+      "doc_id": "EVQFdO6OGoYdqIxcUJ5cH7c1nMf",
+      "url": "https://feishu.cn/docx/EVQFdO6OGoYdqIxcUJ5cH7c1nMf",
+      "synced_at": "2026-04-16T10:36:40.438583"
+    },
+    "2026-04-15-github_gitnexus-agan": {
+      "doc_id": "Qz67dOpjlo6NZKxt4sjcEEf7nMh",
+      "url": "https://feishu.cn/docx/Qz67dOpjlo6NZKxt4sjcEEf7nMh",
+      "synced_at": "2026-04-16T10:36:44.282516"
+    },
+    "2026-04-15-github_gitnexus-douyin-20260410": {
+      "doc_id": "N7fMdseizomYaPxkjkqcZXTjncg",
+      "url": "https://feishu.cn/docx/N7fMdseizomYaPxkjkqcZXTjncg",
+      "synced_at": "2026-04-16T10:36:47.631898"
+    },
+    "2026-04-15-github_hermes-agent-douyin-20260410": {
+      "doc_id": "ZlNVdzrcoouhAExhqIicJM0Bnse",
+      "url": "https://feishu.cn/docx/ZlNVdzrcoouhAExhqIicJM0Bnse",
+      "synced_at": "2026-04-16T10:36:54.053438"
+    },
+    "2026-04-15-github_opencli-douyin-20260410": {
+      "doc_id": "DRuOdjTGzonnjMx09N3ctoGOn4b",
+      "url": "https://feishu.cn/docx/DRuOdjTGzonnjMx09N3ctoGOn4b",
+      "synced_at": "2026-04-16T10:36:57.575421"
+    },
+    "2026-04-15-README": {
+      "doc_id": "Z7Qhd1kkuo35xzxS4QHc8aghnIb",
+      "url": "https://feishu.cn/docx/Z7Qhd1kkuo35xzxS4QHc8aghnIb",
+      "synced_at": "2026-04-16T10:37:03.455641"
+    },
+    "Agent": {
+      "doc_id": "TDdMdO4IpodCthxZCSsc0JcUnnb",
+      "url": "https://feishu.cn/docx/TDdMdO4IpodCthxZCSsc0JcUnnb",
+      "synced_at": "2026-04-16T10:37:06.148967"
+    },
+    "AgentSkills技术规范": {
+      "doc_id": "TlgJdGtm8oRGCJxi934cnRFonsg",
+      "url": "https://feishu.cn/docx/TlgJdGtm8oRGCJxi934cnRFonsg",
+      "synced_at": "2026-04-16T10:37:08.676310"
+    },
+    "AI 编程 Agent": {
+      "doc_id": "T128dnEakoN07bxCUnjcmrstnCg",
+      "url": "https://feishu.cn/docx/T128dnEakoN07bxCUnjcmrstnCg",
+      "synced_at": "2026-04-16T10:37:10.982812"
+    },
+    "articles_karpathy-workflow": {
+      "doc_id": "Zpaedc0OKo2jMIxJVKichMzynCC",
+      "url": "https://feishu.cn/docx/Zpaedc0OKo2jMIxJVKichMzynCC",
+      "synced_at": "2026-04-16T10:37:13.952100"
+    },
+    "CLI": {
+      "doc_id": "WbeEdb8w1owt5dxQHbnc08LonWe",
+      "url": "https://feishu.cn/docx/WbeEdb8w1owt5dxQHbnc08LonWe",
+      "synced_at": "2026-04-16T10:37:16.094663"
+    },
+    "CLI工具": {
+      "doc_id": "O0BVdwl0GokHnqxj2Kncviz7n7P",
+      "url": "https://feishu.cn/docx/O0BVdwl0GokHnqxj2Kncviz7n7P",
+      "synced_at": "2026-04-16T10:37:18.312634"
+    },
+    "Constraint Engine": {
+      "doc_id": "GkEpd23jVokew5x9VJictlkFnFh",
+      "url": "https://feishu.cn/docx/GkEpd23jVokew5x9VJictlkFnFh",
+      "synced_at": "2026-04-16T10:37:20.980503"
+    },
+    "Context Engineering": {
+      "doc_id": "OkgxdrCQFoYiSRxNPXgcndcgnZf",
+      "url": "https://feishu.cn/docx/OkgxdrCQFoYiSRxNPXgcndcgnZf",
+      "synced_at": "2026-04-16T10:37:23.396950"
+    },
+    "DeerFlow": {
+      "doc_id": "Zt05drZhqobaY7xtSEpc6T4EnbW",
+      "url": "https://feishu.cn/docx/Zt05drZhqobaY7xtSEpc6T4EnbW",
+      "synced_at": "2026-04-16T10:37:26.191452"
+    },
+    "LongCat AudioDiT": {
+      "doc_id": "NndydenUhojpJTxZnRUcUZZxnec",
+      "url": "https://feishu.cn/docx/NndydenUhojpJTxZnRUcUZZxnec",
+      "synced_at": "2026-04-16T10:37:29.191746"
+    },
+    "Prompt Engineering": {
+      "doc_id": "RgsediWSYog8ohxgBTicU02rnOh",
+      "url": "https://feishu.cn/docx/RgsediWSYog8ohxgBTicU02rnOh",
+      "synced_at": "2026-04-16T10:37:31.824826"
+    },
+    "Seed Baseline 机制": {
+      "doc_id": "BtCSdQEd0okkxGxbEsOcDRGKnob",
+      "url": "https://feishu.cn/docx/BtCSdQEd0okkxGxbEsOcDRGKnob",
+      "synced_at": "2026-04-16T10:37:34.084165"
+    },
+    "Seed Baseline机制": {
+      "doc_id": "EZXld0zxRonQ4rxWQ4SctOo2nbh",
+      "url": "https://feishu.cn/docx/EZXld0zxRonQ4rxWQ4SctOo2nbh",
+      "synced_at": "2026-04-16T10:37:36.626642"
+    },
+    "TTS模型": {
+      "doc_id": "BSjQd4nluof2HXxWKBbcRCGAnXc",
+      "url": "https://feishu.cn/docx/BSjQd4nluof2HXxWKBbcRCGAnXc",
+      "synced_at": "2026-04-16T10:37:38.740394"
+    },
+    "wiki 知识库": {
+      "doc_id": "Bh4kdyqglouR1KxHZAkcOsS8nRe",
+      "url": "https://feishu.cn/docx/Bh4kdyqglouR1KxHZAkcOsS8nRe",
+      "synced_at": "2026-04-16T10:37:41.802048"
+    },
+    "函数": {
+      "doc_id": "LHZidF67doCGeTxmwS0cNlY0nRL",
+      "url": "https://feishu.cn/docx/LHZidF67doCGeTxmwS0cNlY0nRL",
+      "synced_at": "2026-04-16T10:37:44.083799"
+    },
+    "收集": {
+      "doc_id": "JMNWdnbOWoIkS5xy3pBcY8rwntc",
+      "url": "https://feishu.cn/docx/JMNWdnbOWoIkS5xy3pBcY8rwntc",
+      "synced_at": "2026-04-16T10:37:46.984295"
+    },
+    "知识管理": {
+      "doc_id": "NLcodm4vBoPEydxPEjyc8H0Unof",
+      "url": "https://feishu.cn/docx/NLcodm4vBoPEydxPEjyc8H0Unof",
+      "synced_at": "2026-04-16T10:37:49.564350"
+    },
+    "种子基线": {
+      "doc_id": "Y502d6r8goDtTgxEVcHcTrJenHd",
+      "url": "https://feishu.cn/docx/Y502d6r8goDtTgxEVcHcTrJenHd",
+      "synced_at": "2026-04-16T10:37:52.231522"
+    },
+    "科学假设生成与方法演化": {
+      "doc_id": "RddGd1bCVoju98xn0g5cbBi9nR6",
+      "url": "https://feishu.cn/docx/RddGd1bCVoju98xn0g5cbBi9nR6",
+      "synced_at": "2026-04-16T10:37:54.719353"
+    },
+    "科研基础设施": {
+      "doc_id": "NMIwdxe8xojztFxfxgQcDaWOnTh",
+      "url": "https://feishu.cn/docx/NMIwdxe8xojztFxfxgQcDaWOnTh",
+      "synced_at": "2026-04-16T10:37:57.430846"
+    },
+    "结构化wiki文章": {
+      "doc_id": "CaLZdNwY9oYZuIxVSb6cPFVOnWd",
+      "url": "https://feishu.cn/docx/CaLZdNwY9oYZuIxVSb6cPFVOnWd",
+      "synced_at": "2026-04-16T10:37:59.886351"
+    },
+    "网站": {
+      "doc_id": "BZdzdftnYoTBrBxmH76cFlOenye",
+      "url": "https://feishu.cn/docx/BZdzdftnYoTBrBxmH76cFlOenye",
+      "synced_at": "2026-04-16T10:38:02.403699"
+    },
+    "网页控制": {
+      "doc_id": "MtcsdYugJoiSCFxtnTMce47inke",
+      "url": "https://feishu.cn/docx/MtcsdYugJoiSCFxtnTMce47inke",
+      "synced_at": "2026-04-16T10:38:04.979274"
+    },
+    "自动化工程": {
+      "doc_id": "DVJ5dWx2EoIjYaxkjDccw75Inhe",
+      "url": "https://feishu.cn/docx/DVJ5dWx2EoIjYaxkjDccw75Inhe",
+      "synced_at": "2026-04-16T10:38:07.541111"
+    },
+    "自进化AI Agent": {
+      "doc_id": "EIg6dQRKBoD6ztxrnwlcITVvnSg",
+      "url": "https://feishu.cn/docx/EIg6dQRKBoD6ztxrnwlcITVvnSg",
+      "synced_at": "2026-04-16T10:38:10.081338"
+    },
+    "语音合成": {
+      "doc_id": "APZ9dVyYZo7YbJxUdbOcGWW2nBd",
+      "url": "https://feishu.cn/docx/APZ9dVyYZo7YbJxUdbOcGWW2nBd",
+      "synced_at": "2026-04-16T10:38:12.195494"
     }
   },
   "failed": {
@@ -2018,7 +2418,7 @@
     },
     "2026-04-14-articles_hermes-agent-ai真用法": {
       "error": "request trigger frequency limit",
-      "failed_at": "2026-04-15T11:53:18.995640"
+      "failed_at": "2026-04-16T10:34:58.968946"
     },
     "2026-04-14-articles_karpathy-rag-critique-aidianliao": {
       "error": "folder locked",
@@ -2046,11 +2446,11 @@
     },
     "2026-04-14-github_2026-04-09-Alchemy-Tsinghua-AI-Science": {
       "error": "request trigger frequency limit",
-      "failed_at": "2026-04-15T11:53:39.801494"
+      "failed_at": "2026-04-16T10:35:25.987768"
     },
     "2026-04-14-github_2026-04-09-Alchemy-清华AI科研自动化框架": {
-      "error": "folder locked",
-      "failed_at": "2026-04-15T11:53:40.924112"
+      "error": "request trigger frequency limit",
+      "failed_at": "2026-04-16T10:35:30.023454"
     },
     "2026-04-14-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周": {
       "error": "request trigger frequency limit",
@@ -2078,7 +2478,7 @@
     },
     "2026-04-15-articles_2026-04-09-Harness-Engineering": {
       "error": "request trigger frequency limit",
-      "failed_at": "2026-04-15T11:54:04.031746"
+      "failed_at": "2026-04-16T10:35:56.897949"
     },
     "2026-04-15-articles_2026-04-09-Knowledge-Screenshots-Summary": {
       "error": "request trigger frequency limit",
@@ -2098,7 +2498,7 @@
     },
     "2026-04-15-articles_llm-training-data-sources": {
       "error": "request trigger frequency limit",
-      "failed_at": "2026-04-15T11:54:21.037172"
+      "failed_at": "2026-04-16T10:36:16.024179"
     },
     "2026-04-15-articles_opencli-siliconprism": {
       "error": "folder locked",
@@ -2134,7 +2534,7 @@
     },
     "2026-04-15-github_hermes-agent-ai-zhenyongfa": {
       "error": "request trigger frequency limit",
-      "failed_at": "2026-04-15T11:54:48.935965"
+      "failed_at": "2026-04-16T10:36:49.933517"
     },
     "2026-04-15-github_hermes-agent-douyin-20260410": {
       "error": "folder locked",
@@ -2146,7 +2546,7 @@
     },
     "2026-04-15-github_openmaic-douyin-20260410": {
       "error": "request trigger frequency limit",
-      "failed_at": "2026-04-15T11:54:54.830004"
+      "failed_at": "2026-04-16T10:36:59.984447"
     },
     "2026-04-15-README": {
       "error": "request trigger frequency limit",
@@ -2189,8 +2589,8 @@
       "failed_at": "2026-04-15T11:55:57.699581"
     },
     "Feedback System": {
-      "error": "request trigger frequency limit",
-      "failed_at": "2026-04-15T11:56:05.878219"
+      "error": "folder locked",
+      "failed_at": "2026-04-16T10:37:27.158956"
     },
     "LongCat AudioDiT": {
       "error": "folder locked",

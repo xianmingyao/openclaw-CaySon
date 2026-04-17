@@ -1,0 +1,519 @@
+{
+  "nodes": {
+    "5f7a8d2c": {
+      "id": "5f7a8d2c",
+      "content": "MAGMA是四维图谱记忆系统，包含语义、时间、因果、实体四个维度",
+      "created_at": "2026-04-17T08:56:58.594215",
+      "updated_at": "2026-04-17T08:56:58.594215",
+      "semantic_keywords": [
+        "包含语义",
+        "时间",
+        "因果",
+        "MAGMA是四维图谱记忆系统",
+        "实体四个维度"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 1,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [
+        "6d6c2dc7",
+        "e83580b9"
+      ],
+      "causal_effects": [],
+      "causal_strength": 0.8,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [
+        "系统"
+      ],
+      "source": "test",
+      "importance": 1.0,
+      "verified": false
+    },
+    "6d6c2dc7": {
+      "id": "6d6c2dc7",
+      "content": "Mem0是现有的记忆系统，使用扁平向量存储",
+      "created_at": "2026-04-17T08:56:58.595226",
+      "updated_at": "2026-04-17T08:56:58.595226",
+      "semantic_keywords": [
+        "使用扁平向量存储",
+        "Mem0是现有的记忆系统"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 2,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [],
+      "causal_effects": [
+        "5f7a8d2c"
+      ],
+      "causal_strength": 0.8,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [
+        "系统"
+      ],
+      "source": "test",
+      "importance": 1.0,
+      "verified": false
+    },
+    "e83580b9": {
+      "id": "e83580b9",
+      "content": "OpenClaw是AI助手框架，支持多Agent协作",
+      "created_at": "2026-04-17T08:56:58.595736",
+      "updated_at": "2026-04-17T08:56:58.595736",
+      "semantic_keywords": [
+        "支持多Agent协作",
+        "OpenClaw是AI助手框架"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 3,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [],
+      "causal_effects": [
+        "5f7a8d2c"
+      ],
+      "causal_strength": 0.6,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [
+        "框架",
+        "AI",
+        "Agent"
+      ],
+      "source": "test",
+      "importance": 1.0,
+      "verified": false
+    },
+    "e842ccc1": {
+      "id": "e842ccc1",
+      "content": "LangGraph是微软出品的Agent编排框架",
+      "created_at": "2026-04-17T08:56:58.595736",
+      "updated_at": "2026-04-17T08:56:58.595736",
+      "semantic_keywords": [
+        "LangGraph是微软出品的Agent编排框架"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 4,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [],
+      "causal_effects": [],
+      "causal_strength": 0.5,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [
+        "框架",
+        "Agent"
+      ],
+      "source": "test",
+      "importance": 1.0,
+      "verified": false
+    },
+    "f0de9981": {
+      "id": "f0de9981",
+      "content": "MAGMA: 四维图谱突破AI记忆瓶颈 - 语义+时间+因果+实体四维度，降低Token 95%",
+      "created_at": "2026-04-17T08:57:38.776332",
+      "updated_at": "2026-04-17T08:57:38.776332",
+      "semantic_keywords": [
+        "实体四维度",
+        "语义",
+        "四维图谱",
+        "记忆系统",
+        "因果",
+        "降低Token",
+        "95",
+        "四维图谱突破AI记忆瓶颈",
+        "时间",
+        "MAGMA"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 5,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [
+        "d3fd60eb"
+      ],
+      "causal_effects": [],
+      "causal_strength": 0.7,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [
+        "AI"
+      ],
+      "source": "douyin",
+      "importance": 1.0,
+      "verified": false
+    },
+    "d3fd60eb": {
+      "id": "d3fd60eb",
+      "content": "Meta-Harness: 斯坦福+MIT代码级优化，准确率+7.7%，Token降至1/4",
+      "created_at": "2026-04-17T08:57:38.777331",
+      "updated_at": "2026-04-17T08:57:38.777331",
+      "semantic_keywords": [
+        "MIT代码级优化",
+        "Meta",
+        "Token降至1",
+        "代码优化",
+        "Harness",
+        "准确率",
+        "斯坦福",
+        "Meta-Harness",
+        "MIT"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 6,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [
+        "a48b7ae8"
+      ],
+      "causal_effects": [
+        "f0de9981"
+      ],
+      "causal_strength": 0.7,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [],
+      "source": "douyin",
+      "importance": 1.0,
+      "verified": false
+    },
+    "89da560b": {
+      "id": "89da560b",
+      "content": "MiroThinker-H1: 双重验证机制，GAIA 88.5分，超越GPT-5 12.1%",
+      "created_at": "2026-04-17T08:57:38.777833",
+      "updated_at": "2026-04-17T08:57:38.777833",
+      "semantic_keywords": [
+        "双重验证",
+        "双重验证机制",
+        "超越GPT",
+        "GAIA",
+        "5分",
+        "MiroThinker",
+        "12",
+        "88",
+        "H1",
+        "GPT-5"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 7,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [
+        "206316fa"
+      ],
+      "causal_effects": [],
+      "causal_strength": 0.8,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [
+        "AI"
+      ],
+      "source": "douyin",
+      "importance": 1.0,
+      "verified": false
+    },
+    "206316fa": {
+      "id": "206316fa",
+      "content": "LatentMAS: 斯坦福+普林斯顿隐空间通信，推理速度+4.3倍，Token-83.7%",
+      "created_at": "2026-04-17T08:57:38.777833",
+      "updated_at": "2026-04-17T08:57:38.777833",
+      "semantic_keywords": [
+        "3倍",
+        "83",
+        "LatentMAS",
+        "多智能体",
+        "隐空间",
+        "Token",
+        "普林斯顿隐空间通信",
+        "斯坦福",
+        "推理速度"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 8,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [],
+      "causal_effects": [
+        "89da560b"
+      ],
+      "causal_strength": 0.8,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [],
+      "source": "douyin",
+      "importance": 1.0,
+      "verified": false
+    },
+    "36ec9079": {
+      "id": "36ec9079",
+      "content": "Coder-CUA: 牛津大学Agent原生UI，AUI-Gym 1560任务",
+      "created_at": "2026-04-17T08:57:38.778831",
+      "updated_at": "2026-04-17T08:57:38.778831",
+      "semantic_keywords": [
+        "牛津大学Agent原生UI",
+        "Gym",
+        "CUA",
+        "Coder-CUA",
+        "原生UI",
+        "1560任务",
+        "牛津大学",
+        "Coder",
+        "AUI"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 9,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [],
+      "causal_effects": [],
+      "causal_strength": 0.5,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [
+        "Agent"
+      ],
+      "source": "douyin",
+      "importance": 1.0,
+      "verified": false
+    },
+    "a48b7ae8": {
+      "id": "a48b7ae8",
+      "content": "AVO: NVIDIA B200挑战cuDNN性能，7天演化超越FlashAttention-4",
+      "created_at": "2026-04-17T08:57:38.779333",
+      "updated_at": "2026-04-17T08:57:38.779333",
+      "semantic_keywords": [
+        "AVO",
+        "B200挑战cuDNN性能",
+        "cuDNN",
+        "NVIDIA",
+        "7天演化超越FlashAttention",
+        "B200"
+      ],
+      "semantic_embedding": null,
+      "temporal_sequence": 10,
+      "temporal_period": "morning",
+      "temporal_date": "2026-04-17",
+      "causal_causes": [],
+      "causal_effects": [
+        "d3fd60eb"
+      ],
+      "causal_strength": 0.6,
+      "entity_subjects": [],
+      "entity_objects": [],
+      "entity_concepts": [],
+      "source": "douyin",
+      "importance": 1.0,
+      "verified": false
+    }
+  },
+  "sequence_counter": 10,
+  "keyword_index": {
+    "包含语义": [
+      "5f7a8d2c"
+    ],
+    "时间": [
+      "5f7a8d2c",
+      "f0de9981"
+    ],
+    "因果": [
+      "5f7a8d2c",
+      "f0de9981"
+    ],
+    "MAGMA是四维图谱记忆系统": [
+      "5f7a8d2c"
+    ],
+    "实体四个维度": [
+      "5f7a8d2c"
+    ],
+    "使用扁平向量存储": [
+      "6d6c2dc7"
+    ],
+    "Mem0是现有的记忆系统": [
+      "6d6c2dc7"
+    ],
+    "支持多Agent协作": [
+      "e83580b9"
+    ],
+    "OpenClaw是AI助手框架": [
+      "e83580b9"
+    ],
+    "LangGraph是微软出品的Agent编排框架": [
+      "e842ccc1"
+    ],
+    "实体四维度": [
+      "f0de9981"
+    ],
+    "语义": [
+      "f0de9981"
+    ],
+    "四维图谱": [
+      "f0de9981"
+    ],
+    "记忆系统": [
+      "f0de9981"
+    ],
+    "降低Token": [
+      "f0de9981"
+    ],
+    "95": [
+      "f0de9981"
+    ],
+    "四维图谱突破AI记忆瓶颈": [
+      "f0de9981"
+    ],
+    "MAGMA": [
+      "f0de9981"
+    ],
+    "MIT代码级优化": [
+      "d3fd60eb"
+    ],
+    "Meta": [
+      "d3fd60eb"
+    ],
+    "Token降至1": [
+      "d3fd60eb"
+    ],
+    "代码优化": [
+      "d3fd60eb"
+    ],
+    "Harness": [
+      "d3fd60eb"
+    ],
+    "准确率": [
+      "d3fd60eb"
+    ],
+    "斯坦福": [
+      "d3fd60eb",
+      "206316fa"
+    ],
+    "Meta-Harness": [
+      "d3fd60eb"
+    ],
+    "MIT": [
+      "d3fd60eb"
+    ],
+    "双重验证": [
+      "89da560b"
+    ],
+    "双重验证机制": [
+      "89da560b"
+    ],
+    "超越GPT": [
+      "89da560b"
+    ],
+    "GAIA": [
+      "89da560b"
+    ],
+    "5分": [
+      "89da560b"
+    ],
+    "MiroThinker": [
+      "89da560b"
+    ],
+    "12": [
+      "89da560b"
+    ],
+    "88": [
+      "89da560b"
+    ],
+    "H1": [
+      "89da560b"
+    ],
+    "GPT-5": [
+      "89da560b"
+    ],
+    "3倍": [
+      "206316fa"
+    ],
+    "83": [
+      "206316fa"
+    ],
+    "LatentMAS": [
+      "206316fa"
+    ],
+    "多智能体": [
+      "206316fa"
+    ],
+    "隐空间": [
+      "206316fa"
+    ],
+    "Token": [
+      "206316fa"
+    ],
+    "普林斯顿隐空间通信": [
+      "206316fa"
+    ],
+    "推理速度": [
+      "206316fa"
+    ],
+    "牛津大学Agent原生UI": [
+      "36ec9079"
+    ],
+    "Gym": [
+      "36ec9079"
+    ],
+    "CUA": [
+      "36ec9079"
+    ],
+    "Coder-CUA": [
+      "36ec9079"
+    ],
+    "原生UI": [
+      "36ec9079"
+    ],
+    "1560任务": [
+      "36ec9079"
+    ],
+    "牛津大学": [
+      "36ec9079"
+    ],
+    "Coder": [
+      "36ec9079"
+    ],
+    "AUI": [
+      "36ec9079"
+    ],
+    "AVO": [
+      "a48b7ae8"
+    ],
+    "B200挑战cuDNN性能": [
+      "a48b7ae8"
+    ],
+    "cuDNN": [
+      "a48b7ae8"
+    ],
+    "NVIDIA": [
+      "a48b7ae8"
+    ],
+    "7天演化超越FlashAttention": [
+      "a48b7ae8"
+    ],
+    "B200": [
+      "a48b7ae8"
+    ]
+  },
+  "entity_index": {
+    "系统": [
+      "5f7a8d2c",
+      "6d6c2dc7"
+    ],
+    "框架": [
+      "e83580b9",
+      "e842ccc1"
+    ],
+    "AI": [
+      "e83580b9",
+      "89da560b",
+      "f0de9981"
+    ],
+    "Agent": [
+      "e83580b9",
+      "36ec9079",
+      "e842ccc1"
+    ]
+  }
+}

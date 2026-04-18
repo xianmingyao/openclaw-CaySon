@@ -1,0 +1,129 @@
+﻿==================================================
+NOTION SYNC v2
+==================================================
+[OK] Token acquired
+[OK] Database ID: 33d2bb54...
+
+[LOAD] Loading wiki files...
+   Found 501 files
+
+[SYNC] Syncing to Notion...
+[NOTION] Creating: index
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: log
+   [OK] https://notion.so/3452bb5417c381e6bb12c0eb45f1ca12
+[NOTION] Creating: .cursorrules
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: 100篇_40万字规模
+   [OK] https://notion.so/3452bb5417c381f9af49c7b66d5fa848
+[NOTION] Creating: 3,474 Commits
+   [OK] https://notion.so/3452bb5417c381f9973fc30f45ecaafb
+[NOTION] Creating: 3.9k（视频中显示2.0万收藏）
+   [OK] https://notion.so/3452bb5417c381a39261c14dd8fd1a7b
+[NOTION] Creating: 33.3k Stars
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: 4.3k Forks
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: 601个分支
+   [OK] https://notion.so/3452bb5417c3813d8a90e6581aa75cc2
+[NOTION] Creating: @AI真用法
+   [OK] https://notion.so/3452bb5417c38111aae5fbb28f459660
+[NOTION] Creating: @大阳AI测评君
+   [OK] https://notion.so/3452bb5417c381af96b1f4997cbbd656
+[NOTION] Creating: @电磁波Studio
+   [OK] https://notion.so/3452bb5417c3813b8a97c38b7eb37a0b
+[NOTION] Creating: @硅基棱镜
+   [OK] https://notion.so/3452bb5417c3812fa300d215832003a5
+[NOTION] Creating: @阿甘探AI
+   [OK] https://notion.so/3452bb5417c38175a01dc73ff50ae223
+[NOTION] Creating: AAAI 2025 论文《Mind Individual Information!》
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: AAAI 2025论文《Mind Individual Information!》
+   [OK] https://notion.so/3452bb5417c381968758efb411178c43
+[NOTION] Creating: AAAII 2025 论文《Mind Individual Information!》
+   [OK] https://notion.so/3452bb5417c381429685ff491323f368
+[NOTION] Creating: AAAII 2025论文级别的基线算法
+   [OK] https://notion.so/3452bb5417c381839337c8c83015d5fd
+[NOTION] Creating: abhigyanpatwari _ GitNexus
+   [OK] https://notion.so/3452bb5417c381f7be1cc8f11e651c79
+[NOTION] Creating: abhigyanpatwari_GitNexus
+   [OK] https://notion.so/3452bb5417c381a38358e70b238c5689
+[NOTION] Creating: Agent SDK
+   [OK] https://notion.so/3452bb5417c38106b0ffdee6294d0d0a
+[NOTION] Creating: AGENT.md
+   [OK] https://notion.so/3452bb5417c3817ea9e1c63d3af4d741
+[NOTION] Creating: AI Scientist 系统
+   [OK] https://notion.so/3452bb5417c38160b908f9e561db3e88
+[NOTION] Creating: AI Scientist
+   [OK] https://notion.so/3452bb5417c38196a2a8f58477c4e6f6
+[NOTION] Creating: AI Scientist系统
+   [OK] https://notion.so/3452bb5417c38119a7a4ca4e55c5549b
+[NOTION] Creating: AI有点聊
+   [OK] https://notion.so/3452bb5417c381efa533c05efe15dc7f
+[NOTION] Creating: AI真用法
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: Alchemy
+   [OK] https://notion.so/3452bb5417c38146bda0d1e23e397acc
+[NOTION] Creating: Alchemy（炼丹炉）
+   [OK] https://notion.so/3452bb5417c381ffbbcfd9b41e65b4aa
+[NOTION] Creating: algorithm.py
+   [OK] https://notion.so/3452bb5417c381cf805ddc4d94109388
+[NOTION] Creating: Alpaca
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: AlphaCode
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: Anthropic
+   [OK] https://notion.so/3452bb5417c381d6a051e5534e812b86
+[NOTION] Creating: Antigravity Ultra
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: articles
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: articles_
+   [OK] https://notion.so/3452bb5417c3812c9455e289fa212b74
+[NOTION] Creating: BELLE
+   [OK] https://notion.so/3452bb5417c381e2b41dd9695ea6d6bb
+[NOTION] Creating: Bilibili
+   [OK] https://notion.so/3452bb5417c3815db5add08d6cfaa89d
+[NOTION] Creating: chatgpt
+   [OK] https://notion.so/3452bb5417c38130b221cad2cd336bd8
+[NOTION] Creating: chrome-devtools-mcp
+   [OK] https://notion.so/3452bb5417c3818c8e2fc529fa4e1f14
+[NOTION] Creating: Claude Agent
+   [OK] https://notion.so/3452bb5417c381ae8c7adfcf10e69da1
+[NOTION] Creating: Claude Code
+   [OK] https://notion.so/3452bb5417c38165a5e6ca619a5f228e
+[NOTION] Creating: Claude
+   [OK] https://notion.so/3452bb5417c381f8baf9dd1d6a158aee
+[NOTION] Creating: CodeAlpaca
+   [OK] https://notion.so/3452bb5417c381599376f795be62a970
+[NOTION] Creating: compile.py
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: datasets
+   [OK] https://notion.so/3452bb5417c381009c2bcc4dbb9a0704
+[NOTION] Creating: datasets_
+   [OK] https://notion.so/3452bb5417c3812d8443f4c62f27e3eb
+[NOTION] Creating: DataTool
+   [OK] https://notion.so/3452bb5417c3815690fde1a7a2c56060
+[NOTION] Creating: DeepMind
+   [OK] https://notion.so/3452bb5417c3815482cbe55a8edf75cc
+[NOTION] Creating: DeerFlow 2.0
+   [OK] https://notion.so/3452bb5417c381f9a93ce1571acfb422
+[NOTION] Creating: Firefly
+   [OK] https://notion.so/3452bb5417c3815aa385e26aaf2f9a83
+[NOTION] Creating: Fish Audio S2 Pro
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: GitHub Forks
+   [OK] https://notion.so/3452bb5417c381e38c62f7f1361fc9f3
+[NOTION] Creating: GitHub Stars
+   [OK] https://notion.so/3452bb5417c381999fdbe437cfca15b9
+[NOTION] Creating: github.com_TsinghuaISE_Alchemy
+   [OK] https://notion.so/3452bb5417c38122b56cf15fc756adcf
+[NOTION] Creating: GitHub
+   [OK] https://notion.so/3452bb5417c3815eb756dc4adb107c5d
+[NOTION] Creating: GitHub_ github.com_TsinghuaISE_Alchemy
+   [OK] https://notion.so/3452bb5417c38112a6f8e945a8844c8d
+[NOTION] Creating: github_
+   [OK] https://notion.so/3452bb5417c381df8a19d47f978d04e6
+[NOTION] Creating: GitNexus
+   [FAIL] HTTPSConnectionPool(host='api.notion.com', port=443): Max retries exceeded with url: /v1/pages (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+[NOTION] Creating: GPT-4

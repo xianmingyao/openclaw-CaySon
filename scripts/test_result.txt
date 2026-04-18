@@ -1,0 +1,9 @@
+text: 2026-04-08 Harness Engineering（驾驭工程）
+视频：@从小就坏®²⁰²³ ོ
+核心：AI代理
+text: 2026-04-08 Skills研究总结（抖音视频）
+AI干货局6个必备Skill：
+- React性能优化（reac
+text: 2026-04-08 下午研究（08:45-10:20）
+1.SDD开发教程（大力AI）：OpenSpec规范多人协作，
+CaySon_db row_count: 5925

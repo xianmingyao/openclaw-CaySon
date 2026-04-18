@@ -1,0 +1,3012 @@
+{
+  "success": 497,
+  "failed": 4,
+  "results": [
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\index.md",
+      "title": "index",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38153af31ef2f506b1535"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\log.md",
+      "title": "log",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d09e38fd573f4923eb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\.cursorrules.md",
+      "title": ".cursorrules",
+      "success": false,
+      "error": "Max retries exceeded"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\100篇_40万字规模.md",
+      "title": "100篇_40万字规模",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381adad3dc85798f2c390"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\3,474 Commits.md",
+      "title": "3,474 Commits",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816084bbc8c4fa0cc054"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\3.9k（视频中显示2.0万收藏）.md",
+      "title": "3.9k（视频中显示2.0万收藏）",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38159a647f779bf2cd534"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\33.3k Stars.md",
+      "title": "33.3k Stars",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ba83cfea245a8543f1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\4.3k Forks.md",
+      "title": "4.3k Forks",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c38858ed22818c460d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\601个分支.md",
+      "title": "601个分支",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811e885ed017b4a74063"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\@AI真用法.md",
+      "title": "@AI真用法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38171a46ae29c90cb8f4d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\@大阳AI测评君.md",
+      "title": "@大阳AI测评君",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819093f4f4ed12a1bd85"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\@电磁波Studio.md",
+      "title": "@电磁波Studio",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381dd8a69ff0cdfedc8ad"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\@硅基棱镜.md",
+      "title": "@硅基棱镜",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38101bc26f984b62546f5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\@阿甘探AI.md",
+      "title": "@阿甘探AI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c5a401d3ba9486dac8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AAAI 2025 论文《Mind Individual Information!》.md",
+      "title": "AAAI 2025 论文《Mind Individual Information!》",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a59f03f0b3b9658627"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AAAI 2025论文《Mind Individual Information!》.md",
+      "title": "AAAI 2025论文《Mind Individual Information!》",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814c8e4ee2f8c3b06477"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AAAII 2025 论文《Mind Individual Information!》.md",
+      "title": "AAAII 2025 论文《Mind Individual Information!》",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381acbad7db9f1c9d9746"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AAAII 2025论文级别的基线算法.md",
+      "title": "AAAII 2025论文级别的基线算法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38161bad6daaa44166921"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\abhigyanpatwari _ GitNexus.md",
+      "title": "abhigyanpatwari _ GitNexus",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816e9b2dc385a09643da"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\abhigyanpatwari_GitNexus.md",
+      "title": "abhigyanpatwari_GitNexus",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c293fed2fd4de1f334"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Agent SDK.md",
+      "title": "Agent SDK",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818c8289f077fe708862"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AGENT.md.md",
+      "title": "AGENT.md",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812e9474d0004ccc6e92"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AI Scientist 系统.md",
+      "title": "AI Scientist 系统",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810b97c6f1e2415df82d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AI Scientist.md",
+      "title": "AI Scientist",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38122b8d6f339c8b4e311"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AI Scientist系统.md",
+      "title": "AI Scientist系统",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fd8df3f867afd33649"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AI有点聊.md",
+      "title": "AI有点聊",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b5be88fd1c26943d49"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AI真用法.md",
+      "title": "AI真用法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38150817ddfac52bb2d27"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Alchemy.md",
+      "title": "Alchemy",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818db25bf785aaf96d49"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Alchemy（炼丹炉）.md",
+      "title": "Alchemy（炼丹炉）",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811aafbaf9b7560b3cf8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\algorithm.py.md",
+      "title": "algorithm.py",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816d9013c4664e5c5eb4"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Alpaca.md",
+      "title": "Alpaca",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38166a9bad3a18f11bf34"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\AlphaCode.md",
+      "title": "AlphaCode",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ffa729f8897f1de0dc"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Anthropic.md",
+      "title": "Anthropic",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815f893bf24a9f41ba3e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Antigravity Ultra.md",
+      "title": "Antigravity Ultra",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38127b345d10f1c51780b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\articles.md",
+      "title": "articles",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810182f6c72ea2c4fc3c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\articles_.md",
+      "title": "articles_",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819d8f2ff79d6bf9bf87"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\BELLE.md",
+      "title": "BELLE",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c19a27d85f8f81341a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Bilibili.md",
+      "title": "Bilibili",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816c826cff71e7845189"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\chatgpt.md",
+      "title": "chatgpt",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813c9225d79739639dcf"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\chrome-devtools-mcp.md",
+      "title": "chrome-devtools-mcp",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38190b912fc08cf6aced7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Claude Agent.md",
+      "title": "Claude Agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b09da3ca67221958b8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Claude Code.md",
+      "title": "Claude Code",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812c841ef7e5b1aea1d3"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Claude.md",
+      "title": "Claude",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38176b7c5fc4e909c58db"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\CodeAlpaca.md",
+      "title": "CodeAlpaca",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38179aa26dd8df4085966"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\compile.py.md",
+      "title": "compile.py",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38178bee6c6bf443d512a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\datasets.md",
+      "title": "datasets",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810499fded66f4725afb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\datasets_.md",
+      "title": "datasets_",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811591a6e8ca83f3e0c9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\DataTool.md",
+      "title": "DataTool",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a09b9dda08cd8bd1ed"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\DeepMind.md",
+      "title": "DeepMind",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381daa932ca6131adb6e7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\DeerFlow 2.0.md",
+      "title": "DeerFlow 2.0",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810dbf1fe1413d7ef23f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Firefly.md",
+      "title": "Firefly",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fe9559e0e425acd9b5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Fish Audio S2 Pro.md",
+      "title": "Fish Audio S2 Pro",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381819c89ec1aec09655b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\GitHub Forks.md",
+      "title": "GitHub Forks",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38176811ae04c6ef1420d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\GitHub Stars.md",
+      "title": "GitHub Stars",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817e87c9e8e90c299795"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\github.com_TsinghuaISE_Alchemy.md",
+      "title": "github.com_TsinghuaISE_Alchemy",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38101a1a3e0a57eadcfa5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\GitHub.md",
+      "title": "GitHub",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e0a359f4a5f5c5f237"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\GitHub_ github.com_TsinghuaISE_Alchemy.md",
+      "title": "GitHub_ github.com_TsinghuaISE_Alchemy",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381049f95c1ae13a5a884"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\github_.md",
+      "title": "github_",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f7ab7ec1b3225fa270"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\GitNexus.md",
+      "title": "GitNexus",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c49064c51d822768e4"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\GPT-4.md",
+      "title": "GPT-4",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381609f65fb31c2b03d78"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\GPT-4o.md",
+      "title": "GPT-4o",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381389ed4cf825bf445bd"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Graph RAG.md",
+      "title": "Graph RAG",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e2a3f1f137b4763c3a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Graph RAG设计思路.md",
+      "title": "Graph RAG设计思路",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38121bc91dae306c53476"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\GSM8K-augmented.md",
+      "title": "GSM8K-augmented",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819eba89f603e3289840"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Harness Core.md",
+      "title": "Harness Core",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811fa491ee6fffa08a0f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Hermes Agent.md",
+      "title": "Hermes Agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38165b56cf729b019b4e3"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Hermes-agent.md",
+      "title": "Hermes-agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381498f7bc3876cacba39"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\InfinityInstruct.md",
+      "title": "InfinityInstruct",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811cb0dcf577eb225e7f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\JCST 2026.md",
+      "title": "JCST 2026",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818d86d9f04d4b25ffe7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Karpathy AI 知识库系列.md",
+      "title": "Karpathy AI 知识库系列",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38142a703ff101addd739"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Karpathy AI 知识库系列（2026年4月）.md",
+      "title": "Karpathy AI 知识库系列（2026年4月）",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817d8f50ca8294c61372"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Karpathy 知识库.md",
+      "title": "Karpathy 知识库",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381228e80ee7b9dc1b14e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Karpathy 知识库工作流.md",
+      "title": "Karpathy 知识库工作流",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f8bf3ed520f84d40e3"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Karpathy.md",
+      "title": "Karpathy",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fa9de8f1b229f2fe95"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Karpathy知识库工作流.md",
+      "title": "Karpathy知识库工作流",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817590e9e0e8af02a2ec"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Karpathy（安德烈·卡帕西）.md",
+      "title": "Karpathy（安德烈·卡帕西）",
+      "success": false,
+      "error": "Max retries exceeded"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\LiteRT-LM.md",
+      "title": "LiteRT-LM",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c887bbe4126dd3f939"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\LLM.md",
+      "title": "LLM",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e09e28e448874f44f8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\LongCat-AudioDiT.md",
+      "title": "LongCat-AudioDiT",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812ea9f0c91c594d7c93"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Magicoder-OSS-Instruct.md",
+      "title": "Magicoder-OSS-Instruct",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38178ae1de0538a381de8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\MCP 生态全景图.md",
+      "title": "MCP 生态全景图",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38172a4f5de44bec5f13d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\MemPalace (milla-jovovich_mempalace).md",
+      "title": "MemPalace (milla-jovovich_mempalace)",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381479a6edb1090bbbde9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\MemPalace-milla-jovovich-mempalace.md",
+      "title": "MemPalace-milla-jovovich-mempalace",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c380edc3775df1f716"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\MetaMathQA.md",
+      "title": "MetaMathQA",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38127b092de851bfb5d9f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\MOSS-SFT.md",
+      "title": "MOSS-SFT",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810db298ea79fe476f18"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\nousresearch_hermes-agent.md",
+      "title": "nousresearch_hermes-agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381128298db5431b7eaa5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Obsidian Web Clipper.md",
+      "title": "Obsidian Web Clipper",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817fbc7dca1afce3ad57"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\ObsidianWebClipper.md",
+      "title": "ObsidianWebClipper",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a09e8ef1fb7b8ff93f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\OpenAI.md",
+      "title": "OpenAI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816fba6edacfb7c09f88"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\OpenAssistant.md",
+      "title": "OpenAssistant",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f8b146c7bf9c1af13a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\OpenClaw.md",
+      "title": "OpenClaw",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f2bd59d89ba7033488"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\opencli list.md",
+      "title": "opencli list",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d7b4fdcdb770ccc992"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\opencli.md",
+      "title": "opencli",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819db8c0f22018dd5f6b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\OpenCode.md",
+      "title": "OpenCode",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38177a5cee099e642804f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\OpenLearn.md",
+      "title": "OpenLearn",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cfa6f9d15e4b4fa504"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\OpenMAIC.md",
+      "title": "OpenMAIC",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d7b722f359a4924eb8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\papers.md",
+      "title": "papers",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38148beced4adf0415899"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\papers_.md",
+      "title": "papers_",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38137a0f6cd1026e1be7f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Python.md",
+      "title": "Python",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816db7bad7905c8ace20"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Qwen2-TTS.md",
+      "title": "Qwen2-TTS",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38124b0e3fd9221af8347"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\RAG.md",
+      "title": "RAG",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38110835fc76a75deb1c1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\raw_ 目录.md",
+      "title": "raw_ 目录",
+      "success": false,
+      "error": "Max retries exceeded"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\raw_.md",
+      "title": "raw_",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813ab7f9c65e9b9e800b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\raw_目录.md",
+      "title": "raw_目录",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810fa298cd781db7e3d1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\README.md.md",
+      "title": "README.md",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38177b782f75a8330aa95"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Reddit.md",
+      "title": "Reddit",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f5aff2cb065341fffb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\rticles_.md",
+      "title": "rticles_",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ecae8fd585bb2d8f8d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Seeduplex.md",
+      "title": "Seeduplex",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815ca787e69301c4ae29"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\ShareGPT.md",
+      "title": "ShareGPT",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f38ccdce0c8243036d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\SKILL.md",
+      "title": "SKILL",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811abb10fa874e998359"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\SKILL.md_技术规范详解---9ccef561.pdf.md",
+      "title": "SKILL.md_技术规范详解---9ccef561.pdf",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b79506e4c08680ba3e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\The agent that grows with you.md",
+      "title": "The agent that grows with you",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38192a41bebd2a8c94d9d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\THU-MAIC团队.md",
+      "title": "THU-MAIC团队",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38176a985c9211f223f7c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\Twitter.md",
+      "title": "Twitter",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b38c08f92281cddfb7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\wiki.md",
+      "title": "wiki",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f2b281c4fa0c3914ed"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\wiki_.md",
+      "title": "wiki_",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c8ace1e0ae0b89a905"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\yaml配置文件.md",
+      "title": "yaml配置文件",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811aae57c6e25316d0a2"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\YouTube.md",
+      "title": "YouTube",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816dbcd0c0d985aef891"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\三款开源TTS大模型横评，LongCat-AudioDiT完胜.md",
+      "title": "三款开源TTS大模型横评，LongCat-AudioDiT完胜",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381178f2fca3d82b9f29c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\人工标注（最高质量）.md",
+      "title": "人工标注（最高质量）",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38173ab90f62b8f38c941"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\从已有文档_知识库转化.md",
+      "title": "从已有文档_知识库转化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813398b8c120ee7e92b5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\从真实用户交互中提取.md",
+      "title": "从真实用户交互中提取",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fd81b0cb041ee5664d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\内嵌闭环学习系统.md",
+      "title": "内嵌闭环学习系统",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38193a5a3e29f99e055e1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\基于Dify平台的AgentSkills使用.md",
+      "title": "基于Dify平台的AgentSkills使用",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38103a180f0795727ced3"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\基于强模型生成（性价比最高）.md",
+      "title": "基于强模型生成（性价比最高）",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fa89cff3eae9559d61"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\多平台支持.md",
+      "title": "多平台支持",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d99d95e05832941902"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\多模态推荐任务.md",
+      "title": "多模态推荐任务",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b1aaaec593b4e76555"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\大阳AI测评君.md",
+      "title": "大阳AI测评君",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381efa37cc05d6f5d6ad7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\字节跳动 (ByteDance).md",
+      "title": "字节跳动 (ByteDance)",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38132b7dbe5ff3b48b390"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\字节跳动.md",
+      "title": "字节跳动",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38102bc5dff722531dc54"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\实用网站.md",
+      "title": "实用网站",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c783a2db15af7b2b4b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\小红书.md",
+      "title": "小红书",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a08f55fe5dd0b3c6af"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\小龙虾过时了？爱马仕成了最近最猛的开源AI.md",
+      "title": "小龙虾过时了？爱马仕成了最近最猛的开源AI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38120807aef1a5d9919b7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\开源数据集整合.md",
+      "title": "开源数据集整合",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e69f91eae03a3035b8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\抖音.md",
+      "title": "抖音",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d993e2c5098bf3cb36"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\李乐晖.md",
+      "title": "李乐晖",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814fa863f4a4880fffde"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\李佳助理教授课题组.md",
+      "title": "李佳助理教授课题组",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818c8e54e35ae0eb93e0"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\李佳（助理教授）.md",
+      "title": "李佳（助理教授）",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381128498ced165cf2bf0"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\模型无关架构.md",
+      "title": "模型无关架构",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c89945e3cd27fce5ec"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\清华 AI 科研自动化框架.md",
+      "title": "清华 AI 科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812fa973e986f253ed80"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\清华人工智能学院.md",
+      "title": "清华人工智能学院",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38114a9acf83c09fb24fa"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\清华大学 THU-MAIC团队.md",
+      "title": "清华大学 THU-MAIC团队",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815386abcc6b3e097e0e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\清华大学THU-MAIC团队.md",
+      "title": "清华大学THU-MAIC团队",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38115899cde8ae322cd78"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\清华大学人工智能学院.md",
+      "title": "清华大学人工智能学院",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381bb85d2e5339ecdf93e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\电磁波Studio.md",
+      "title": "电磁波Studio",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381bf8adfdb181eb0a60b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\知乎.md",
+      "title": "知乎",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a483addf3acbc19886"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\研究环境执行层.md",
+      "title": "研究环境执行层",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c28108e8ddaab8f4c1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\硅基棱镜.md",
+      "title": "硅基棱镜",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381218f58fd0eb971d0a1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\第三集.md",
+      "title": "第三集",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812fbda9f0c7348dac67"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\算法开发层.md",
+      "title": "算法开发层",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381558dd3f98e7a7638cd"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\素材.md",
+      "title": "素材",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381628d17d71bd7582517"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\素材_.md",
+      "title": "素材_",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381518754cb622fe3242e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\编程救星，不让AI瞎改代码.md",
+      "title": "编程救星，不让AI瞎改代码",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a8af6df309608c0344"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\自动生成Skills.md",
+      "title": "自动生成Skills",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f0b409f585b037c7d1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\蔡立一.md",
+      "title": "蔡立一",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815a9a50f9317e3daf4d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\证书.md",
+      "title": "证书",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e6a9edf19d1598e472"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\跨会话记忆.md",
+      "title": "跨会话记忆",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e79ea6ccbb37dd9f48"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\实体\\阿甘探AI.md",
+      "title": "阿甘探AI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c2941ee780d4559030"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-09-articles_2026-04-09-Harness-Engineering.md",
+      "title": "2026-04-09-articles_2026-04-09-Harness-Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816b8110d4a6b4e67a6e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-09-articles_2026-04-09-Knowledge-Screenshots-Summary.md",
+      "title": "2026-04-09-articles_2026-04-09-Knowledge-Screenshots-Summary",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818689c5ef48552af4d7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-09-articles_karpathy-workflow.md",
+      "title": "2026-04-09-articles_karpathy-workflow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38158bbbef9cc616249d7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-09-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md",
+      "title": "2026-04-09-github_2026-04-09-Alchemy-Tsinghua-AI-Science",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817abd81eb6134414fc5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-09-github_2026-04-09-Alchemy-清华AI科研自动化框架.md",
+      "title": "2026-04-09-github_2026-04-09-Alchemy-清华AI科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810fb436c28992701a5a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-09-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周.md",
+      "title": "2026-04-09-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38143a672fba61b7f0e66"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-09-README.md",
+      "title": "2026-04-09-README",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fb89a9ed796e9b6569"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_2026-04-09-Harness-Engineering.md",
+      "title": "2026-04-10-articles_2026-04-09-Harness-Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d29926e6c62d2b4666"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_2026-04-09-Knowledge-Screenshots-Summary.md",
+      "title": "2026-04-10-articles_2026-04-09-Knowledge-Screenshots-Summary",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814187abf408dc9d1002"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_bytedance-seeduplex-voice-model.md",
+      "title": "2026-04-10-articles_bytedance-seeduplex-voice-model",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38185af8ff781e339eb03"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_hermes-agent-ai真用法.md",
+      "title": "2026-04-10-articles_hermes-agent-ai真用法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c9929ec62db72be83c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_karpathy-rag-critique-aidianliao.md",
+      "title": "2026-04-10-articles_karpathy-rag-critique-aidianliao",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f09395d057fb74ddaa"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_karpathy-workflow.md",
+      "title": "2026-04-10-articles_karpathy-workflow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381bbb7b0c8102711b63c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_opencli-siliconprism.md",
+      "title": "2026-04-10-articles_opencli-siliconprism",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38140b54cc17dc92e3410"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_openlearn-certification-dayang.md",
+      "title": "2026-04-10-articles_openlearn-certification-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38162a87bc37f8c530e83"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_openmaic-dayang.md",
+      "title": "2026-04-10-articles_openmaic-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381438318da2f55a7c965"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_tts-model-comparison-longcat.md",
+      "title": "2026-04-10-articles_tts-model-comparison-longcat",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381778794f1dce3616746"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-articles_tts-models-comparison-20260410.md",
+      "title": "2026-04-10-articles_tts-models-comparison-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381299df1e36db466d2eb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md",
+      "title": "2026-04-10-github_2026-04-09-Alchemy-Tsinghua-AI-Science",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f88c28cbe1408d3a9b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_2026-04-09-Alchemy-清华AI科研自动化框架.md",
+      "title": "2026-04-10-github_2026-04-09-Alchemy-清华AI科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381798ca6e15657664d13"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周.md",
+      "title": "2026-04-10-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38180b167c02e3f160f06"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_gitnexus-agan.md",
+      "title": "2026-04-10-github_gitnexus-agan",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381df8bacda752a202e31"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_gitnexus-douyin-20260410.md",
+      "title": "2026-04-10-github_gitnexus-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ebbd7ff95132293c31"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_hermes-agent-ai-zhenyongfa.md",
+      "title": "2026-04-10-github_hermes-agent-ai-zhenyongfa",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381849591fcb2e4b06bdd"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_hermes-agent-douyin-20260410.md",
+      "title": "2026-04-10-github_hermes-agent-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38118b7f0e26cd05406b2"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_opencli-douyin-20260410.md",
+      "title": "2026-04-10-github_opencli-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c8ab9bcc843adb9040"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-github_openmaic-douyin-20260410.md",
+      "title": "2026-04-10-github_openmaic-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381258bc8cc75f397fdbe"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-10-README.md",
+      "title": "2026-04-10-README",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38112a07dcdfaf16866d7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_2026-04-09-Harness-Engineering.md",
+      "title": "2026-04-11-articles_2026-04-09-Harness-Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cb9c5dff616efd37a6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_2026-04-09-Knowledge-Screenshots-Summary.md",
+      "title": "2026-04-11-articles_2026-04-09-Knowledge-Screenshots-Summary",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38137ab64d531c99f1244"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_bytedance-seeduplex-voice-model.md",
+      "title": "2026-04-11-articles_bytedance-seeduplex-voice-model",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381988a30f26592a8fbc1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_hermes-agent-ai真用法.md",
+      "title": "2026-04-11-articles_hermes-agent-ai真用法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810b96ece4286ab8401f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_karpathy-rag-critique-aidianliao.md",
+      "title": "2026-04-11-articles_karpathy-rag-critique-aidianliao",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f8a7fef2b040831ece"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_karpathy-workflow.md",
+      "title": "2026-04-11-articles_karpathy-workflow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38150957af9ae11a4c2b6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_llm-training-data-sources.md",
+      "title": "2026-04-11-articles_llm-training-data-sources",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38141967cfcd24486b4bf"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_opencli-siliconprism.md",
+      "title": "2026-04-11-articles_opencli-siliconprism",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816eb127ff6ca42d3718"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_openlearn-certification-dayang.md",
+      "title": "2026-04-11-articles_openlearn-certification-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38181bc20cd7adfbeff84"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_openmaic-dayang.md",
+      "title": "2026-04-11-articles_openmaic-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38150a52ff298efd5724c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_SKILL_技术规范详解---9ccef561.pdf.md",
+      "title": "2026-04-11-articles_SKILL_技术规范详解---9ccef561.pdf",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819caa8ddea15b0714fb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_tts-model-comparison-longcat.md",
+      "title": "2026-04-11-articles_tts-model-comparison-longcat",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813c9f8ee2a0c8538c2e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_tts-models-comparison-20260410.md",
+      "title": "2026-04-11-articles_tts-models-comparison-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818c9e9fe78d9fb34317"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-articles_第三集基于Dify平台的AgentSkills使用.pdf.md",
+      "title": "2026-04-11-articles_第三集基于Dify平台的AgentSkills使用.pdf",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38187ac06fbb6b4608447"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md",
+      "title": "2026-04-11-github_2026-04-09-Alchemy-Tsinghua-AI-Science",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381be8989f98c0d01c104"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_2026-04-09-Alchemy-清华AI科研自动化框架.md",
+      "title": "2026-04-11-github_2026-04-09-Alchemy-清华AI科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381958ca2dcd8c941afac"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周.md",
+      "title": "2026-04-11-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814b949aef4eee59806d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_gitnexus-agan.md",
+      "title": "2026-04-11-github_gitnexus-agan",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b8af05ed856ed8179c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_gitnexus-douyin-20260410.md",
+      "title": "2026-04-11-github_gitnexus-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b7a848e46658986a01"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_hermes-agent-ai-zhenyongfa.md",
+      "title": "2026-04-11-github_hermes-agent-ai-zhenyongfa",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38154a2ffd2eba6d421ff"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_hermes-agent-douyin-20260410.md",
+      "title": "2026-04-11-github_hermes-agent-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d1a7faea31dd95217f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_opencli-douyin-20260410.md",
+      "title": "2026-04-11-github_opencli-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a1bbbee5175c7140b9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-github_openmaic-douyin-20260410.md",
+      "title": "2026-04-11-github_openmaic-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817eb607e710e9246320"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-11-README.md",
+      "title": "2026-04-11-README",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d3b607cd6469835481"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_2026-04-09-Harness-Engineering.md",
+      "title": "2026-04-12-articles_2026-04-09-Harness-Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381afa076c52492dfa956"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_2026-04-09-Knowledge-Screenshots-Summary.md",
+      "title": "2026-04-12-articles_2026-04-09-Knowledge-Screenshots-Summary",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381028fd7e6880d7988ac"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_bytedance-seeduplex-voice-model.md",
+      "title": "2026-04-12-articles_bytedance-seeduplex-voice-model",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e4b35bf5577c3d8cc6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_hermes-agent-ai真用法.md",
+      "title": "2026-04-12-articles_hermes-agent-ai真用法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381239ccdd3727fc296fe"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_karpathy-rag-critique-aidianliao.md",
+      "title": "2026-04-12-articles_karpathy-rag-critique-aidianliao",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381458139cc965c54c040"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_karpathy-workflow.md",
+      "title": "2026-04-12-articles_karpathy-workflow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e2bed7e5af19a32aa9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_llm-training-data-sources.md",
+      "title": "2026-04-12-articles_llm-training-data-sources",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818492ede45cc44b0505"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_opencli-siliconprism.md",
+      "title": "2026-04-12-articles_opencli-siliconprism",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815ba377fa6cb302d181"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_openlearn-certification-dayang.md",
+      "title": "2026-04-12-articles_openlearn-certification-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812789d1ed8506462d75"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_openmaic-dayang.md",
+      "title": "2026-04-12-articles_openmaic-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e2bbb9e4b49ec21d59"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_SKILL_技术规范详解---9ccef561.pdf.md",
+      "title": "2026-04-12-articles_SKILL_技术规范详解---9ccef561.pdf",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381068047ec4d51c7be1e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_tts-model-comparison-longcat.md",
+      "title": "2026-04-12-articles_tts-model-comparison-longcat",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38158b495dbe3d2ad20f6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_tts-models-comparison-20260410.md",
+      "title": "2026-04-12-articles_tts-models-comparison-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38102b685c1c4132a1c80"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-articles_第三集基于Dify平台的AgentSkills使用.pdf.md",
+      "title": "2026-04-12-articles_第三集基于Dify平台的AgentSkills使用.pdf",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812ab674eeb4b4fb73a9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md",
+      "title": "2026-04-12-github_2026-04-09-Alchemy-Tsinghua-AI-Science",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819597fcebc05c142ecc"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_2026-04-09-Alchemy-清华AI科研自动化框架.md",
+      "title": "2026-04-12-github_2026-04-09-Alchemy-清华AI科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38114964bc1640ed8a448"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周.md",
+      "title": "2026-04-12-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f1bc09ee820df88a1f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_gitnexus-agan.md",
+      "title": "2026-04-12-github_gitnexus-agan",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816eb91dd64afca62e28"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_gitnexus-douyin-20260410.md",
+      "title": "2026-04-12-github_gitnexus-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812e812bcbb0c192d94c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_hermes-agent-ai-zhenyongfa.md",
+      "title": "2026-04-12-github_hermes-agent-ai-zhenyongfa",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811684b1d64d0a3b73cb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_hermes-agent-douyin-20260410.md",
+      "title": "2026-04-12-github_hermes-agent-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381188c43cf509fc2b3db"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_opencli-douyin-20260410.md",
+      "title": "2026-04-12-github_opencli-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814f8e1ee79e10a1c754"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-github_openmaic-douyin-20260410.md",
+      "title": "2026-04-12-github_openmaic-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814f9678ddfa89b6d15f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-12-README.md",
+      "title": "2026-04-12-README",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38138933bd7838a8dceea"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_2026-04-09-Harness-Engineering.md",
+      "title": "2026-04-13-articles_2026-04-09-Harness-Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381abb0f4e04aa50b6f0f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_2026-04-09-Knowledge-Screenshots-Summary.md",
+      "title": "2026-04-13-articles_2026-04-09-Knowledge-Screenshots-Summary",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e9b7e9f083ab7c9e2d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_bytedance-seeduplex-voice-model.md",
+      "title": "2026-04-13-articles_bytedance-seeduplex-voice-model",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38147a198ecd3bf016028"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_hermes-agent-ai真用法.md",
+      "title": "2026-04-13-articles_hermes-agent-ai真用法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ab889afca5c42dafe1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_karpathy-rag-critique-aidianliao.md",
+      "title": "2026-04-13-articles_karpathy-rag-critique-aidianliao",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b0b830db15f967b01e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_karpathy-workflow.md",
+      "title": "2026-04-13-articles_karpathy-workflow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d3b561dbcb822033ad"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_llm-training-data-sources.md",
+      "title": "2026-04-13-articles_llm-training-data-sources",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e7825afbb9a675a7db"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_opencli-siliconprism.md",
+      "title": "2026-04-13-articles_opencli-siliconprism",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381928577cf37bae8f93c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_openlearn-certification-dayang.md",
+      "title": "2026-04-13-articles_openlearn-certification-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819e964febd083379454"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_openmaic-dayang.md",
+      "title": "2026-04-13-articles_openmaic-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381298fd7dea2e434ba8b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_SKILL_技术规范详解---9ccef561.pdf.md",
+      "title": "2026-04-13-articles_SKILL_技术规范详解---9ccef561.pdf",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b989c6fee1016e5700"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_tts-model-comparison-longcat.md",
+      "title": "2026-04-13-articles_tts-model-comparison-longcat",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38101bb95d4ca1820f5a3"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_tts-models-comparison-20260410.md",
+      "title": "2026-04-13-articles_tts-models-comparison-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816aa150f93f3143cda4"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-articles_第三集基于Dify平台的AgentSkills使用.pdf.md",
+      "title": "2026-04-13-articles_第三集基于Dify平台的AgentSkills使用.pdf",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cdbdb2fb4a20b6f8fd"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md",
+      "title": "2026-04-13-github_2026-04-09-Alchemy-Tsinghua-AI-Science",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d0b0efca06652093db"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_2026-04-09-Alchemy-清华AI科研自动化框架.md",
+      "title": "2026-04-13-github_2026-04-09-Alchemy-清华AI科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812cb231ee75026dbf5c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周.md",
+      "title": "2026-04-13-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381deaa06dbd79cf34484"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_gitnexus-agan.md",
+      "title": "2026-04-13-github_gitnexus-agan",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38190a9b5f69e4a9c901e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_gitnexus-douyin-20260410.md",
+      "title": "2026-04-13-github_gitnexus-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38179af71ed8e56b80004"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_hermes-agent-ai-zhenyongfa.md",
+      "title": "2026-04-13-github_hermes-agent-ai-zhenyongfa",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38162aeacdeec811483ee"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_hermes-agent-douyin-20260410.md",
+      "title": "2026-04-13-github_hermes-agent-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38124b452c170544c63df"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_opencli-douyin-20260410.md",
+      "title": "2026-04-13-github_opencli-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38147a9a4d58f2e985dca"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-github_openmaic-douyin-20260410.md",
+      "title": "2026-04-13-github_openmaic-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381abb2c1f6d825ed64a6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-13-README.md",
+      "title": "2026-04-13-README",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816cb627daa90a8daa4a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_2026-04-09-Harness-Engineering.md",
+      "title": "2026-04-14-articles_2026-04-09-Harness-Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b19ee5d84887a50cc0"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_2026-04-09-Knowledge-Screenshots-Summary.md",
+      "title": "2026-04-14-articles_2026-04-09-Knowledge-Screenshots-Summary",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381819ad1e64fb78cceb2"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_bytedance-seeduplex-voice-model.md",
+      "title": "2026-04-14-articles_bytedance-seeduplex-voice-model",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819ca3c8c37c3c67b3ec"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_hermes-agent-ai真用法.md",
+      "title": "2026-04-14-articles_hermes-agent-ai真用法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818dbfdbd6e4259572ee"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_karpathy-rag-critique-aidianliao.md",
+      "title": "2026-04-14-articles_karpathy-rag-critique-aidianliao",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816fa31be46df69df532"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_karpathy-workflow.md",
+      "title": "2026-04-14-articles_karpathy-workflow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819e9d1cecfaaf3aa007"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_llm-training-data-sources.md",
+      "title": "2026-04-14-articles_llm-training-data-sources",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38153a5bbd4b4b00f5ce7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_opencli-siliconprism.md",
+      "title": "2026-04-14-articles_opencli-siliconprism",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b88aa7d3a6f0030e81"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_openlearn-certification-dayang.md",
+      "title": "2026-04-14-articles_openlearn-certification-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811fac5af3c713ffed94"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_openmaic-dayang.md",
+      "title": "2026-04-14-articles_openmaic-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38181bfd1d5fb09fb8a3b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_tts-model-comparison-longcat.md",
+      "title": "2026-04-14-articles_tts-model-comparison-longcat",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381749217c1ef6efea6f7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-articles_tts-models-comparison-20260410.md",
+      "title": "2026-04-14-articles_tts-models-comparison-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381deb407f21e8071ce4e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md",
+      "title": "2026-04-14-github_2026-04-09-Alchemy-Tsinghua-AI-Science",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38173a5b5d96430179f60"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_2026-04-09-Alchemy-清华AI科研自动化框架.md",
+      "title": "2026-04-14-github_2026-04-09-Alchemy-清华AI科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ea831be4663d84c689"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周.md",
+      "title": "2026-04-14-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817a9b93d6da76769ff5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_gitnexus-agan.md",
+      "title": "2026-04-14-github_gitnexus-agan",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c29e6be39f1ce0e8ff"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_gitnexus-douyin-20260410.md",
+      "title": "2026-04-14-github_gitnexus-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ad94ddd8975f185c5a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_hermes-agent-ai-zhenyongfa.md",
+      "title": "2026-04-14-github_hermes-agent-ai-zhenyongfa",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812f9b76f94b231a04ff"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_hermes-agent-douyin-20260410.md",
+      "title": "2026-04-14-github_hermes-agent-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381efab70eb86375755e5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_opencli-douyin-20260410.md",
+      "title": "2026-04-14-github_opencli-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38115aee9f502c42e83a1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-github_openmaic-douyin-20260410.md",
+      "title": "2026-04-14-github_openmaic-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813da453e73711752fab"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-14-README.md",
+      "title": "2026-04-14-README",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381edbd5bcaa50be56d86"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_2026-04-09-Harness-Engineering.md",
+      "title": "2026-04-15-articles_2026-04-09-Harness-Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c4802ccbc94bb23783"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_2026-04-09-Knowledge-Screenshots-Summary.md",
+      "title": "2026-04-15-articles_2026-04-09-Knowledge-Screenshots-Summary",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381729156dcc13d479ae7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_bytedance-seeduplex-voice-model.md",
+      "title": "2026-04-15-articles_bytedance-seeduplex-voice-model",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818c80fdd8a81cdfc2d9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_hermes-agent-ai真用法.md",
+      "title": "2026-04-15-articles_hermes-agent-ai真用法",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381838ee1feb46d835c1b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_karpathy-rag-critique-aidianliao.md",
+      "title": "2026-04-15-articles_karpathy-rag-critique-aidianliao",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38125af53c4fa2280c08c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_karpathy-workflow.md",
+      "title": "2026-04-15-articles_karpathy-workflow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819cbf4ccc672ffddae7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_llm-training-data-sources.md",
+      "title": "2026-04-15-articles_llm-training-data-sources",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819dbd9fd55ac94ee9d8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_opencli-siliconprism.md",
+      "title": "2026-04-15-articles_opencli-siliconprism",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38181a460c3ff352ab236"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_openlearn-certification-dayang.md",
+      "title": "2026-04-15-articles_openlearn-certification-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38125902ddfa648e45541"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_openmaic-dayang.md",
+      "title": "2026-04-15-articles_openmaic-dayang",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814e88f7e20e92f0b961"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_tts-model-comparison-longcat.md",
+      "title": "2026-04-15-articles_tts-model-comparison-longcat",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d09709c9ca127c50d7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-articles_tts-models-comparison-20260410.md",
+      "title": "2026-04-15-articles_tts-models-comparison-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ebbc2afe6c9279dca8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md",
+      "title": "2026-04-15-github_2026-04-09-Alchemy-Tsinghua-AI-Science",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817fbf2bc8a4105cb8e2"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_2026-04-09-Alchemy-清华AI科研自动化框架.md",
+      "title": "2026-04-15-github_2026-04-09-Alchemy-清华AI科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812083bfc6d4ccac6f28"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周.md",
+      "title": "2026-04-15-github_2026-04-09-GitHub一周热门项目TOP20-2026第9周",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ad937dd78a61d07f59"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_gitnexus-agan.md",
+      "title": "2026-04-15-github_gitnexus-agan",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a196ebeea886a7c347"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_gitnexus-douyin-20260410.md",
+      "title": "2026-04-15-github_gitnexus-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38131b66cd5d08976852e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_hermes-agent-ai-zhenyongfa.md",
+      "title": "2026-04-15-github_hermes-agent-ai-zhenyongfa",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812fba0bee65e9f8083f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_hermes-agent-douyin-20260410.md",
+      "title": "2026-04-15-github_hermes-agent-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381678408dd8357685a13"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_opencli-douyin-20260410.md",
+      "title": "2026-04-15-github_opencli-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b68ba2d048a98c6a31"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-github_openmaic-douyin-20260410.md",
+      "title": "2026-04-15-github_openmaic-douyin-20260410",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381018b49d527cdf47bc4"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\2026-04-15-README.md",
+      "title": "2026-04-15-README",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381358538e5f1b4ca6dab"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\来源\\Karpathy知识库搭建教程-2026-04-17.md",
+      "title": "Karpathy知识库搭建教程-2026-04-17",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3810bbbd6e0adab27607a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\6平台6执行环境.md",
+      "title": "6平台6执行环境",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d4b814cbb4f985ca36"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Agent.md",
+      "title": "Agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815c9b47ce4409ba56b8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AgentSkills.md",
+      "title": "AgentSkills",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38115ba20e930a573306e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AgentSkills与Dify平台.md",
+      "title": "AgentSkills与Dify平台",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381138bfefd5525a80583"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AgentSkills技术规范.md",
+      "title": "AgentSkills技术规范",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c8acb0ceb4834c382c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI Agent.md",
+      "title": "AI Agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381238de9e4d3bb15c15b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI Scientist.md",
+      "title": "AI Scientist",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381408cb4dfd7a66172fb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI 科研.md",
+      "title": "AI 科研",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381269b11d14a723d98ec"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI 科研自动化.md",
+      "title": "AI 科研自动化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ecaaeafa3fdcaf48f8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI 科研自动化框架.md",
+      "title": "AI 科研自动化框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38135a0f1cf69dd106e04"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI 编程 Agent.md",
+      "title": "AI 编程 Agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c4ad17cd5fa279124e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI-Agent.md",
+      "title": "AI-Agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38160a077cef047914c31"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI-powered discovery.md",
+      "title": "AI-powered discovery",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d68922c6e51e3c8c6a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI学习.md",
+      "title": "AI学习",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38178a06bff00b76bef5c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI技术.md",
+      "title": "AI技术",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38145a489ee239028e7bb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI技术测评.md",
+      "title": "AI技术测评",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38191aec4f1000e88bc23"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI教师.md",
+      "title": "AI教师",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818a8044f8fe2f9b4627"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI智能体.md",
+      "title": "AI智能体",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813fbba7f16b5a272d00"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI编程.md",
+      "title": "AI编程",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38191885fd75c85d4a291"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI错误修改代码.md",
+      "title": "AI错误修改代码",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ab995cf3ea025baa43"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI驱动发现.md",
+      "title": "AI驱动发现",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a49873ff0ab9b7e5e5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\AI驱动的发现.md",
+      "title": "AI驱动的发现",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38160863add3f89c0e2d9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Alchemy 框架.md",
+      "title": "Alchemy 框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381539a51ea6d80cb4a7c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Alchemy.md",
+      "title": "Alchemy",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381208cf6cb8b61e0ea6f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Alchemy框架.md",
+      "title": "Alchemy框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381849f7ece38634cb391"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Alchemy（炼丹炉）.md",
+      "title": "Alchemy（炼丹炉）",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a281b1fb6cd829b7e0"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\articles_karpathy-workflow.md",
+      "title": "articles_karpathy-workflow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38106a4ebd9f5ebfa96b6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\CLI.md",
+      "title": "CLI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381818512c1c673556b84"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\CLI工具.md",
+      "title": "CLI工具",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fa89b0ca735525ad7f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Constraint Engine.md",
+      "title": "Constraint Engine",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d8b6f5d09068f72c49"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Context Engineering.md",
+      "title": "Context Engineering",
+      "success": false,
+      "error": "Max retries exceeded"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Control Loop.md",
+      "title": "Control Loop",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b69227eb56c35f4c01"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\DeerFlow.md",
+      "title": "DeerFlow",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381bda126d19bcb94b82d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Dify平台.md",
+      "title": "Dify平台",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cbbb2ac937f8392175"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Electron应用.md",
+      "title": "Electron应用",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38196a1c5ebeca07aef48"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Electron应用转CLI.md",
+      "title": "Electron应用转CLI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f6829ec397ceb3c220"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Feedback System.md",
+      "title": "Feedback System",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a8b7beccc66bc9d7d5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Fish Audio S2 Pro.md",
+      "title": "Fish Audio S2 Pro",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381bd9c3bfca06589087a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\GitHub Forks.md",
+      "title": "GitHub Forks",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f2bfbfcd47bb5ff176"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\GitHub Stars.md",
+      "title": "GitHub Stars",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b9adb7f78ca7bc5835"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\GitNexus.md",
+      "title": "GitNexus",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38138be71cfab51c99053"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Graph RAG.md",
+      "title": "Graph RAG",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38138a658fb8219b3f31a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Graph RAG设计思路.md",
+      "title": "Graph RAG设计思路",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381dab727c8aabead0762"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Harness Engineering.md",
+      "title": "Harness Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cfa21acc1b5ca663e9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Hermes Agent.md",
+      "title": "Hermes Agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b79be3c2a5fca9699b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Hermes-agent.md",
+      "title": "Hermes-agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a09e05f2ffe62bf3a8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Karpathy 知识库工作流.md",
+      "title": "Karpathy 知识库工作流",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38199b378e443880c0924"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Karpathy知识库搭建教程.md",
+      "title": "Karpathy知识库搭建教程",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38186afe8f54af50ba204"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\LLM.md",
+      "title": "LLM",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381bc8d1bcaa555057171"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\LLM训练数据来源.md",
+      "title": "LLM训练数据来源",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c888f3f2ddffd66943"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\LongCat AudioDiT.md",
+      "title": "LongCat AudioDiT",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a39347d621dca1e050"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\LongCat-AudioDiT.md",
+      "title": "LongCat-AudioDiT",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817bb88ed272426f0349"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\MCP (Model Context Protocol).md",
+      "title": "MCP (Model Context Protocol)",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38121ae17d77ebc50bb46"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\MemPalace.md",
+      "title": "MemPalace",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b68d34fc884f009de1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Obsidian Web Clipper.md",
+      "title": "Obsidian Web Clipper",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819e8cacde021e277130"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\OpenCLI.md",
+      "title": "OpenCLI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b39af8fc70ced8b91d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\OpenLearn 平台.md",
+      "title": "OpenLearn 平台",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e4944bdaf33c25c26d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\OpenLearn平台.md",
+      "title": "OpenLearn平台",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e99f3ad7f8b3c7728a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\OpenMAIC.md",
+      "title": "OpenMAIC",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d992fed16702cbd192"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\PDF转课堂.md",
+      "title": "PDF转课堂",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815686a2dd640750e35d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Prompt Engineering.md",
+      "title": "Prompt Engineering",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811dac10c90d09bd0c4a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Python 环境.md",
+      "title": "Python 环境",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813fb601d8ac8f66b91b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Qwen2-TTS.md",
+      "title": "Qwen2-TTS",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381238492f22591763843"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\RAG.md",
+      "title": "RAG",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b0a915ef33bacde277"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\RAG（检索增强生成）.md",
+      "title": "RAG（检索增强生成）",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cda603e324648a5352"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Reuse Chrome login.md",
+      "title": "Reuse Chrome login",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38169b218d6549475bd88"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Seed Baseline 机制.md",
+      "title": "Seed Baseline 机制",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c38410ebb561b83508"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Seed Baseline.md",
+      "title": "Seed Baseline",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ee9f76e88c2ad8f6f5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Seed Baseline机制.md",
+      "title": "Seed Baseline机制",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818bbe6fd7471fd8056b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Seeduplex.md",
+      "title": "Seeduplex",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d38872cd0b7a669755"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\SKILL.md",
+      "title": "SKILL",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d7a5f8ebe8921d67f7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Skills.md",
+      "title": "Skills",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381aebf52c792faff7cc2"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\TTS.md",
+      "title": "TTS",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814faa35fde99ac4c73d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\TTS模型.md",
+      "title": "TTS模型",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3819aac21f3ad6dbc6a2f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Universal CLI Hub.md",
+      "title": "Universal CLI Hub",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38153b20af50ec32e441d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\wiki 知识库.md",
+      "title": "wiki 知识库",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38147ae5dcbfc5c35e10b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\wiki.md",
+      "title": "wiki",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381aba2aef4a73d90b184"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\wiki文章生成.md",
+      "title": "wiki文章生成",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c4841efbd587e7f6bc"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\wiki知识库.md",
+      "title": "wiki知识库",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812a9c40eafe09e19e1f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\Zero risk.md",
+      "title": "Zero risk",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38180a4e4d124471268c9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\上下文窗口.md",
+      "title": "上下文窗口",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ffbf8beafc4431c238"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\主题转课堂.md",
+      "title": "主题转课堂",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d8a431ccff5517043b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\人工标注.md",
+      "title": "人工标注",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38135a904d62fcd08cc0f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\从OpenClaw一键迁移.md",
+      "title": "从OpenClaw一键迁移",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381669820d38cc93d2871"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\代码可视化.md",
+      "title": "代码可视化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f2be63f7154e39594a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\代码审查.md",
+      "title": "代码审查",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c7b828da50d68caac9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\代码结构.md",
+      "title": "代码结构",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d6ab64fa89be1cd285"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\优化体验.md",
+      "title": "优化体验",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ac9d22dedfeb90feab"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\传统Agent痛点.md",
+      "title": "传统Agent痛点",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c28263cb13ab4874e1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\传统代码审查.md",
+      "title": "传统代码审查",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c289b7d28ff03acf96"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\传统开源Agent痛点.md",
+      "title": "传统开源Agent痛点",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38136a9f0d2d6c59a4fef"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\使用方式.md",
+      "title": "使用方式",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812096d6ec641a7893a1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\依赖关系.md",
+      "title": "依赖关系",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381639d9cc9f8e2648f5b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\全双工语音大模型.md",
+      "title": "全双工语音大模型",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f28556ffc22c1698eb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\公共仓库.md",
+      "title": "公共仓库",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38191994de0c90ffce18e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\内置闭环学习系统.md",
+      "title": "内置闭环学习系统",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38168b114eff19bdc0993"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\函数.md",
+      "title": "函数",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813d81acc8a517389157"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\原则.md",
+      "title": "原则",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38115ae62fd2e53efc062"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\原始资料.md",
+      "title": "原始资料",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381138f13ff9c7e18dbcb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\原始资料层.md",
+      "title": "原始资料层",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381209785f0abc22681d2"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\原始资料编译.md",
+      "title": "原始资料编译",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381eba2c5c9826de8db08"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\双向链接.md",
+      "title": "双向链接",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b69d76fd0a599c9298"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\双向链接建立.md",
+      "title": "双向链接建立",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f4ba34e0724ec6bce1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\只读.md",
+      "title": "只读",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811292d1dc9d93b7dadf"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\可视化代码.md",
+      "title": "可视化代码",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e3b6a9fd149302e394"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\可视化代码理解工具.md",
+      "title": "可视化代码理解工具",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38109959dd6fea611e425"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\可视化工具.md",
+      "title": "可视化工具",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381738355c5ed5c5a0877"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\命令行界面.md",
+      "title": "命令行界面",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817097abe7acfcc154b5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\在线学习.md",
+      "title": "在线学习",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38151bc05d0d650e0edb1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\在线学习资源.md",
+      "title": "在线学习资源",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38183a7bed20da23203c3"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\在线学习资源推荐.md",
+      "title": "在线学习资源推荐",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b38899f357ba86f554"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\在线教育.md",
+      "title": "在线教育",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38157a687db640bb6242c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\多平台执行环境.md",
+      "title": "多平台执行环境",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fda3c3e7f60fb79570"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\多平台支持.md",
+      "title": "多平台支持",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f596b6fd72a2575c88"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\多智能体互动课堂.md",
+      "title": "多智能体互动课堂",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381feb6e5e4dd25603a1b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\多智能体交互课堂中的生成式学习.md",
+      "title": "多智能体交互课堂中的生成式学习",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d5ac7ef99972c7e5b8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\多模态推荐任务.md",
+      "title": "多模态推荐任务",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381458602f22657c368df"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\多角色讨论.md",
+      "title": "多角色讨论",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fb8c30edc2ff932be7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\大模型横评.md",
+      "title": "大模型横评",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f7a2dbdba8a76ea8e6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\实验环境搭建.md",
+      "title": "实验环境搭建",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c28ac9cd730b5a83a0"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\工作流.md",
+      "title": "工作流",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c19514c60dc19f9f2e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\工具测评.md",
+      "title": "工具测评",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381098ba7dcc19684aac0"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\工程自动化.md",
+      "title": "工程自动化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381069f9ff345c638f64d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\已有文档_知识库转化.md",
+      "title": "已有文档_知识库转化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b0ad88c3d5260d54f6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\开发者工具.md",
+      "title": "开发者工具",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f391a1d11509f73d91"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\开源.md",
+      "title": "开源",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cfab61d2d6a8fd2d6e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\开源AI Agent框架.md",
+      "title": "开源AI Agent框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cb98d7dd5a31286c3c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\开源AI.md",
+      "title": "开源AI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d99403ce22ca66cfc6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\开源AI框架.md",
+      "title": "开源AI框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817b8e83eee100761626"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\开源TTS大模型.md",
+      "title": "开源TTS大模型",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812495cdfbc3fc6b3e12"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\开源数据集整合.md",
+      "title": "开源数据集整合",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b2a0c1fb1be8742bed"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\开源模型.md",
+      "title": "开源模型",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815a8326f4a5b65a8b4b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\强模型生成.md",
+      "title": "强模型生成",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38105babbcff8ff8477aa"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\执行.md",
+      "title": "执行",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381aba194f21931fc8059"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\技术文档.md",
+      "title": "技术文档",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381bd8ac4d4b9dde4c3da"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\技术规范.md",
+      "title": "技术规范",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38170b908ef89fc988fb3"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\提炼技能.md",
+      "title": "提炼技能",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38168bf3cc75a7ac2d314"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\收集.md",
+      "title": "收集",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38188929ace5d50d0b11a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\智能体.md",
+      "title": "智能体",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381428553c3a05c4d7e85"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\查询.md",
+      "title": "查询",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f0a42dc7bd6c41a4bb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\查询功能.md",
+      "title": "查询功能",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381749146e06e70227426"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\核心概念.md",
+      "title": "核心概念",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381f5ab64f6de44215168"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\框架设计与核心开发.md",
+      "title": "框架设计与核心开发",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381abb803fb55af08c12f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\模型无关架构.md",
+      "title": "模型无关架构",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381159af3f05e9ebc5448"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\测评.md",
+      "title": "测评",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38131be5de78dd5cddd8e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\测验题目.md",
+      "title": "测验题目",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a6bc16f18af077f0d7"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\浏览器自动化.md",
+      "title": "浏览器自动化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c2a31cef0209e57d76"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\深度记忆系统.md",
+      "title": "深度记忆系统",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818e9c8df5c30a33e171"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\白板互动.md",
+      "title": "白板互动",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38112b538c92025097927"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\目录结构.md",
+      "title": "目录结构",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b09b18f5ed951ba144"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\真实用户交互提取.md",
+      "title": "真实用户交互提取",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381bf8ba7e384447b630c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\知识图谱.md",
+      "title": "知识图谱",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811abef6c62bc02eb405"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\知识库.md",
+      "title": "知识库",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381eb8b50dad417ee4890"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\知识库工作流.md",
+      "title": "知识库工作流",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381249d0df66f60e6b7a8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\知识管理.md",
+      "title": "知识管理",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38191adb1dfd1be089316"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\研究环境执行层.md",
+      "title": "研究环境执行层",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816da884d647fdd13f18"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\种子基线.md",
+      "title": "种子基线",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381cfa79cc14b4fb5088b"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\科学假设生成.md",
+      "title": "科学假设生成",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381818c08c684c5777343"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\科学假设生成与方法演化.md",
+      "title": "科学假设生成与方法演化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812ca288ea8b7b702b0e"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\科研基础设施.md",
+      "title": "科研基础设施",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381e6b561d45cb92c783a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\科研基础设施连接.md",
+      "title": "科研基础设施连接",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d2ab82db37572ce672"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\科研流程自动化.md",
+      "title": "科研流程自动化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a69dd8d9bfc592e79c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\端侧推理.md",
+      "title": "端侧推理",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813e9042cdec6ad0a144"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\算法开发层.md",
+      "title": "算法开发层",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381eb95e0ce3078e9f030"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\算法自动演化.md",
+      "title": "算法自动演化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38136a99af2bf7571710c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\系统提示词.md",
+      "title": "系统提示词",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381868605f1ad4a7c3023"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\素材.md",
+      "title": "素材",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38199940fd2126a71011d"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\结构化wiki文章.md",
+      "title": "结构化wiki文章",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381da97d0ec2efc0c9de6"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\结果收集与分析.md",
+      "title": "结果收集与分析",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3816f9f5fe9e47d671761"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\编程救星.md",
+      "title": "编程救星",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815c886fca2af2f2e977"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\编译.md",
+      "title": "编译",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38158a4ddf60db3bbb469"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\网站.md",
+      "title": "网站",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381ee956de0c373de3d28"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\网站转CLI.md",
+      "title": "网站转CLI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381b1a7fbcf6fc6238abb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\网页控制.md",
+      "title": "网页控制",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381faa29ff3f9d5f4905f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自动创建Skills.md",
+      "title": "自动创建Skills",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3815e8c57f8fb31d11a56"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自动化.md",
+      "title": "自动化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818db9a1f56616f6e861"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自动化工程.md",
+      "title": "自动化工程",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381fdb636f5887187f600"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自动进化循环.md",
+      "title": "自动进化循环",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381eeaa95e89bd2657021"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自动进化循环机制.md",
+      "title": "自动进化循环机制",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a7b045fc83f8947afe"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自我优化技能生态.md",
+      "title": "自我优化技能生态",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3814ba0e9e174f1da9422"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自我成长.md",
+      "title": "自我成长",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381188e28dfc7f54116e8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自我进化.md",
+      "title": "自我进化",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381c8babdffc94c50cae9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自我进化AI智能体.md",
+      "title": "自我进化AI智能体",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3818f9b52e7f21c77ee7c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自进化AI Agent.md",
+      "title": "自进化AI Agent",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3811cb048f8b2af555edd"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\自进化AI Agent框架.md",
+      "title": "自进化AI Agent框架",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817d8ef0e88e66be699c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\证书获取工具.md",
+      "title": "证书获取工具",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381d6ba7bee144b8da05a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\语音合成.md",
+      "title": "语音合成",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38126ae2fe6f7ad7b7d7a"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\课程生成.md",
+      "title": "课程生成",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38124bfb8d5fb9e31989f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\调用关系.md",
+      "title": "调用关系",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38147a351c07fb81e434f"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\调用链.md",
+      "title": "调用链",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3817bbb56f83c177a8cd9"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\调用链追踪.md",
+      "title": "调用链追踪",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38166ac9fd8e8e56916bb"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\超参数配置.md",
+      "title": "超参数配置",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381549f3de5b4d416b1a8"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\跨会话记忆.md",
+      "title": "跨会话记忆",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3813f9494d46bb550aed1"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\迭代优化循环.md",
+      "title": "迭代优化循环",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381a4a30bf68907ffc7d0"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\通用CLI中心.md",
+      "title": "通用CLI中心",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c3812382b2e5bd41162315"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\闭环学习系统.md",
+      "title": "闭环学习系统",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38122b603dbab62894d4c"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\预防AI瞎改.md",
+      "title": "预防AI瞎改",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c381439157e217af8fb1a5"
+    },
+    {
+      "file": "E:\\workspace\\knowledge-base\\wiki\\概念\\预防性AI.md",
+      "title": "预防性AI",
+      "success": true,
+      "url": "https://notion.so/3452bb5417c38145ade8e8b2d957b03c"
+    }
+  ]
+}

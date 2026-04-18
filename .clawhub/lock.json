@@ -188,6 +188,38 @@
     "prd-writer": {
       "version": "1.0.1",
       "installedAt": 1776215484514
+    },
+    "wiki-knowledge-base": {
+      "version": "1.0.0",
+      "installedAt": 1776405798456
+    },
+    "ai-image-generator": {
+      "version": "1.0.52",
+      "installedAt": 1776407096993
+    },
+    "hd-infoimage": {
+      "version": "1.1.0",
+      "installedAt": 1776407114166
+    },
+    "ai-social-media-pro": {
+      "version": "1.1.0",
+      "installedAt": 1776410599671
+    },
+    "xiaoming-social-media": {
+      "version": "1.0.0",
+      "installedAt": 1776410609101
+    },
+    "content-generator": {
+      "version": "1.0.0",
+      "installedAt": 1776410617470
+    },
+    "social-media-agent": {
+      "version": "1.0.0",
+      "installedAt": 1776410783254
+    },
+    "social-media-publish": {
+      "version": "1.0.0",
+      "installedAt": 1776410809778
     }
   }
 }

@@ -153,7 +153,7 @@ def create_notion_page(title: str, blocks: list, parent_id: str = None) -> dict:
     data = {
         'parent': {'database_id': parent_id},
         'properties': {
-            'title': {
+            '标题': {
                 'title': [{'type': 'text', 'text': {'content': title}}]
             }
         },

@@ -3,4 +3,5 @@
 .env.local
 .env.*
 skills/desktop-control-cli
+skills/cultivating_cli
 *.png

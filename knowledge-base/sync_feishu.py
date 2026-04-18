@@ -205,7 +205,7 @@ def load_sync_state():
     """加载同步状态"""
     if STATE_FILE.exists():
         return json.loads(STATE_FILE.read_text(encoding='utf-8'))
-    return {'synced_files': {}, 'last_sync': None}
+    return {'synced': {}, 'last_sync': None}
 
 
 def save_sync_state(state):
@@ -240,14 +240,14 @@ def main():
         files_to_sync = [f for f in wiki_files if str(f) == args.file]
     elif args.force:
         files_to_sync = wiki_files
-        state['synced_files'] = {}  # 清空状态，强制全量
+        state['synced'] = {}  # 清空状态，强制全量
     else:
         # 增量：只同步有变化的文件
         files_to_sync = []
         for f in wiki_files:
             rel_path = str(f.relative_to(WIKI_DIR))
             mtime = f.stat().st_mtime
-            if rel_path not in state['synced_files'] or state['synced_files'][rel_path] != mtime:
+            if rel_path not in state.get('synced', {}) or state['synced'][rel_path] != mtime:
                 files_to_sync.append(f)
         if files_to_sync:
             print(f"[INCREMENT] {len(files_to_sync)} files changed since last sync")
@@ -285,7 +285,7 @@ def main():
         if write_result.get('success'):
             print(f"   [OK] Written {write_result.get('success_count')} blocks")
             # 更新状态
-            state['synced_files'][rel_path] = wiki_file.stat().st_mtime
+            state['synced'][rel_path] = wiki_file.stat().st_mtime
         else:
             print(f"   [WARN] {write_result.get('fail_count')} blocks failed")
         

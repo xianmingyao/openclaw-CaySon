@@ -1368,3 +1368,27 @@ pip install openspec
 
 ### 文档
 - `knowledge/ai-news-2026-04-15.md` - 完整热点速递
+
+## 2026-04-20 Dream 整合记录
+
+### 整合范围
+- 扫描文件：2026-04-19 / 2026-04-20（2个文件）
+- 说明：这两天文件内容以 Dream skill 自身输出为主（Dream diary requests），实际日常内容较少
+
+### 重大事件
+1. **安全扫描建议（edgeone-clawscan 04-20 00:33）**：建议禁用 `channels.feishu.tools.doc` 或限制非信任提示词的访问
+2. **04-19 日间**：微信登录检查正常（`openclaw-weixin 8cc3313038c7-im-bot` 运行中）；宁兄多次请求生成 dream diary
+3. **Dream skill 自身输出**：04-19.md 文件几乎全部是 Dream session corpus（大量 dream diary 片段），实际工作内容记录较少
+
+### 观察到的模式
+- Dream skill 会生成大量 dream diary 内容，导致 memory 文件膨胀
+- 每日 03:00 的 Dream cron 触发后，文件会快速增长（04-19.md 仅 Dream 输出就占 300+ 行）
+- 建议：监控 memory 文件大小，防止无限膨胀
+
+### 安全建议
+- 🔴 评估飞书 `channels.feishu.tools.doc` 工具访问策略
+- 🔴 非必要时应禁用飞书文档写入权限
+
+### 旧日志标记 consolidation
+- 2026-04-19.md 已标记
+- 2026-04-20.md 已标记

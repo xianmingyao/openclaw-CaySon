@@ -1,6 +1,6 @@
 # jingmai - 京麦智能体
 
-**描述:** 基于 Claude API 的智能对话系统，支持多轮对话、RAG 增强检索、工作流执行和自我进化能力。
+**描述:** 京麦智能体 - 当用户询问商品上架、RAG检索、工作流执行、记忆管理、CLI使用时使用。支持多轮对话、RAG增强检索、工作流执行和自我进化能力。触发词：京麦上架、RAG检索、工作流系统、记忆管理
 **版本:** 0.1.0
 **标签:** `agent` `workflow` `memory` `rag` `ecommerce`
 
@@ -44,17 +44,23 @@
 ### 前置要求
 
 - Python 3.10+
-- Poetry
+- Poetry（如未安装：`curl -sSL https://install.python-poetry.org | python3 -`）
 - Redis（可选）
 - Milvus（可选）
 
 ### 安装
 
 ```bash
+# 1. 安装依赖
 cd jingmai-cli
 poetry install
+
+# 2. 配置环境变量
 cp .env.example .env
-# 编辑 .env，填写 ANTHROPIC_API_KEY
+
+# 3. 获取 API Key
+# 访问 https://console.anthropic.com/settings/keys
+# 创建新 API Key 并填入 .env 文件
 ```
 
 ### 快速验证
@@ -84,6 +90,7 @@ poetry run jingmai workflow list
 poetry run jingmai workflow info 1
 
 # 3. 执行商品上架流程
+# ⚠️ 执行前会提示确认，使用 --yes 跳过确认
 poetry run jingmai workflow execute 1 --context '{"product_id": "12345"}'
 
 # 4. 查看执行状态
@@ -98,12 +105,27 @@ poetry run jingmai workflow resume <execution_id>
 ```bash
 # 1. 索引文档
 poetry run jingmai rag index ./docs
+# 输出: ✅ 索引完成，共处理 15 个文档
 
 # 2. 语义检索
 poetry run jingmai rag search "商品上架流程"
+# 输出:
+# 📊 检索结果 (3 条)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# [相关度 0.92] 商品上架工作流.md
+#    1. 准备商品信息 → 2. 验证数据 → 3. 调用API...
+#
+# [相关度 0.85] 上架检查清单.md
+#    □ SKU编码 □ 价格设置 □ 库存配置...
+#
+# [相关度 0.78] 常见问题.md
+#    Q: 上架失败如何处理？
 
 # 3. 查看 RAG 统计
 poetry run jingmai rag stats
+# 输出:
+# 📈 RAG 统计
+# 文档数: 15 | 向量数: 3247 | 平均检索时间: 120ms
 ```
 
 ### 场景 3: 记忆管理
@@ -124,6 +146,12 @@ poetry run jingmai memory retrieve "用户偏好"
 
 # 4. 查看记忆统计
 poetry run jingmai memory stats
+
+# 5. 导出记忆（⚠️ 涉及文件操作，会提示确认）
+poetry run jingmai memory export memory_backup.json
+
+# 6. 导入记忆（⚠️ 会覆盖现有数据，会提示确认）
+poetry run jingmai memory import memory_backup.json
 ```
 
 ### 场景 4: 自定义对话配置
@@ -312,6 +340,27 @@ jingmai-putaway/
 3. 验证问题假设
 4. 执行修复方案
 ```
+
+---
+
+## 🛡️ 系统级 Fallback
+
+当依赖服务不可用时，系统会自动降级：
+
+### Redis 不可用
+- **自动降级**: 短期记忆使用内存存储
+- **影响**: 进程重启后短期记忆丢失
+- **恢复**: Redis 恢复后自动重新连接
+
+### Milvus 不可用
+- **自动降级**: 仅使用 BM25 关键词检索
+- **影响**: 语义检索精度下降
+- **恢复**: Milvus 恢复后自动启用向量检索
+
+### API 限流/错误
+- **自动重试**: 指数退避重试 3 次
+- **降级策略**: 切换到备用模型（如配置）
+- **错误处理**: 返回友好错误提示
 
 ---
 

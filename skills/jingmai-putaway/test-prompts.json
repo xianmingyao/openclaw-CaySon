@@ -1,0 +1,83 @@
+{
+  "skill_name": "jingmai - 京麦智能体",
+  "test_prompts": [
+    {
+      "id": 1,
+      "prompt": "如何使用京麦智能体？",
+      "expected_trigger": true,
+      "category": "基础使用"
+    },
+    {
+      "id": 2,
+      "prompt": "京麦的商品上架流程是什么？",
+      "expected_trigger": true,
+      "category": "工作流"
+    },
+    {
+      "id": 3,
+      "prompt": "如何配置 RAG 检索？",
+      "expected_trigger": true,
+      "category": "RAG"
+    },
+    {
+      "id": 4,
+      "prompt": "京麦的记忆系统如何工作？",
+      "expected_trigger": true,
+      "category": "记忆"
+    },
+    {
+      "id": 5,
+      "prompt": "如何查看工作流状态？",
+      "expected_trigger": true,
+      "category": "CLI命令"
+    },
+    {
+      "id": 6,
+      "prompt": "Redis 和 Milvus 的作用是什么？",
+      "expected_trigger": true,
+      "category": "架构"
+    },
+    {
+      "id": 7,
+      "prompt": "如何添加自定义技能？",
+      "expected_trigger": false,
+      "category": "扩展"
+    },
+    {
+      "id": 8,
+      "prompt": "京麦支持哪些 LLM 提供商？",
+      "expected_trigger": true,
+      "category": "配置"
+    },
+    {
+      "id": 9,
+      "prompt": "什么是 Pipeline 模式？",
+      "expected_trigger": false,
+      "category": "概念"
+    },
+    {
+      "id": 10,
+      "prompt": "如何运行测试？",
+      "expected_trigger": true,
+      "category": "开发"
+    }
+  ],
+  "scoring": {
+    "trigger_accuracy": {
+      "weight": 5,
+      "formula": "(正确触发数 / 总测试数) * 5"
+    },
+    "resolution_rate": {
+      "weight": 5,
+      "formula": "(解决问题数 / 总测试数) * 5"
+    },
+    "efficiency_gain": {
+      "weight": 5,
+      "formula": "基于时间对比评估"
+    },
+    "actual_performance": {
+      "weight": 25,
+      "formula": "人工评估输出质量"
+    }
+  }
+}

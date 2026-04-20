@@ -220,43 +220,275 @@ python cli.py evolution execute --skill ufo_click_fixed
 **典型使用流程示例：**
 
 **示例1：UFO 桌面自动化**
+
 ```bash
-# 1. 点击屏幕位置
+# 1. 点击屏幕位置（参数：x坐标 y坐标）
 python cli.py ufo mouse click 100 200
+# 预期输出：[OK] 鼠标点击成功: (100, 200)
 
-# 2. 输入文本
+# 2. 输入文本（参数：要输入的文本）
 python cli.py ufo keyboard type "Hello, World!"
+# 预期输出：[OK] 键盘输入成功: "Hello, World!"
 
-# 3. 截图保存
+# 3. 截图保存（参数：--path 保存路径）
 python cli.py ufo system screenshot --path result.png
+# 预期输出：[OK] 截图保存成功: result.png
 ```
 
 **示例2：Bridge 浏览器自动化**
+
 ```bash
-# 1. 创建会话
+# 1. 创建会话（参数：--window-size 窗口大小）
 python cli.py bridge create --window-size 1920,1080
+# 预期输出：
+# ✅ 会话创建成功
+# 会话ID: session_abc123
+# CDP URL: ws://localhost:9222/devtools/page/ABC123
 
-# 2. 导航到页面
-python cli.py bridge navigate session_123 https://example.com
+# 2. 导航到页面（参数：session_id url）
+# ⚠️ session_abc123 是上一步输出的会话ID
+python cli.py bridge navigate session_abc123 https://example.com
+# 预期输出：[OK] 导航成功 | 状态: success | 加载时间: 1234.56ms
 
-# 3. 执行脚本
-python cli.py bridge execute session_123 "document.title"
+# 3. 执行脚本（参数：session_id script）
+python cli.py bridge execute session_abc123 "document.title"
+# 预期输出：[OK] 执行成功 | 结果: "Example Domain"
 
-# 4. 截图
-python cli.py bridge screenshot session_123 output.png
+# 4. 截图（参数：session_id 保存路径）
+python cli.py bridge screenshot session_abc123 output.png
+# 预期输出：[OK] 截图保存成功: output.png
 ```
 
 **示例3：Evolution 技能生成**
+
 ```bash
-# 1. 分析执行结果（从错误中学习）
+# 1. 分析执行结果（参数：--execution-id 执行ID）
+# ⚠️ execution-id 从技能执行的输出中获取
 python cli.py evolution analyze --execution-id exec_001
+# 预期输出：[ANALYZE] 分析完成 | 发现问题: 元素定位超时
 
-# 2. 生成进化技能
+# 2. 生成进化技能（参数：--name 技能名 --type 类型）
 python cli.py evolution generate --name auto_login --type FIX
+# 预期输出：[GENERATE] 技能生成成功 | 技能ID: skill_456 | 类型: FIX
 
-# 3. 执行技能
+# 3. 执行技能（参数：--skill 技能名/ID）
 python cli.py evolution execute --skill auto_login
+# 预期输出：[EXECUTE] 技能执行成功 | 状态: completed
 ```
+
+---
+
+**完整业务场景示例：京麦商品上架自动化**
+
+以下是一个完整的京麦商家后台商品上架自动化流程，展示如何组合使用 UFO、Bridge 和 Evolution。
+
+#### 场景描述
+
+在京麦商家后台自动上架商品，流程包括：
+1. 打开浏览器登录京麦
+2. 点击"商品"→"发布商品"
+3. 选择类目并填写商品信息
+4. 上传商品图片
+5. 点击发布按钮
+
+#### 完整脚本
+
+```bash
+#!/bin/bash
+# 京麦商品上架自动化脚本
+
+# ============================================
+# 第一步：初始化环境
+# ============================================
+echo "=== 京麦上架自动化开始 ==="
+
+# 1. 检查数据库状态
+python cli.py evolution list-skills
+# 预期：看到至少 3 条测试技能
+
+# 2. 检查 Bridge 服务状态
+python cli.py bridge health
+# 预期：🟢 服务状态: healthy
+
+# ============================================
+# 第二步：创建浏览器会话
+# ============================================
+echo "--- 创建浏览器会话 ---"
+
+# 创建会话（使用 Edge 浏览器，显示窗口）
+python cli.py bridge create --browser-type edge --no-headless --window-size 1920,1080
+# 预期输出会包含：会话ID: session_xxx
+# ⚠️ 记录输出的 session_id，后续命令需要使用
+
+# 假设输出的会话ID是 session_jingmai_001
+SESSION_ID="session_jingmai_001"
+
+# ============================================
+# 第三步：导航到京麦登录页
+# ============================================
+echo "--- 导航到京麦登录页 ---"
+
+# 导航到登录页（使用较长的超时时间）
+python cli.py bridge navigate $SESSION_ID https://jingmai.jd.com --timeout 60000 --wait load
+# 预期：[OK] 导航成功 | 状态: success
+
+# 等待页面加载完成
+python cli.py ufo system wait 2
+
+# ============================================
+# 第四步：执行登录操作
+# ============================================
+echo "--- 执行登录操作 ---"
+
+# 方式1：使用 UFO 点击登录按钮（需要知道按钮坐标）
+# python cli.py ufo mouse click 960 540
+
+# 方式2：使用 Bridge 执行 JavaScript 自动填充并登录
+python cli.py bridge execute $SESSION_ID "
+  // 填写用户名
+  document.querySelector('#username').value = 'your_username';
+  // 填写密码
+  document.querySelector('#password').value = 'your_password';
+  // 点击登录按钮
+  document.querySelector('.login-btn').click();
+  '登录按钮已点击';
+" --await-promise --timeout 30000
+# 预期：[OK] 执行成功 | 结果: "登录按钮已点击"
+
+# 等待登录完成
+python cli.py ufo system wait 3
+
+# ============================================
+# 第五步：点击"商品"→"发布商品"
+# ============================================
+echo "--- 进入商品发布页面 ---"
+
+# 使用 Bridge 导航到发布商品页面
+python cli.py bridge navigate $SESSION_ID "https://jingmai.jd.com/product/publish" --timeout 60000
+# 预期：[OK] 导航成功
+
+# ============================================
+# 第六步：选择类目
+# ============================================
+echo "--- 选择商品类目 ---"
+
+# 执行 JavaScript 选择三级类目
+python cli.py bridge execute $SESSION_ID "
+  // 点击一级类目（如"家用电器"）
+  document.querySelector('.category-level-1[data-id=\"12345\"]').click();
+  // 等待二级类目加载
+  await new Promise(r => setTimeout(r, 1000));
+  // 点击二级类目（如"大家电"）
+  document.querySelector('.category-level-2[data-id=\"12346\"]').click();
+  // 等待三级类目加载
+  await new Promise(r => setTimeout(r, 1000));
+  // 点击三级类目（如"电视"）
+  document.querySelector('.category-level-3[data-id=\"12347\"]').click();
+  '类目选择完成';
+" --await-promise --timeout 30000
+# 预期：[OK] 执行成功 | 结果: "类目选择完成"
+
+# ============================================
+# 第七步：填写商品信息
+# ============================================
+echo "--- 填写商品信息 ---"
+
+# 填写商品标题、价格等信息
+python cli.py bridge execute $SESSION_ID "
+  // 商品标题
+  document.querySelector('#product-title').value = '测试商品001';
+  // 市场价
+  document.querySelector('#market-price').value = '1999';
+  // 京东价
+  document.querySelector('#jd-price').value = '1599';
+  // 商品描述
+  document.querySelector('#product-desc').value = '这是一个测试商品描述';
+  '商品信息填写完成';
+" --await-promise
+# 预期：[OK] 执行成功 | 结果: "商品信息填写完成"
+
+# ============================================
+# 第八步：上传商品图片
+# ============================================
+echo "--- 上传商品图片 ---"
+
+# ⚠️ 图片上传需要准备符合规范的图片文件
+# 规格要求：至少3张、尺寸1440*1440、格式jpg/png
+
+# 方式1：使用 Bridge 操作文件上传 DOM
+python cli.py bridge execute $SESSION_ID "
+  const fileInput = document.querySelector('#image-upload');
+  // 创建文件对象（需要配合 file:// 协议或本地服务器）
+  const file = new File([''], 'E:/images/product1.jpg', { type: 'image/jpeg' });
+  const dataTransfer = new DataTransfer();
+  dataTransfer.items.add(file);
+  fileInput.files = dataTransfer.files;
+  // 触发 change 事件
+  fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+  '图片上传触发完成';
+" --await-promise
+
+# 等待图片上传完成
+python cli.py ufo system wait 2
+
+# ============================================
+# 第九步：点击发布按钮
+# ============================================
+echo "--- 点击发布按钮 ---"
+
+# 使用 Bridge 点击发布按钮
+python cli.py bridge execute $SESSION_ID "
+  document.querySelector('.publish-btn').click();
+  '发布按钮已点击';
+" --await-promise
+
+# 等待发布完成
+python cli.py ufo system wait 3
+
+# ============================================
+# 第十步：截图验证结果
+# ============================================
+echo "--- 截图验证结果 ---"
+
+# 截图保存发布结果
+python cli.py bridge screenshot $SESSION_ID jingmai_publish_result.png
+# 预期：[OK] 截图保存成功: jingmai_publish_result.png
+
+echo "=== 京麦上架自动化完成 ==="
+```
+
+#### 脚本执行说明
+
+**前置条件**：
+1. 已完成数据库初始化：`python init_db_simple.py`
+2. 已准备商品图片：3张1440*1440的jpg/png图片，放在 `E:/images/` 目录
+3. 已注册京麦账号：准备好用户名和密码
+4. 修改脚本中的占位符：
+   - `your_username` → 京麦用户名
+   - `your_password` → 京麦密码
+   - 类目ID → 实际的类目ID（需要先手动查看页面获取）
+
+**执行脚本**：
+```bash
+# 保存为 jingmai_publish.sh
+bash jingmai_publish.sh
+```
+
+**如果执行失败**：
+1. 查看详细日志：`python cli.py --verbose bridge create ...`
+2. 使用 Evolution FIX 模式从错误中学习：
+   ```bash
+   python cli.py evolution analyze --execution-id exec_failed --error-type timeout
+   python cli.py evolution generate --name jingmai_publish_fixed --type FIX
+   python cli.py evolution execute --skill jingmai_publish_fixed
+   ```
+
+**进阶优化**：
+- 使用 Evolution CAPTURED 模式录制成功流程，生成可复用技能
+- 将常用参数（用户名、类目ID等）提取为环境变量
+- 添加重试逻辑和错误处理
+
+---
 
 ---
 

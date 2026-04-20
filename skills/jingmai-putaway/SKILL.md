@@ -68,12 +68,22 @@ cp .env.example .env
 ```bash
 # 查看系统状态
 poetry run jingmai status
+# 输出:
+# ✅ 京麦智能体状态
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 🤖 LLM: Claude Sonnet 4 (anthropic)
+# 💾 短期记忆: Redis (已连接)
+# 🧠 长期记忆: Milvus (已连接)
+# 📚 RAG 索引: 15 个文档
 
 # 交互式聊天
 poetry run jingmai chat
+# 输出: 进入交互模式 (输入 /exit 退出)
+# 你: 
 
 # 单次查询
 poetry run jingmai chat "你好"
+# 输出: 你好！我是京麦智能体，可以帮助你...
 ```
 
 ---
@@ -85,19 +95,45 @@ poetry run jingmai chat "你好"
 ```bash
 # 1. 查看可用工作流
 poetry run jingmai workflow list
+# 输出:
+# 📋 可用工作流 (3)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# [1] 商品上架流程 - 14步完整上架
+# [2] 价格更新流程 - 批量调价
+# [3] 库存同步流程 - 多平台同步
 
 # 2. 查看工作流详情
 poetry run jingmai workflow info 1
+# 输出:
+# 📖 工作流: 商品上架流程
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 步骤数: 14 | 预计时长: 5-10分钟
+# 输入: product_id (必需)
+#     shop_id (可选)
+# 输出: execution_id, 上架结果链接
 
 # 3. 执行商品上架流程
 # ⚠️ 执行前会提示确认，使用 --yes 跳过确认
 poetry run jingmai workflow execute 1 --context '{"product_id": "12345"}'
+# 输出:
+# ✅ 工作流已启动
+# 📝 Execution ID: exec_abc123
+# 进度: [准备中] 0/14 步骤
 
 # 4. 查看执行状态
-poetry run jingmai workflow status <execution_id>
+poetry run jingmai workflow status exec_abc123
+# 输出:
+# 📊 执行状态: 进行中
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 当前进度: 8/14 步骤
+# ✅ 1.准备 2.验证 3.图片上传 4.规格设置
+# 🔄 5.价格计算 (当前)
+# ⏳ 6.库存配置 7.描述生成...
 
 # 5. 如需恢复执行
-poetry run jingmai workflow resume <execution_id>
+poetry run jingmai workflow resume exec_abc123
+# 输出:
+# ✅ 已从步骤 8 继续执行
 ```
 
 ### 场景 2: RAG 智能检索
@@ -133,6 +169,7 @@ poetry run jingmai rag stats
 ```bash
 # 1. 添加短期记忆
 poetry run jingmai memory short-term "用户偏好简洁输出"
+# 输出: ✅ 短期记忆已添加
 
 # 2. 添加长期记忆（实体-类型-内容-描述）
 poetry run jingmai memory long-term \
@@ -140,18 +177,30 @@ poetry run jingmai memory long-term \
   --type "preference" \
   --content "喜欢简洁输出" \
   --description "用户交互偏好"
+# 输出: ✅ 长期记忆已存储 (实体: 用户A, 类型: preference)
 
 # 3. 检索记忆
 poetry run jingmai memory retrieve "用户偏好"
+# 输出:
+# 🔍 检索结果 (2 条)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# [短期] 用户偏好简洁输出
+# [长期] 实体: 用户A | 类型: preference | 内容: 喜欢简洁输出
 
 # 4. 查看记忆统计
 poetry run jingmai memory stats
+# 输出:
+# 📊 记忆统计
+# 短期记忆: 12 条 | 长期记忆: 8 个实体
+# Redis: ✅ 连接 | Milvus: ✅ 连接
 
 # 5. 导出记忆（⚠️ 涉及文件操作，会提示确认）
 poetry run jingmai memory export memory_backup.json
+# 输出: ⚠️ 即将导出 20 条记忆到 memory_backup.json，确认？[y/N]
 
 # 6. 导入记忆（⚠️ 会覆盖现有数据，会提示确认）
 poetry run jingmai memory import memory_backup.json
+# 输出: ⚠️ 警告：导入将覆盖现有记忆，确认？[y/N]
 ```
 
 ### 场景 4: 自定义对话配置
@@ -159,21 +208,27 @@ poetry run jingmai memory import memory_backup.json
 ```bash
 # 使用特定模型
 poetry run jingmai chat --model claude-opus-4-7
+# 输出: 🤖 模型已切换到 claude-opus-4-7
 
 # 使用不同提供商
 poetry run jingmai chat --provider openai
+# 输出: 🔄 提供商已切换到 openai
 
 # 自定义系统提示
 poetry run jingmai chat --system-prompt "你是一个商品上架助手"
+# 输出: ✅ 系统提示已更新
 
 # 选择输出样式
 poetry run jingmai chat --style minimal
+# 输出: 📝 输出样式: minimal (简洁模式)
 
 # 保存会话
 poetry run jingmai chat --save
+# 输出: 💾 会话已保存 | Session ID: sess_xyz789
 
 # 恢复历史会话
-poetry run jingmai chat --resume <session_id>
+poetry run jingmai chat --resume sess_xyz789
+# 输出: ✅ 已恢复会话 sess_xyz789 (包含 15 条历史消息)
 ```
 
 ---

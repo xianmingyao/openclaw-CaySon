@@ -1687,6 +1687,91 @@ python cli.py evolution list-skills --limit 20
 
 ---
 
+## 资源与参考
+
+### 核心脚本文件索引
+
+| 文件名 | 位置 | 用途 | 使用时机 |
+|-------|------|------|---------|
+| **cli.py** | 项目根目录 | CLI 主入口 | 所有命令执行 |
+| **init_db_simple.py** | 项目根目录 | 数据库初始化 | 首次使用前 |
+| **config.py** | 项目根目录 | 全局配置 | 查看系统配置 |
+| **requirements.txt** | 项目根目录 | 依赖列表 | 安装依赖 |
+
+**项目根目录**：`E:\workspace\skills\desktop-control-cli`
+
+---
+
+### 配置文件说明
+
+| 配置类型 | 文件/位置 | 说明 |
+|---------|----------|------|
+| **全局配置** | `config.py` | Settings 一级配置，包含数据库路径、日志配置等 |
+| **模块配置** | `app/{module}/config.py` | ModuleConfig 二级配置，各模块独立配置 |
+| **环境变量** | 系统环境变量 | RuntimeConfig 三级配置，运行时覆盖 |
+
+**常用环境变量**：
+```bash
+# Bridge 配置
+export BRIDGE_WEBSOCKET_PORT=8765
+export BRIDGE_MAX_SESSIONS=10
+export BRIDGE_ENABLE_HEADLESS=true
+
+# 日志配置
+export LOG_LEVEL=INFO
+export LOG_FILE=./logs/desktop-control.log
+```
+
+---
+
+### 测试文件位置
+
+| 测试类型 | 文件路径 | 说明 |
+|---------|----------|------|
+| **单元测试** | `tests/unit/` | 各模块独立功能测试 |
+| **集成测试** | `tests/integration/` | CLI 命令集成测试 |
+
+**运行测试**：
+```bash
+# 运行所有测试
+python cli.py test all
+
+# 运行特定模块测试
+pytest tests/unit/test_ufo.py -v
+pytest tests/integration/test_cli_integration.py -v
+```
+
+---
+
+### 参考文档章节索引
+
+| 需求 | 参考章节 | 位置 |
+|------|---------|------|
+| **快速上手** | 快速开始（5分钟） | Phase 1-3 |
+| **环境准备** | 环境安装 | 第195-263行 |
+| **命令参考** | UFO/Evolution/Bridge/MCP 命令 | 第334-1281行 |
+| **配置说明** | 配置 | 第1326-1407行 |
+| **架构设计** | 架构设计 | 第1410-1533行 |
+| **开发指南** | 开发指南 | 第1535-1577行 |
+| **错误排查** | 常见错误和解决方案 | 第1579-1688行 |
+| **边界条件** | Phase 2.5: 边界条件与 Fallback 策略 | 第94-208行 |
+| **完整场景** | 完整业务场景示例：京麦商品上架 | 第279-488行 |
+
+---
+
+### 常用路径速查
+
+| 资源类型 | 路径 | 说明 |
+|---------|------|------|
+| **项目根目录** | `E:\workspace\skills\desktop-control-cli` | 所有命令的执行目录 |
+| **应用模块** | `app/` | UFO/Evolution/Bridge/MCP 模块代码 |
+| **测试目录** | `tests/` | 单元测试和集成测试 |
+| **数据模型** | `models/` | 数据库模型定义 |
+| **日志文件** | `./logs/desktop-control.log` | 运行日志（如配置） |
+| **技能目录** | `skills/` | Evolution 生成的技能文件 |
+
+---
+
 ## 附录
 
 ### A. UFO 20 种可执行动作

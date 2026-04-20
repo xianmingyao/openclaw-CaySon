@@ -42,6 +42,97 @@ last_updated: 2026-04-20
 
 ---
 
+## 使用流程
+
+desktop-control 是文档指导型技能，提供命令参考和使用指导。根据您的自动化需求，选择合适的使用方式：
+
+### Phase 1: 环境准备
+
+**首次使用必须完成以下步骤：**
+
+1. **安装依赖**
+   ```bash
+   cd E:\workspace\skills\desktop-control-cli
+   pip install -r requirements.txt
+   ```
+
+2. **初始化数据库**（必需！）
+   ```bash
+   python init_db_simple.py
+   ```
+
+3. **验证安装**
+   ```bash
+   python cli.py info
+   python cli.py evolution list-skills
+   ```
+
+✅ **检查点**：确认看到 3 条测试技能输出后，再继续 Phase 2。
+
+---
+
+### Phase 2: 选择使用方式
+
+根据您的自动化场景，选择合适的功能模块：
+
+| 场景 | 推荐模块 | 关键命令 |
+|------|---------|---------|
+| **桌面操作自动化**（点击、输入、截图） | UFO 桌面自动化 | `ufo mouse click`, `ufo keyboard type`, `ufo system screenshot` |
+| **浏览器自动化**（网页操作、数据抓取） | Browser Bridge | `bridge create`, `bridge navigate`, `bridge execute`, `bridge screenshot` |
+| **智能技能生成**（从错误学习、录制流程） | Evolution 进化引擎 | `evolution analyze`, `evolution generate`, `evolution execute` |
+| **标准化工具接口** | MCP 服务器 | `mcp start`, `mcp list-tools` |
+
+💡 **提示**：您也可以组合使用多个模块，例如用 Evolution 录制一个包含 Bridge 操作的完整流程。
+
+---
+
+### Phase 3: 执行自动化任务
+
+根据 Phase 2 的选择，参考下方的命令参考章节执行具体操作。
+
+**典型使用流程示例：**
+
+**示例1：UFO 桌面自动化**
+```bash
+# 1. 点击屏幕位置
+python cli.py ufo mouse click 100 200
+
+# 2. 输入文本
+python cli.py ufo keyboard type "Hello, World!"
+
+# 3. 截图保存
+python cli.py ufo system screenshot --path result.png
+```
+
+**示例2：Bridge 浏览器自动化**
+```bash
+# 1. 创建会话
+python cli.py bridge create --window-size 1920,1080
+
+# 2. 导航到页面
+python cli.py bridge navigate session_123 https://example.com
+
+# 3. 执行脚本
+python cli.py bridge execute session_123 "document.title"
+
+# 4. 截图
+python cli.py bridge screenshot session_123 output.png
+```
+
+**示例3：Evolution 技能生成**
+```bash
+# 1. 分析执行结果（从错误中学习）
+python cli.py evolution analyze --execution-id exec_001
+
+# 2. 生成进化技能
+python cli.py evolution generate --name auto_login --type FIX
+
+# 3. 执行技能
+python cli.py evolution execute --skill auto_login
+```
+
+---
+
 ## 环境安装
 
 ### 系统要求

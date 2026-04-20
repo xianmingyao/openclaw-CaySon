@@ -36,7 +36,7 @@ last_updated: 2026-04-20
 
 # desktop-control - Windows 桌面自动化 CLI 工具
 
-基于 OpenHarmony v4.0 融合架构的 Windows 桌面自动化框架，提供 UFO 桌面操作、Evolution 进化引擎、Browser Bridge 浏览器自动化和 MCP 服务器四大核心功能。
+**描述:** 基于 OpenHarmony v4.0 融合架构的 Windows 桌面自动化框架，提供 UFO 桌面操作、Evolution 进化引擎、Browser Bridge 浏览器自动化和 MCP 服务器四大核心功能。
 
 **跨平台:** Windows 10/11 (Python 3.11+)
 

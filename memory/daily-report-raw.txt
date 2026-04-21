@@ -1,49 +1,35 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-20 17:26:09
+Date: 2026-04-21 17:20:27
 --- GIT COMMITS ---
-  a6ac783e optimize desktop-control: 宸ヤ綔娴佹竻鏅板害寰皟
-  ca94f9c7 optimize desktop-control: 妫€鏌ョ偣璁捐澧炲己
-  f72b7458 optimize desktop-control: 璧勬簮鏁村悎搴?2b78f5b6 optimize desktop-control: 鎸囦护鍏蜂綋鎬?79d4275a optimize desktop-control: 杈圭晫鏉′欢瑕嗙洊
-  014a590e optimize desktop-control: 妫€鏌ョ偣璁捐
-  52bd4a29 optimize desktop-control: 宸ヤ綔娴佹竻鏅板害
-  55420101 optimize desktop-control: Frontmatter璐ㄩ噺
-  804f8b0e optimize desktop-control: 娣诲姞鏍囧噯 frontmatter
-  d6ed65b5 optimize(jingmai-cli): 绗簩杞敼杩?- 琛ュ厖鎵€鏈夊満鏅殑杈撳嚭绀轰緥
-  65f8c7a4 optimize(jingmai-cli): 绗竴杞敼杩?- 妫€鏌ョ偣+Frontmatter+瀹夎缁嗚妭+杈圭晫鏉′欢+杈撳嚭绀轰緥
-  bfa47969 feat(skill): 杈惧皵鏂囪瘎浼版敼杩?- 缁撴瀯璇勫垎鎻愬崌鑷?56/60
-  6aa37fc1 dream: 2026-04-20 nightly consolidation - MEMORY.md update + security scan finding
+  d01f6f69 docs: 鏂板MemOS AI璁板繂鎿嶄綔绯荤粺鐮旂┒鎶ュ憡
 --- FILES MODIFIED ---
-  17:25 | memory\daily-report-raw.txt
-  17:24 | skills\desktop-control-cli\docs\multi_agent_architecture.md
-  17:16 | scripts\screenshots\jingmai_search_result.png
-  17:16 | scripts\screenshots\jingmai_full_current.png
-  17:15 | scripts\screenshots\jingmai_ai_search.png
-  17:15 | scripts\screenshots\jingmai_after_publish_click.png
-  17:15 | scripts\screenshots\jingmai_verify.png
-  17:14 | scripts\screenshots\jingmai_current.png
-  17:14 | scripts\screenshots\jingmai_publish_click.png
-  17:13 | scripts\screenshots\jingmai_publish.png
-  17:13 | scripts\screenshots\jingmai_more_menu.png
-  17:12 | scripts\screenshots\jingmai_confirm_home.png
-  17:12 | scripts\screenshots\jingmai_after_close.png
-  17:11 | scripts\screenshots\jingmai_home.png
-  17:11 | scripts\screenshots\jingmai_seller.png
-  17:10 | skills\jingmai-putaway\OPTIMIZATION_SUMMARY_v1.2.0.md
-  17:10 | scripts\screenshots\jingmai_after_f5.png
-  17:10 | skills\jingmai-putaway\FINAL_SCORE_REPORT_v1.2.0.md
-  17:10 | scripts\screenshots\jingmai_after_back.png
-  17:09 | scripts\screenshots\jingmai_after_esc.png
+  17:20 | .git\FETCH_HEAD
+  17:08 | skills\desktop-control-cli\desktop-control\.pytest_cache\v\cache\stepwise
+  17:08 | skills\desktop-control-cli\desktop-control\.pytest_cache\v\cache\nodeids
+  16:33 | skills\desktop-control-cli\desktop-control\app\agents\__pycache__\cli.cpython-312.pyc
+  16:32 | skills\desktop-control-cli\desktop-control\app\services\vision\__pycache__\cleaner.cpython-312.pyc
+  16:31 | skills\desktop-control-cli\desktop-control\app\agents\cli.py
+  16:13 | skills\desktop-control-cli\.idea\workspace.xml
+  16:11 | .git\gk\config
+  16:09 | .git\index
+  15:50 | skills\desktop-control-cli\.claude\settings.json
+  15:48 | skills\desktop-control-cli\desktop-control\cli.py
+  15:48 | skills\desktop-control-cli\desktop-control\app\agents\__pycache__\vision_agent.cpython-312.pyc
+  15:29 | skills\desktop-control-cli\desktop-control\app\agents\__pycache__\verifier_agent.cpython-314.pyc
+  15:29 | skills\desktop-control-cli\desktop-control\app\agents\verifier_agent.py
+  14:58 | skills\desktop-control-cli\desktop-control\.coverage
+  14:54 | skills\desktop-control-cli\desktop-control\.pytest_cache\v\cache\lastfailed
+  14:54 | skills\desktop-control-cli\desktop-control\tests\agents\__pycache__\test_verifier_agent.cpython-314-pytest-7.4.4.pyc
+  14:54 | skills\desktop-control-cli\desktop-control\tests\agents\test_verifier_agent.py
+  14:45 | skills\desktop-control-cli\desktop-control\app\agents\__pycache__\vision_agent.cpython-314.pyc
+  14:45 | skills\desktop-control-cli\desktop-control\app\agents\vision_agent.py
 --- SESSIONS ---
-  Count: 53
-  - 01970b83-21e8-4b6e-acdd-679d364b8a46.jsonl [11:06]
-  - 04249fce-85b5-4fc5-8da8-17b4c4afd3db.jsonl [08:51]
-  - 0be50dd5-b90b-4215-b204-dbc262ef99de.jsonl [00:02]
+  Count: 11
+  - 172b5f95-c5f9-401b-af6f-e4987548ea22.jsonl [08:43]
+  - 5ea0e12e-491b-423c-84fd-a1a3a1084bf4.jsonl [09:03]
+  - 83cc6db0-2eea-4496-aadf-8fea25830ae7.jsonl [08:46]
 --- SKILLS ---
   + cultivating_cli_2
   + desktop-control-cli
-  + jingmai-putaway
-  + karpathy-skills
-  + paddleocr-doc-parsing
-  + playwright-cli-openclaw
 --- STRUCTURED ---
-{"skillsUpdated":["cultivating_cli_2","desktop-control-cli","jingmai-putaway","karpathy-skills","paddleocr-doc-parsing","playwright-cli-openclaw"],"dayOfWeek":"Monday","sessionCount":53,"modifiedFiles":["E:\\workspace\\memory\\daily-report-raw.txt","E:\\workspace\\skills\\desktop-control-cli\\docs\\multi_agent_architecture.md","E:\\workspace\\scripts\\screenshots\\jingmai_search_result.png","E:\\workspace\\scripts\\screenshots\\jingmai_full_current.png","E:\\workspace\\scripts\\screenshots\\jingmai_ai_search.png","E:\\workspace\\scripts\\screenshots\\jingmai_after_publish_click.png","E:\\workspace\\scripts\\screenshots\\jingmai_verify.png","E:\\workspace\\scripts\\screenshots\\jingmai_current.png","E:\\workspace\\scripts\\screenshots\\jingmai_publish_click.png","E:\\workspace\\scripts\\screenshots\\jingmai_publish.png","E:\\workspace\\scripts\\screenshots\\jingmai_more_menu.png","E:\\workspace\\scripts\\screenshots\\jingmai_confirm_home.png","E:\\workspace\\scripts\\screenshots\\jingmai_after_close.png","E:\\workspace\\scripts\\screenshots\\jingmai_home.png","E:\\workspace\\scripts\\screenshots\\jingmai_seller.png","E:\\workspace\\skills\\jingmai-putaway\\OPTIMIZATION_SUMMARY_v1.2.0.md","E:\\workspace\\scripts\\screenshots\\jingmai_after_f5.png","E:\\workspace\\skills\\jingmai-putaway\\FINAL_SCORE_REPORT_v1.2.0.md","E:\\workspace\\scripts\\screenshots\\jingmai_after_back.png","E:\\workspace\\scripts\\screenshots\\jingmai_after_esc.png"],"gitCommits":["a6ac783e optimize desktop-control: 宸ヤ綔娴佹竻鏅板害寰皟","ca94f9c7 optimize desktop-control: 妫€鏌ョ偣璁捐澧炲己","f72b7458 optimize desktop-control: 璧勬簮鏁村悎搴?2b78f5b6 optimize desktop-control: 鎸囦护鍏蜂綋鎬?79d4275a optimize desktop-control: 杈圭晫鏉′欢瑕嗙洊","014a590e optimize desktop-control: 妫€鏌ョ偣璁捐","52bd4a29 optimize desktop-control: 宸ヤ綔娴佹竻鏅板害","55420101 optimize desktop-control: Frontmatter璐ㄩ噺","804f8b0e optimize desktop-control: 娣诲姞鏍囧噯 frontmatter","d6ed65b5 optimize(jingmai-cli): 绗簩杞敼杩?- 琛ュ厖鎵€鏈夊満鏅殑杈撳嚭绀轰緥","65f8c7a4 optimize(jingmai-cli): 绗竴杞敼杩?- 妫€鏌ョ偣+Frontmatter+瀹夎缁嗚妭+杈圭晫鏉′欢+杈撳嚭绀轰緥","bfa47969 feat(skill): 杈惧皵鏂囪瘎浼版敼杩?- 缁撴瀯璇勫垎鎻愬崌鑷?56/60","6aa37fc1 dream: 2026-04-20 nightly consolidation - MEMORY.md update + security scan finding"],"date":"2026.04.20"}
+{"skillsUpdated":["cultivating_cli_2","desktop-control-cli"],"dayOfWeek":"Tuesday","sessionCount":11,"modifiedFiles":["E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.pytest_cache\\v\\cache\\stepwise","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.pytest_cache\\v\\cache\\nodeids","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\agents\\__pycache__\\cli.cpython-312.pyc","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\services\\vision\\__pycache__\\cleaner.cpython-312.pyc","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\agents\\cli.py","E:\\workspace\\skills\\desktop-control-cli\\.idea\\workspace.xml","E:\\workspace\\.git\\gk\\config","E:\\workspace\\.git\\index","E:\\workspace\\skills\\desktop-control-cli\\.claude\\settings.json","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\cli.py","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\agents\\__pycache__\\vision_agent.cpython-312.pyc","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\agents\\__pycache__\\verifier_agent.cpython-314.pyc","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\agents\\verifier_agent.py","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.coverage","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.pytest_cache\\v\\cache\\lastfailed","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\tests\\agents\\__pycache__\\test_verifier_agent.cpython-314-pytest-7.4.4.pyc","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\tests\\agents\\test_verifier_agent.py","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\agents\\__pycache__\\vision_agent.cpython-314.pyc","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\agents\\vision_agent.py"],"gitCommits":"d01f6f69 docs: 鏂板MemOS AI璁板繂鎿嶄綔绯荤粺鐮旂┒鎶ュ憡","date":"2026.04.21"}

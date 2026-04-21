@@ -1369,6 +1369,28 @@ pip install openspec
 ### 文档
 - `knowledge/ai-news-2026-04-15.md` - 完整热点速递
 
+## 2026-04-21 Dream 整合记录
+
+### 整合范围
+- 扫描文件：2026-04-15 / 2026-04-16 / 2026-04-17 / 2026-04-18 / 2026-04-19 / 2026-04-20 / 2026-04-21（7个文件）
+- 说明：所有文件均被 Dream session corpus 严重膨胀（单文件500+行），实际工作内容较少
+
+### 重大事件
+1. **knowledge-base-sync 持续改善**：Milvus 上传量从 04-17 的 501条 → 04-20 的 623条；编译+上传已分离执行，避免 SIGKILL
+2. **04-20 安全扫描结果（edgeone-clawscan）**：安全评分 82/100；4项配置风险：plugins.allow 未设置 / feishu 和 weixin 未固定版本 / Elevated tools 已启用
+3. **find-skills 安全扫描**：windows-control ✅ safe；find-skills ⚠️ suspicious（ClawHub Official 但 security_status=suspicious，暂缓安装）
+4. **Dream 文件膨胀问题**：Dream session corpus 导致 memory 文件快速膨胀（300+行/次），需监控
+
+### 安全建议（更新）
+- 🔴 固定插件版本（feishu / openclaw-weixin）
+- 🟡 设置 plugins.allow 白名单
+- 🟡 继续观察 find-skills，暂缓安装
+
+### 旧日志标记 consolidation
+- 2026-04-15 / 2026-04-16 / 2026-04-17 / 2026-04-18 / 2026-04-19 / 2026-04-20 已标记
+
+---
+
 ## 2026-04-20 Dream 整合记录
 
 ### 整合范围

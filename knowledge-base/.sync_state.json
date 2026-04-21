@@ -2906,7 +2906,33 @@
     "来源\\obsidian-ai-best-knowledge-tool.md": 1776660079.9458685,
     "来源\\open-source-models-guide.md": 1775611610.58398,
     "来源\\openclaw-4-core-skills-summary.md": 1775611610.5844927,
-    "来源\\openclaw-45-dreaming-memory.md": 1775611610.5844927
+    "来源\\openclaw-45-dreaming-memory.md": 1775611610.5844927,
+    "来源\\openclaw-context-layer-skills-design.md": 1775611610.584999,
+    "来源\\OpenClaw-Hermes-集成方案.md": 1775780566.879083,
+    "来源\\openclaw-knowledge-system.md": 1775611610.584999,
+    "来源\\openclaw-multi-agent-team-guide.md": 1775611610.584999,
+    "来源\\openclaw-observability-trace-system.md": 1775611610.584999,
+    "来源\\openclaw-second-brain.md": 1776658388.0154092,
+    "来源\\openmaic.md": 1775779187.419318,
+    "来源\\openspec-sdd-dev-workflow.md": 1775611610.586014,
+    "来源\\README.md": 1775611610.5728803,
+    "来源\\remotion-video-toolkit.md": 1775611610.587036,
+    "来源\\self-improving-2026-04-09.md": 1775725909.9792328,
+    "来源\\shopify-ai-agent-ecommerce-2026.md": 1775611610.587036,
+    "来源\\skill-vetter-guide.md": 1775611610.5876336,
+    "来源\\skill-writing-guide.md": 1776129074.4894342,
+    "来源\\skill1-browser-automation-analysis.md": 1775611610.588138,
+    "来源\\skill3-memory-ai-enhanced-analysis.md": 1775611610.588138,
+    "来源\\skill4-office-automation-analysis.md": 1775611610.5886514,
+    "来源\\super-memory-system-analysis.md": 1775611610.5886514,
+    "来源\\supermemory-deep-analysis.md": 1775611610.5891593,
+    "来源\\webmcp-mcp-browser-automation.md": 1775611610.5896728,
+    "来源\\wecom-customer-service-bot.md": 1775611610.5896728,
+    "来源\\weekly-ai-news-2026-03-29.md": 1775611610.5901792,
+    "来源\\基于Dify平台的AgentSkills使用.md": 1775830690.4037468,
+    "概念\\大模型.md": 1776645837.5498314,
+    "概念\\实用网站测评.md": 1776644229.4958167,
+    "概念\\真实用户交互.md": 1776645837.548332
   },
   "failed": {
     "2026-04-12-articles_opencli-siliconprism": {
@@ -3262,5 +3288,5 @@
       "failed_at": "2026-04-15T12:00:15.505375"
     }
   },
-  "last_sync": "2026-04-20T20:49:12.994487"
+  "last_sync": "2026-04-21T20:28:59.797887"
 }

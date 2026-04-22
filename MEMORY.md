@@ -1369,6 +1369,30 @@ pip install openspec
 ### 文档
 - `knowledge/ai-news-2026-04-15.md` - 完整热点速递
 
+## 2026-04-22 Dream 整合记录
+
+### 整合范围
+- 扫描文件：2026-04-15 / 2026-04-16 / 2026-04-17 / 2026-04-18 / 2026-04-19 / 2026-04-20 / 2026-04-21（7个文件）
+- 说明：所有文件均被 Dream session corpus 严重膨胀（单文件600+行），实际工作内容被掩盖
+
+### 重大事件
+1. **jingmai-putaway SKILL.md 已创建**（04-19）：subagent 发现 jingmai-putaway 缺少顶层 SKILL.md，对标 OPC CLI 风格创建了 `skills/jingmai-putaway/SKILL.md`
+2. **Feishu folder_token 问题**（04-20）：subagent 同步时发现 folder_token 无效，修复后成功创建文档
+3. **Notion 大规模同步**（04-20）：965篇同步完成，但88篇失败（原因待查）
+4. **knowledge-base-sync Cron 执行限制**（04-20）：Cron isolated 环境无法执行 Python exec/read/process 工具，lint_cron.py 任务失败
+5. **知识库 Milvus 稳定在 618-623 条**：04-20 成功上传 618条，04-21 成功上传 623条
+6. **Dream corpus 膨胀失控**：单次 Dream run 可产生 300+ 行 corpus 内容，严重干扰实际工作记录检索
+
+### 待处理问题
+- [ ] Notion 88篇同步失败原因（可能是超时或 API 限流）
+- [ ] Cron isolated 环境工具限制问题（knowledge-base-sync lint 任务无法执行）
+- [ ] Dream corpus 膨胀问题（建议：Dream 只在 03:00 执行，日间宁兄请求不触发 Dream diary）
+
+### 旧日志标记 consolidation
+- 2026-04-15 / 2026-04-16 / 2026-04-17 / 2026-04-18 / 2026-04-19 / 2026-04-20 / 2026-04-21 已标记
+
+---
+
 ## 2026-04-21 Dream 整合记录
 
 ### 整合范围

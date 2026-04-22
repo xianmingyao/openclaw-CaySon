@@ -59,11 +59,11 @@
 
 | Agent | 模型 | 参数量 | 推理速度 | 用途 |
 |-------|------|--------|---------|------|
-| **主控 Agent** | `opencrew:claude-sonnet-4-6` | - | ~2s | 任务分配、编排、反思 |
-| **视觉 Agent** | `ollama:qwen3-vl:8b` | 8B | ~500ms | 图像识别、元素定位 |
+| **主控 Agent** | `claude-sonnet-4-6` | - | ~2s | 任务分配、编排、反思 |
+| **视觉 Agent** | `qwen3-vl:8b` | 8B | ~500ms | 图像识别、元素定位 |
 | **执行 Agent** | 无（直接调用 UFO） | - | <100ms | UI 操作执行 |
-| **验证 Agent** | `ollama:qwen2.5:7b` | 7B | ~100ms | 结果验证、错误检测 |
-| **规划 Agent** | `ollama:llama3.1:8b` | 8B | ~200ms | 辅助规划、步骤生成 |
+| **验证 Agent** | `qwen2.5:7b` | 7B | ~100ms | 结果验证、错误检测 |
+| **规划 Agent** | `llama3.1:8b` | 8B | ~200ms | 辅助规划、步骤生成 |
 
 ---
 

@@ -220,6 +220,126 @@
     "social-media-publish": {
       "version": "1.0.0",
       "installedAt": 1776410809778
+    },
+    "capcut-video-editor": {
+      "version": "1.0.0",
+      "installedAt": 1776834542099
+    },
+    "capcut-ai-video-editor": {
+      "version": "1.0.0",
+      "installedAt": 1776834559812
+    },
+    "best-video-editor-for-beginners": {
+      "version": "1.0.0",
+      "installedAt": 1776834675317
+    },
+    "free-ai-video-editor": {
+      "version": "1.1.1",
+      "installedAt": 1776834685361
+    },
+    "shorts-editor": {
+      "version": "1.0.5",
+      "installedAt": 1776834784458
+    },
+    "ai-video-editing-software": {
+      "version": "1.0.0",
+      "installedAt": 1776834872409
+    },
+    "free-video-editor": {
+      "version": "1.0.3",
+      "installedAt": 1776834890201
+    },
+    "wechat-video-editor": {
+      "version": "1.0.0",
+      "installedAt": 1776834900282
+    },
+    "clips-machine": {
+      "version": "1.2.1",
+      "installedAt": 1776834926050
+    },
+    "chat-video-editor": {
+      "version": "1.0.0",
+      "installedAt": 1776834935815
+    },
+    "video-maker-free": {
+      "version": "1.0.1",
+      "installedAt": 1776834982699
+    },
+    "clip-editor": {
+      "version": "1.0.0",
+      "installedAt": 1776835029921
+    },
+    "jianying": {
+      "version": "0.1.0",
+      "installedAt": 1776835039577
+    },
+    "best-ai-video-editor-free": {
+      "version": "1.0.0",
+      "installedAt": 1776835049096
+    },
+    "market-research": {
+      "version": "1.0.1",
+      "installedAt": 1776865699612
+    },
+    "product-manager": {
+      "version": "1.0.0",
+      "installedAt": 1776865718252
+    },
+    "context-product-manager": {
+      "version": "0.1.0",
+      "installedAt": 1776865727936
+    },
+    "product-strategy": {
+      "version": "1.0.0",
+      "installedAt": 1776865737093
+    },
+    "cpo": {
+      "version": "1.0.1",
+      "installedAt": 1776865746281
+    },
+    "user-research": {
+      "version": "1.0.0",
+      "installedAt": 1776865789283
+    },
+    "competitive-analysis": {
+      "version": "0.1.0",
+      "installedAt": 1776865815366
+    },
+    "competitor-teardown": {
+      "version": "0.1.5",
+      "installedAt": 1776865824010
+    },
+    "requirements-analysis": {
+      "version": "1.0.0",
+      "installedAt": 1776865841821
+    },
+    "feature-requirements-clarification": {
+      "version": "1.0.0",
+      "installedAt": 1776865850898
+    },
+    "customer-persona": {
+      "version": "0.1.5",
+      "installedAt": 1776865868515
+    },
+    "wireframe": {
+      "version": "3.4.1",
+      "installedAt": 1776865886133
+    },
+    "mvp": {
+      "version": "1.0.0",
+      "installedAt": 1776865904413
+    },
+    "claude-code-runner": {
+      "version": "0.1.0",
+      "installedAt": 1776866152148
+    },
+    "claude-code-pro": {
+      "version": "1.1.0",
+      "installedAt": 1776866162421
+    },
+    "claude-code-control": {
+      "version": "1.2.0",
+      "installedAt": 1776866173646
     }
   }
 }

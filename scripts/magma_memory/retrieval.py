@@ -10,8 +10,9 @@ from .core import MemoryGraph, MemoryNode
 class RetrievalEngine:
     """四维检索引擎"""
     
-    def __init__(self, graph: MemoryGraph):
+    def __init__(self, graph: MemoryGraph, stats_manager=None):
         self.graph = graph
+        self.stats_manager = stats_manager  # 检索统计管理器
         # 四维权重配置
         self.weights = {
             'semantic': 0.3,   # 语义权重
@@ -92,6 +93,10 @@ class RetrievalEngine:
                     },
                     "reason": self._explain_score(node, query_keywords, query_entities)
                 })
+        
+        # 🔴 检索统计：记录本次检索结果
+        if self.stats_manager:
+            self.stats_manager.record_retrieval(results, query)
         
         return results
     

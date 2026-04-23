@@ -41,7 +41,10 @@ class MemoryNode:
     # 元数据
     source: str = "manual"  # 来源：wechat/douyin/doc/manual
     importance: float = 1.0  # 重要性 0-1
-    verified: bool = False
+    verified: bool = False  # 是否已验证
+    accessed_at: str = ""   # 上次访问时间（用于遗忘机制）
+    access_count: int = 0   # 访问次数
+    decay_score: float = 1.0  # 衰减分数（用于遗忘）
     
     def __post_init__(self):
         if not self.id:

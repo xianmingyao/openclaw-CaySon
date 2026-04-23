@@ -1,4 +1,4 @@
-# Agent 持续学习三层架构：Model / Harness / Context
+﻿# Agent 持续学习三层架构：Model / Harness / Context
 
 > 来源：抖音@慢学AI（解读 LangChain 创始人文章）
 > 发布时间：2026-04-07 23:30 | 数据：👍 155 / 🔖 117 收藏
@@ -219,3 +219,4 @@ Model 层   ← （未来）知识写进权重
 2. **Harness 层优化** — 探索 OpenClaw 的执行框架改进
 3. **Trace 可观测性** — 建立 Agent 执行轨迹的记录和分析
 4. **混合方案** — 结合 Karpathy 的 wiki 工作流 + LangChain 三层框架
+

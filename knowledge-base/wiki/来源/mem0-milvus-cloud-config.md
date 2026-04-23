@@ -1,4 +1,4 @@
-# Mem0 云端配置指南（Milvus + 双重写入）
+﻿# Mem0 云端配置指南（Milvus + 双重写入）
 
 ## 🎯 架构概述
 
@@ -413,3 +413,4 @@ memory.add("用户宁采臣是CTO，24年经验", user_id="cayson")
 # 搜索记忆
 results = memory.search("用户的背景是什么", user_id="cayson")
 ```
+

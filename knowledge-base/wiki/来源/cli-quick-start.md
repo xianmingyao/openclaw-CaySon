@@ -1,4 +1,4 @@
-# CLI工具 5分钟快速上手
+﻿# CLI工具 5分钟快速上手
 
 > 2026-04-03 精简版
 
@@ -69,3 +69,4 @@ OpenCLI → 控制网站（opencli fetch url）
 - `knowledge/cli-vs-mcp-short.md` - 完整版
 - `knowledge/jianying-editor-skill.md` - 剪映Skill
 - `knowledge/remotion-video-toolkit.md` - React视频Skill
+

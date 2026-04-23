@@ -1,4 +1,4 @@
-# OpenClaw Context 层 Skills 设计：基于 LangChain 三层学习框架
+﻿# OpenClaw Context 层 Skills 设计：基于 LangChain 三层学习框架
 
 > 研究日期：2026-04-08
 > 理论支撑：LangChain 三层学习框架（Model / Harness / Context）
@@ -433,3 +433,4 @@ skills:
 - [ ] 开发知识管理系列 Skill
 - [ ] 实现 Skill 追踪和反馈机制
 - [ ] 建立 Skill 生态（分享/安装）
+

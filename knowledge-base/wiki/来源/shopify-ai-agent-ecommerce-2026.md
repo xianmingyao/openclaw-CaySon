@@ -1,4 +1,4 @@
-# Shopify + AI Agent 跨境电商自动化 2026深度研究报告
+﻿# Shopify + AI Agent 跨境电商自动化 2026深度研究报告
 
 ## 1. 🎯 这是什么
 
@@ -121,3 +121,4 @@ Shopify 店铺 → Headless 架构 → MCP Server → AI Agent → 自主运营
 - Storefront MCP 文档：developer.shopify.com
 - 数字酋长 MercadoLibre ERP：datacaciques.com
 - 智梭ERP：zhisuoerp.com
+

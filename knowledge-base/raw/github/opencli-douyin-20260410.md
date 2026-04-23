@@ -1,4 +1,4 @@
-# OpenCLI - 将网站/Electron应用转成CLI
+﻿# OpenCLI - 将网站/Electron应用转成CLI
 
 > 来源：抖音 @硅基棱镜
 > 抓取时间：2026-04-10 01:06
@@ -32,3 +32,4 @@
 - 浏览器自动化
 - AI-Agent
 - OpenCLI
+

@@ -1,4 +1,4 @@
-# 京麦 UFO Agent 复刻学习报告
+﻿# 京麦 UFO Agent 复刻学习报告
 
 ## 📅 学习日期
 2026-04-09
@@ -128,3 +128,4 @@ windows-ufo-automation/
 ```
 
 在对话中触发后，系统会加载 SKILL.md 中的操作定义。
+

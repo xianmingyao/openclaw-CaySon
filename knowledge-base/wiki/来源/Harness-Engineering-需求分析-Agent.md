@@ -1,4 +1,4 @@
-# Harness Engineering 需求分析 Agent 实战指南
+﻿# Harness Engineering 需求分析 Agent 实战指南
 
 > **来源：** 抖音 @MrMaMaker 的作品 + Practical-Guide-to-Context-Engineering (GitHub 583 stars)
 > **日期：** 2026-04-22
@@ -234,3 +234,4 @@
 - 架构约束 = 清晰的边界
 - 环境闭环 = 质量门禁
 - 知识治理 = 清晰的传承链
+

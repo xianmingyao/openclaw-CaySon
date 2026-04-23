@@ -1,4 +1,4 @@
-# Karpathy 知识库工作流：OpenClaw + Obsidian 落地实现
+﻿# Karpathy 知识库工作流：OpenClaw + Obsidian 落地实现
 
 > 研究日期：2026-04-08
 > 理论支撑：Karpathy 知识库编译工作流
@@ -556,3 +556,4 @@ Agent：更新 wiki/
 - [ ] 实现 Query 查询器
 - [ ] 封装为 OpenClaw Skill
 - [ ] 配置定时编译任务
+

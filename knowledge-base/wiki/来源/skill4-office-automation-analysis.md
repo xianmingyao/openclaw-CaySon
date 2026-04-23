@@ -1,4 +1,4 @@
-# 技能4：Office-Automation 办公自动化深度分析
+﻿# 技能4：Office-Automation 办公自动化深度分析
 
 > 来源：`E:\workspace\skills\office\SKILL.md` 官方文档
 
@@ -296,3 +296,4 @@ pip install openpyxl python-docx python-pptx
 - **Windows-Control** → 桌面软件控制
 - **Memory + AI-Enhanced** → 学习用户偏好
 - **Office-Automation** → 办公自动化
+

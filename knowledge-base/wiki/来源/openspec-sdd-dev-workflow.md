@@ -1,4 +1,4 @@
-# OpenSpec SDD 规范驱动开发深度研究报告
+﻿# OpenSpec SDD 规范驱动开发深度研究报告
 
 ## 1. 🎯 这是什么
 
@@ -161,3 +161,4 @@ openspec push
 | 中文文档 | radebit.github.io/OpenSpec-Docs-zh |
 | 知乎教程 | zhuanlan.zhihu.com/p/1976070658233492911 |
 | CSDN实战 | blog.csdn.net/renhongliang1/article/details/155826895 |
+

@@ -1,4 +1,4 @@
-# 来源摘要：github\openmaic-douyin-20260410.md
+﻿# 来源摘要：github\openmaic-douyin-20260410.md
 
 > 原始路径：raw/github\openmaic-douyin-20260410.md
 > 摄入时间：2026-04-20 08:43
@@ -65,3 +65,4 @@ OpenMAIC是由清华大学开发的多智能体互动课堂工具，提供主题
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

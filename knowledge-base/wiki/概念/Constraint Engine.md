@@ -1,4 +1,4 @@
-# Constraint Engine
+﻿# Constraint Engine
 
 > 分类：概念
 > 创建时间：2026-04-14 20:02
@@ -28,3 +28,4 @@ Constraint Engine是一种用于解决复杂约束条件问题的软件工具或
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

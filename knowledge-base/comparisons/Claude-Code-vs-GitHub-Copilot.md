@@ -1,4 +1,4 @@
-# Claude Code vs GitHub Copilot — AI 编程工具对比
+﻿# Claude Code vs GitHub Copilot — AI 编程工具对比
 
 > 对比时间：2026-04-09
 > 分类：AI编程工具
@@ -73,3 +73,4 @@
 ## 来源
 
 - 2026-04-09 整理
+

@@ -1,4 +1,4 @@
-# Harness Engineering（驾驭工程）
+﻿# Harness Engineering（驾驭工程）
 
 > 来源：知乎/AI铺子综合整理
 > 日期：2026-04-09
@@ -128,3 +128,4 @@ Model（模型） + Harness（驾驭）= Reliable Agent（可靠Agent）
 ## 标签
 
 #HarnessEngineering #AIAgent #LLM #软件工程 #2026趋势
+

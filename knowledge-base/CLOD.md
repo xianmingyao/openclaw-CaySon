@@ -1,4 +1,4 @@
-# Karpathy 风格知识库 - 指令文件 (CLOD.md)
+﻿# Karpathy 风格知识库 - 指令文件 (CLOD.md)
 
 ## 目录结构
 
@@ -74,3 +74,4 @@ python upload_mem0.py
 # 全量同步（编译+飞书+Notion+记忆）
 python sync_all.py
 ```
+

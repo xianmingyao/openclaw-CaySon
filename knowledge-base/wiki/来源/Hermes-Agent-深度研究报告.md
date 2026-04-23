@@ -1,4 +1,4 @@
-# Hermes Agent 深度研究报告
+﻿# Hermes Agent 深度研究报告
 
 > 更新时间：2026-04-10
 > 来源：GitHub / 官网 / 知乎 / 技术博客
@@ -221,3 +221,4 @@ Hermes Agent的**自进化Skill系统**是最大亮点：
 - 官网：https://hermes-agent.org/zh/
 - GitHub：https://github.com/nousresearch/hermes-agent
 - 文档：https://hermes-agent.nousresearch.com/docs/
+

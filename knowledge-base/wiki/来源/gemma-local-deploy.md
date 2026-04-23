@@ -1,4 +1,4 @@
-# Gemma 4 本地部署完全指南
+﻿# Gemma 4 本地部署完全指南
 
 > 2026-04-03 | 来源：抖音@阿博粒 + 官方文档
 
@@ -167,3 +167,4 @@ curl http://localhost:8080/v1/completions \
 ## 文档
 
 - `knowledge/gemma-local-deploy.md` - 本文档
+

@@ -1,4 +1,4 @@
-# KiloClaw 深度研究报告
+﻿# KiloClaw 深度研究报告
 
 > 研究日期：2026-04-02
 > 来源：Web搜索 + 官方文档
@@ -225,3 +225,4 @@ openclaw channels login --channel openclaw-weixin
 - KiloClaw文档：https://kilo.ai/docs/kiloclaw
 - OpenClaw GitHub：https://github.com/openclaw/openclaw
 - VentureBeat报道：搜索"KiloClaw"可得
+

@@ -1,4 +1,4 @@
-# 开源模型下载与部署指南
+﻿# 开源模型下载与部署指南
 
 > 整理时间：2026-03-30
 > 来源：GitHub 搜索 + 官方文档
@@ -302,3 +302,4 @@ curl -X POST "https://api.cohere.ai/v1/transcribe" \
 - DaVinci-MagiHuman: https://github.com/GAIR-NLP/daVinci-MagiHuman
 - TurboQuant: https://github.com/tonbistudio/turboquant-pytorch
 - Cohere: https://cohere.com/
+

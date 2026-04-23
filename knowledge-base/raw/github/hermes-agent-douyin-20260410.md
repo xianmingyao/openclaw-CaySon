@@ -1,4 +1,4 @@
-# Hermes Agent - 33.3k Stars 自进化AI Agent
+﻿# Hermes Agent - 33.3k Stars 自进化AI Agent
 
 > 来源：抖音 @AI真用法
 > 抓取时间：2026-04-10 00:58
@@ -33,3 +33,4 @@
 - 自进化
 - NousResearch
 - Hermes-Agent
+

@@ -1,4 +1,4 @@
-# jingmai-cli 技能修复报告
+﻿# jingmai-cli 技能修复报告
 
 ## 📅 日期
 2026-04-09
@@ -81,3 +81,4 @@ openclaw skills list | Select-String "jingmai"
 ```
 
 输出：`✅ ready | 📦 jingmai-cli | 京麦 UFO | openclaw-workspace`
+

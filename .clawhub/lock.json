@@ -340,6 +340,26 @@
     "claude-code-control": {
       "version": "1.2.0",
       "installedAt": 1776866173646
+    },
+    "opencode": {
+      "version": "1.2.2",
+      "installedAt": 1776871655470
+    },
+    "opencode-cli": {
+      "version": "1.1.0",
+      "installedAt": 1776871666055
+    },
+    "opencode-controller": {
+      "version": "1.0.0",
+      "installedAt": 1776871676737
+    },
+    "easy-opencode": {
+      "version": "1.1.1",
+      "installedAt": 1776871686832
+    },
+    "opencode-acp-control-3": {
+      "version": "0.1.1",
+      "installedAt": 1776871722833
     }
   }
 }

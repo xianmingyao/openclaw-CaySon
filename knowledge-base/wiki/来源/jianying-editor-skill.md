@@ -1,4 +1,4 @@
-# 剪映AI剪辑Skill - jianying-editor-skill 深度研究报告
+﻿# 剪映AI剪辑Skill - jianying-editor-skill 深度研究报告
 
 > 研究日期：2026-04-03
 > 来源：抖音@艾伦2077v + GitHub/全网搜索
@@ -216,3 +216,4 @@ git pull
 - **B站介绍**: https://www.bilibili.com/video/BV1hLzCBzEDS/
 - **剪映5.9下载**: https://pan.quark.cn/s/81566e9c6e08
 - **来源抖音视频**: @艾伦2077v - 「完全不会剪辑也没关系！这个AI Skill帮你全自动出视频！」
+

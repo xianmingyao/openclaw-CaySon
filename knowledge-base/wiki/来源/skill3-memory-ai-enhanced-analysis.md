@@ -1,4 +1,4 @@
-# 技能3：Memory + AI-Enhanced 记忆系统深度分析
+﻿# 技能3：Memory + AI-Enhanced 记忆系统深度分析
 
 > 来源：`E:\workspace\skills\mem0\` + `E:\workspace\skills\self-improving\` 源码分析
 
@@ -336,3 +336,4 @@ node scripts/mem0-add.js "新学习的内容"    # Mem0
 ```
 
 **记忆系统是所有技能的基础，让 AI 越来越懂用户！**
+

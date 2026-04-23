@@ -1,4 +1,4 @@
-# 来源摘要：github\gitnexus-agan.md
+﻿# 来源摘要：github\gitnexus-agan.md
 
 > 原始路径：raw/github\gitnexus-agan.md
 > 摄入时间：2026-04-20 08:43
@@ -77,3 +77,4 @@ GitNexus是一个公开项目，提供代码、函数、依赖关系和调用关
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

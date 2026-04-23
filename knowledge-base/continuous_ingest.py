@@ -18,6 +18,7 @@ Karpathy 方法论的核心：人类记录到 log → AI 自动整理到 wiki
 
 import os
 import sys
+import io
 import time
 import json
 import hashlib
@@ -25,6 +26,9 @@ import subprocess
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional
+
+
+
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
 
@@ -127,20 +131,27 @@ def run_compile_for_files(filepaths: List[Path]) -> bool:
     try:
         # 调用 compile.py（增量模式）
         cmd = [sys.executable, str(COMPILE_SCRIPT), "--force"]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            errors='replace',
+            timeout=300
+        )
         
         if result.returncode == 0:
-            print("[INGEST] ✅ compile.py 执行成功")
+            print("[INGEST] [OK] compile.py 执行成功")
             return True
         else:
-            print(f"[INGEST] ⚠️ compile.py 执行异常: {result.stderr[:200]}")
+            print(f"[INGEST] [WARN] compile.py 执行异常: {result.stderr[:200]}")
             return False
             
     except subprocess.TimeoutExpired:
-        print("[INGEST] ❌ compile.py 超时")
+        print("[INGEST] [FAIL] compile.py 超时")
         return False
     except Exception as e:
-        print(f"[INGEST] ❌ compile.py 执行失败: {e}")
+        print(f"[INGEST] [FAIL] compile.py 执行失败: {e}")
         return False
 
 

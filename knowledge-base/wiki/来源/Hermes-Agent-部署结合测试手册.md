@@ -1,4 +1,4 @@
-# Hermes Agent 部署 + 结合OpenClaw + 测试实战手册
+﻿# Hermes Agent 部署 + 结合OpenClaw + 测试实战手册
 
 > 更新时间：2026-04-13（基于GitHub v0.8.0）
 > 来源：nousresearch/hermes-agent GitHub README + 技术文档
@@ -532,3 +532,4 @@ hermes model  # 使用交互式选择，避免手动拼写
 | Skills Hub | https://agentskills.io |
 | 自进化引擎 | https://github.com/NousResearch/hermes-agent-self-evolution |
 | 安装脚本 | https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh |
+

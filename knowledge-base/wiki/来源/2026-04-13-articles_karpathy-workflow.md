@@ -1,4 +1,4 @@
-# 来源摘要：articles\karpathy-workflow.md
+﻿# 来源摘要：articles\karpathy-workflow.md
 
 > 原始路径：raw/articles\karpathy-workflow.md
 > 摄入时间：2026-04-13 20:00
@@ -60,3 +60,4 @@ Karpathy的工作流利用LLM将各种形式的原始资料编译成结构化的
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

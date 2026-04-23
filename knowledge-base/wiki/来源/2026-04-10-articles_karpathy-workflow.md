@@ -1,4 +1,4 @@
-# 来源摘要：articles\karpathy-workflow.md
+﻿# 来源摘要：articles\karpathy-workflow.md
 
 > 原始路径：raw/articles\karpathy-workflow.md
 > 摄入时间：2026-04-10 20:03
@@ -60,3 +60,4 @@ Karpathy 提出的工作流使用 LLM 将原始资料编译成 wiki，通过收�
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

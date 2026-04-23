@@ -1,0 +1,146 @@
+{
+  "E:\\workspace\\knowledge-base\\raw\\README.md": {
+    "hash": "ebde904866c4b7c590c7a5082ce6c586",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\2026-04-09-Harness-Engineering.md": {
+    "hash": "1c51971c21d654530d9f1f50f5db0f56",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\2026-04-09-Knowledge-Screenshots-Summary.md": {
+    "hash": "7067dc59f873de3e3170c7f9c895db06",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\bytedance-seeduplex-voice-model.md": {
+    "hash": "3ef2206472970ad205331bfab4d50158",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\hermes-agent-ai真用法.md": {
+    "hash": "11197a5574e09d21790c5fe8238ee854",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\karpathy-rag-critique-aidianliao.md": {
+    "hash": "a7d36bb9392bc4f1e38a337b902de2e9",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\karpathy-workflow.md": {
+    "hash": "6e2a5fe7a152c374ef85bf30015e3a3d",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\llm-training-data-sources.md": {
+    "hash": "c741bcfca230133dd2c477b14198567f",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\opencli-siliconprism.md": {
+    "hash": "330d0c546c2f49a666278acd45269dfc",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\openlearn-certification-dayang.md": {
+    "hash": "42d8ab9e97b1489c2f67397bc0e752a4",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\openmaic-dayang.md": {
+    "hash": "57c1184ad1cf8e6c1da3170edd6ed861",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\tts-model-comparison-longcat.md": {
+    "hash": "eade56cd3e0028a7b94ecba401d58afb",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\tts-models-comparison-20260410.md": {
+    "hash": "5cc231d9b3a79c2486d0c88230c92ba7",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\2026-04-09-Alchemy-Tsinghua-AI-Science.md": {
+    "hash": "65730dc31078a354204f5dd46bc2607b",
+    "detected_at": "2026-04-23T09:06:00.647771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.647771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\2026-04-09-Alchemy-清华AI科研自动化框架.md": {
+    "hash": "1242b0a499935668d604056e17e2c131",
+    "detected_at": "2026-04-23T09:06:00.648777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.648777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md": {
+    "hash": "26902d8ab85d95a629109649f4c1bafc",
+    "detected_at": "2026-04-23T09:06:00.648777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.648777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\gitnexus-agan.md": {
+    "hash": "d5ab6400770a4cb9a58e2cc0f2f0aef9",
+    "detected_at": "2026-04-23T09:06:00.648777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.648777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\gitnexus-douyin-20260410.md": {
+    "hash": "659421d4255e28fcadb900d91edc965b",
+    "detected_at": "2026-04-23T09:06:00.648777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.648777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\hermes-agent-ai-zhenyongfa.md": {
+    "hash": "9133d4c107862ea9f8872e433736b4c6",
+    "detected_at": "2026-04-23T09:06:00.648777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.648777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\hermes-agent-douyin-20260410.md": {
+    "hash": "68f4c3b73765c5e20d2e93520a63b899",
+    "detected_at": "2026-04-23T09:06:00.648777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.648777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\opencli-douyin-20260410.md": {
+    "hash": "724d822ddad2fc90bec48d4555b0e69b",
+    "detected_at": "2026-04-23T09:06:00.648777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.648777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github\\openmaic-douyin-20260410.md": {
+    "hash": "1e668afd72e429f926fdb2d7e09f184d",
+    "detected_at": "2026-04-23T09:06:00.648777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.648777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\SKILL.md_技术规范详解---9ccef561.pdf": {
+    "hash": "ce1f344abda23c37ffc13ed60fc5e9ee",
+    "detected_at": "2026-04-23T09:06:00.656771",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.656771"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\articles\\第三集基于Dify平台的AgentSkills使用.pdf": {
+    "hash": "e07cf188e74c6e7bc0f97472bdcc5f32",
+    "detected_at": "2026-04-23T09:06:00.657777",
+    "processed": true,
+    "processed_at": "2026-04-23T09:06:00.657777"
+  }
+}

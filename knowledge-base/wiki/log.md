@@ -57,3 +57,2856 @@
 
 *本文件由 Karpathy 知识库系统自动维护*
 *规则：只追加，不删除历史*
+
+## 2026-04-23 09:04 - INGEST 摄入 (v6优化版)
+处理 22/22 个文件，概念 120，实体 111。模式：全量。失败：0 个
+
+
+## LINT 检查报告 - 2026-04-23 09:05
+
+**问题总数**: 765
+
+
+### 孤儿链接 (691 项)
+
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\.cursorrules.md)
+- [[raw/目录]] (来源: 实体\100篇_40万字规模.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\100篇_40万字规模.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\3,474 Commits.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\3,474 Commits.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\3.9k stars.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\3.9k（视频中显示2.0万收藏）.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\3.9k（视频中显示2.0万收藏）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\33.3k Stars.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\33.3k Stars.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\4.3k Forks.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\4.3k Forks.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\601个分支.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\601个分支.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\@AI真用法.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\@AI真用法.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\@大阳AI测评君.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\@电磁波Studio.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\@硅基棱镜.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\@阿甘探AI.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\@阿甘探AI.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAI 2025 论文《Mind Individual Information!》.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAI 2025论文《Mind Individual Information!》.md)
+- [[2026-04-11-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAII 2025 论文《Mind Individual Information!》.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\AAAII 2025论文级别的基线算法.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 实体\abhigyanpatwari _ GitNexus.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\abhigyanpatwari_GitNexus.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Agent SDK.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\AGENT.md.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist 系统.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\AI Scientist.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist系统.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 实体\AI有点聊.md)
+- [[hermes-agent]] (来源: 实体\AI真用法.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\AI真用法.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\Alchemy（炼丹炉）.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\algorithm.py.md)
+- [[已有文档/知识库转化]] (来源: 实体\Alpaca.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Alpaca.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\AlphaCode.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Anthropic.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Antigravity Ultra.md)
+- [[node >= 20.0.0]] (来源: 实体\Apache-2.0.md)
+- [[github]] (来源: 实体\articles.md)
+- [[2026-04-11-README.md]] (来源: 实体\articles.md)
+- [[papers/]] (来源: 实体\articles_.md)
+- [[github/]] (来源: 实体\articles_.md)
+- [[datasets/]] (来源: 实体\articles_.md)
+- [[2026-04-14-README.md]] (来源: 实体\articles_.md)
+- [[已有文档/知识库转化]] (来源: 实体\BELLE.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\BELLE.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Bilibili.md)
+- [[openai]] (来源: 实体\chatgpt.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\chatgpt.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\chrome-devtools-mcp.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\chrome-devtools-mcp.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Claude Agent.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\Claude Code.md)
+- [[已有文档/知识库转化]] (来源: 实体\Claude.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Claude.md)
+- [[已有文档/知识库转化]] (来源: 实体\CodeAlpaca.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\CodeAlpaca.md)
+- [[github]] (来源: 实体\compile.py.md)
+- [[2026-04-11-README.md]] (来源: 实体\compile.py.md)
+- [[github]] (来源: 实体\datasets.md)
+- [[2026-04-11-README.md]] (来源: 实体\datasets.md)
+- [[articles/]] (来源: 实体\datasets_.md)
+- [[papers/]] (来源: 实体\datasets_.md)
+- [[github/]] (来源: 实体\datasets_.md)
+- [[2026-04-14-README.md]] (来源: 实体\datasets_.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\DataTool.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\DataTool.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\DeepMind.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\DeerFlow 2.0.md)
+- [[已有文档/知识库转化]] (来源: 实体\Firefly.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Firefly.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\Fish Audio S2 Pro.md)
+- [[hermes-agent]] (来源: 实体\GitHub Forks.md)
+- [[2026-04-13-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\GitHub Forks.md)
+- [[hermes-agent]] (来源: 实体\GitHub Stars.md)
+- [[2026-04-13-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\GitHub Stars.md)
+- [[2026-04-11-README.md]] (来源: 实体\GitHub.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\GitHub_ github.com_TsinghuaISE_Alchemy.md)
+- [[articles/]] (来源: 实体\github_.md)
+- [[papers/]] (来源: 实体\github_.md)
+- [[datasets/]] (来源: 实体\github_.md)
+- [[2026-04-14-README.md]] (来源: 实体\github_.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\GitNexus.md)
+- [[已有文档/知识库转化]] (来源: 实体\GPT-4.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\GPT-4.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 实体\GPT-4o.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 实体\Graph RAG.md)
+- [[2026-04-10-github\gitnexus-agan.md]] (来源: 实体\Graph RAG.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\Graph RAG设计思路.md)
+- [[2026-04-13-github\gitnexus-douyin-20260410.md]] (来源: 实体\Graph RAG设计思路.md)
+- [[已有文档/知识库转化]] (来源: 实体\GSM8K-augmented.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\GSM8K-augmented.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Harness Core.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 实体\Hermes Agent.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\Hermes-agent.md)
+- [[已有文档/知识库转化]] (来源: 实体\InfinityInstruct.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\InfinityInstruct.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\JCST 2026.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\Karpathy AI 知识库系列.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\Karpathy AI 知识库系列.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\Karpathy AI 知识库系列（2026年4月）.md)
+- [[2026-04-10-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\Karpathy AI 知识库系列（2026年4月）.md)
+- [[raw/目录]] (来源: 实体\Karpathy 知识库.md)
+- [[wiki/]] (来源: 实体\Karpathy 知识库.md)
+- [[2026-04-09-articles\karpathy-workflow.md]] (来源: 实体\Karpathy 知识库.md)
+- [[raw/目录]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[wiki/]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 实体\Karpathy.md)
+- [[raw/目录]] (来源: 实体\Karpathy知识库工作流.md)
+- [[100篇/40万字规模]] (来源: 实体\Karpathy知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Karpathy知识库工作流.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 实体\Karpathy（安德烈·卡帕西）.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\LiteRT-LM.md)
+- [[raw/目录]] (来源: 实体\LLM.md)
+- [[wiki/]] (来源: 实体\LLM.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\LLM.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\LongCat-AudioDiT.md)
+- [[已有文档/知识库转化]] (来源: 实体\Magicoder-OSS-Instruct.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Magicoder-OSS-Instruct.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\MCP 生态全景图.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\MCP 生态全景图.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\MemPalace (milla-jovovich_mempalace).md)
+- [[2026-04-09-Knowledge-Screenshots-Summary]] (来源: 实体\MemPalace-milla-jovovich-mempalace.md)
+- [[已有文档/知识库转化]] (来源: 实体\MetaMathQA.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\MetaMathQA.md)
+- [[已有文档/知识库转化]] (来源: 实体\MOSS-SFT.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\MOSS-SFT.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\nousresearch_hermes-agent.md)
+- [[node >= 20.0.0]] (来源: 实体\npm v1.1.1.md)
+- [[raw/目录]] (来源: 实体\Obsidian Web Clipper.md)
+- [[wiki/]] (来源: 实体\Obsidian Web Clipper.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Obsidian Web Clipper.md)
+- [[raw/目录]] (来源: 实体\ObsidianWebClipper.md)
+- [[100篇/40万字规模]] (来源: 实体\ObsidianWebClipper.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\ObsidianWebClipper.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\OpenAI.md)
+- [[已有文档/知识库转化]] (来源: 实体\OpenAssistant.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\OpenAssistant.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\OpenClaw.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\OpenClaw.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\opencli list.md)
+- [[2026-04-11-github\opencli-douyin-20260410.md]] (来源: 实体\opencli.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\OpenCode.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\OpenLearn.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\OpenMAIC.md)
+- [[github]] (来源: 实体\papers.md)
+- [[2026-04-11-README.md]] (来源: 实体\papers.md)
+- [[articles/]] (来源: 实体\papers_.md)
+- [[github/]] (来源: 实体\papers_.md)
+- [[datasets/]] (来源: 实体\papers_.md)
+- [[2026-04-14-README.md]] (来源: 实体\papers_.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 实体\Python.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\Qwen2-TTS.md)
+- [[raw/目录]] (来源: 实体\RAG.md)
+- [[wiki/]] (来源: 实体\RAG.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\RAG.md)
+- [[2026-04-10-articles\karpathy-workflow.md]] (来源: 实体\raw_ 目录.md)
+- [[wiki/]] (来源: 实体\raw_.md)
+- [[2026-04-11-articles\karpathy-workflow.md]] (来源: 实体\raw_.md)
+- [[wiki/]] (来源: 实体\raw_目录.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\raw_目录.md)
+- [[articles/]] (来源: 实体\README.md.md)
+- [[papers/]] (来源: 实体\README.md.md)
+- [[github/]] (来源: 实体\README.md.md)
+- [[datasets/]] (来源: 实体\README.md.md)
+- [[2026-04-14-README.md]] (来源: 实体\README.md.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Reddit.md)
+- [[papers/]] (来源: 实体\rticles_.md)
+- [[github/]] (来源: 实体\rticles_.md)
+- [[datasets/]] (来源: 实体\rticles_.md)
+- [[2026-04-14-README.md]] (来源: 实体\rticles_.md)
+- [[语音AI]] (来源: 实体\Seeduplex.md)
+- [[已有文档/知识库转化]] (来源: 实体\ShareGPT.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\ShareGPT.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 实体\SKILL.md)
+- [[2026-04-11-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 实体\SKILL.md_技术规范详解---9ccef561.pdf.md)
+- [[raw/ 目录]] (来源: 实体\STEP 01_ 收集.md)
+- [[STEP 02: 编译]] (来源: 实体\STEP 01_ 收集.md)
+- [[STEP 03: 查询]] (来源: 实体\STEP 01_ 收集.md)
+- [[raw/ 目录]] (来源: 实体\STEP 02_ 编译.md)
+- [[STEP 01: 收集]] (来源: 实体\STEP 02_ 编译.md)
+- [[STEP 03: 查询]] (来源: 实体\STEP 02_ 编译.md)
+- [[raw/ 目录]] (来源: 实体\STEP 03_ 查询.md)
+- [[STEP 01: 收集]] (来源: 实体\STEP 03_ 查询.md)
+- [[STEP 02: 编译]] (来源: 实体\STEP 03_ 查询.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\The agent that grows with you.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\The agent that grows with you.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\THU-MAIC团队.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Twitter.md)
+- [[raw/ 目录]] (来源: 实体\wiki 知识库.md)
+- [[STEP 01: 收集]] (来源: 实体\wiki 知识库.md)
+- [[STEP 02: 编译]] (来源: 实体\wiki 知识库.md)
+- [[STEP 03: 查询]] (来源: 实体\wiki 知识库.md)
+- [[github]] (来源: 实体\wiki.md)
+- [[2026-04-11-README.md]] (来源: 实体\wiki.md)
+- [[raw/目录]] (来源: 实体\wiki_.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\wiki_.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\yaml配置文件.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\YouTube.md)
+- [[2026-04-11-articles\tts-models-comparison-20260410.md]] (来源: 实体\三款开源TTS大模型横评，LongCat-AudioDiT完胜.md)
+- [[已有文档/知识库转化]] (来源: 实体\人工标注（最高质量）.md)
+- [[从已有文档/知识库转化]] (来源: 实体\人工标注（最高质量）.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\人工标注（最高质量）.md)
+- [[已有文档/知识库转化]] (来源: 实体\从已有文档_知识库转化.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\从已有文档_知识库转化.md)
+- [[已有文档/知识库转化]] (来源: 实体\从真实用户交互中提取.md)
+- [[从已有文档/知识库转化]] (来源: 实体\从真实用户交互中提取.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\从真实用户交互中提取.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\内嵌闭环学习系统.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\内嵌闭环学习系统.md)
+- [[2026-04-12-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 实体\基于Dify平台的AgentSkills使用.md)
+- [[已有文档/知识库转化]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[从已有文档/知识库转化]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\多平台支持.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\多平台支持.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\多模态推荐任务.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\多模态推荐任务.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 实体\大阳AI测评君.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 实体\字节跳动 (ByteDance).md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\字节跳动.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\实用网站.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\小红书.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\小龙虾过时了？爱马仕成了最近最猛的开源AI.md)
+- [[已有文档/知识库转化]] (来源: 实体\开源数据集整合.md)
+- [[从已有文档/知识库转化]] (来源: 实体\开源数据集整合.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\开源数据集整合.md)
+- [[hermes-agent]] (来源: 实体\抖音.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\抖音.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\李乐晖.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\李佳助理教授课题组.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\李佳助理教授课题组.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\李佳（助理教授）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\模型无关架构.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\模型无关架构.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\清华 AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\清华 AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\清华人工智能学院.md)
+- [[2026-04-13-github\openmaic-douyin-20260410.md]] (来源: 实体\清华大学 THU-MAIC团队.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\清华大学THU-MAIC团队.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\清华大学人工智能学院.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\电磁波Studio.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\知乎.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\研究环境执行层.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\研究环境执行层.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\硅基棱镜.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 实体\第三集.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\算法开发层.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\算法开发层.md)
+- [[github]] (来源: 实体\素材.md)
+- [[2026-04-11-README.md]] (来源: 实体\素材.md)
+- [[articles/]] (来源: 实体\素材_.md)
+- [[papers/]] (来源: 实体\素材_.md)
+- [[github/]] (来源: 实体\素材_.md)
+- [[datasets/]] (来源: 实体\素材_.md)
+- [[2026-04-13-README.md]] (来源: 实体\素材_.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\编程救星，不让AI瞎改代码.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\编程救星，不让AI瞎改代码.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\自动生成Skills.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\自动生成Skills.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\蔡立一.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\证书.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\跨会话记忆.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\跨会话记忆.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 实体\阿甘探AI.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 实体\阿甘探AI.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-09-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[articles/]] (来源: 来源\2026-04-09-README.md)
+- [[papers/]] (来源: 来源\2026-04-09-README.md)
+- [[github/]] (来源: 来源\2026-04-09-README.md)
+- [[datasets/]] (来源: 来源\2026-04-09-README.md)
+- [[素材/]] (来源: 来源\2026-04-09-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-10-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/ 目录]] (来源: 来源\2026-04-10-articles_karpathy-workflow.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-10-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-10-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-10-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-10-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-10-README.md)
+- [[papers/]] (来源: 来源\2026-04-10-README.md)
+- [[github/]] (来源: 来源\2026-04-10-README.md)
+- [[datasets/]] (来源: 来源\2026-04-10-README.md)
+- [[素材/]] (来源: 来源\2026-04-10-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-11-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/]] (来源: 来源\2026-04-11-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-11-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-11-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-11-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-11-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-11-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-11-github_hermes-agent-douyin-20260410.md)
+- [[github]] (来源: 来源\2026-04-11-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-12-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-12-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-12-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-12-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-12-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-12-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-12-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-12-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-12-README.md)
+- [[papers/]] (来源: 来源\2026-04-12-README.md)
+- [[github/]] (来源: 来源\2026-04-12-README.md)
+- [[datasets/]] (来源: 来源\2026-04-12-README.md)
+- [[素材/]] (来源: 来源\2026-04-12-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-13-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-13-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-13-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-13-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-13-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-13-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-13-README.md)
+- [[papers/]] (来源: 来源\2026-04-13-README.md)
+- [[github/]] (来源: 来源\2026-04-13-README.md)
+- [[datasets/]] (来源: 来源\2026-04-13-README.md)
+- [[素材/]] (来源: 来源\2026-04-13-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-14-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-14-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-14-articles_karpathy-workflow.md)
+- [[从已有文档/知识库转化]] (来源: 来源\2026-04-14-articles_llm-training-data-sources.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-14-articles_llm-training-data-sources.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 来源\2026-04-14-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-14-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-14-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-14-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-14-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-14-README.md)
+- [[papers/]] (来源: 来源\2026-04-14-README.md)
+- [[github/]] (来源: 来源\2026-04-14-README.md)
+- [[datasets/]] (来源: 来源\2026-04-14-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-15-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-15-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-15-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-15-articles_llm-training-data-sources.md)
+- [[github.com/TsinghuaISE/Alchemy]] (来源: 来源\2026-04-15-github_2026-04-09-Alchemy-清华AI科研自动化框架.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-15-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-15-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-15-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-15-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-15-README.md)
+- [[papers/]] (来源: 来源\2026-04-15-README.md)
+- [[github/]] (来源: 来源\2026-04-15-README.md)
+- [[datasets/]] (来源: 来源\2026-04-15-README.md)
+- [[素材/]] (来源: 来源\2026-04-15-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-20-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/]] (来源: 来源\2026-04-20-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-20-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-20-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-20-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-20-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-20-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-20-github_hermes-agent-douyin-20260410.md)
+- [[rticles/]] (来源: 来源\2026-04-20-README.md)
+- [[papers/]] (来源: 来源\2026-04-20-README.md)
+- [[github/]] (来源: 来源\2026-04-20-README.md)
+- [[datasets/]] (来源: 来源\2026-04-20-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-23-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/ 目录]] (来源: 来源\2026-04-23-articles_karpathy-workflow.md)
+- [[STEP 01: 收集]] (来源: 来源\2026-04-23-articles_karpathy-workflow.md)
+- [[STEP 02: 编译]] (来源: 来源\2026-04-23-articles_karpathy-workflow.md)
+- [[STEP 03: 查询]] (来源: 来源\2026-04-23-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-23-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-23-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-23-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-23-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-23-github_hermes-agent-douyin-20260410.md)
+- [[node >= 20.0.0]] (来源: 来源\2026-04-23-github_opencli-douyin-20260410.md)
+- [[{
+            "vector": vector,
+            "text": text,
+            "user_id": user_id,
+            "created_at": datetime.now().isoformat(),
+        }]] (来源: 来源\mem0-milvus-cloud-config.md)
+- [[skill-name-1]] (来源: 来源\skill-writing-guide.md)
+- [[skill-name-2]] (来源: 来源\skill-writing-guide.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\6平台6执行环境.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\6平台6执行环境.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Agent.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 概念\AgentSkills.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\AI Agent.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\AI Scientist.md)
+- [[2026-04-11-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研自动化.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\AI 编程 Agent.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\AI-Agent.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\AI-powered discovery.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\AI学习.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\AI技术.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\AI教师.md)
+- [[2026-04-10-articles\hermes-agent-ai真用法.md]] (来源: 概念\AI智能体.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\AI编程.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\AI编程.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\AI错误修改代码.md)
+- [[2026-04-13-github\gitnexus-agan.md]] (来源: 概念\AI错误修改代码.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\AI驱动发现.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\AI驱动的发现.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy 框架.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 概念\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Alchemy框架.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy（炼丹炉）.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\CLI.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\CLI工具.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Constraint Engine.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Context Engineering.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Control Loop.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\DeerFlow.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 概念\Dify平台.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\Electron应用.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\Electron应用转CLI.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Feedback System.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\Fish Audio S2 Pro.md)
+- [[openai]] (来源: 概念\GitHub Forks.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\GitHub Forks.md)
+- [[openai]] (来源: 概念\GitHub Stars.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\GitHub Stars.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\GitNexus.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\GitNexus.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\Graph RAG.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\Graph RAG.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\Graph RAG设计思路.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\Graph RAG设计思路.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Harness Engineering.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Harness Engineering.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\Hermes Agent.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\Hermes Agent.md)
+- [[hermes-agent]] (来源: 概念\Hermes-agent.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\Hermes-agent.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Karpathy 知识库工作流.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Karpathy 知识库工作流.md)
+- [[raw/目录]] (来源: 概念\LLM.md)
+- [[wiki/]] (来源: 概念\LLM.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\LLM.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\LongCat AudioDiT.md)
+- [[2026-04-14-articles\tts-model-comparison-longcat.md]] (来源: 概念\LongCat-AudioDiT.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\MCP (Model Context Protocol).md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\MCP (Model Context Protocol).md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\MemPalace.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\MemPalace.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Obsidian Web Clipper.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Obsidian Web Clipper.md)
+- [[raw/ 目录]] (来源: 概念\Obsidian.md)
+- [[STEP 01: 收集]] (来源: 概念\Obsidian.md)
+- [[STEP 02: 编译]] (来源: 概念\Obsidian.md)
+- [[STEP 03: 查询]] (来源: 概念\Obsidian.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\OpenCLI.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\OpenLearn 平台.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\OpenLearn平台.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\OpenMAIC.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\PDF转课堂.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Prompt Engineering.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Python 环境.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\Qwen2-TTS.md)
+- [[论文]] (来源: 概念\RAG.md)
+- [[文章]] (来源: 概念\RAG.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 概念\RAG（检索增强生成）.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Reuse Chrome login.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Seed Baseline 机制.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Seed Baseline.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Seed Baseline机制.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 概念\Seeduplex.md)
+- [[2026-04-11-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\SKILL.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\Skills.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\Skills.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\TTS.md)
+- [[2026-04-13-articles\tts-model-comparison-longcat.md]] (来源: 概念\TTS模型.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Universal CLI Hub.md)
+- [[raw/目录]] (来源: 概念\wiki.md)
+- [[wiki/]] (来源: 概念\wiki.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\wiki.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\wiki文章生成.md)
+- [[raw/目录]] (来源: 概念\wiki知识库.md)
+- [[100篇/40万字规模]] (来源: 概念\wiki知识库.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\wiki知识库.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Zero risk.md)
+- [[raw/目录]] (来源: 概念\上下文窗口.md)
+- [[100篇/40万字规模]] (来源: 概念\上下文窗口.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\上下文窗口.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\主题转课堂.md)
+- [[已有文档/知识库转化]] (来源: 概念\人工标注.md)
+- [[从已有文档/知识库转化]] (来源: 概念\人工标注.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\人工标注.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\从OpenClaw一键迁移.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\从OpenClaw一键迁移.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\代码可视化.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\代码可视化.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\代码审查.md)
+- [[2026-04-13-github\gitnexus-douyin-20260410.md]] (来源: 概念\代码审查.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\代码结构.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\代码结构.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\优化体验.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\传统Agent痛点.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\传统代码审查.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\传统代码审查.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\传统开源Agent痛点.md)
+- [[articles/]] (来源: 概念\使用方式.md)
+- [[papers/]] (来源: 概念\使用方式.md)
+- [[github/]] (来源: 概念\使用方式.md)
+- [[datasets/]] (来源: 概念\使用方式.md)
+- [[素材/]] (来源: 概念\使用方式.md)
+- [[2026-04-13-README.md]] (来源: 概念\使用方式.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\依赖关系.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\依赖关系.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 概念\全双工语音大模型.md)
+- [[hermes-agent]] (来源: 概念\公共仓库.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\公共仓库.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\内置闭环学习系统.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\内置闭环学习系统.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\函数.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\函数.md)
+- [[articles/]] (来源: 概念\原则.md)
+- [[papers/]] (来源: 概念\原则.md)
+- [[github/]] (来源: 概念\原则.md)
+- [[datasets/]] (来源: 概念\原则.md)
+- [[2026-04-14-README.md]] (来源: 概念\原则.md)
+- [[raw/目录]] (来源: 概念\原始资料.md)
+- [[wiki/]] (来源: 概念\原始资料.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\原始资料.md)
+- [[articles/]] (来源: 概念\原始资料层.md)
+- [[papers/]] (来源: 概念\原始资料层.md)
+- [[github/]] (来源: 概念\原始资料层.md)
+- [[datasets/]] (来源: 概念\原始资料层.md)
+- [[2026-04-14-README.md]] (来源: 概念\原始资料层.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\原始资料编译.md)
+- [[raw/目录]] (来源: 概念\双向链接.md)
+- [[wiki/]] (来源: 概念\双向链接.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\双向链接.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\双向链接建立.md)
+- [[articles/]] (来源: 概念\只读.md)
+- [[papers/]] (来源: 概念\只读.md)
+- [[github/]] (来源: 概念\只读.md)
+- [[datasets/]] (来源: 概念\只读.md)
+- [[2026-04-14-README.md]] (来源: 概念\只读.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\可视化代码.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\可视化代码.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\可视化代码理解工具.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\可视化代码理解工具.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\可视化工具.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\可视化工具.md)
+- [[2026-04-10-articles\opencli-siliconprism.md]] (来源: 概念\命令行界面.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习资源.md)
+- [[2026-04-11-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习资源推荐.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\在线教育.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\多平台执行环境.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\多平台执行环境.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\多平台支持.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\多平台支持.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\多智能体互动课堂.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\多智能体交互课堂中的生成式学习.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\多模态推荐任务.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\多角色讨论.md)
+- [[2026-04-12-articles\tts-models-comparison-20260410.md]] (来源: 概念\大模型横评.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\实验环境搭建.md)
+- [[raw/]] (来源: 概念\工作流.md)
+- [[wiki/]] (来源: 概念\工作流.md)
+- [[2026-04-11-articles\karpathy-workflow.md]] (来源: 概念\工作流.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\工具测评.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\工程自动化.md)
+- [[从已有文档/知识库转化]] (来源: 概念\已有文档_知识库转化.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\已有文档_知识库转化.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\开发者工具.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\开发者工具.md)
+- [[hermes-agent]] (来源: 概念\开源.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI Agent框架.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI Agent框架.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI框架.md)
+- [[2026-04-10-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI框架.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\开源TTS大模型.md)
+- [[已有文档/知识库转化]] (来源: 概念\开源数据集整合.md)
+- [[从已有文档/知识库转化]] (来源: 概念\开源数据集整合.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\开源数据集整合.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\开源模型.md)
+- [[已有文档/知识库转化]] (来源: 概念\强模型生成.md)
+- [[从已有文档/知识库转化]] (来源: 概念\强模型生成.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\强模型生成.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\执行.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\技术文档.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\技术规范.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\提炼技能.md)
+- [[raw/ 目录]] (来源: 概念\收集.md)
+- [[wiki/]] (来源: 概念\收集.md)
+- [[2026-04-10-articles\karpathy-workflow.md]] (来源: 概念\收集.md)
+- [[hermes-agent]] (来源: 概念\智能体.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\智能体.md)
+- [[raw/目录]] (来源: 概念\查询.md)
+- [[wiki/]] (来源: 概念\查询.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\查询.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\查询功能.md)
+- [[raw/目录]] (来源: 概念\核心概念.md)
+- [[100篇/40万字规模]] (来源: 概念\核心概念.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\核心概念.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\框架设计与核心开发.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\模型无关架构.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\模型无关架构.md)
+- [[2026-04-10-articles\openlearn-certification-dayang.md]] (来源: 概念\测评.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\测验题目.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\浏览器自动化.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\深度记忆系统.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\白板互动.md)
+- [[articles/]] (来源: 概念\目录结构.md)
+- [[papers/]] (来源: 概念\目录结构.md)
+- [[github/]] (来源: 概念\目录结构.md)
+- [[datasets/]] (来源: 概念\目录结构.md)
+- [[2026-04-14-README.md]] (来源: 概念\目录结构.md)
+- [[已有文档/知识库转化]] (来源: 概念\真实用户交互.md)
+- [[已有文档/知识库转化]] (来源: 概念\真实用户交互提取.md)
+- [[从已有文档/知识库转化]] (来源: 概念\真实用户交互提取.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\真实用户交互提取.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\知识图谱.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 概念\知识库.md)
+- [[raw/目录]] (来源: 概念\知识库工作流.md)
+- [[wiki/]] (来源: 概念\知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\知识库工作流.md)
+- [[raw/目录]] (来源: 概念\知识管理.md)
+- [[100篇/40万字规模]] (来源: 概念\知识管理.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\知识管理.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\研究环境执行层.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 概念\种子基线.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\种子基线.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\科学假设生成.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科学假设生成与方法演化.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科研基础设施.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\科研基础设施连接.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科研流程自动化.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\端侧推理.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\算法开发层.md)
+- [[2026-04-13-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\算法自动演化.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\系统提示词.md)
+- [[articles/]] (来源: 概念\素材.md)
+- [[papers/]] (来源: 概念\素材.md)
+- [[github/]] (来源: 概念\素材.md)
+- [[datasets/]] (来源: 概念\素材.md)
+- [[2026-04-14-README.md]] (来源: 概念\素材.md)
+- [[raw/目录]] (来源: 概念\结构化wiki文章.md)
+- [[100篇/40万字规模]] (来源: 概念\结构化wiki文章.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\结构化wiki文章.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\结果收集与分析.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\编程救星.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\编程救星.md)
+- [[articles/]] (来源: 概念\编译.md)
+- [[papers/]] (来源: 概念\编译.md)
+- [[github/]] (来源: 概念\编译.md)
+- [[datasets/]] (来源: 概念\编译.md)
+- [[素材/]] (来源: 概念\编译.md)
+- [[2026-04-12-README.md]] (来源: 概念\编译.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\网站.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\网站转CLI.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\网页控制.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自动创建Skills.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自动创建Skills.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\自动化.md)
+- [[github.com/TsinghuaISE/Alchemy]] (来源: 概念\自动化工程.md)
+- [[2026-04-13-articles\hermes-agent-ai真用法.md]] (来源: 概念\自动进化循环.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自动进化循环机制.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自我优化技能生态.md)
+- [[hermes-agent]] (来源: 概念\自我成长.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\自我成长.md)
+- [[hermes-agent]] (来源: 概念\自我进化.md)
+- [[2026-04-11-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\自我进化.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自我进化AI智能体.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自进化AI Agent.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自进化AI Agent.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自进化AI Agent框架.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自进化AI Agent框架.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\证书获取工具.md)
+- [[2026-04-14-articles\tts-model-comparison-longcat.md]] (来源: 概念\语音合成.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\课程生成.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\调用关系.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\调用关系.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\调用链.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\调用链.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\调用链追踪.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\调用链追踪.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\超参数配置.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\跨会话记忆.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\跨会话记忆.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\迭代优化循环.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\通用CLI中心.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\闭环学习系统.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\闭环学习系统.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\预防AI瞎改.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\预防AI瞎改.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\预防性AI.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\预防性AI.md)
+
+### 重复页面 (37 项)
+
+- 标题「AI Scientist」出现在:
+  - 实体\AI Scientist.md
+  - 概念\AI Scientist.md
+- 标题「AI-powered discovery」出现在:
+  - 实体\AI-powered discovery.md
+  - 概念\AI-powered discovery.md
+- 标题「AI技术」出现在:
+  - 实体\AI技术.md
+  - 概念\AI技术.md
+- 标题「Alchemy」出现在:
+  - 实体\Alchemy.md
+  - 概念\Alchemy.md
+- 标题「Alchemy（炼丹炉）」出现在:
+  - 实体\Alchemy（炼丹炉）.md
+  - 概念\Alchemy（炼丹炉）.md
+- 标题「Fish Audio S2 Pro」出现在:
+  - 实体\Fish Audio S2 Pro.md
+  - 概念\Fish Audio S2 Pro.md
+- 标题「GitHub Forks」出现在:
+  - 实体\GitHub Forks.md
+  - 概念\GitHub Forks.md
+- 标题「GitHub Stars」出现在:
+  - 实体\GitHub Stars.md
+  - 概念\GitHub Stars.md
+- 标题「GitNexus」出现在:
+  - 实体\GitNexus.md
+  - 概念\GitNexus.md
+- 标题「Graph RAG」出现在:
+  - 实体\Graph RAG.md
+  - 概念\Graph RAG.md
+- 标题「Graph RAG设计思路」出现在:
+  - 实体\Graph RAG设计思路.md
+  - 概念\Graph RAG设计思路.md
+- 标题「Hermes Agent」出现在:
+  - 实体\Hermes Agent.md
+  - 概念\Hermes Agent.md
+- 标题「Hermes-agent」出现在:
+  - 实体\Hermes-agent.md
+  - 概念\Hermes-agent.md
+- 标题「Karpathy 知识库工作流」出现在:
+  - 实体\Karpathy 知识库工作流.md
+  - 概念\Karpathy 知识库工作流.md
+- 标题「LLM」出现在:
+  - 实体\LLM.md
+  - 概念\LLM.md
+- 标题「LongCat-AudioDiT」出现在:
+  - 实体\LongCat-AudioDiT.md
+  - 概念\LongCat-AudioDiT.md
+- 标题「Obsidian Web Clipper」出现在:
+  - 实体\Obsidian Web Clipper.md
+  - 概念\Obsidian Web Clipper.md
+- 标题「OpenMAIC」出现在:
+  - 实体\OpenMAIC.md
+  - 概念\OpenMAIC.md
+- 标题「Qwen2-TTS」出现在:
+  - 实体\Qwen2-TTS.md
+  - 概念\Qwen2-TTS.md
+- 标题「RAG」出现在:
+  - 实体\RAG.md
+  - 概念\RAG.md
+- 标题「Reuse Chrome login」出现在:
+  - 实体\Reuse Chrome login.md
+  - 概念\Reuse Chrome login.md
+- 标题「Seeduplex」出现在:
+  - 实体\Seeduplex.md
+  - 概念\Seeduplex.md
+- 标题「SKILL」出现在:
+  - 实体\SKILL.md
+  - 概念\SKILL.md
+- 标题「Universal CLI Hub」出现在:
+  - 实体\Universal CLI Hub.md
+  - 概念\Universal CLI Hub.md
+- 标题「wiki 知识库」出现在:
+  - 实体\wiki 知识库.md
+  - 概念\wiki 知识库.md
+- 标题「wiki」出现在:
+  - 实体\wiki.md
+  - 概念\wiki.md
+- 标题「Zero risk」出现在:
+  - 实体\Zero risk.md
+  - 概念\Zero risk.md
+- 标题「基于Dify平台的AgentSkills使用」出现在:
+  - 实体\基于Dify平台的AgentSkills使用.md
+  - 来源\基于Dify平台的AgentSkills使用.md
+- 标题「多平台支持」出现在:
+  - 实体\多平台支持.md
+  - 概念\多平台支持.md
+- 标题「多模态推荐任务」出现在:
+  - 实体\多模态推荐任务.md
+  - 概念\多模态推荐任务.md
+- 标题「开源数据集整合」出现在:
+  - 实体\开源数据集整合.md
+  - 概念\开源数据集整合.md
+- 标题「模型无关架构」出现在:
+  - 实体\模型无关架构.md
+  - 概念\模型无关架构.md
+- 标题「知识库」出现在:
+  - 实体\知识库.md
+  - 概念\知识库.md
+- 标题「研究环境执行层」出现在:
+  - 实体\研究环境执行层.md
+  - 概念\研究环境执行层.md
+- 标题「算法开发层」出现在:
+  - 实体\算法开发层.md
+  - 概念\算法开发层.md
+- 标题「素材」出现在:
+  - 实体\素材.md
+  - 概念\素材.md
+- 标题「跨会话记忆」出现在:
+  - 实体\跨会话记忆.md
+  - 概念\跨会话记忆.md
+
+### 潜在矛盾 (37 项)
+
+- 组「AI Scientist」:
+  - 实体\AI Scientist.md
+  - 概念\AI Scientist.md
+- 组「AI-powered discovery」:
+  - 实体\AI-powered discovery.md
+  - 概念\AI-powered discovery.md
+- 组「AI技术」:
+  - 实体\AI技术.md
+  - 概念\AI技术.md
+- 组「Alchemy」:
+  - 实体\Alchemy.md
+  - 概念\Alchemy.md
+- 组「Alchemy（炼丹炉）」:
+  - 实体\Alchemy（炼丹炉）.md
+  - 概念\Alchemy（炼丹炉）.md
+- 组「Fish Audio S2」:
+  - 实体\Fish Audio S2 Pro.md
+  - 概念\Fish Audio S2 Pro.md
+- 组「GitHub Forks」:
+  - 实体\GitHub Forks.md
+  - 概念\GitHub Forks.md
+- 组「GitHub Stars」:
+  - 实体\GitHub Stars.md
+  - 概念\GitHub Stars.md
+- 组「GitNexus」:
+  - 实体\GitNexus.md
+  - 概念\GitNexus.md
+- 组「Graph RAG」:
+  - 实体\Graph RAG.md
+  - 概念\Graph RAG.md
+- 组「Graph RAG设计思路」:
+  - 实体\Graph RAG设计思路.md
+  - 概念\Graph RAG设计思路.md
+- 组「Hermes Agent」:
+  - 实体\Hermes Agent.md
+  - 概念\Hermes Agent.md
+- 组「Hermes-agent」:
+  - 实体\Hermes-agent.md
+  - 概念\Hermes-agent.md
+- 组「Karpathy 知识库工作流」:
+  - 实体\Karpathy 知识库工作流.md
+  - 概念\Karpathy 知识库工作流.md
+- 组「LLM」:
+  - 实体\LLM.md
+  - 概念\LLM.md
+- 组「LongCat-AudioDiT」:
+  - 实体\LongCat-AudioDiT.md
+  - 概念\LongCat-AudioDiT.md
+- 组「Obsidian Web Clipper」:
+  - 实体\Obsidian Web Clipper.md
+  - 概念\Obsidian Web Clipper.md
+- 组「OpenMAIC」:
+  - 实体\OpenMAIC.md
+  - 概念\OpenMAIC.md
+- 组「Qwen2-TTS」:
+  - 实体\Qwen2-TTS.md
+  - 概念\Qwen2-TTS.md
+- 组「RAG」:
+  - 实体\RAG.md
+  - 概念\RAG.md
+- 组「Reuse Chrome login」:
+  - 实体\Reuse Chrome login.md
+  - 概念\Reuse Chrome login.md
+- 组「Seeduplex」:
+  - 实体\Seeduplex.md
+  - 概念\Seeduplex.md
+- 组「SKILL」:
+  - 实体\SKILL.md
+  - 概念\SKILL.md
+- 组「Universal CLI Hub」:
+  - 实体\Universal CLI Hub.md
+  - 概念\Universal CLI Hub.md
+- 组「wiki 知识库」:
+  - 实体\wiki 知识库.md
+  - 概念\wiki 知识库.md
+- 组「wiki」:
+  - 实体\wiki.md
+  - 概念\wiki.md
+- 组「Zero risk」:
+  - 实体\Zero risk.md
+  - 概念\Zero risk.md
+- 组「基于Dify平台的AgentSkills使用」:
+  - 实体\基于Dify平台的AgentSkills使用.md
+  - 来源\基于Dify平台的AgentSkills使用.md
+- 组「多平台支持」:
+  - 实体\多平台支持.md
+  - 概念\多平台支持.md
+- 组「多模态推荐任务」:
+  - 实体\多模态推荐任务.md
+  - 概念\多模态推荐任务.md
+- 组「开源数据集整合」:
+  - 实体\开源数据集整合.md
+  - 概念\开源数据集整合.md
+- 组「模型无关架构」:
+  - 实体\模型无关架构.md
+  - 概念\模型无关架构.md
+- 组「知识库」:
+  - 实体\知识库.md
+  - 概念\知识库.md
+- 组「研究环境执行层」:
+  - 实体\研究环境执行层.md
+  - 概念\研究环境执行层.md
+- 组「算法开发层」:
+  - 实体\算法开发层.md
+  - 概念\算法开发层.md
+- 组「素材」:
+  - 实体\素材.md
+  - 概念\素材.md
+- 组「跨会话记忆」:
+  - 实体\跨会话记忆.md
+  - 概念\跨会话记忆.md
+
+## 2026-04-23 09:06 - INGEST 摄入 (v6优化版)
+处理 22/22 个文件，概念 119，实体 119。模式：全量。失败：0 个
+
+
+### [2026-04-23 09:06:00] 持续 ingest
+
+持续 ingest 处理了 24 个文件
+
+
+
+## LINT 检查报告 - 2026-04-23 09:06
+
+**问题总数**: 778
+
+
+### 孤儿链接 (700 项)
+
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\.cursorrules.md)
+- [[raw/目录]] (来源: 实体\100篇_40万字规模.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\100篇_40万字规模.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\3,474 Commits.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\3,474 Commits.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\3.9k stars.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\3.9k（视频中显示2.0万收藏）.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\3.9k（视频中显示2.0万收藏）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\33.3k Stars.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\33.3k Stars.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\4.3k Forks.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\4.3k Forks.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\601个分支.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\601个分支.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\@AI真用法.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\@AI真用法.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\@大阳AI测评君.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\@电磁波Studio.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\@硅基棱镜.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\@阿甘探AI.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\@阿甘探AI.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAI 2025 论文《Mind Individual Information!》.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAI 2025论文《Mind Individual Information!》.md)
+- [[2026-04-11-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAII 2025 论文《Mind Individual Information!》.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\AAAII 2025论文级别的基线算法.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 实体\abhigyanpatwari _ GitNexus.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\abhigyanpatwari_GitNexus.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Agent SDK.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\AGENT.md.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist 系统.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\AI Scientist.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist系统.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 实体\AI有点聊.md)
+- [[hermes-agent]] (来源: 实体\AI真用法.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\AI真用法.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\AI编程.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\Alchemy（炼丹炉）.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\algorithm.py.md)
+- [[已有文档/知识库转化]] (来源: 实体\Alpaca.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Alpaca.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\AlphaCode.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Anthropic.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Antigravity Ultra.md)
+- [[node >= 20.0.0]] (来源: 实体\Apache-2.0.md)
+- [[github]] (来源: 实体\articles.md)
+- [[2026-04-11-README.md]] (来源: 实体\articles.md)
+- [[papers/]] (来源: 实体\articles_.md)
+- [[github/]] (来源: 实体\articles_.md)
+- [[datasets/]] (来源: 实体\articles_.md)
+- [[2026-04-14-README.md]] (来源: 实体\articles_.md)
+- [[已有文档/知识库转化]] (来源: 实体\BELLE.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\BELLE.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Bilibili.md)
+- [[openai]] (来源: 实体\chatgpt.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\chatgpt.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\chrome-devtools-mcp.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\chrome-devtools-mcp.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Claude Agent.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\Claude Code.md)
+- [[已有文档/知识库转化]] (来源: 实体\Claude.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Claude.md)
+- [[已有文档/知识库转化]] (来源: 实体\CodeAlpaca.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\CodeAlpaca.md)
+- [[github]] (来源: 实体\compile.py.md)
+- [[2026-04-11-README.md]] (来源: 实体\compile.py.md)
+- [[github]] (来源: 实体\datasets.md)
+- [[2026-04-11-README.md]] (来源: 实体\datasets.md)
+- [[articles/]] (来源: 实体\datasets_.md)
+- [[papers/]] (来源: 实体\datasets_.md)
+- [[github/]] (来源: 实体\datasets_.md)
+- [[2026-04-14-README.md]] (来源: 实体\datasets_.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\DataTool.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\DataTool.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\DeepMind.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\DeerFlow 2.0.md)
+- [[已有文档/知识库转化]] (来源: 实体\Firefly.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Firefly.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\Fish Audio S2 Pro.md)
+- [[已有文档/知识库转化]] (来源: 实体\FLAN Collection.md)
+- [[hermes-agent]] (来源: 实体\GitHub Forks.md)
+- [[2026-04-13-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\GitHub Forks.md)
+- [[hermes-agent]] (来源: 实体\GitHub Stars.md)
+- [[2026-04-13-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\GitHub Stars.md)
+- [[2026-04-11-README.md]] (来源: 实体\GitHub.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\GitHub_ github.com_TsinghuaISE_Alchemy.md)
+- [[articles/]] (来源: 实体\github_.md)
+- [[papers/]] (来源: 实体\github_.md)
+- [[datasets/]] (来源: 实体\github_.md)
+- [[2026-04-14-README.md]] (来源: 实体\github_.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\GitNexus.md)
+- [[已有文档/知识库转化]] (来源: 实体\GPT-4.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\GPT-4.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 实体\GPT-4o.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 实体\Graph RAG.md)
+- [[2026-04-10-github\gitnexus-agan.md]] (来源: 实体\Graph RAG.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\Graph RAG设计思路.md)
+- [[2026-04-13-github\gitnexus-douyin-20260410.md]] (来源: 实体\Graph RAG设计思路.md)
+- [[已有文档/知识库转化]] (来源: 实体\GSM8K-augmented.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\GSM8K-augmented.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Harness Core.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 实体\Hermes Agent.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\Hermes-agent.md)
+- [[已有文档/知识库转化]] (来源: 实体\InfinityInstruct.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\InfinityInstruct.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\JCST 2026.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\Karpathy AI 知识库系列.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\Karpathy AI 知识库系列.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\Karpathy AI 知识库系列（2026年4月）.md)
+- [[2026-04-10-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\Karpathy AI 知识库系列（2026年4月）.md)
+- [[raw/目录]] (来源: 实体\Karpathy 知识库.md)
+- [[wiki/]] (来源: 实体\Karpathy 知识库.md)
+- [[2026-04-09-articles\karpathy-workflow.md]] (来源: 实体\Karpathy 知识库.md)
+- [[raw/目录]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[wiki/]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 实体\Karpathy.md)
+- [[raw/目录]] (来源: 实体\Karpathy知识库工作流.md)
+- [[100篇/40万字规模]] (来源: 实体\Karpathy知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Karpathy知识库工作流.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 实体\Karpathy（安德烈·卡帕西）.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\LiteRT-LM.md)
+- [[raw/目录]] (来源: 实体\LLM.md)
+- [[wiki/]] (来源: 实体\LLM.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\LLM.md)
+- [[已有文档/知识库转化]] (来源: 实体\LLM训练.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\LongCat-AudioDiT.md)
+- [[已有文档/知识库转化]] (来源: 实体\Magicoder-OSS-Instruct.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Magicoder-OSS-Instruct.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\MCP 生态全景图.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\MCP 生态全景图.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\MemPalace (milla-jovovich_mempalace).md)
+- [[2026-04-09-Knowledge-Screenshots-Summary]] (来源: 实体\MemPalace-milla-jovovich-mempalace.md)
+- [[已有文档/知识库转化]] (来源: 实体\MetaMathQA.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\MetaMathQA.md)
+- [[已有文档/知识库转化]] (来源: 实体\MOSS-SFT.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\MOSS-SFT.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\nousresearch_hermes-agent.md)
+- [[node >= 20.0.0]] (来源: 实体\npm v1.1.1.md)
+- [[raw/目录]] (来源: 实体\Obsidian Web Clipper.md)
+- [[wiki/]] (来源: 实体\Obsidian Web Clipper.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Obsidian Web Clipper.md)
+- [[raw/目录]] (来源: 实体\ObsidianWebClipper.md)
+- [[100篇/40万字规模]] (来源: 实体\ObsidianWebClipper.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\ObsidianWebClipper.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\OpenAI.md)
+- [[已有文档/知识库转化]] (来源: 实体\OpenAssistant.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\OpenAssistant.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\OpenClaw.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\OpenClaw.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\opencli list.md)
+- [[2026-04-11-github\opencli-douyin-20260410.md]] (来源: 实体\opencli.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\OpenCode.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\OpenLearn.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\OpenMAIC.md)
+- [[github]] (来源: 实体\papers.md)
+- [[2026-04-11-README.md]] (来源: 实体\papers.md)
+- [[articles/]] (来源: 实体\papers_.md)
+- [[github/]] (来源: 实体\papers_.md)
+- [[datasets/]] (来源: 实体\papers_.md)
+- [[2026-04-14-README.md]] (来源: 实体\papers_.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 实体\Python.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\Qwen2-TTS.md)
+- [[raw/目录]] (来源: 实体\RAG.md)
+- [[wiki/]] (来源: 实体\RAG.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\RAG.md)
+- [[2026-04-10-articles\karpathy-workflow.md]] (来源: 实体\raw_ 目录.md)
+- [[wiki/]] (来源: 实体\raw_.md)
+- [[2026-04-11-articles\karpathy-workflow.md]] (来源: 实体\raw_.md)
+- [[wiki/]] (来源: 实体\raw_目录.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\raw_目录.md)
+- [[articles/]] (来源: 实体\README.md.md)
+- [[papers/]] (来源: 实体\README.md.md)
+- [[github/]] (来源: 实体\README.md.md)
+- [[datasets/]] (来源: 实体\README.md.md)
+- [[2026-04-14-README.md]] (来源: 实体\README.md.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Reddit.md)
+- [[papers/]] (来源: 实体\rticles_.md)
+- [[github/]] (来源: 实体\rticles_.md)
+- [[datasets/]] (来源: 实体\rticles_.md)
+- [[2026-04-14-README.md]] (来源: 实体\rticles_.md)
+- [[语音AI]] (来源: 实体\Seeduplex.md)
+- [[已有文档/知识库转化]] (来源: 实体\ShareGPT.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\ShareGPT.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 实体\SKILL.md)
+- [[2026-04-11-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 实体\SKILL.md_技术规范详解---9ccef561.pdf.md)
+- [[raw/ 目录]] (来源: 实体\STEP 01_ 收集.md)
+- [[STEP 02: 编译]] (来源: 实体\STEP 01_ 收集.md)
+- [[STEP 03: 查询]] (来源: 实体\STEP 01_ 收集.md)
+- [[raw/ 目录]] (来源: 实体\STEP 02_ 编译.md)
+- [[STEP 01: 收集]] (来源: 实体\STEP 02_ 编译.md)
+- [[STEP 03: 查询]] (来源: 实体\STEP 02_ 编译.md)
+- [[raw/ 目录]] (来源: 实体\STEP 03_ 查询.md)
+- [[STEP 01: 收集]] (来源: 实体\STEP 03_ 查询.md)
+- [[STEP 02: 编译]] (来源: 实体\STEP 03_ 查询.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\The agent that grows with you.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\The agent that grows with you.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\THU-MAIC团队.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Twitter.md)
+- [[已有文档/知识库转化]] (来源: 实体\UltraChat.md)
+- [[raw/ 目录]] (来源: 实体\wiki 知识库.md)
+- [[STEP 01: 收集]] (来源: 实体\wiki 知识库.md)
+- [[STEP 02: 编译]] (来源: 实体\wiki 知识库.md)
+- [[STEP 03: 查询]] (来源: 实体\wiki 知识库.md)
+- [[github]] (来源: 实体\wiki.md)
+- [[2026-04-11-README.md]] (来源: 实体\wiki.md)
+- [[raw/目录]] (来源: 实体\wiki_.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\wiki_.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\yaml配置文件.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\YouTube.md)
+- [[2026-04-11-articles\tts-models-comparison-20260410.md]] (来源: 实体\三款开源TTS大模型横评，LongCat-AudioDiT完胜.md)
+- [[已有文档/知识库转化]] (来源: 实体\人工智能.md)
+- [[已有文档/知识库转化]] (来源: 实体\人工标注（最高质量）.md)
+- [[从已有文档/知识库转化]] (来源: 实体\人工标注（最高质量）.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\人工标注（最高质量）.md)
+- [[已有文档/知识库转化]] (来源: 实体\从已有文档_知识库转化.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\从已有文档_知识库转化.md)
+- [[已有文档/知识库转化]] (来源: 实体\从真实用户交互中提取.md)
+- [[从已有文档/知识库转化]] (来源: 实体\从真实用户交互中提取.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\从真实用户交互中提取.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\内嵌闭环学习系统.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\内嵌闭环学习系统.md)
+- [[2026-04-12-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 实体\基于Dify平台的AgentSkills使用.md)
+- [[已有文档/知识库转化]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[从已有文档/知识库转化]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\多平台支持.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\多平台支持.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\多模态推荐任务.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\多模态推荐任务.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 实体\大阳AI测评君.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 实体\字节跳动 (ByteDance).md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\字节跳动.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\实用网站.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\小红书.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\小龙虾过时了？爱马仕成了最近最猛的开源AI.md)
+- [[已有文档/知识库转化]] (来源: 实体\开源数据集整合.md)
+- [[从已有文档/知识库转化]] (来源: 实体\开源数据集整合.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\开源数据集整合.md)
+- [[hermes-agent]] (来源: 实体\抖音.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\抖音.md)
+- [[已有文档/知识库转化]] (来源: 实体\数据工程.md)
+- [[已有文档/知识库转化]] (来源: 实体\数据标注.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\李乐晖.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\李佳助理教授课题组.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\李佳助理教授课题组.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\李佳（助理教授）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\模型无关架构.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\模型无关架构.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\清华 AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\清华 AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\清华人工智能学院.md)
+- [[2026-04-13-github\openmaic-douyin-20260410.md]] (来源: 实体\清华大学 THU-MAIC团队.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\清华大学THU-MAIC团队.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\清华大学人工智能学院.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\电磁波Studio.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\知乎.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\研究环境执行层.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\研究环境执行层.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\硅基棱镜.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 实体\第三集.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\算法开发层.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\算法开发层.md)
+- [[github]] (来源: 实体\素材.md)
+- [[2026-04-11-README.md]] (来源: 实体\素材.md)
+- [[articles/]] (来源: 实体\素材_.md)
+- [[papers/]] (来源: 实体\素材_.md)
+- [[github/]] (来源: 实体\素材_.md)
+- [[datasets/]] (来源: 实体\素材_.md)
+- [[2026-04-13-README.md]] (来源: 实体\素材_.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\编程救星，不让AI瞎改代码.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\编程救星，不让AI瞎改代码.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\自动生成Skills.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\自动生成Skills.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\蔡立一.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\证书.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\跨会话记忆.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\跨会话记忆.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 实体\阿甘探AI.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 实体\阿甘探AI.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-09-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[articles/]] (来源: 来源\2026-04-09-README.md)
+- [[papers/]] (来源: 来源\2026-04-09-README.md)
+- [[github/]] (来源: 来源\2026-04-09-README.md)
+- [[datasets/]] (来源: 来源\2026-04-09-README.md)
+- [[素材/]] (来源: 来源\2026-04-09-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-10-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/ 目录]] (来源: 来源\2026-04-10-articles_karpathy-workflow.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-10-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-10-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-10-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-10-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-10-README.md)
+- [[papers/]] (来源: 来源\2026-04-10-README.md)
+- [[github/]] (来源: 来源\2026-04-10-README.md)
+- [[datasets/]] (来源: 来源\2026-04-10-README.md)
+- [[素材/]] (来源: 来源\2026-04-10-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-11-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/]] (来源: 来源\2026-04-11-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-11-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-11-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-11-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-11-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-11-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-11-github_hermes-agent-douyin-20260410.md)
+- [[github]] (来源: 来源\2026-04-11-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-12-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-12-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-12-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-12-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-12-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-12-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-12-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-12-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-12-README.md)
+- [[papers/]] (来源: 来源\2026-04-12-README.md)
+- [[github/]] (来源: 来源\2026-04-12-README.md)
+- [[datasets/]] (来源: 来源\2026-04-12-README.md)
+- [[素材/]] (来源: 来源\2026-04-12-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-13-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-13-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-13-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-13-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-13-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-13-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-13-README.md)
+- [[papers/]] (来源: 来源\2026-04-13-README.md)
+- [[github/]] (来源: 来源\2026-04-13-README.md)
+- [[datasets/]] (来源: 来源\2026-04-13-README.md)
+- [[素材/]] (来源: 来源\2026-04-13-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-14-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-14-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-14-articles_karpathy-workflow.md)
+- [[从已有文档/知识库转化]] (来源: 来源\2026-04-14-articles_llm-training-data-sources.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-14-articles_llm-training-data-sources.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 来源\2026-04-14-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-14-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-14-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-14-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-14-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-14-README.md)
+- [[papers/]] (来源: 来源\2026-04-14-README.md)
+- [[github/]] (来源: 来源\2026-04-14-README.md)
+- [[datasets/]] (来源: 来源\2026-04-14-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-15-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-15-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-15-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-15-articles_llm-training-data-sources.md)
+- [[github.com/TsinghuaISE/Alchemy]] (来源: 来源\2026-04-15-github_2026-04-09-Alchemy-清华AI科研自动化框架.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-15-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-15-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-15-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-15-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-15-README.md)
+- [[papers/]] (来源: 来源\2026-04-15-README.md)
+- [[github/]] (来源: 来源\2026-04-15-README.md)
+- [[datasets/]] (来源: 来源\2026-04-15-README.md)
+- [[素材/]] (来源: 来源\2026-04-15-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-20-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/]] (来源: 来源\2026-04-20-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-20-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-20-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-20-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-20-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-20-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-20-github_hermes-agent-douyin-20260410.md)
+- [[rticles/]] (来源: 来源\2026-04-20-README.md)
+- [[papers/]] (来源: 来源\2026-04-20-README.md)
+- [[github/]] (来源: 来源\2026-04-20-README.md)
+- [[datasets/]] (来源: 来源\2026-04-20-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-23-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-23-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-23-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-23-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-23-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-23-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-23-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-23-github_hermes-agent-douyin-20260410.md)
+- [[rticles/]] (来源: 来源\2026-04-23-README.md)
+- [[papers/]] (来源: 来源\2026-04-23-README.md)
+- [[github/]] (来源: 来源\2026-04-23-README.md)
+- [[datasets/]] (来源: 来源\2026-04-23-README.md)
+- [[{
+            "vector": vector,
+            "text": text,
+            "user_id": user_id,
+            "created_at": datetime.now().isoformat(),
+        }]] (来源: 来源\mem0-milvus-cloud-config.md)
+- [[skill-name-1]] (来源: 来源\skill-writing-guide.md)
+- [[skill-name-2]] (来源: 来源\skill-writing-guide.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\6平台6执行环境.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\6平台6执行环境.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Agent.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 概念\AgentSkills.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\AI Agent.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\AI Scientist.md)
+- [[2026-04-11-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研自动化.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\AI 编程 Agent.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\AI-Agent.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\AI-powered discovery.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\AI学习.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\AI技术.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\AI教师.md)
+- [[2026-04-10-articles\hermes-agent-ai真用法.md]] (来源: 概念\AI智能体.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\AI编程.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\AI编程.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\AI错误修改代码.md)
+- [[2026-04-13-github\gitnexus-agan.md]] (来源: 概念\AI错误修改代码.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\AI驱动发现.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\AI驱动的发现.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy 框架.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 概念\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Alchemy框架.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy（炼丹炉）.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\CLI.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\CLI工具.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Constraint Engine.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Context Engineering.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Control Loop.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\DeerFlow.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 概念\Dify平台.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\Electron应用.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\Electron应用转CLI.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Feedback System.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\Fish Audio S2 Pro.md)
+- [[openai]] (来源: 概念\GitHub Forks.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\GitHub Forks.md)
+- [[openai]] (来源: 概念\GitHub Stars.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\GitHub Stars.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\GitNexus.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\GitNexus.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\Graph RAG.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\Graph RAG.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\Graph RAG设计思路.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\Graph RAG设计思路.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Harness Engineering.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Harness Engineering.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\Hermes Agent.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\Hermes Agent.md)
+- [[hermes-agent]] (来源: 概念\Hermes-agent.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\Hermes-agent.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Karpathy 知识库工作流.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Karpathy 知识库工作流.md)
+- [[raw/目录]] (来源: 概念\LLM.md)
+- [[wiki/]] (来源: 概念\LLM.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\LLM.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\LongCat AudioDiT.md)
+- [[2026-04-14-articles\tts-model-comparison-longcat.md]] (来源: 概念\LongCat-AudioDiT.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\MCP (Model Context Protocol).md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\MCP (Model Context Protocol).md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\MemPalace.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\MemPalace.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Obsidian Web Clipper.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Obsidian Web Clipper.md)
+- [[raw/ 目录]] (来源: 概念\Obsidian.md)
+- [[STEP 01: 收集]] (来源: 概念\Obsidian.md)
+- [[STEP 02: 编译]] (来源: 概念\Obsidian.md)
+- [[STEP 03: 查询]] (来源: 概念\Obsidian.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\OpenCLI.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\OpenLearn 平台.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\OpenLearn平台.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\OpenMAIC.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\PDF转课堂.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Prompt Engineering.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Python 环境.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\Qwen2-TTS.md)
+- [[论文]] (来源: 概念\RAG.md)
+- [[文章]] (来源: 概念\RAG.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 概念\RAG（检索增强生成）.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Reuse Chrome login.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Seed Baseline 机制.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Seed Baseline.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Seed Baseline机制.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 概念\Seeduplex.md)
+- [[2026-04-11-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\SKILL.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\Skills.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\Skills.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\TTS.md)
+- [[2026-04-13-articles\tts-model-comparison-longcat.md]] (来源: 概念\TTS模型.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Universal CLI Hub.md)
+- [[raw/目录]] (来源: 概念\wiki.md)
+- [[wiki/]] (来源: 概念\wiki.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\wiki.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\wiki文章生成.md)
+- [[raw/目录]] (来源: 概念\wiki知识库.md)
+- [[100篇/40万字规模]] (来源: 概念\wiki知识库.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\wiki知识库.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Zero risk.md)
+- [[raw/目录]] (来源: 概念\上下文窗口.md)
+- [[100篇/40万字规模]] (来源: 概念\上下文窗口.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\上下文窗口.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\主题转课堂.md)
+- [[已有文档/知识库转化]] (来源: 概念\人工标注.md)
+- [[从已有文档/知识库转化]] (来源: 概念\人工标注.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\人工标注.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\从OpenClaw一键迁移.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\从OpenClaw一键迁移.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\代码可视化.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\代码可视化.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\代码审查.md)
+- [[2026-04-13-github\gitnexus-douyin-20260410.md]] (来源: 概念\代码审查.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\代码理解工具.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\代码结构.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\代码结构.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\优化体验.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\传统Agent痛点.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\传统代码审查.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\传统代码审查.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\传统开源Agent痛点.md)
+- [[articles/]] (来源: 概念\使用方式.md)
+- [[papers/]] (来源: 概念\使用方式.md)
+- [[github/]] (来源: 概念\使用方式.md)
+- [[datasets/]] (来源: 概念\使用方式.md)
+- [[素材/]] (来源: 概念\使用方式.md)
+- [[2026-04-13-README.md]] (来源: 概念\使用方式.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\依赖关系.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\依赖关系.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 概念\全双工语音大模型.md)
+- [[hermes-agent]] (来源: 概念\公共仓库.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\公共仓库.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\内置闭环学习系统.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\内置闭环学习系统.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\函数.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\函数.md)
+- [[articles/]] (来源: 概念\原则.md)
+- [[papers/]] (来源: 概念\原则.md)
+- [[github/]] (来源: 概念\原则.md)
+- [[datasets/]] (来源: 概念\原则.md)
+- [[2026-04-14-README.md]] (来源: 概念\原则.md)
+- [[raw/目录]] (来源: 概念\原始资料.md)
+- [[wiki/]] (来源: 概念\原始资料.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\原始资料.md)
+- [[articles/]] (来源: 概念\原始资料层.md)
+- [[papers/]] (来源: 概念\原始资料层.md)
+- [[github/]] (来源: 概念\原始资料层.md)
+- [[datasets/]] (来源: 概念\原始资料层.md)
+- [[2026-04-14-README.md]] (来源: 概念\原始资料层.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\原始资料编译.md)
+- [[raw/目录]] (来源: 概念\双向链接.md)
+- [[wiki/]] (来源: 概念\双向链接.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\双向链接.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\双向链接建立.md)
+- [[articles/]] (来源: 概念\只读.md)
+- [[papers/]] (来源: 概念\只读.md)
+- [[github/]] (来源: 概念\只读.md)
+- [[datasets/]] (来源: 概念\只读.md)
+- [[2026-04-14-README.md]] (来源: 概念\只读.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\可视化代码.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\可视化代码.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\可视化代码理解工具.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\可视化代码理解工具.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\可视化工具.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\可视化工具.md)
+- [[2026-04-10-articles\opencli-siliconprism.md]] (来源: 概念\命令行界面.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习资源.md)
+- [[2026-04-11-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习资源推荐.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\在线教育.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\多平台执行环境.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\多平台执行环境.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\多平台支持.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\多平台支持.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\多智能体互动课堂.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\多智能体交互课堂中的生成式学习.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\多模态推荐任务.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\多角色讨论.md)
+- [[2026-04-12-articles\tts-models-comparison-20260410.md]] (来源: 概念\大模型横评.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\实验环境搭建.md)
+- [[raw/]] (来源: 概念\工作流.md)
+- [[wiki/]] (来源: 概念\工作流.md)
+- [[2026-04-11-articles\karpathy-workflow.md]] (来源: 概念\工作流.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\工具测评.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\工程自动化.md)
+- [[从已有文档/知识库转化]] (来源: 概念\已有文档_知识库转化.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\已有文档_知识库转化.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\开发者工具.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\开发者工具.md)
+- [[hermes-agent]] (来源: 概念\开源.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI Agent框架.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI Agent框架.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI框架.md)
+- [[2026-04-10-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI框架.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\开源TTS大模型.md)
+- [[已有文档/知识库转化]] (来源: 概念\开源数据集整合.md)
+- [[从已有文档/知识库转化]] (来源: 概念\开源数据集整合.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\开源数据集整合.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\开源模型.md)
+- [[已有文档/知识库转化]] (来源: 概念\强模型生成.md)
+- [[从已有文档/知识库转化]] (来源: 概念\强模型生成.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\强模型生成.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\执行.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\技术文档.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\技术规范.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\提炼技能.md)
+- [[raw/ 目录]] (来源: 概念\收集.md)
+- [[wiki/]] (来源: 概念\收集.md)
+- [[2026-04-10-articles\karpathy-workflow.md]] (来源: 概念\收集.md)
+- [[hermes-agent]] (来源: 概念\智能体.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\智能体.md)
+- [[raw/目录]] (来源: 概念\查询.md)
+- [[wiki/]] (来源: 概念\查询.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\查询.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\查询功能.md)
+- [[raw/目录]] (来源: 概念\核心概念.md)
+- [[100篇/40万字规模]] (来源: 概念\核心概念.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\核心概念.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\框架设计与核心开发.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\模型无关架构.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\模型无关架构.md)
+- [[2026-04-10-articles\openlearn-certification-dayang.md]] (来源: 概念\测评.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\测验题目.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\浏览器自动化.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\深度记忆系统.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\白板互动.md)
+- [[articles/]] (来源: 概念\目录结构.md)
+- [[papers/]] (来源: 概念\目录结构.md)
+- [[github/]] (来源: 概念\目录结构.md)
+- [[datasets/]] (来源: 概念\目录结构.md)
+- [[2026-04-14-README.md]] (来源: 概念\目录结构.md)
+- [[已有文档/知识库转化]] (来源: 概念\真实用户交互.md)
+- [[已有文档/知识库转化]] (来源: 概念\真实用户交互提取.md)
+- [[从已有文档/知识库转化]] (来源: 概念\真实用户交互提取.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\真实用户交互提取.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\知识图谱.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 概念\知识库.md)
+- [[raw/目录]] (来源: 概念\知识库工作流.md)
+- [[wiki/]] (来源: 概念\知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\知识库工作流.md)
+- [[raw/目录]] (来源: 概念\知识管理.md)
+- [[100篇/40万字规模]] (来源: 概念\知识管理.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\知识管理.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\研究环境执行层.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 概念\种子基线.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\种子基线.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\科学假设生成.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科学假设生成与方法演化.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科研基础设施.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\科研基础设施连接.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科研流程自动化.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\端侧推理.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\算法开发层.md)
+- [[2026-04-13-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\算法自动演化.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\系统提示词.md)
+- [[articles/]] (来源: 概念\素材.md)
+- [[papers/]] (来源: 概念\素材.md)
+- [[github/]] (来源: 概念\素材.md)
+- [[datasets/]] (来源: 概念\素材.md)
+- [[2026-04-14-README.md]] (来源: 概念\素材.md)
+- [[raw/目录]] (来源: 概念\结构化wiki文章.md)
+- [[100篇/40万字规模]] (来源: 概念\结构化wiki文章.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\结构化wiki文章.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\结果收集与分析.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\编程救星.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\编程救星.md)
+- [[articles/]] (来源: 概念\编译.md)
+- [[papers/]] (来源: 概念\编译.md)
+- [[github/]] (来源: 概念\编译.md)
+- [[datasets/]] (来源: 概念\编译.md)
+- [[素材/]] (来源: 概念\编译.md)
+- [[2026-04-12-README.md]] (来源: 概念\编译.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\网站.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\网站转CLI.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\网页控制.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自动创建Skills.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自动创建Skills.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\自动化.md)
+- [[github.com/TsinghuaISE/Alchemy]] (来源: 概念\自动化工程.md)
+- [[2026-04-13-articles\hermes-agent-ai真用法.md]] (来源: 概念\自动进化循环.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自动进化循环机制.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自我优化技能生态.md)
+- [[hermes-agent]] (来源: 概念\自我成长.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\自我成长.md)
+- [[hermes-agent]] (来源: 概念\自我进化.md)
+- [[2026-04-11-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\自我进化.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自我进化AI智能体.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自进化AI Agent.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自进化AI Agent.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自进化AI Agent框架.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自进化AI Agent框架.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\证书获取工具.md)
+- [[2026-04-14-articles\tts-model-comparison-longcat.md]] (来源: 概念\语音合成.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\课程生成.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\调用关系.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\调用关系.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\调用链.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\调用链.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\调用链追踪.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\调用链追踪.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\超参数配置.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\跨会话记忆.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\跨会话记忆.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\迭代优化循环.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\通用CLI中心.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\闭环学习系统.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\闭环学习系统.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\预防AI瞎改.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\预防AI瞎改.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\预防性AI.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\预防性AI.md)
+
+### 重复页面 (39 项)
+
+- 标题「AI Scientist」出现在:
+  - 实体\AI Scientist.md
+  - 概念\AI Scientist.md
+- 标题「AI-powered discovery」出现在:
+  - 实体\AI-powered discovery.md
+  - 概念\AI-powered discovery.md
+- 标题「AI技术」出现在:
+  - 实体\AI技术.md
+  - 概念\AI技术.md
+- 标题「AI编程」出现在:
+  - 实体\AI编程.md
+  - 概念\AI编程.md
+- 标题「Alchemy」出现在:
+  - 实体\Alchemy.md
+  - 概念\Alchemy.md
+- 标题「Alchemy（炼丹炉）」出现在:
+  - 实体\Alchemy（炼丹炉）.md
+  - 概念\Alchemy（炼丹炉）.md
+- 标题「Fish Audio S2 Pro」出现在:
+  - 实体\Fish Audio S2 Pro.md
+  - 概念\Fish Audio S2 Pro.md
+- 标题「GitHub Forks」出现在:
+  - 实体\GitHub Forks.md
+  - 概念\GitHub Forks.md
+- 标题「GitHub Stars」出现在:
+  - 实体\GitHub Stars.md
+  - 概念\GitHub Stars.md
+- 标题「GitNexus」出现在:
+  - 实体\GitNexus.md
+  - 概念\GitNexus.md
+- 标题「Graph RAG」出现在:
+  - 实体\Graph RAG.md
+  - 概念\Graph RAG.md
+- 标题「Graph RAG设计思路」出现在:
+  - 实体\Graph RAG设计思路.md
+  - 概念\Graph RAG设计思路.md
+- 标题「Hermes Agent」出现在:
+  - 实体\Hermes Agent.md
+  - 概念\Hermes Agent.md
+- 标题「Hermes-agent」出现在:
+  - 实体\Hermes-agent.md
+  - 概念\Hermes-agent.md
+- 标题「Karpathy 知识库工作流」出现在:
+  - 实体\Karpathy 知识库工作流.md
+  - 概念\Karpathy 知识库工作流.md
+- 标题「LLM」出现在:
+  - 实体\LLM.md
+  - 概念\LLM.md
+- 标题「LongCat-AudioDiT」出现在:
+  - 实体\LongCat-AudioDiT.md
+  - 概念\LongCat-AudioDiT.md
+- 标题「Obsidian Web Clipper」出现在:
+  - 实体\Obsidian Web Clipper.md
+  - 概念\Obsidian Web Clipper.md
+- 标题「OpenMAIC」出现在:
+  - 实体\OpenMAIC.md
+  - 概念\OpenMAIC.md
+- 标题「Qwen2-TTS」出现在:
+  - 实体\Qwen2-TTS.md
+  - 概念\Qwen2-TTS.md
+- 标题「RAG」出现在:
+  - 实体\RAG.md
+  - 概念\RAG.md
+- 标题「Reuse Chrome login」出现在:
+  - 实体\Reuse Chrome login.md
+  - 概念\Reuse Chrome login.md
+- 标题「Seeduplex」出现在:
+  - 实体\Seeduplex.md
+  - 概念\Seeduplex.md
+- 标题「SKILL」出现在:
+  - 实体\SKILL.md
+  - 概念\SKILL.md
+- 标题「Universal CLI Hub」出现在:
+  - 实体\Universal CLI Hub.md
+  - 概念\Universal CLI Hub.md
+- 标题「wiki 知识库」出现在:
+  - 实体\wiki 知识库.md
+  - 概念\wiki 知识库.md
+- 标题「wiki」出现在:
+  - 实体\wiki.md
+  - 概念\wiki.md
+- 标题「Zero risk」出现在:
+  - 实体\Zero risk.md
+  - 概念\Zero risk.md
+- 标题「基于Dify平台的AgentSkills使用」出现在:
+  - 实体\基于Dify平台的AgentSkills使用.md
+  - 来源\基于Dify平台的AgentSkills使用.md
+- 标题「多平台支持」出现在:
+  - 实体\多平台支持.md
+  - 概念\多平台支持.md
+- 标题「多模态推荐任务」出现在:
+  - 实体\多模态推荐任务.md
+  - 概念\多模态推荐任务.md
+- 标题「工具测评」出现在:
+  - 实体\工具测评.md
+  - 概念\工具测评.md
+- 标题「开源数据集整合」出现在:
+  - 实体\开源数据集整合.md
+  - 概念\开源数据集整合.md
+- 标题「模型无关架构」出现在:
+  - 实体\模型无关架构.md
+  - 概念\模型无关架构.md
+- 标题「知识库」出现在:
+  - 实体\知识库.md
+  - 概念\知识库.md
+- 标题「研究环境执行层」出现在:
+  - 实体\研究环境执行层.md
+  - 概念\研究环境执行层.md
+- 标题「算法开发层」出现在:
+  - 实体\算法开发层.md
+  - 概念\算法开发层.md
+- 标题「素材」出现在:
+  - 实体\素材.md
+  - 概念\素材.md
+- 标题「跨会话记忆」出现在:
+  - 实体\跨会话记忆.md
+  - 概念\跨会话记忆.md
+
+### 潜在矛盾 (39 项)
+
+- 组「AI Scientist」:
+  - 实体\AI Scientist.md
+  - 概念\AI Scientist.md
+- 组「AI-powered discovery」:
+  - 实体\AI-powered discovery.md
+  - 概念\AI-powered discovery.md
+- 组「AI技术」:
+  - 实体\AI技术.md
+  - 概念\AI技术.md
+- 组「AI编程」:
+  - 实体\AI编程.md
+  - 概念\AI编程.md
+- 组「Alchemy」:
+  - 实体\Alchemy.md
+  - 概念\Alchemy.md
+- 组「Alchemy（炼丹炉）」:
+  - 实体\Alchemy（炼丹炉）.md
+  - 概念\Alchemy（炼丹炉）.md
+- 组「Fish Audio S2」:
+  - 实体\Fish Audio S2 Pro.md
+  - 概念\Fish Audio S2 Pro.md
+- 组「GitHub Forks」:
+  - 实体\GitHub Forks.md
+  - 概念\GitHub Forks.md
+- 组「GitHub Stars」:
+  - 实体\GitHub Stars.md
+  - 概念\GitHub Stars.md
+- 组「GitNexus」:
+  - 实体\GitNexus.md
+  - 概念\GitNexus.md
+- 组「Graph RAG」:
+  - 实体\Graph RAG.md
+  - 概念\Graph RAG.md
+- 组「Graph RAG设计思路」:
+  - 实体\Graph RAG设计思路.md
+  - 概念\Graph RAG设计思路.md
+- 组「Hermes Agent」:
+  - 实体\Hermes Agent.md
+  - 概念\Hermes Agent.md
+- 组「Hermes-agent」:
+  - 实体\Hermes-agent.md
+  - 概念\Hermes-agent.md
+- 组「Karpathy 知识库工作流」:
+  - 实体\Karpathy 知识库工作流.md
+  - 概念\Karpathy 知识库工作流.md
+- 组「LLM」:
+  - 实体\LLM.md
+  - 概念\LLM.md
+- 组「LongCat-AudioDiT」:
+  - 实体\LongCat-AudioDiT.md
+  - 概念\LongCat-AudioDiT.md
+- 组「Obsidian Web Clipper」:
+  - 实体\Obsidian Web Clipper.md
+  - 概念\Obsidian Web Clipper.md
+- 组「OpenMAIC」:
+  - 实体\OpenMAIC.md
+  - 概念\OpenMAIC.md
+- 组「Qwen2-TTS」:
+  - 实体\Qwen2-TTS.md
+  - 概念\Qwen2-TTS.md
+- 组「RAG」:
+  - 实体\RAG.md
+  - 概念\RAG.md
+- 组「Reuse Chrome login」:
+  - 实体\Reuse Chrome login.md
+  - 概念\Reuse Chrome login.md
+- 组「Seeduplex」:
+  - 实体\Seeduplex.md
+  - 概念\Seeduplex.md
+- 组「SKILL」:
+  - 实体\SKILL.md
+  - 概念\SKILL.md
+- 组「Universal CLI Hub」:
+  - 实体\Universal CLI Hub.md
+  - 概念\Universal CLI Hub.md
+- 组「wiki 知识库」:
+  - 实体\wiki 知识库.md
+  - 概念\wiki 知识库.md
+- 组「wiki」:
+  - 实体\wiki.md
+  - 概念\wiki.md
+- 组「Zero risk」:
+  - 实体\Zero risk.md
+  - 概念\Zero risk.md
+- 组「基于Dify平台的AgentSkills使用」:
+  - 实体\基于Dify平台的AgentSkills使用.md
+  - 来源\基于Dify平台的AgentSkills使用.md
+- 组「多平台支持」:
+  - 实体\多平台支持.md
+  - 概念\多平台支持.md
+- 组「多模态推荐任务」:
+  - 实体\多模态推荐任务.md
+  - 概念\多模态推荐任务.md
+- 组「工具测评」:
+  - 实体\工具测评.md
+  - 概念\工具测评.md
+- 组「开源数据集整合」:
+  - 实体\开源数据集整合.md
+  - 概念\开源数据集整合.md
+- 组「模型无关架构」:
+  - 实体\模型无关架构.md
+  - 概念\模型无关架构.md
+- 组「知识库」:
+  - 实体\知识库.md
+  - 概念\知识库.md
+- 组「研究环境执行层」:
+  - 实体\研究环境执行层.md
+  - 概念\研究环境执行层.md
+- 组「算法开发层」:
+  - 实体\算法开发层.md
+  - 概念\算法开发层.md
+- 组「素材」:
+  - 实体\素材.md
+  - 概念\素材.md
+- 组「跨会话记忆」:
+  - 实体\跨会话记忆.md
+  - 概念\跨会话记忆.md
+
+
+## LINT 检查报告 - 2026-04-23 09:07
+
+**问题总数**: 778
+
+
+### 孤儿链接 (700 项)
+
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\.cursorrules.md)
+- [[raw/目录]] (来源: 实体\100篇_40万字规模.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\100篇_40万字规模.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\3,474 Commits.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\3,474 Commits.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\3.9k stars.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\3.9k（视频中显示2.0万收藏）.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\3.9k（视频中显示2.0万收藏）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\33.3k Stars.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\33.3k Stars.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\4.3k Forks.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\4.3k Forks.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\601个分支.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\601个分支.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\@AI真用法.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\@AI真用法.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\@大阳AI测评君.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\@电磁波Studio.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\@硅基棱镜.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\@阿甘探AI.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\@阿甘探AI.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAI 2025 论文《Mind Individual Information!》.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAI 2025论文《Mind Individual Information!》.md)
+- [[2026-04-11-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AAAII 2025 论文《Mind Individual Information!》.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\AAAII 2025论文级别的基线算法.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 实体\abhigyanpatwari _ GitNexus.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\abhigyanpatwari_GitNexus.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Agent SDK.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\AGENT.md.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist 系统.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\AI Scientist.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\AI Scientist系统.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 实体\AI有点聊.md)
+- [[hermes-agent]] (来源: 实体\AI真用法.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\AI真用法.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\AI编程.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\Alchemy（炼丹炉）.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\algorithm.py.md)
+- [[已有文档/知识库转化]] (来源: 实体\Alpaca.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Alpaca.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\AlphaCode.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Anthropic.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Antigravity Ultra.md)
+- [[node >= 20.0.0]] (来源: 实体\Apache-2.0.md)
+- [[github]] (来源: 实体\articles.md)
+- [[2026-04-11-README.md]] (来源: 实体\articles.md)
+- [[papers/]] (来源: 实体\articles_.md)
+- [[github/]] (来源: 实体\articles_.md)
+- [[datasets/]] (来源: 实体\articles_.md)
+- [[2026-04-14-README.md]] (来源: 实体\articles_.md)
+- [[已有文档/知识库转化]] (来源: 实体\BELLE.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\BELLE.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Bilibili.md)
+- [[openai]] (来源: 实体\chatgpt.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\chatgpt.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\chrome-devtools-mcp.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\chrome-devtools-mcp.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Claude Agent.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\Claude Code.md)
+- [[已有文档/知识库转化]] (来源: 实体\Claude.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Claude.md)
+- [[已有文档/知识库转化]] (来源: 实体\CodeAlpaca.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\CodeAlpaca.md)
+- [[github]] (来源: 实体\compile.py.md)
+- [[2026-04-11-README.md]] (来源: 实体\compile.py.md)
+- [[github]] (来源: 实体\datasets.md)
+- [[2026-04-11-README.md]] (来源: 实体\datasets.md)
+- [[articles/]] (来源: 实体\datasets_.md)
+- [[papers/]] (来源: 实体\datasets_.md)
+- [[github/]] (来源: 实体\datasets_.md)
+- [[2026-04-14-README.md]] (来源: 实体\datasets_.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\DataTool.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\DataTool.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\DeepMind.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\DeerFlow 2.0.md)
+- [[已有文档/知识库转化]] (来源: 实体\Firefly.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Firefly.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\Fish Audio S2 Pro.md)
+- [[已有文档/知识库转化]] (来源: 实体\FLAN Collection.md)
+- [[hermes-agent]] (来源: 实体\GitHub Forks.md)
+- [[2026-04-13-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\GitHub Forks.md)
+- [[hermes-agent]] (来源: 实体\GitHub Stars.md)
+- [[2026-04-13-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\GitHub Stars.md)
+- [[2026-04-11-README.md]] (来源: 实体\GitHub.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\GitHub_ github.com_TsinghuaISE_Alchemy.md)
+- [[articles/]] (来源: 实体\github_.md)
+- [[papers/]] (来源: 实体\github_.md)
+- [[datasets/]] (来源: 实体\github_.md)
+- [[2026-04-14-README.md]] (来源: 实体\github_.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\GitNexus.md)
+- [[已有文档/知识库转化]] (来源: 实体\GPT-4.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\GPT-4.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 实体\GPT-4o.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 实体\Graph RAG.md)
+- [[2026-04-10-github\gitnexus-agan.md]] (来源: 实体\Graph RAG.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\Graph RAG设计思路.md)
+- [[2026-04-13-github\gitnexus-douyin-20260410.md]] (来源: 实体\Graph RAG设计思路.md)
+- [[已有文档/知识库转化]] (来源: 实体\GSM8K-augmented.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\GSM8K-augmented.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\Harness Core.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 实体\Hermes Agent.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\Hermes-agent.md)
+- [[已有文档/知识库转化]] (来源: 实体\InfinityInstruct.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\InfinityInstruct.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\JCST 2026.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\Karpathy AI 知识库系列.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\Karpathy AI 知识库系列.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\Karpathy AI 知识库系列（2026年4月）.md)
+- [[2026-04-10-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\Karpathy AI 知识库系列（2026年4月）.md)
+- [[raw/目录]] (来源: 实体\Karpathy 知识库.md)
+- [[wiki/]] (来源: 实体\Karpathy 知识库.md)
+- [[2026-04-09-articles\karpathy-workflow.md]] (来源: 实体\Karpathy 知识库.md)
+- [[raw/目录]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[wiki/]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Karpathy 知识库工作流.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 实体\Karpathy.md)
+- [[raw/目录]] (来源: 实体\Karpathy知识库工作流.md)
+- [[100篇/40万字规模]] (来源: 实体\Karpathy知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Karpathy知识库工作流.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 实体\Karpathy（安德烈·卡帕西）.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\LiteRT-LM.md)
+- [[raw/目录]] (来源: 实体\LLM.md)
+- [[wiki/]] (来源: 实体\LLM.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\LLM.md)
+- [[已有文档/知识库转化]] (来源: 实体\LLM训练.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\LongCat-AudioDiT.md)
+- [[已有文档/知识库转化]] (来源: 实体\Magicoder-OSS-Instruct.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\Magicoder-OSS-Instruct.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 实体\MCP 生态全景图.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\MCP 生态全景图.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 实体\MemPalace (milla-jovovich_mempalace).md)
+- [[2026-04-09-Knowledge-Screenshots-Summary]] (来源: 实体\MemPalace-milla-jovovich-mempalace.md)
+- [[已有文档/知识库转化]] (来源: 实体\MetaMathQA.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\MetaMathQA.md)
+- [[已有文档/知识库转化]] (来源: 实体\MOSS-SFT.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\MOSS-SFT.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\nousresearch_hermes-agent.md)
+- [[node >= 20.0.0]] (来源: 实体\npm v1.1.1.md)
+- [[raw/目录]] (来源: 实体\Obsidian Web Clipper.md)
+- [[wiki/]] (来源: 实体\Obsidian Web Clipper.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\Obsidian Web Clipper.md)
+- [[raw/目录]] (来源: 实体\ObsidianWebClipper.md)
+- [[100篇/40万字规模]] (来源: 实体\ObsidianWebClipper.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\ObsidianWebClipper.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\OpenAI.md)
+- [[已有文档/知识库转化]] (来源: 实体\OpenAssistant.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\OpenAssistant.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\OpenClaw.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\OpenClaw.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 实体\opencli list.md)
+- [[2026-04-11-github\opencli-douyin-20260410.md]] (来源: 实体\opencli.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 实体\OpenCode.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\OpenLearn.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\OpenMAIC.md)
+- [[github]] (来源: 实体\papers.md)
+- [[2026-04-11-README.md]] (来源: 实体\papers.md)
+- [[articles/]] (来源: 实体\papers_.md)
+- [[github/]] (来源: 实体\papers_.md)
+- [[datasets/]] (来源: 实体\papers_.md)
+- [[2026-04-14-README.md]] (来源: 实体\papers_.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 实体\Python.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\Qwen2-TTS.md)
+- [[raw/目录]] (来源: 实体\RAG.md)
+- [[wiki/]] (来源: 实体\RAG.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\RAG.md)
+- [[2026-04-10-articles\karpathy-workflow.md]] (来源: 实体\raw_ 目录.md)
+- [[wiki/]] (来源: 实体\raw_.md)
+- [[2026-04-11-articles\karpathy-workflow.md]] (来源: 实体\raw_.md)
+- [[wiki/]] (来源: 实体\raw_目录.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\raw_目录.md)
+- [[articles/]] (来源: 实体\README.md.md)
+- [[papers/]] (来源: 实体\README.md.md)
+- [[github/]] (来源: 实体\README.md.md)
+- [[datasets/]] (来源: 实体\README.md.md)
+- [[2026-04-14-README.md]] (来源: 实体\README.md.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Reddit.md)
+- [[papers/]] (来源: 实体\rticles_.md)
+- [[github/]] (来源: 实体\rticles_.md)
+- [[datasets/]] (来源: 实体\rticles_.md)
+- [[2026-04-14-README.md]] (来源: 实体\rticles_.md)
+- [[语音AI]] (来源: 实体\Seeduplex.md)
+- [[已有文档/知识库转化]] (来源: 实体\ShareGPT.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\ShareGPT.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 实体\SKILL.md)
+- [[2026-04-11-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 实体\SKILL.md_技术规范详解---9ccef561.pdf.md)
+- [[raw/ 目录]] (来源: 实体\STEP 01_ 收集.md)
+- [[STEP 02: 编译]] (来源: 实体\STEP 01_ 收集.md)
+- [[STEP 03: 查询]] (来源: 实体\STEP 01_ 收集.md)
+- [[raw/ 目录]] (来源: 实体\STEP 02_ 编译.md)
+- [[STEP 01: 收集]] (来源: 实体\STEP 02_ 编译.md)
+- [[STEP 03: 查询]] (来源: 实体\STEP 02_ 编译.md)
+- [[raw/ 目录]] (来源: 实体\STEP 03_ 查询.md)
+- [[STEP 01: 收集]] (来源: 实体\STEP 03_ 查询.md)
+- [[STEP 02: 编译]] (来源: 实体\STEP 03_ 查询.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\The agent that grows with you.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 实体\The agent that grows with you.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\THU-MAIC团队.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\Twitter.md)
+- [[已有文档/知识库转化]] (来源: 实体\UltraChat.md)
+- [[raw/ 目录]] (来源: 实体\wiki 知识库.md)
+- [[STEP 01: 收集]] (来源: 实体\wiki 知识库.md)
+- [[STEP 02: 编译]] (来源: 实体\wiki 知识库.md)
+- [[STEP 03: 查询]] (来源: 实体\wiki 知识库.md)
+- [[github]] (来源: 实体\wiki.md)
+- [[2026-04-11-README.md]] (来源: 实体\wiki.md)
+- [[raw/目录]] (来源: 实体\wiki_.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 实体\wiki_.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\yaml配置文件.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\YouTube.md)
+- [[2026-04-11-articles\tts-models-comparison-20260410.md]] (来源: 实体\三款开源TTS大模型横评，LongCat-AudioDiT完胜.md)
+- [[已有文档/知识库转化]] (来源: 实体\人工智能.md)
+- [[已有文档/知识库转化]] (来源: 实体\人工标注（最高质量）.md)
+- [[从已有文档/知识库转化]] (来源: 实体\人工标注（最高质量）.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\人工标注（最高质量）.md)
+- [[已有文档/知识库转化]] (来源: 实体\从已有文档_知识库转化.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\从已有文档_知识库转化.md)
+- [[已有文档/知识库转化]] (来源: 实体\从真实用户交互中提取.md)
+- [[从已有文档/知识库转化]] (来源: 实体\从真实用户交互中提取.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\从真实用户交互中提取.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\内嵌闭环学习系统.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\内嵌闭环学习系统.md)
+- [[2026-04-12-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 实体\基于Dify平台的AgentSkills使用.md)
+- [[已有文档/知识库转化]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[从已有文档/知识库转化]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\基于强模型生成（性价比最高）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\多平台支持.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\多平台支持.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\多模态推荐任务.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\多模态推荐任务.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 实体\大阳AI测评君.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 实体\字节跳动 (ByteDance).md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 实体\字节跳动.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\实用网站.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\小红书.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\小龙虾过时了？爱马仕成了最近最猛的开源AI.md)
+- [[已有文档/知识库转化]] (来源: 实体\开源数据集整合.md)
+- [[从已有文档/知识库转化]] (来源: 实体\开源数据集整合.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 实体\开源数据集整合.md)
+- [[hermes-agent]] (来源: 实体\抖音.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 实体\抖音.md)
+- [[已有文档/知识库转化]] (来源: 实体\数据工程.md)
+- [[已有文档/知识库转化]] (来源: 实体\数据标注.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\李乐晖.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\李佳助理教授课题组.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\李佳助理教授课题组.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\李佳（助理教授）.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\模型无关架构.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\模型无关架构.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\清华 AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\清华 AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\清华人工智能学院.md)
+- [[2026-04-13-github\openmaic-douyin-20260410.md]] (来源: 实体\清华大学 THU-MAIC团队.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 实体\清华大学THU-MAIC团队.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\清华大学人工智能学院.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 实体\电磁波Studio.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\知乎.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\研究环境执行层.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\研究环境执行层.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 实体\硅基棱镜.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 实体\第三集.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 实体\算法开发层.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 实体\算法开发层.md)
+- [[github]] (来源: 实体\素材.md)
+- [[2026-04-11-README.md]] (来源: 实体\素材.md)
+- [[articles/]] (来源: 实体\素材_.md)
+- [[papers/]] (来源: 实体\素材_.md)
+- [[github/]] (来源: 实体\素材_.md)
+- [[datasets/]] (来源: 实体\素材_.md)
+- [[2026-04-13-README.md]] (来源: 实体\素材_.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 实体\编程救星，不让AI瞎改代码.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 实体\编程救星，不让AI瞎改代码.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\自动生成Skills.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\自动生成Skills.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 实体\蔡立一.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 实体\证书.md)
+- [[nousresearch/hermes-agent]] (来源: 实体\跨会话记忆.md)
+- [[2026-04-11-github\hermes-agent-douyin-20260410.md]] (来源: 实体\跨会话记忆.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 实体\阿甘探AI.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 实体\阿甘探AI.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-09-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[articles/]] (来源: 来源\2026-04-09-README.md)
+- [[papers/]] (来源: 来源\2026-04-09-README.md)
+- [[github/]] (来源: 来源\2026-04-09-README.md)
+- [[datasets/]] (来源: 来源\2026-04-09-README.md)
+- [[素材/]] (来源: 来源\2026-04-09-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-10-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/ 目录]] (来源: 来源\2026-04-10-articles_karpathy-workflow.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-10-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-10-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-10-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-10-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-10-README.md)
+- [[papers/]] (来源: 来源\2026-04-10-README.md)
+- [[github/]] (来源: 来源\2026-04-10-README.md)
+- [[datasets/]] (来源: 来源\2026-04-10-README.md)
+- [[素材/]] (来源: 来源\2026-04-10-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-11-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/]] (来源: 来源\2026-04-11-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-11-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-11-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-11-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-11-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-11-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-11-github_hermes-agent-douyin-20260410.md)
+- [[github]] (来源: 来源\2026-04-11-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-12-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-12-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-12-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-12-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-12-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-12-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-12-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-12-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-12-README.md)
+- [[papers/]] (来源: 来源\2026-04-12-README.md)
+- [[github/]] (来源: 来源\2026-04-12-README.md)
+- [[datasets/]] (来源: 来源\2026-04-12-README.md)
+- [[素材/]] (来源: 来源\2026-04-12-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-13-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-13-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-13-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-13-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-13-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-13-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-13-README.md)
+- [[papers/]] (来源: 来源\2026-04-13-README.md)
+- [[github/]] (来源: 来源\2026-04-13-README.md)
+- [[datasets/]] (来源: 来源\2026-04-13-README.md)
+- [[素材/]] (来源: 来源\2026-04-13-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-14-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-14-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-14-articles_karpathy-workflow.md)
+- [[从已有文档/知识库转化]] (来源: 来源\2026-04-14-articles_llm-training-data-sources.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-14-articles_llm-training-data-sources.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 来源\2026-04-14-github_2026-04-09-Alchemy-Tsinghua-AI-Science.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-14-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-14-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-14-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-14-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-14-README.md)
+- [[papers/]] (来源: 来源\2026-04-14-README.md)
+- [[github/]] (来源: 来源\2026-04-14-README.md)
+- [[datasets/]] (来源: 来源\2026-04-14-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-15-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-15-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-15-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-15-articles_llm-training-data-sources.md)
+- [[github.com/TsinghuaISE/Alchemy]] (来源: 来源\2026-04-15-github_2026-04-09-Alchemy-清华AI科研自动化框架.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-15-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-15-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-15-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-15-github_hermes-agent-douyin-20260410.md)
+- [[articles/]] (来源: 来源\2026-04-15-README.md)
+- [[papers/]] (来源: 来源\2026-04-15-README.md)
+- [[github/]] (来源: 来源\2026-04-15-README.md)
+- [[datasets/]] (来源: 来源\2026-04-15-README.md)
+- [[素材/]] (来源: 来源\2026-04-15-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-20-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/]] (来源: 来源\2026-04-20-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-20-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-20-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-20-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-20-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-20-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-20-github_hermes-agent-douyin-20260410.md)
+- [[rticles/]] (来源: 来源\2026-04-20-README.md)
+- [[papers/]] (来源: 来源\2026-04-20-README.md)
+- [[github/]] (来源: 来源\2026-04-20-README.md)
+- [[datasets/]] (来源: 来源\2026-04-20-README.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 来源\2026-04-23-articles_2026-04-09-Knowledge-Screenshots-Summary.md)
+- [[raw/目录]] (来源: 来源\2026-04-23-articles_karpathy-workflow.md)
+- [[wiki/]] (来源: 来源\2026-04-23-articles_karpathy-workflow.md)
+- [[已有文档/知识库转化]] (来源: 来源\2026-04-23-articles_llm-training-data-sources.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 来源\2026-04-23-github_gitnexus-agan.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 来源\2026-04-23-github_gitnexus-douyin-20260410.md)
+- [[hermes-agent]] (来源: 来源\2026-04-23-github_hermes-agent-ai-zhenyongfa.md)
+- [[nousresearch/hermes-agent]] (来源: 来源\2026-04-23-github_hermes-agent-douyin-20260410.md)
+- [[rticles/]] (来源: 来源\2026-04-23-README.md)
+- [[papers/]] (来源: 来源\2026-04-23-README.md)
+- [[github/]] (来源: 来源\2026-04-23-README.md)
+- [[datasets/]] (来源: 来源\2026-04-23-README.md)
+- [[{
+            "vector": vector,
+            "text": text,
+            "user_id": user_id,
+            "created_at": datetime.now().isoformat(),
+        }]] (来源: 来源\mem0-milvus-cloud-config.md)
+- [[skill-name-1]] (来源: 来源\skill-writing-guide.md)
+- [[skill-name-2]] (来源: 来源\skill-writing-guide.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\6平台6执行环境.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\6平台6执行环境.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Agent.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 概念\AgentSkills.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\AI Agent.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\AI Scientist.md)
+- [[2026-04-11-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研自动化.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\AI 科研自动化框架.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\AI 编程 Agent.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\AI-Agent.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\AI-powered discovery.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\AI学习.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\AI技术.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\AI教师.md)
+- [[2026-04-10-articles\hermes-agent-ai真用法.md]] (来源: 概念\AI智能体.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\AI编程.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\AI编程.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\AI错误修改代码.md)
+- [[2026-04-13-github\gitnexus-agan.md]] (来源: 概念\AI错误修改代码.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\AI驱动发现.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\AI驱动的发现.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy 框架.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 概念\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Alchemy框架.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Alchemy（炼丹炉）.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\CLI.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\CLI工具.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Constraint Engine.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Context Engineering.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Control Loop.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\DeerFlow.md)
+- [[2026-04-13-articles\第三集基于Dify平台的AgentSkills使用.pdf]] (来源: 概念\Dify平台.md)
+- [[2026-04-10-github\opencli-douyin-20260410.md]] (来源: 概念\Electron应用.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\Electron应用转CLI.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Feedback System.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\Fish Audio S2 Pro.md)
+- [[openai]] (来源: 概念\GitHub Forks.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\GitHub Forks.md)
+- [[openai]] (来源: 概念\GitHub Stars.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\GitHub Stars.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\GitNexus.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\GitNexus.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\Graph RAG.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\Graph RAG.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\Graph RAG设计思路.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\Graph RAG设计思路.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Harness Engineering.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Harness Engineering.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\Hermes Agent.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\Hermes Agent.md)
+- [[hermes-agent]] (来源: 概念\Hermes-agent.md)
+- [[2026-04-10-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\Hermes-agent.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Karpathy 知识库工作流.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Karpathy 知识库工作流.md)
+- [[raw/目录]] (来源: 概念\LLM.md)
+- [[wiki/]] (来源: 概念\LLM.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\LLM.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\LongCat AudioDiT.md)
+- [[2026-04-14-articles\tts-model-comparison-longcat.md]] (来源: 概念\LongCat-AudioDiT.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\MCP (Model Context Protocol).md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\MCP (Model Context Protocol).md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\MemPalace.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\MemPalace.md)
+- [[MemPalace (milla-jovovich/mempalace)]] (来源: 概念\Obsidian Web Clipper.md)
+- [[2026-04-14-articles\2026-04-09-Knowledge-Screenshots-Summary.md]] (来源: 概念\Obsidian Web Clipper.md)
+- [[raw/ 目录]] (来源: 概念\Obsidian.md)
+- [[STEP 01: 收集]] (来源: 概念\Obsidian.md)
+- [[STEP 02: 编译]] (来源: 概念\Obsidian.md)
+- [[STEP 03: 查询]] (来源: 概念\Obsidian.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\OpenCLI.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\OpenLearn 平台.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\OpenLearn平台.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\OpenMAIC.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\PDF转课堂.md)
+- [[2026-04-14-articles\2026-04-09-Harness-Engineering.md]] (来源: 概念\Prompt Engineering.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Python 环境.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\Qwen2-TTS.md)
+- [[论文]] (来源: 概念\RAG.md)
+- [[文章]] (来源: 概念\RAG.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 概念\RAG（检索增强生成）.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Reuse Chrome login.md)
+- [[2026-04-12-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Seed Baseline 机制.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\Seed Baseline.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\Seed Baseline机制.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 概念\Seeduplex.md)
+- [[2026-04-11-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\SKILL.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\Skills.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\Skills.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\TTS.md)
+- [[2026-04-13-articles\tts-model-comparison-longcat.md]] (来源: 概念\TTS模型.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Universal CLI Hub.md)
+- [[raw/目录]] (来源: 概念\wiki.md)
+- [[wiki/]] (来源: 概念\wiki.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\wiki.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\wiki文章生成.md)
+- [[raw/目录]] (来源: 概念\wiki知识库.md)
+- [[100篇/40万字规模]] (来源: 概念\wiki知识库.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\wiki知识库.md)
+- [[2026-04-13-github\opencli-douyin-20260410.md]] (来源: 概念\Zero risk.md)
+- [[raw/目录]] (来源: 概念\上下文窗口.md)
+- [[100篇/40万字规模]] (来源: 概念\上下文窗口.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\上下文窗口.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\主题转课堂.md)
+- [[已有文档/知识库转化]] (来源: 概念\人工标注.md)
+- [[从已有文档/知识库转化]] (来源: 概念\人工标注.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\人工标注.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\从OpenClaw一键迁移.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\从OpenClaw一键迁移.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\代码可视化.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\代码可视化.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\代码审查.md)
+- [[2026-04-13-github\gitnexus-douyin-20260410.md]] (来源: 概念\代码审查.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\代码理解工具.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\代码结构.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\代码结构.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\优化体验.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\传统Agent痛点.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\传统代码审查.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\传统代码审查.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\传统开源Agent痛点.md)
+- [[articles/]] (来源: 概念\使用方式.md)
+- [[papers/]] (来源: 概念\使用方式.md)
+- [[github/]] (来源: 概念\使用方式.md)
+- [[datasets/]] (来源: 概念\使用方式.md)
+- [[素材/]] (来源: 概念\使用方式.md)
+- [[2026-04-13-README.md]] (来源: 概念\使用方式.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\依赖关系.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\依赖关系.md)
+- [[2026-04-14-articles\bytedance-seeduplex-voice-model.md]] (来源: 概念\全双工语音大模型.md)
+- [[hermes-agent]] (来源: 概念\公共仓库.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\公共仓库.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\内置闭环学习系统.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\内置闭环学习系统.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\函数.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\函数.md)
+- [[articles/]] (来源: 概念\原则.md)
+- [[papers/]] (来源: 概念\原则.md)
+- [[github/]] (来源: 概念\原则.md)
+- [[datasets/]] (来源: 概念\原则.md)
+- [[2026-04-14-README.md]] (来源: 概念\原则.md)
+- [[raw/目录]] (来源: 概念\原始资料.md)
+- [[wiki/]] (来源: 概念\原始资料.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\原始资料.md)
+- [[articles/]] (来源: 概念\原始资料层.md)
+- [[papers/]] (来源: 概念\原始资料层.md)
+- [[github/]] (来源: 概念\原始资料层.md)
+- [[datasets/]] (来源: 概念\原始资料层.md)
+- [[2026-04-14-README.md]] (来源: 概念\原始资料层.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\原始资料编译.md)
+- [[raw/目录]] (来源: 概念\双向链接.md)
+- [[wiki/]] (来源: 概念\双向链接.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\双向链接.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\双向链接建立.md)
+- [[articles/]] (来源: 概念\只读.md)
+- [[papers/]] (来源: 概念\只读.md)
+- [[github/]] (来源: 概念\只读.md)
+- [[datasets/]] (来源: 概念\只读.md)
+- [[2026-04-14-README.md]] (来源: 概念\只读.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\可视化代码.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\可视化代码.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\可视化代码理解工具.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\可视化代码理解工具.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\可视化工具.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\可视化工具.md)
+- [[2026-04-10-articles\opencli-siliconprism.md]] (来源: 概念\命令行界面.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习资源.md)
+- [[2026-04-11-articles\openlearn-certification-dayang.md]] (来源: 概念\在线学习资源推荐.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\在线教育.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\多平台执行环境.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\多平台执行环境.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\多平台支持.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\多平台支持.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\多智能体互动课堂.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\多智能体交互课堂中的生成式学习.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\多模态推荐任务.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\多角色讨论.md)
+- [[2026-04-12-articles\tts-models-comparison-20260410.md]] (来源: 概念\大模型横评.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\实验环境搭建.md)
+- [[raw/]] (来源: 概念\工作流.md)
+- [[wiki/]] (来源: 概念\工作流.md)
+- [[2026-04-11-articles\karpathy-workflow.md]] (来源: 概念\工作流.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\工具测评.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\工程自动化.md)
+- [[从已有文档/知识库转化]] (来源: 概念\已有文档_知识库转化.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\已有文档_知识库转化.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\开发者工具.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\开发者工具.md)
+- [[hermes-agent]] (来源: 概念\开源.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI Agent框架.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI Agent框架.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\开源AI框架.md)
+- [[2026-04-10-github\hermes-agent-douyin-20260410.md]] (来源: 概念\开源AI框架.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\开源TTS大模型.md)
+- [[已有文档/知识库转化]] (来源: 概念\开源数据集整合.md)
+- [[从已有文档/知识库转化]] (来源: 概念\开源数据集整合.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\开源数据集整合.md)
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]] (来源: 概念\开源模型.md)
+- [[已有文档/知识库转化]] (来源: 概念\强模型生成.md)
+- [[从已有文档/知识库转化]] (来源: 概念\强模型生成.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\强模型生成.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\执行.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\技术文档.md)
+- [[2026-04-12-articles\SKILL.md_技术规范详解---9ccef561.pdf]] (来源: 概念\技术规范.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\提炼技能.md)
+- [[raw/ 目录]] (来源: 概念\收集.md)
+- [[wiki/]] (来源: 概念\收集.md)
+- [[2026-04-10-articles\karpathy-workflow.md]] (来源: 概念\收集.md)
+- [[hermes-agent]] (来源: 概念\智能体.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\智能体.md)
+- [[raw/目录]] (来源: 概念\查询.md)
+- [[wiki/]] (来源: 概念\查询.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\查询.md)
+- [[2026-04-13-articles\karpathy-workflow.md]] (来源: 概念\查询功能.md)
+- [[raw/目录]] (来源: 概念\核心概念.md)
+- [[100篇/40万字规模]] (来源: 概念\核心概念.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\核心概念.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\框架设计与核心开发.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\模型无关架构.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\模型无关架构.md)
+- [[2026-04-10-articles\openlearn-certification-dayang.md]] (来源: 概念\测评.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\测验题目.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\浏览器自动化.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\深度记忆系统.md)
+- [[2026-04-14-github\openmaic-douyin-20260410.md]] (来源: 概念\白板互动.md)
+- [[articles/]] (来源: 概念\目录结构.md)
+- [[papers/]] (来源: 概念\目录结构.md)
+- [[github/]] (来源: 概念\目录结构.md)
+- [[datasets/]] (来源: 概念\目录结构.md)
+- [[2026-04-14-README.md]] (来源: 概念\目录结构.md)
+- [[已有文档/知识库转化]] (来源: 概念\真实用户交互.md)
+- [[已有文档/知识库转化]] (来源: 概念\真实用户交互提取.md)
+- [[从已有文档/知识库转化]] (来源: 概念\真实用户交互提取.md)
+- [[2026-04-14-articles\llm-training-data-sources.md]] (来源: 概念\真实用户交互提取.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\知识图谱.md)
+- [[2026-04-14-articles\karpathy-rag-critique-aidianliao.md]] (来源: 概念\知识库.md)
+- [[raw/目录]] (来源: 概念\知识库工作流.md)
+- [[wiki/]] (来源: 概念\知识库工作流.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\知识库工作流.md)
+- [[raw/目录]] (来源: 概念\知识管理.md)
+- [[100篇/40万字规模]] (来源: 概念\知识管理.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\知识管理.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\研究环境执行层.md)
+- [[GitHub: github.com/TsinghuaISE/Alchemy]] (来源: 概念\种子基线.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\种子基线.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\科学假设生成.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科学假设生成与方法演化.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科研基础设施.md)
+- [[2026-04-10-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\科研基础设施连接.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\科研流程自动化.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\端侧推理.md)
+- [[2026-04-14-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\算法开发层.md)
+- [[2026-04-13-github\2026-04-09-Alchemy-Tsinghua-AI-Science.md]] (来源: 概念\算法自动演化.md)
+- [[2026-04-14-github\2026-04-09-GitHub一周热门项目TOP20-2026第9周.md]] (来源: 概念\系统提示词.md)
+- [[articles/]] (来源: 概念\素材.md)
+- [[papers/]] (来源: 概念\素材.md)
+- [[github/]] (来源: 概念\素材.md)
+- [[datasets/]] (来源: 概念\素材.md)
+- [[2026-04-14-README.md]] (来源: 概念\素材.md)
+- [[raw/目录]] (来源: 概念\结构化wiki文章.md)
+- [[100篇/40万字规模]] (来源: 概念\结构化wiki文章.md)
+- [[2026-04-14-articles\karpathy-workflow.md]] (来源: 概念\结构化wiki文章.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\结果收集与分析.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\编程救星.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\编程救星.md)
+- [[articles/]] (来源: 概念\编译.md)
+- [[papers/]] (来源: 概念\编译.md)
+- [[github/]] (来源: 概念\编译.md)
+- [[datasets/]] (来源: 概念\编译.md)
+- [[素材/]] (来源: 概念\编译.md)
+- [[2026-04-12-README.md]] (来源: 概念\编译.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\网站.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\网站转CLI.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\网页控制.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自动创建Skills.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自动创建Skills.md)
+- [[2026-04-14-articles\opencli-siliconprism.md]] (来源: 概念\自动化.md)
+- [[github.com/TsinghuaISE/Alchemy]] (来源: 概念\自动化工程.md)
+- [[2026-04-13-articles\hermes-agent-ai真用法.md]] (来源: 概念\自动进化循环.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自动进化循环机制.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自我优化技能生态.md)
+- [[hermes-agent]] (来源: 概念\自我成长.md)
+- [[2026-04-14-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\自我成长.md)
+- [[hermes-agent]] (来源: 概念\自我进化.md)
+- [[2026-04-11-github\hermes-agent-ai-zhenyongfa.md]] (来源: 概念\自我进化.md)
+- [[2026-04-14-articles\hermes-agent-ai真用法.md]] (来源: 概念\自我进化AI智能体.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自进化AI Agent.md)
+- [[2026-04-13-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自进化AI Agent.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\自进化AI Agent框架.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\自进化AI Agent框架.md)
+- [[2026-04-14-articles\openlearn-certification-dayang.md]] (来源: 概念\证书获取工具.md)
+- [[2026-04-14-articles\tts-model-comparison-longcat.md]] (来源: 概念\语音合成.md)
+- [[2026-04-14-articles\openmaic-dayang.md]] (来源: 概念\课程生成.md)
+- [[abhigyanpatwari / GitNexus]] (来源: 概念\调用关系.md)
+- [[2026-04-14-github\gitnexus-agan.md]] (来源: 概念\调用关系.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\调用链.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\调用链.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\调用链追踪.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\调用链追踪.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\超参数配置.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\跨会话记忆.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\跨会话记忆.md)
+- [[2026-04-09-github\2026-04-09-Alchemy-清华AI科研自动化框架.md]] (来源: 概念\迭代优化循环.md)
+- [[2026-04-14-github\opencli-douyin-20260410.md]] (来源: 概念\通用CLI中心.md)
+- [[nousresearch/hermes-agent]] (来源: 概念\闭环学习系统.md)
+- [[2026-04-14-github\hermes-agent-douyin-20260410.md]] (来源: 概念\闭环学习系统.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\预防AI瞎改.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\预防AI瞎改.md)
+- [[abhigyanpatwari/GitNexus]] (来源: 概念\预防性AI.md)
+- [[2026-04-14-github\gitnexus-douyin-20260410.md]] (来源: 概念\预防性AI.md)
+
+### 重复页面 (39 项)
+
+- 标题「AI Scientist」出现在:
+  - 实体\AI Scientist.md
+  - 概念\AI Scientist.md
+- 标题「AI-powered discovery」出现在:
+  - 实体\AI-powered discovery.md
+  - 概念\AI-powered discovery.md
+- 标题「AI技术」出现在:
+  - 实体\AI技术.md
+  - 概念\AI技术.md
+- 标题「AI编程」出现在:
+  - 实体\AI编程.md
+  - 概念\AI编程.md
+- 标题「Alchemy」出现在:
+  - 实体\Alchemy.md
+  - 概念\Alchemy.md
+- 标题「Alchemy（炼丹炉）」出现在:
+  - 实体\Alchemy（炼丹炉）.md
+  - 概念\Alchemy（炼丹炉）.md
+- 标题「Fish Audio S2 Pro」出现在:
+  - 实体\Fish Audio S2 Pro.md
+  - 概念\Fish Audio S2 Pro.md
+- 标题「GitHub Forks」出现在:
+  - 实体\GitHub Forks.md
+  - 概念\GitHub Forks.md
+- 标题「GitHub Stars」出现在:
+  - 实体\GitHub Stars.md
+  - 概念\GitHub Stars.md
+- 标题「GitNexus」出现在:
+  - 实体\GitNexus.md
+  - 概念\GitNexus.md
+- 标题「Graph RAG」出现在:
+  - 实体\Graph RAG.md
+  - 概念\Graph RAG.md
+- 标题「Graph RAG设计思路」出现在:
+  - 实体\Graph RAG设计思路.md
+  - 概念\Graph RAG设计思路.md
+- 标题「Hermes Agent」出现在:
+  - 实体\Hermes Agent.md
+  - 概念\Hermes Agent.md
+- 标题「Hermes-agent」出现在:
+  - 实体\Hermes-agent.md
+  - 概念\Hermes-agent.md
+- 标题「Karpathy 知识库工作流」出现在:
+  - 实体\Karpathy 知识库工作流.md
+  - 概念\Karpathy 知识库工作流.md
+- 标题「LLM」出现在:
+  - 实体\LLM.md
+  - 概念\LLM.md
+- 标题「LongCat-AudioDiT」出现在:
+  - 实体\LongCat-AudioDiT.md
+  - 概念\LongCat-AudioDiT.md
+- 标题「Obsidian Web Clipper」出现在:
+  - 实体\Obsidian Web Clipper.md
+  - 概念\Obsidian Web Clipper.md
+- 标题「OpenMAIC」出现在:
+  - 实体\OpenMAIC.md
+  - 概念\OpenMAIC.md
+- 标题「Qwen2-TTS」出现在:
+  - 实体\Qwen2-TTS.md
+  - 概念\Qwen2-TTS.md
+- 标题「RAG」出现在:
+  - 实体\RAG.md
+  - 概念\RAG.md
+- 标题「Reuse Chrome login」出现在:
+  - 实体\Reuse Chrome login.md
+  - 概念\Reuse Chrome login.md
+- 标题「Seeduplex」出现在:
+  - 实体\Seeduplex.md
+  - 概念\Seeduplex.md
+- 标题「SKILL」出现在:
+  - 实体\SKILL.md
+  - 概念\SKILL.md
+- 标题「Universal CLI Hub」出现在:
+  - 实体\Universal CLI Hub.md
+  - 概念\Universal CLI Hub.md
+- 标题「wiki 知识库」出现在:
+  - 实体\wiki 知识库.md
+  - 概念\wiki 知识库.md
+- 标题「wiki」出现在:
+  - 实体\wiki.md
+  - 概念\wiki.md
+- 标题「Zero risk」出现在:
+  - 实体\Zero risk.md
+  - 概念\Zero risk.md
+- 标题「基于Dify平台的AgentSkills使用」出现在:
+  - 实体\基于Dify平台的AgentSkills使用.md
+  - 来源\基于Dify平台的AgentSkills使用.md
+- 标题「多平台支持」出现在:
+  - 实体\多平台支持.md
+  - 概念\多平台支持.md
+- 标题「多模态推荐任务」出现在:
+  - 实体\多模态推荐任务.md
+  - 概念\多模态推荐任务.md
+- 标题「工具测评」出现在:
+  - 实体\工具测评.md
+  - 概念\工具测评.md
+- 标题「开源数据集整合」出现在:
+  - 实体\开源数据集整合.md
+  - 概念\开源数据集整合.md
+- 标题「模型无关架构」出现在:
+  - 实体\模型无关架构.md
+  - 概念\模型无关架构.md
+- 标题「知识库」出现在:
+  - 实体\知识库.md
+  - 概念\知识库.md
+- 标题「研究环境执行层」出现在:
+  - 实体\研究环境执行层.md
+  - 概念\研究环境执行层.md
+- 标题「算法开发层」出现在:
+  - 实体\算法开发层.md
+  - 概念\算法开发层.md
+- 标题「素材」出现在:
+  - 实体\素材.md
+  - 概念\素材.md
+- 标题「跨会话记忆」出现在:
+  - 实体\跨会话记忆.md
+  - 概念\跨会话记忆.md
+
+### 潜在矛盾 (39 项)
+
+- 组「AI Scientist」:
+  - 实体\AI Scientist.md
+  - 概念\AI Scientist.md
+- 组「AI-powered discovery」:
+  - 实体\AI-powered discovery.md
+  - 概念\AI-powered discovery.md
+- 组「AI技术」:
+  - 实体\AI技术.md
+  - 概念\AI技术.md
+- 组「AI编程」:
+  - 实体\AI编程.md
+  - 概念\AI编程.md
+- 组「Alchemy」:
+  - 实体\Alchemy.md
+  - 概念\Alchemy.md
+- 组「Alchemy（炼丹炉）」:
+  - 实体\Alchemy（炼丹炉）.md
+  - 概念\Alchemy（炼丹炉）.md
+- 组「Fish Audio S2」:
+  - 实体\Fish Audio S2 Pro.md
+  - 概念\Fish Audio S2 Pro.md
+- 组「GitHub Forks」:
+  - 实体\GitHub Forks.md
+  - 概念\GitHub Forks.md
+- 组「GitHub Stars」:
+  - 实体\GitHub Stars.md
+  - 概念\GitHub Stars.md
+- 组「GitNexus」:
+  - 实体\GitNexus.md
+  - 概念\GitNexus.md
+- 组「Graph RAG」:
+  - 实体\Graph RAG.md
+  - 概念\Graph RAG.md
+- 组「Graph RAG设计思路」:
+  - 实体\Graph RAG设计思路.md
+  - 概念\Graph RAG设计思路.md
+- 组「Hermes Agent」:
+  - 实体\Hermes Agent.md
+  - 概念\Hermes Agent.md
+- 组「Hermes-agent」:
+  - 实体\Hermes-agent.md
+  - 概念\Hermes-agent.md
+- 组「Karpathy 知识库工作流」:
+  - 实体\Karpathy 知识库工作流.md
+  - 概念\Karpathy 知识库工作流.md
+- 组「LLM」:
+  - 实体\LLM.md
+  - 概念\LLM.md
+- 组「LongCat-AudioDiT」:
+  - 实体\LongCat-AudioDiT.md
+  - 概念\LongCat-AudioDiT.md
+- 组「Obsidian Web Clipper」:
+  - 实体\Obsidian Web Clipper.md
+  - 概念\Obsidian Web Clipper.md
+- 组「OpenMAIC」:
+  - 实体\OpenMAIC.md
+  - 概念\OpenMAIC.md
+- 组「Qwen2-TTS」:
+  - 实体\Qwen2-TTS.md
+  - 概念\Qwen2-TTS.md
+- 组「RAG」:
+  - 实体\RAG.md
+  - 概念\RAG.md
+- 组「Reuse Chrome login」:
+  - 实体\Reuse Chrome login.md
+  - 概念\Reuse Chrome login.md
+- 组「Seeduplex」:
+  - 实体\Seeduplex.md
+  - 概念\Seeduplex.md
+- 组「SKILL」:
+  - 实体\SKILL.md
+  - 概念\SKILL.md
+- 组「Universal CLI Hub」:
+  - 实体\Universal CLI Hub.md
+  - 概念\Universal CLI Hub.md
+- 组「wiki 知识库」:
+  - 实体\wiki 知识库.md
+  - 概念\wiki 知识库.md
+- 组「wiki」:
+  - 实体\wiki.md
+  - 概念\wiki.md
+- 组「Zero risk」:
+  - 实体\Zero risk.md
+  - 概念\Zero risk.md
+- 组「基于Dify平台的AgentSkills使用」:
+  - 实体\基于Dify平台的AgentSkills使用.md
+  - 来源\基于Dify平台的AgentSkills使用.md
+- 组「多平台支持」:
+  - 实体\多平台支持.md
+  - 概念\多平台支持.md
+- 组「多模态推荐任务」:
+  - 实体\多模态推荐任务.md
+  - 概念\多模态推荐任务.md
+- 组「工具测评」:
+  - 实体\工具测评.md
+  - 概念\工具测评.md
+- 组「开源数据集整合」:
+  - 实体\开源数据集整合.md
+  - 概念\开源数据集整合.md
+- 组「模型无关架构」:
+  - 实体\模型无关架构.md
+  - 概念\模型无关架构.md
+- 组「知识库」:
+  - 实体\知识库.md
+  - 概念\知识库.md
+- 组「研究环境执行层」:
+  - 实体\研究环境执行层.md
+  - 概念\研究环境执行层.md
+- 组「算法开发层」:
+  - 实体\算法开发层.md
+  - 概念\算法开发层.md
+- 组「素材」:
+  - 实体\素材.md
+  - 概念\素材.md
+- 组「跨会话记忆」:
+  - 实体\跨会话记忆.md
+  - 概念\跨会话记忆.md

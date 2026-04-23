@@ -1,4 +1,4 @@
-# 基于Dify平台的AgentSkills使用
+﻿# 基于Dify平台的AgentSkills使用
 
 > 来源：PDF文档
 > 文件名：第三集基于Dify平台的AgentSkills使用
@@ -90,3 +90,4 @@ Skill + Knowledge + Instruction
 ## 相关标签
 
 #AgentSkills #Dify #AI应用模式 #工作流 #SKI架构 #Agent #MCP协议
+

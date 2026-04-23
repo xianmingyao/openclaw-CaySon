@@ -1,4 +1,4 @@
-# Atomic Chat + TurboQuant 本地AI部署
+﻿# Atomic Chat + TurboQuant 本地AI部署
 
 > 2026-04-03 | 来源：抖音@杨大哥 + X@GoogleResearch
 
@@ -185,3 +185,4 @@ MacBook Air M4 16GB 就能跑 Qwen3.5-9B
 
 - `knowledge/atomic-chat.md` - 本文档
 - `knowledge/turboquant-tech.md` - 待补充技术细节
+

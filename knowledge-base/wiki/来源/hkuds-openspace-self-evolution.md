@@ -1,4 +1,4 @@
-# HKUDS OpenSpace 自进化引擎深度研究报告
+﻿# HKUDS OpenSpace 自进化引擎深度研究报告
 
 ## 1. 🎯 这是什么
 
@@ -159,3 +159,4 @@ openspace sync --community
 | 中文README | github.com/HKUDS/OpenSpace/blob/main/README_CN.md |
 | 阿里云部署攻略 | developer.aliyun.com/article/1720659 |
 | 知乎教程 | zhuanlan.zhihu.com/p/2020961838108525698 |
+

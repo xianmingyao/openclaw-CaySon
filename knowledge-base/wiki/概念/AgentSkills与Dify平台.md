@@ -1,4 +1,4 @@
-# AgentSkills与Dify平台
+﻿# AgentSkills与Dify平台
 
 > 类型：概念/方法论
 > 更新时间：2026-04-10
@@ -34,3 +34,4 @@ AgentSkills + Dify工作流 = Skill + Knowledge + Instruction
 ## 相关标签
 
 #AgentSkills #Dify #AI应用模式 #工作流 #SKI架构 #Agent
+

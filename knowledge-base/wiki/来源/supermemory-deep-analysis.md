@@ -1,4 +1,4 @@
-# Supermemory 深度分析报告
+﻿# Supermemory 深度分析报告
 
 > 项目：supermemoryai/supermemory
 > Stars：20,307
@@ -300,3 +300,4 @@ supermemory/
 - 文档：https://supermemory.ai/docs
 - 仪表盘：https://console.supermemory.ai
 - Discord：https://supermemory.link/discord
+

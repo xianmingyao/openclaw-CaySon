@@ -1,4 +1,4 @@
-# 扣子(Coze)编程平台研究报告
+﻿# 扣子(Coze)编程平台研究报告
 
 > 更新时间：2026-04-10
 > 来源：code.coze.cn + 抖音视频评论区
@@ -137,3 +137,4 @@
 - 扣子编程：https://code.coze.cn/home
 - 扣子官网：https://www.coze.cn
 - 抖音视频：数字游牧人Samuel（60.4万粉丝）
+

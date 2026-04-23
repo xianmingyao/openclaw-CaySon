@@ -1,4 +1,4 @@
-# OpenClaw 24个视频剪辑Skills - 完整安装指南
+﻿# OpenClaw 24个视频剪辑Skills - 完整安装指南
 
 > 学习日期：2026-04-22
 > 来源：抖音 @零基础AI实战案例步骤
@@ -108,3 +108,4 @@ openclaw skills list
 
 - SkillHub官网：https://clawhub.ai
 - OpenClaw Skills文档：E:\workspace\skills\
+

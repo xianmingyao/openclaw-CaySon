@@ -1,4 +1,4 @@
-# OpenClaw 可观测性 & Trace 系统：基于 LangChain 三层学习
+﻿# OpenClaw 可观测性 & Trace 系统：基于 LangChain 三层学习
 
 > 研究日期：2026-04-08
 > 理论支撑：LangChain 三层学习框架 + Karpathy 知识库工作流
@@ -494,3 +494,4 @@ def model_layer_learning(analyzer: TraceAnalyzer):
 - [ ] 构建 Dashboard
 - [ ] 实现 Context 层自动优化
 - [ ] 设计 Harness 层改进建议
+

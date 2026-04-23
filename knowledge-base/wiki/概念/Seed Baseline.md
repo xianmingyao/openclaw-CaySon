@@ -1,4 +1,4 @@
-# Seed Baseline
+﻿# Seed Baseline
 
 > 分类：概念
 > 创建时间：2026-04-10 20:04
@@ -24,3 +24,4 @@ Seed Baseline 是一种软件开发中的初始版本控制状态记录方式，
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

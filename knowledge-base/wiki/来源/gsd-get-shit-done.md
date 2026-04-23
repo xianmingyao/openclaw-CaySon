@@ -1,4 +1,4 @@
-# GSD (Get Shit Done) - 专治AI写代码胡言乱语
+﻿# GSD (Get Shit Done) - 专治AI写代码胡言乱语
 
 > 来源：AI大白话抖音视频（第30集）
 > 发布：2026-03
@@ -69,3 +69,4 @@ npx get-shit-done-cc
 ## 更新记录
 
 - 2026-04-20：初始整理
+

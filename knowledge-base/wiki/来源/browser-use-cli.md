@@ -1,4 +1,4 @@
-# browser-use CLI 2.0 技术深度报告
+﻿# browser-use CLI 2.0 技术深度报告
 
 > 来源：抖音大力AI视频 + 官方文档 + 实际测试
 > 日期：2026-04-02
@@ -338,3 +338,4 @@ but you have openai 2.16.0
 - browser-use extract → "not yet implemented"
 - browser-use --mcp → 无输出（需进一步测试）
 ```
+

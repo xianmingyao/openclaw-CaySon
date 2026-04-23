@@ -1,4 +1,4 @@
-# GitHub热门项目情报 2026-03-30
+﻿# GitHub热门项目情报 2026-03-30
 
 > 来源：@AI未来 日榜 + @赛博笔记 周榜 + @成也2077 额外推荐
 > 整理时间：2026-03-30 03:10
@@ -485,3 +485,4 @@ response = litellm.completion(
 | P2 | ruflo + ruview | 同作者，技术创新 |
 | P2 | Supermemory | AI记忆API设计 |
 | P2 | Scrapling | AI爬虫框架 |
+

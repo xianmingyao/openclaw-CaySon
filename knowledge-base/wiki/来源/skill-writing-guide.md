@@ -1,4 +1,4 @@
-# Skill 写作规范指南
+﻿# Skill 写作规范指南
 
 > 基于 Google Agent Skills 五大模式
 > 参考：宇哥AI精读《Skill不应该是只给模型补资料》
@@ -235,3 +235,4 @@ triggers: 触发条件
 mkdir -p skills/{skill-name}
 cp knowledge/skill-template.md skills/{skill-name}/SKILL.md
 ```
+

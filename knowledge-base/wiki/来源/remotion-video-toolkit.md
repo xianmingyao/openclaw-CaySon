@@ -1,4 +1,4 @@
-# Remotion Video Toolkit - React视频生成Skill研究报告
+﻿# Remotion Video Toolkit - React视频生成Skill研究报告
 
 > 研究日期：2026-04-03
 > 来源：抖音@艾伦2077v 视频「Remotion的Skill」
@@ -251,3 +251,4 @@ export const MyVideo: React.FC<{ title: string; data: any }> = ({ title, data })
 - **知乎教程**: 「用OpenClaw做视频：播放量从几十涨到9000，成本一毛钱」
 - **B站教程**: 「OpenClaw+remotion自动生成视频教程」
 - **来源抖音视频**: @艾伦2077v - 「Remotion的Skill」
+

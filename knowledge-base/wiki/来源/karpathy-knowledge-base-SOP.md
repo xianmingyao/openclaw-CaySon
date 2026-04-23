@@ -1,4 +1,4 @@
-# Karpathy 知识库完整 SOP
+﻿# Karpathy 知识库完整 SOP
 
 > 基于 Andrej Karpathy 的 LLM Wiki 工作流
 
@@ -172,3 +172,4 @@ ollama serve
 ---
 
 *最后更新：2026-04-09*
+

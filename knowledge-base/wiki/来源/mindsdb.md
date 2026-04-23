@@ -1,4 +1,4 @@
-# MindsDB - AI分析查询引擎
+﻿# MindsDB - AI分析查询引擎
 
 > 2026-04-03 | 来源：抖音@骋风算力
 
@@ -282,3 +282,4 @@ OpenClaw + MindsDB = 数据+AI双剑合璧
 
 - `knowledge/mindsdb.md` - 本文档
 - `knowledge/openclaw-knowledge-system.md` - OpenClaw知识库整合
+

@@ -1,4 +1,4 @@
-# AI时代第二大脑 - OpenClaw + LLM Wiki + Skill
+﻿# AI时代第二大脑 - OpenClaw + LLM Wiki + Skill
 
 > 来源：朝朝AI工坊抖音视频
 > 发布：2026-04-14
@@ -49,3 +49,4 @@
 ## 更新记录
 
 - 2026-04-20：初始整理
+

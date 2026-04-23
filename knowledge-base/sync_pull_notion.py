@@ -22,6 +22,11 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, List
 
+# Windows 控制台编码修复
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+
 # ============== 配置 ==============
 NOTION_TOKEN_FILE = Path(__file__).parent / ".notion_token"
 NOTION_DB_ID_FILE = Path(__file__).parent / ".notion_database_id"
@@ -204,9 +209,13 @@ def save_last_sync(state: Dict):
 
 # ============== 主流程 ==============
 
-def sync_pull(force: bool = False) -> Dict:
+def sync_pull(force: bool = False, limit: int = None) -> Dict:
     """
     从 Notion 拉回更新
+    
+    Args:
+        force: 是否强制全量拉回
+        limit: 限制拉取页面数量（用于测试）
     
     Returns:
         {pulled: int, skipped: int, errors: int}
@@ -226,6 +235,7 @@ def sync_pull(force: bool = False) -> Dict:
     # 加载上次同步状态
     last_sync = load_last_sync()
     last_sync_time = last_sync.get("timestamp", 0)
+    is_first_sync = last_sync_time == 0 and not force
     
     # 获取 Notion 页面列表
     print("\n[1/3] 获取 Notion Database 页面列表...")
@@ -244,6 +254,12 @@ def sync_pull(force: bool = False) -> Dict:
             except:
                 to_pull.append(page)
     
+    # 首次同步限制数量，避免超时
+    if is_first_sync and len(to_pull) > 100:
+        print(f"\n[WARNING] 首次同步数量较大 ({len(to_pull)} 页)，限制为 100 页")
+        print(f"[WARNING] 使用 --force 强制全量同步，或分批同步")
+        to_pull = to_pull[:100]
+    
     print(f"\n[2/3] 筛选需要更新的页面...")
     print(f"      需要更新: {len(to_pull)} 个")
     
@@ -254,6 +270,11 @@ def sync_pull(force: bool = False) -> Dict:
     errors = 0
     
     for page in to_pull:
+        # 如果设置了 limit，且已达到限制，则停止
+        if limit is not None and pulled >= limit:
+            print(f"\n      [LIMIT] 已达限制数量 ({limit})，停止同步")
+            break
+            
         page_id = page.get('id')
         title = page.get('title', 'untitled')
         
@@ -296,5 +317,11 @@ def sync_pull(force: bool = False) -> Dict:
 if __name__ == '__main__':
     force = "--force" in sys.argv or "-f" in sys.argv
     
-    result = sync_pull(force=force)
+    # 解析 --limit 参数
+    limit = None
+    for arg in sys.argv:
+        if arg.startswith("--limit="):
+            limit = int(arg.split("=")[1])
+    
+    result = sync_pull(force=force, limit=limit)
     sys.exit(0 if result["errors"] == 0 else 1)

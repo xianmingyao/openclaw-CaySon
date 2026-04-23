@@ -1,4 +1,4 @@
-# 来源摘要：articles\2026-04-09-Knowledge-Screenshots-Summary.md
+﻿# 来源摘要：articles\2026-04-09-Knowledge-Screenshots-Summary.md
 
 > 原始路径：raw/articles\2026-04-09-Knowledge-Screenshots-Summary.md
 > 摄入时间：2026-04-20 08:43
@@ -82,3 +82,4 @@ MCP (Model Context Protocol) 支持的服务生态：
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

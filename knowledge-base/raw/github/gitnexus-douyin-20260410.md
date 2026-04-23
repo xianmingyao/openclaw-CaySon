@@ -1,4 +1,4 @@
-# GitNexus - Graph RAG可视化代码理解工具
+﻿# GitNexus - Graph RAG可视化代码理解工具
 
 > 来源：抖音 @阿甘探AI（99人推荐）
 > 抓取时间：2026-04-10 00:56
@@ -33,3 +33,4 @@
 - Graph RAG
 - 代码可视化
 - 预防性AI
+

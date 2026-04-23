@@ -1,4 +1,4 @@
-# Claude Code v2.1.88 源码深度剖析
+﻿# Claude Code v2.1.88 源码深度剖析
 
 > 来源：https://github.com/sanbuphy/claude-code-source-code
 > 时间：2026-04-01
@@ -486,3 +486,4 @@ async heartbeatWork(environmentId, workId, sessionToken) {
 ## 标签
 
 #ClaudeCode #Agent开发 #源码分析 #工具设计 #权限系统 #MCP
+

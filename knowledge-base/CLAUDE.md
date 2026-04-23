@@ -1,4 +1,4 @@
-# CLAUDE.md — Wiki Schema for Karpathy Knowledge Base
+﻿# CLAUDE.md — Wiki Schema for Karpathy Knowledge Base
 
 > 本文件是 AI 的行为配置文件。在开始任何工作前，AI 必须先阅读本文件和 `wiki/index.md`。
 
@@ -227,3 +227,4 @@ knowledge-base/
 
 *最后更新：2026-04-09*
 *由 Karpathy 知识库系统自动维护*
+

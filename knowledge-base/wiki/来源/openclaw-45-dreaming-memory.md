@@ -1,4 +1,4 @@
-# OpenClaw 4.5 梦境记忆系统深度研究报告
+﻿# OpenClaw 4.5 梦境记忆系统深度研究报告
 
 ## 1. 🎯 这是什么
 
@@ -122,3 +122,4 @@ openclaw skills install github:wavmson/openclaw-skill-dream
 | AI-Memory | - | Go实现，STM/LTM记忆漏斗 |
 | bestmark1/Agent-memory-skill | - | Ebbinghaus遗忘曲线实现 |
 | self.md Active Dreaming Memory | - | ADM双存储架构 |
+

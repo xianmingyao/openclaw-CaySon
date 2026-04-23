@@ -1,4 +1,4 @@
-# awesome-design-md 项目深度分析报告
+﻿# awesome-design-md 项目深度分析报告
 
 > 来源：抖音@猿AI 视频「本周 GitHub 最火的设计师项目」
 > GitHub：`VoltAgent/awesome-design-md` | Stars: 24.4k | MIT License
@@ -396,3 +396,4 @@ OpenClaw 读取 DESIGN.md → 结合 AGENTS.md →
 1. ✅ 已 Clone 仓库到 `E:\workspace\awesome-design-md`
 2. ⬜ 测试用 OpenClaw 配合 Linear 的 DESIGN.md 生成 UI
 3. ⬜ 探索自动生成 DESIGN.md 的工作流
+

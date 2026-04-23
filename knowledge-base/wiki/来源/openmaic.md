@@ -1,4 +1,4 @@
-# OpenMAIC - 清华大学开源多智能体互动课堂
+﻿# OpenMAIC - 清华大学开源多智能体互动课堂
 
 > 2026-04-10 更新 | 来源：抖音视频 + GitHub
 > 更新内容：Stars 13.6k / Vivi 2.0 PDF转课堂 / JCST 2026学术发表
@@ -234,3 +234,4 @@ OpenMAIC = 教育课堂
 
 - `knowledge/openmaic.md` - 本文档
 - `knowledge/openclaw-knowledge-system.md` - OpenClaw知识库整合
+

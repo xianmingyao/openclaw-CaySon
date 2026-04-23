@@ -1,4 +1,4 @@
-# 来源摘要：articles\llm-training-data-sources.md
+﻿# 来源摘要：articles\llm-training-data-sources.md
 
 > 原始路径：raw/articles\llm-training-data-sources.md
 > 摄入时间：2026-04-20 08:43
@@ -81,3 +81,4 @@
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

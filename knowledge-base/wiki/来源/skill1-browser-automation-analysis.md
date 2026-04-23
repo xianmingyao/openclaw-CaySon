@@ -1,4 +1,4 @@
-# 技能1：Browser-Automation 浏览器自动化深度分析
+﻿# 技能1：Browser-Automation 浏览器自动化深度分析
 
 > 来源：`E:\workspace\skills\openclaw-agent-browser\` 源码 + 命令参考
 
@@ -331,3 +331,4 @@ agent-browser 是 **Harness Engineering（驾驭工程）** 的典型案例：
 1. **安装 Office skill** - 技能4需要
 2. **分析技能3** - Memory + AI-Enhanced
 3. **实践练习** - 用 agent-browser 完成一个实际任务
+

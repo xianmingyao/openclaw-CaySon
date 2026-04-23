@@ -21,6 +21,11 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, List
 
+# Windows 控制台编码修复
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+
 # ============== 配置 ==============
 FEISHU_TOKEN_FILE = Path(__file__).parent / ".feishu_token"
 WIKI_DIR = Path(__file__).parent / "wiki"

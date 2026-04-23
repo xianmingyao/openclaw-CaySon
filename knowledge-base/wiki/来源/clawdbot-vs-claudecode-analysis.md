@@ -1,4 +1,4 @@
-# Clawdbot vs Claude Code 对比分析
+﻿# Clawdbot vs Claude Code 对比分析
 
 > 来源：抖音 @一蛙AI 第24分钟深度对比
 > 视频：ClawdBot vs ClaudeCode: 100小时测试
@@ -208,3 +208,4 @@
 1. **对比 OpenClaw vs Claude Code** - 从使用者角度分析
 2. **学习 Claude Code 最佳实践** - everything-claude-code 项目
 3. **深入 OpenClaw 高级功能** - 发挥 Moltbot 优势
+

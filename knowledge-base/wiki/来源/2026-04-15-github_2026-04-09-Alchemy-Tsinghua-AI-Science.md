@@ -1,4 +1,4 @@
-# 来源摘要：github\2026-04-09-Alchemy-Tsinghua-AI-Science.md
+﻿# 来源摘要：github\2026-04-09-Alchemy-Tsinghua-AI-Science.md
 
 > 原始路径：raw/github\2026-04-09-Alchemy-Tsinghua-AI-Science.md
 > 摄入时间：2026-04-15 09:48
@@ -91,3 +91,4 @@ Alchemy是清华大学AI科研自动化框架，旨在减轻工程负担，让�
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

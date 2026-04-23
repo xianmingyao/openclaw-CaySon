@@ -1,4 +1,4 @@
-# Hermes Agent 技术深挖报告（2026-04-13 更新）
+﻿# Hermes Agent 技术深挖报告（2026-04-13 更新）
 
 > 来源：抖音视频Gggda + Web搜索 + 已有知识库
 > 标签：AI-Agent / Self-Evolution / DSPy / GEPA / NousResearch / 三层记忆 / 学习循环
@@ -309,3 +309,4 @@ skill_creation:
 | 自进化引擎 | https://github.com/NousResearch/hermes-agent-self-evolution |
 | 文档 | https://hermes-agent.nousresearch.com/docs/ |
 | 抖音视频 | Gggda - Hermes最佳实践(一)-概念篇 |
+

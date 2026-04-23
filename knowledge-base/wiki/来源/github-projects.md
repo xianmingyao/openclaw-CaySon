@@ -1,4 +1,4 @@
-# fireworks-tech-graph 项目研究报告
+﻿# fireworks-tech-graph 项目研究报告
 
 ## 📌 一句话定位
 
@@ -85,3 +85,4 @@ git clone https://github.com/yizhiyanhua-ai/fireworks-tech-graph.git ~/.claude/s
 
 ## 📅 研究时间
 2026-04-15
+

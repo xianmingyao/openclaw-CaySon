@@ -1,4 +1,4 @@
-# AgentSkills SKILL.md 技术规范详解
+﻿# AgentSkills SKILL.md 技术规范详解
 
 > 来源：PDF文档
 > 文件名：SKILL.md_技术规范详解---9ccef561-d73a-472a-b420-8c7cc5b79d10.pdf
@@ -108,3 +108,4 @@ skills-ref validate
 ## 相关标签
 
 #AgentSkills #SKILL规范 #AI-Agent #YAML #CoT #思维链 #意图路由
+

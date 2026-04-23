@@ -1,4 +1,4 @@
-# Karpathy AI 知识库搭建教程
+﻿# Karpathy AI 知识库搭建教程
 
 ## 视频信息
 - **来源**: 抖音 - 栗氪聊AI
@@ -92,3 +92,4 @@ knowledge-base/
 ## 相关截图
 
 - 原始截图: `raw/karpathy-kb-tutorial-2026-04-17/img-01.jpg` ~ `img-14.jpg`
+

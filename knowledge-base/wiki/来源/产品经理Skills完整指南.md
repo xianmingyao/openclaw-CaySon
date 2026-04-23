@@ -1,4 +1,4 @@
-# 产品经理Skills完整指南
+﻿# 产品经理Skills完整指南
 
 > 学习日期：2026-04-22
 > 来源：抖音 @吃土说AI
@@ -203,3 +203,4 @@ openclaw skills install mvp
 - SkillHub官网：https://clawhub.ai
 - 视频作者：@吃土说AI
 - 视频链接：https://v.douyin.com/qNLdCNgOIs4/
+

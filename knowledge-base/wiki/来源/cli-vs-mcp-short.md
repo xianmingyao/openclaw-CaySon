@@ -1,4 +1,4 @@
-# CLI vs MCP 专题 - 精简版
+﻿# CLI vs MCP 专题 - 精简版
 
 > 2026-04-03 | 来源：抖音@技术爬爬虾
 
@@ -127,3 +127,4 @@ libreoffice-cli convert "doc.docx" --format pdf
 - CLI-Anything: https://github.com/HKUDS/CLI-Anything
 - OpenCLI: https://github.com/jackwener/opencli
 - 知乎详解: 「OpenCLI vs CLI-Anything：AI Agent 时代的 CLI 革命」
+

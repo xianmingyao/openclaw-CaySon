@@ -1,4 +1,4 @@
-# Karpathy LLM Wiki 知识库体系深度分析
+﻿# Karpathy LLM Wiki 知识库体系深度分析
 
 > **分析日期：** 2026-04-14
 > **视频来源：**
@@ -228,3 +228,4 @@
 ## 🏷️ 标签
 
 `#Karpathy` `#LLMWiki` `#知识管理` `#RAG` `#Obsidian` `#Karpathy知识库`
+

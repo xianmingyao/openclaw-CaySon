@@ -1,4 +1,4 @@
-# GitNexus - 编程救星·预防AI瞎改
+﻿# GitNexus - 编程救星·预防AI瞎改
 
 > 更新时间：2026-04-10
 > 来源：抖音 @阿甘探AI（99人推荐）
@@ -189,3 +189,4 @@ GitNexus 的核心差异化是**预防性**而非**回顾性**：
 
 - GitHub：https://github.com/abhigyanpatwari/GitNexus
 - 视频来源：抖音 @阿甘探AI（2026-04-10）
+

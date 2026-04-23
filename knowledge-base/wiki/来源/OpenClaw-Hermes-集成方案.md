@@ -1,4 +1,4 @@
-# OpenClaw + Hermes Agent 集成方案
+﻿# OpenClaw + Hermes Agent 集成方案
 
 > 更新时间：2026-04-10
 > 状态：规划中
@@ -276,3 +276,4 @@ author: hermes-auto
 | 日期 | 更新内容 |
 |------|---------|
 | 2026-04-10 | 初稿完成 |
+

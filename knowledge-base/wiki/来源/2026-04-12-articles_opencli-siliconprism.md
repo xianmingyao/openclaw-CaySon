@@ -1,4 +1,4 @@
-# 来源摘要：articles\opencli-siliconprism.md
+﻿# 来源摘要：articles\opencli-siliconprism.md
 
 > 原始路径：raw/articles\opencli-siliconprism.md
 > 摄入时间：2026-04-12 20:03
@@ -60,3 +60,4 @@ OpenCLI 是一个将网站、Electron 应用或本地工具变成命令行界面
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

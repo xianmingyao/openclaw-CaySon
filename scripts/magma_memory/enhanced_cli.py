@@ -34,7 +34,7 @@ from scripts.magma_memory.retrieval_stats import RetrievalStats
 
 def get_storage_dir():
     """获取存储目录"""
-    return project_root / "scripts" / "magma_memory" / "data"
+    return project_root / "scripts" / "magma_memory"
 
 
 def main():

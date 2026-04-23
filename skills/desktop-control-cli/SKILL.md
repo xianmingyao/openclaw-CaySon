@@ -28,8 +28,8 @@ description: |
   **适用平台**: Windows 10/11 (Python 3.11+)
   **项目地址**: E:\workspace\skills\desktop-control-cli
 
-version: 2.1.0
-last_updated: 2026-04-21
+version: 2.2.0
+last_updated: 2026-04-23
 ---
 
 # desktop-control - Windows 桌面自动化 CLI 工具
@@ -418,8 +418,14 @@ uv run python cli.py agents vision identify "商品管理,订单管理,库存管
 # 2. 交互式探索界面
 uv run python cli.py agents vision explore --context jingmai
 
-# 3. 执行京麦上架任务
+# 3. 执行单个商品上架任务
 uv run python cli.py agents publish "iPhone 15 Pro Max" --category "手机通讯" --price 9999 --images "img1.jpg,img2.jpg"
+
+# 4. 批量上架100个商品（循环模式）
+uv run python cli.py agents publish "测试商品" --price 199 --loop-count 100
+
+# 5. 断点续传（从上次失败处继续）
+uv run python cli.py agents publish "测试商品" --price 199 --loop-count 100 --resume
 ```
 
 ---
@@ -437,7 +443,11 @@ uv run python cli.py agents publish "iPhone 15 Pro Max" --category "手机通讯
 4. 上传商品图片
 5. 点击发布按钮
 
+**批量上架场景**: 循环上架100个商品,支持断点续传
+
 ### 完整脚本
+
+#### 单个商品上架脚本
 
 ```bash
 #!/bin/bash
@@ -499,6 +509,76 @@ uv run python cli.py bridge screenshot $SESSION_ID jingmai_publish_result.png
 echo "=== 京麦上架自动化完成 ==="
 ```
 
+#### 批量上架脚本（100个商品）
+
+```bash
+#!/bin/bash
+# 京麦商品批量上架自动化脚本
+
+# ============================================
+# 批量上架100个商品
+# ============================================
+echo "=== 京麦批量上架自动化开始 ==="
+echo "目标数量: 100个商品"
+echo ""
+
+# 执行批量上架
+uv run python cli.py agents publish "测试商品" \
+  --price 199 \
+  --loop-count 100 \
+  --progress-file jingmai_progress.json
+
+# ============================================
+# 查看进度文件
+# ============================================
+echo ""
+echo "=== 查看进度 ==="
+cat jingmai_progress.json
+
+# ============================================
+# 断点续传示例（如果中断）
+# ============================================
+# 如果任务中断，可以使用以下命令从断点继续：
+# uv run python cli.py agents publish "测试商品" \
+#   --price 199 \
+#   --loop-count 100 \
+#   --resume \
+#   --progress-file jingmai_progress.json
+
+echo "=== 京麦批量上架自动化完成 ==="
+```
+
+### 批量上架功能说明
+
+#### 新增参数
+
+| 参数 | 说明 | 默认值 |
+|------|------|--------|
+| `--loop-count` / `-n` | 循环上架次数 | 1（单个商品） |
+| `--resume` | 从上次失败处继续上架 | False |
+| `--progress-file` | 进度文件路径 | jingmai_progress.json |
+
+#### 进度文件格式
+
+```json
+{
+  "completed_count": 50,
+  "total_count": 100,
+  "failed_indices": [],
+  "start_time": "2026-04-23T10:30:00",
+  "last_update": "2026-04-23T12:15:30"
+}
+```
+
+#### 批量上架特性
+
+- ✅ **自动编号**: 每个商品自动添加序号（商品_001、商品_002...）
+- ✅ **独立截图**: 每个商品使用独立的截图目录
+- ✅ **断点续传**: 支持从失败处继续，不会重复已完成商品
+- ✅ **实时进度**: 显示当前进度、预计剩余时间
+- ✅ **详细日志**: 完整的日志记录，便于问题排查
+- ✅ **进度报告**: 自动生成批量上架进度报告
+
 ### 脚本执行说明
 
 **前置条件:**
@@ -556,7 +636,16 @@ uv run python cli.py evolution generate --name auto_login --type FIX
 uv run python cli.py evolution execute --skill auto_login
 
 # Agents 多Agent系统
+# 单个商品上架
 uv run python cli.py agents publish "商品名称" --category "数码" --price 999
+
+# 批量上架100个商品
+uv run python cli.py agents publish "商品名称" --category "数码" --price 999 --loop-count 100
+
+# 断点续传
+uv run python cli.py agents publish "商品名称" --category "数码" --price 999 --loop-count 100 --resume
+
+# 视觉识别
 uv run python cli.py agents vision identify "商品管理" --context jingmai
 uv run python cli.py agents vision explore --context jingmai
 ```

@@ -1,4 +1,4 @@
-# Mem0 本地配置指南（Ollama + ChromaDB）
+﻿# Mem0 本地配置指南（Ollama + ChromaDB）
 
 ## 方案概述
 使用本地Ollama运行模型，不需要OpenAI API Key，完全隐私。
@@ -149,3 +149,4 @@ ollama pull nomic-embed-text
 # 删除旧数据库重新初始化
 rm -rf ~/.mem0/chroma
 ```
+

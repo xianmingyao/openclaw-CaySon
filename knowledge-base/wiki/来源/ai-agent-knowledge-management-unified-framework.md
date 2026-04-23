@@ -1,4 +1,4 @@
-# AI Agent 知识管理统一框架：Karpathy 工作流 × LangChain 三层学习
+﻿# AI Agent 知识管理统一框架：Karpathy 工作流 × LangChain 三层学习
 
 > 研究日期：2026-04-08
 > 研究来源：抖音 @夜蝶-AI信息速递 + @慢学AI
@@ -280,3 +280,4 @@ Karpathy 方式：
 - `knowledge/agent-continual-learning-three-layers.md` — LangChain 三层学习详解
 - `knowledge/awesome-design-md-analysis.md` — DESIGN.md 设计系统格式
 - `knowledge/openclaw-45-dreaming-memory.md` — OpenClaw 梦境记忆系统
+

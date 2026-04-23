@@ -1,4 +1,4 @@
-# 来源摘要：github\hermes-agent-douyin-20260410.md
+﻿# 来源摘要：github\hermes-agent-douyin-20260410.md
 
 > 原始路径：raw/github\hermes-agent-douyin-20260410.md
 > 摄入时间：2026-04-20 08:43
@@ -68,3 +68,4 @@ Hermes Agent是NousResearch开发的自进化AI框架，拥有33.3k Stars和多�
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

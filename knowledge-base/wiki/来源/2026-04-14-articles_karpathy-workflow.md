@@ -1,4 +1,4 @@
-# 来源摘要：articles\karpathy-workflow.md
+﻿# 来源摘要：articles\karpathy-workflow.md
 
 > 原始路径：raw/articles\karpathy-workflow.md
 > 摄入时间：2026-04-14 20:02
@@ -64,3 +64,4 @@ Karpathy知识库工作流通过收集、编译和查询三个步骤，利用LLM
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

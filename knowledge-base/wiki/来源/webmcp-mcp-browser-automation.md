@@ -1,4 +1,4 @@
-# WebMCP + 浏览器自动化MCP技术深度报告
+﻿# WebMCP + 浏览器自动化MCP技术深度报告
 
 > 研究日期：2026-04-02
 > 关联项目：browser-use CLI 2.0、mcp-browser-use、WebMCP
@@ -376,3 +376,4 @@ browser-use eval "..."
 - browser-use 文档：docs.browser-use.com
 - MCP 协议：modelcontextprotocol.io
 - Awesome WebMCP：github.com/webmcpnet/awesome-webmcp
+

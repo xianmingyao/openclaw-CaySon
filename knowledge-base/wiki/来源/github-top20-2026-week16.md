@@ -1,4 +1,4 @@
-# GitHub Star Top20 本周榜
+﻿# GitHub Star Top20 本周榜
 **统计周期：04-08 到 04-14 | 视频作者：扶摇的鱼**
 
 > 🔥 本周主题：**Hermes Agent / MemPalace / Claude Code 持续火热**
@@ -46,3 +46,4 @@
 - **omi**：新形态AI硬件概念，看屏幕+听对话
 
 *数据来源：GitHub Trending + 扶摇的鱼抖音图文作品 | 2026-04-20*
+

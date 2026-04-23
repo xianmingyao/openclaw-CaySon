@@ -1,4 +1,4 @@
-# 来源摘要：articles\opencli-siliconprism.md
+﻿# 来源摘要：articles\opencli-siliconprism.md
 
 > 原始路径：raw/articles\opencli-siliconprism.md
 

@@ -1,4 +1,4 @@
-# Obsidian Web Clipper
+﻿# Obsidian Web Clipper
 
 > 类型：实体
 

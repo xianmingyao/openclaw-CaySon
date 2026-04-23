@@ -1,4 +1,4 @@
-# Graph RAG
+﻿# Graph RAG
 
 > 类型：实体
 

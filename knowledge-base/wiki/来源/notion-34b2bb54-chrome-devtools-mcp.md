@@ -1,4 +1,4 @@
-# chrome-devtools-mcp
+﻿# chrome-devtools-mcp
 
 > 类型：实体
 

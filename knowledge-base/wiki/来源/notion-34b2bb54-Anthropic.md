@@ -1,4 +1,4 @@
-# Anthropic
+﻿# Anthropic
 
 > 类型：实体
 

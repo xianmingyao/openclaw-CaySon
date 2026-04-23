@@ -28,7 +28,7 @@ description: |
   **适用平台**: Windows 10/11 (Python 3.11+)
   **项目地址**: E:\workspace\skills\desktop-control-cli
 
-version: 2.2.0
+version: 2.4.0
 last_updated: 2026-04-23
 ---
 
@@ -418,14 +418,17 @@ uv run python cli.py agents vision identify "商品管理,订单管理,库存管
 # 2. 交互式探索界面
 uv run python cli.py agents vision explore --context jingmai
 
-# 3. 执行单个商品上架任务
-uv run python cli.py agents publish "iPhone 15 Pro Max" --category "手机通讯" --price 9999 --images "img1.jpg,img2.jpg"
+# 3. 执行单个商品上架任务（启用视觉识别）
+uv run python cli.py agents publish "iPhone 15 Pro Max" --category "手机通讯" --price 9999 --images "img1.jpg,img2.jpg" --use-vision
 
-# 4. 批量上架100个商品（循环模式）
-uv run python cli.py agents publish "测试商品" --price 199 --loop-count 100
+# 4. 执行单个商品上架任务（禁用视觉识别）
+uv run python cli.py agents publish "iPhone 15 Pro Max" --category "手机通讯" --price 9999 --images "img1.jpg,img2.jpg" --no-use-vision
 
-# 5. 断点续传（从上次失败处继续）
-uv run python cli.py agents publish "测试商品" --price 199 --loop-count 100 --resume
+# 5. 批量上架100个商品（循环模式，启用视觉识别）
+uv run python cli.py agents publish "测试商品" --price 199 --loop-count 100 --use-vision
+
+# 6. 断点续传（从上次失败处继续）
+uv run python cli.py agents publish "测试商品" --price 199 --loop-count 100 --resume --use-vision
 ```
 
 ---
@@ -522,11 +525,19 @@ echo "=== 京麦批量上架自动化开始 ==="
 echo "目标数量: 100个商品"
 echo ""
 
-# 执行批量上架
+# 执行批量上架（启用视觉识别）
 uv run python cli.py agents publish "测试商品" \
   --price 199 \
   --loop-count 100 \
+  --use-vision \
   --progress-file jingmai_progress.json
+
+# 如果不需要视觉识别（快速模式）：
+# uv run python cli.py agents publish "测试商品" \
+#   --price 199 \
+#   --loop-count 100 \
+#   --no-use-vision \
+#   --progress-file jingmai_progress.json
 
 # ============================================
 # 查看进度文件
@@ -543,6 +554,7 @@ cat jingmai_progress.json
 #   --price 199 \
 #   --loop-count 100 \
 #   --resume \
+#   --use-vision \
 #   --progress-file jingmai_progress.json
 
 echo "=== 京麦批量上架自动化完成 ==="
@@ -557,6 +569,8 @@ echo "=== 京麦批量上架自动化完成 ==="
 | `--loop-count` / `-n` | 循环上架次数 | 1（单个商品） |
 | `--resume` | 从上次失败处继续上架 | False |
 | `--progress-file` | 进度文件路径 | jingmai_progress.json |
+| `--use-vision` | 启用视觉识别（需要本地模型） | True |
+| `--no-use-vision` | 禁用视觉识别（快速模式） | - |
 
 #### 进度文件格式
 
@@ -578,6 +592,10 @@ echo "=== 京麦批量上架自动化完成 ==="
 - ✅ **实时进度**: 显示当前进度、预计剩余时间
 - ✅ **详细日志**: 完整的日志记录，便于问题排查
 - ✅ **进度报告**: 自动生成批量上架进度报告
+- ✅ **视觉识别**: 启用AI视觉识别定位界面元素（默认开启）
+  - `--use-vision`: 启用视觉识别（需要本地模型，默认开启）
+  - `--no-use-vision`: 禁用视觉识别（快速模式，跳过AI识别）
+  - 视觉识别功能可以自动检测类目、验证数据、修正错误
 
 ### 脚本执行说明
 
@@ -585,6 +603,10 @@ echo "=== 京麦批量上架自动化完成 ==="
 1. 已完成数据库初始化: `python init_db_simple.py`
 2. 已准备商品图片: 3张1440*1440的jpg/png图片
 3. 已注册京麦账号: 准备好用户名和密码
+4. 视觉识别模型（可选）:
+   - 使用 `--use-vision` 启用视觉识别（需要本地模型）
+   - 使用 `--no-use-vision` 禁用视觉识别（快速模式）
+   - 默认启用视觉识别，可自动检测类目、验证数据
 
 **执行脚本:**
 ```bash
@@ -648,7 +670,18 @@ uv run python cli.py agents publish "商品名称" --category "数码" --price 9
 # 视觉识别
 uv run python cli.py agents vision identify "商品管理" --context jingmai
 uv run python cli.py agents vision explore --context jingmai
+
+# agents publish 参数说明
+# --use-vision: 启用视觉识别（默认开启）
+# --no-use-vision: 禁用视觉识别（快速模式）
+# --loop-count: 批量上架数量
+# --resume: 断点续传
+# --progress-file: 进度文件路径
 ```
+
+**视觉识别说明**:
+- `--use-vision` (默认): 启用AI视觉识别，自动检测界面元素、验证数据、修正错误
+- `--no-use-vision`: 禁用视觉识别，使用固定坐标快速执行（适合稳定环境）
 
 **详细命令参数**请参考: [COMMANDS.md](docs/COMMANDS.md)
 

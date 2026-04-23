@@ -1,4 +1,4 @@
-# OpenAI
+﻿# OpenAI
 
 > 类型：实体
 

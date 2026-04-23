@@ -1,4 +1,4 @@
-# .cursorrules
+﻿# .cursorrules
 
 > 类型：实体
 

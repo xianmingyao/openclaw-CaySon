@@ -1,4 +1,4 @@
-# Mem0 本地配置指南（Ollama + ChromaDB）
+﻿# Mem0 本地配置指南（Ollama + ChromaDB）
 
 ## 方案概述
 

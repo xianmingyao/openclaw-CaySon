@@ -1,4 +1,4 @@
-# AAAII 2025 论文《Mind Individual Information!》
+﻿# AAAII 2025 论文《Mind Individual Information!》
 
 > 类型：实体
 

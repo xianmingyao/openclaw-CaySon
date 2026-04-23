@@ -1,4 +1,4 @@
-# 来源：Karpathy AI 知识库搭建教程
+﻿# 来源：Karpathy AI 知识库搭建教程
 
 - **标题**: 栗氪聊AI - 手把手教会你搭建Karpathy同款AI知识库
 

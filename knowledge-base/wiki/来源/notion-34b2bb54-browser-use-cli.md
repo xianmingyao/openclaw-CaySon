@@ -1,4 +1,4 @@
-# browser-use CLI 2.0 技术深度报告
+﻿# browser-use CLI 2.0 技术深度报告
 
 > 来源：抖音大力AI视频 + 官方文档 + 实际测试
 

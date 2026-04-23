@@ -1,4 +1,4 @@
-# AgentSkills SKILL.md 技术规范详解
+﻿# AgentSkills SKILL.md 技术规范详解
 
 > 来源：PDF文档
 

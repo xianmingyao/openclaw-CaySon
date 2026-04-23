@@ -1,4 +1,4 @@
-# 来源摘要：github\2026-04-09-Alchemy-Tsinghua-AI-Science.md
+﻿# 来源摘要：github\2026-04-09-Alchemy-Tsinghua-AI-Science.md
 
 > 原始路径：raw/github\2026-04-09-Alchemy-Tsinghua-AI-Science.md
 

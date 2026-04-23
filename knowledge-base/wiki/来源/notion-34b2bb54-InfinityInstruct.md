@@ -1,4 +1,4 @@
-# InfinityInstruct
+﻿# InfinityInstruct
 
 > 类型：实体
 

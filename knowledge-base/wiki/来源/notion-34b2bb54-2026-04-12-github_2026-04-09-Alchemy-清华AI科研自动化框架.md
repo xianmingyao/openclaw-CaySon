@@ -1,4 +1,4 @@
-# 来源摘要：github\2026-04-09-Alchemy-清华AI科研自动化框架.md
+﻿# 来源摘要：github\2026-04-09-Alchemy-清华AI科研自动化框架.md
 
 > 原始路径：raw/github\2026-04-09-Alchemy-清华AI科研自动化框架.md
 

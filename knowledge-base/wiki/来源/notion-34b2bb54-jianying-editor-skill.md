@@ -1,4 +1,4 @@
-# 剪映AI剪辑Skill - jianying-editor-skill 深度研究报告
+﻿# 剪映AI剪辑Skill - jianying-editor-skill 深度研究报告
 
 > 研究日期：2026-04-03
 

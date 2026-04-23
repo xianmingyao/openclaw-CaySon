@@ -1,4 +1,4 @@
-# ShareGPT
+﻿# ShareGPT
 
 > 类型：实体
 

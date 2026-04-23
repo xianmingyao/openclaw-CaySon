@@ -21,6 +21,7 @@ from .enhanced import MAGMAHybridV2, get_hybrid_v2
 from .forgetting import ForgettingManager, DecayConfig
 from .conflict_detector import ConflictDetector, Conflict, ConflictType
 from .retrieval_stats import RetrievalStats, NodeRetrievalStats
+from .writer import MemoryWriter
 
 __version__ = "2.1.0"
 __all__ = [
@@ -29,5 +30,6 @@ __all__ = [
     "MAGMAHybridV2", "get_hybrid_v2",
     "ForgettingManager", "DecayConfig",
     "ConflictDetector", "Conflict", "ConflictType",
-    "RetrievalStats", "NodeRetrievalStats"
+    "RetrievalStats", "NodeRetrievalStats",
+    "MemoryWriter"
 ]

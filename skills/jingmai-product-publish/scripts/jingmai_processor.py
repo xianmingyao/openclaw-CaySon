@@ -355,7 +355,18 @@ class ElementFindStrategy(ProcessingStrategy):
 
 
 class ActionExecuteStrategy(ProcessingStrategy):
-    """动作执行策略"""
+    """动作执行策略 - 支持多种动作类型"""
+    
+    # 动作类型常量
+    ACTION_CLICK = "click"           # 点击
+    ACTION_INPUT = "input"           # 输入文本
+    ACTION_SEARCH = "search"         # 搜索并回车
+    ACTION_SELECT = "select"         # 选择选项
+    ACTION_WAIT = "wait"            # 等待
+    ACTION_SCROLL = "scroll"        # 滚动
+    ACTION_KEY = "key"              # 按键
+    ACTION_DOUBLE_CLICK = "dblclick" # 双击
+    ACTION_HOVER = "hover"          # 悬停
     
     def __init__(self):
         super().__init__(fail_fast=False)
@@ -367,6 +378,65 @@ class ActionExecuteStrategy(ProcessingStrategy):
             "type": action_type,
             "params": params
         })
+    
+    # 便捷方法
+    def click(self, name: str = None, x: int = None, y: int = None, index: int = 0):
+        """添加点击动作"""
+        params = {"index": index}
+        if name:
+            params["name"] = name
+        if x is not None and y is not None:
+            params["x"] = x
+            params["y"] = y
+        self.add_action(self.ACTION_CLICK, params)
+        return self
+    
+    def input(self, text: str, name: str = None, index: int = 0, clear: bool = True):
+        """添加输入动作"""
+        params = {"text": text, "index": index, "clear": clear}
+        if name:
+            params["name"] = name
+        self.add_action(self.ACTION_INPUT, params)
+        return self
+    
+    def search(self, text: str, name: str = None, index: int = 0, enter: bool = True):
+        """添加搜索动作 (输入+回车)"""
+        params = {"text": text, "index": index, "enter": enter}
+        if name:
+            params["name"] = name
+        self.add_action(self.ACTION_SEARCH, params)
+        return self
+    
+    def wait(self, seconds: float = 1.0):
+        """添加等待动作"""
+        self.add_action(self.ACTION_WAIT, {"duration": seconds})
+        return self
+    
+    def scroll(self, x: int, y: int, delta: int = 100):
+        """添加滚动动作"""
+        self.add_action(self.ACTION_SCROLL, {"x": x, "y": y, "delta": delta})
+        return self
+    
+    def press_key(self, key: str):
+        """添加按键动作"""
+        self.add_action(self.ACTION_KEY, {"key": key})
+        return self
+    
+    def dblclick(self, x: int = None, y: int = None, name: str = None, index: int = 0):
+        """添加双击动作"""
+        params = {"index": index}
+        if name:
+            params["name"] = name
+        if x is not None and y is not None:
+            params["x"] = x
+            params["y"] = y
+        self.add_action(self.ACTION_DOUBLE_CLICK, params)
+        return self
+    
+    def select(self, text: str, index: int = 0):
+        """添加选择动作"""
+        self.add_action(self.ACTION_SELECT, {"text": text, "index": index})
+        return self
     
     def execute(self, context: JingmaiContext) -> bool:
         if not self.action_queue:
@@ -399,6 +469,7 @@ class ActionExecuteStrategy(ProcessingStrategy):
                 return False
             
             jingmai.set_focus()
+            time.sleep(0.3)
             
             # 执行每个动作
             for i, action in enumerate(self.action_queue):
@@ -406,59 +477,182 @@ class ActionExecuteStrategy(ProcessingStrategy):
                 params = action["params"]
                 
                 self.log('info', f"  [{i+1}] {action_type}: {params}")
+                success = False
                 
-                if action_type == "click":
-                    # 点击元素
-                    element_name = params.get("name", "")
-                    x = params.get("x")
-                    y = params.get("y")
-                    
-                    if element_name and x is None:
-                        # 按名称查找
-                        # 查找按钮
-                        buttons = jingmai.descendants(control_type="Button")
-                        for btn in buttons:
-                            if element_name in (btn.element_info.name or ""):
-                                rect = btn.rectangle()
-                                try:
-                                    btn.invoke()
-                                except:
-                                    pyautogui.click(rect.left, rect.top)
-                                time.sleep(1)
-                                break
-                    elif x is not None and y is not None:
-                        # 按坐标点击
-                        pyautogui.click(x, y)
-                        time.sleep(1)
-                        
-                elif action_type == "input":
-                    # 输入文本
-                    element_name = params.get("name", "")
-                    text = params.get("text", "")
-                    
-                    edits = jingmai.descendants(control_type="Edit")
-                    for edit in edits:
-                        if element_name in (edit.element_info.name or ""):
-                            try:
-                                edit.set_edit_text(text)
-                            except:
-                                rect = edit.rectangle()
-                                pyautogui.click(rect.left + 5, rect.top + 5)
-                                time.sleep(0.5)
-                                pyautogui.typewrite(text, interval=0.1)
-                            time.sleep(1)
-                            break
+                # === CLICK ===
+                if action_type == self.ACTION_CLICK:
+                    success = self._do_click(jingmai, params, pyautogui, desktop)
                 
-                elif action_type == "wait":
-                    # 等待
-                    duration = params.get("duration", 1)
+                # === INPUT ===
+                elif action_type == self.ACTION_INPUT:
+                    success = self._do_input(jingmai, params, pyautogui)
+                
+                # === SEARCH (输入+回车) ===
+                elif action_type == self.ACTION_SEARCH:
+                    success = self._do_search(jingmai, params, pyautogui)
+                
+                # === WAIT ===
+                elif action_type == self.ACTION_WAIT:
+                    duration = params.get("duration", 1.0)
                     time.sleep(duration)
+                    success = True
+                
+                # === SCROLL ===
+                elif action_type == self.ACTION_SCROLL:
+                    x = params.get("x", 0)
+                    y = params.get("y", 0)
+                    delta = params.get("delta", 100)
+                    pyautogui.moveTo(x, y)
+                    pyautogui.scroll(delta)
+                    success = True
+                
+                # === KEY ===
+                elif action_type == self.ACTION_KEY:
+                    key = params.get("key", "enter")
+                    pyautogui.press(key)
+                    success = True
+                
+                # === DOUBLE CLICK ===
+                elif action_type == self.ACTION_DOUBLE_CLICK:
+                    success = self._do_click(jingmai, params, pyautogui, desktop, double=True)
+                
+                # === SELECT ===
+                elif action_type == self.ACTION_SELECT:
+                    success = self._do_select(jingmai, params, pyautogui)
+                
+                if success:
+                    self.log('info', f"  [{i+1}] [OK] {action_type}")
+                else:
+                    self.log('warn', f"  [{i+1}] [FAIL] {action_type}")
+                
+                time.sleep(0.5)  # 动作间小延迟
             
             return True
             
         except Exception as e:
-            self.log('error', f"  [FAIL] 动作执行失败: {e}")
+            self.log('error', f"  [FAIL] 动作执行异常: {e}")
             return False
+    
+    def _do_click(self, jingmai, params, pyautogui, desktop, double: bool = False):
+        """执行点击"""
+        element_name = params.get("name", "")
+        x = params.get("x")
+        y = params.get("y")
+        index = params.get("index", 0)
+        
+        # 按名称点击
+        if element_name:
+            # 尝试Button
+            buttons = jingmai.descendants(control_type="Button")
+            count = 0
+            for btn in buttons:
+                if element_name in (btn.element_info.name or ""):
+                    if count == index:
+                        try:
+                            btn.invoke()
+                        except:
+                            rect = btn.rectangle()
+                            pyautogui.click(rect.left + 5, rect.top + 5, clicks=2 if double else 1)
+                        return True
+                    count += 1
+            
+            # 尝试Hyperlink
+            links = jingmai.descendants(control_type="Hyperlink")
+            count = 0
+            for link in links:
+                if element_name in (link.element_info.name or ""):
+                    if count == index:
+                        try:
+                            link.invoke()
+                        except:
+                            rect = link.rectangle()
+                            pyautogui.click(rect.left + 5, rect.top + 5, clicks=2 if double else 1)
+                        return True
+                    count += 1
+            
+            return False
+        
+        # 按坐标点击
+        elif x is not None and y is not None:
+            pyautogui.click(x, y, clicks=2 if double else 1)
+            return True
+        
+        return False
+    
+    def _do_input(self, jingmai, params, pyautogui):
+        """执行输入"""
+        text = params.get("text", "")
+        name = params.get("name", "")
+        index = params.get("index", 0)
+        clear = params.get("clear", True)
+        
+        edits = jingmai.descendants(control_type="Edit")
+        count = 0
+        for edit in edits:
+            edit_name = edit.element_info.name or ""
+            if name in edit_name or (not name and count == index):
+                rect = edit.rectangle()
+                
+                # 点击激活
+                pyautogui.click(rect.left + 5, rect.top + 5)
+                time.sleep(0.3)
+                
+                # 清除
+                if clear:
+                    pyautogui.hotkey('ctrl', 'a')
+                    time.sleep(0.1)
+                    pyautogui.press('delete')
+                    time.sleep(0.1)
+                
+                # 输入
+                try:
+                    edit.set_edit_text(text)
+                except:
+                    pyautogui.typewrite(text, interval=0.05)
+                
+                return True
+            count += 1
+        
+        return False
+    
+    def _do_search(self, jingmai, params, pyautogui):
+        """执行搜索 (输入+回车)"""
+        text = params.get("text", "")
+        name = params.get("name", "")
+        index = params.get("index", 0)
+        enter = params.get("enter", True)
+        
+        # 先输入
+        if self._do_input(jingmai, {"text": text, "name": name, "index": index, "clear": True}, pyautogui):
+            if enter:
+                time.sleep(0.3)
+                pyautogui.press("enter")
+                time.sleep(1)
+            return True
+        
+        return False
+    
+    def _do_select(self, jingmai, params, pyautogui):
+        """执行选择"""
+        text = params.get("text", "")
+        index = params.get("index", 0)
+        
+        # 查找包含文字的元素并点击
+        elements = jingmai.descendants()
+        count = 0
+        for elem in elements:
+            try:
+                name = elem.element_info.name or ""
+                if text in name:
+                    if count == index:
+                        rect = elem.rectangle()
+                        pyautogui.click(rect.left + 5, rect.top + 5)
+                        return True
+                    count += 1
+            except:
+                pass
+        
+        return False
 
 
 class VerificationStrategy(ProcessingStrategy):

@@ -1,4 +1,4 @@
-# OpenCode + Claude Code Skills完整指南
+﻿# OpenCode + Claude Code Skills完整指南
 
 > 学习日期：2026-04-22
 

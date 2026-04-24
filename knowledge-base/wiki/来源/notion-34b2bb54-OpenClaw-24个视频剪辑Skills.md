@@ -1,4 +1,4 @@
-# OpenClaw 24个视频剪辑Skills - 完整安装指南
+﻿# OpenClaw 24个视频剪辑Skills - 完整安装指南
 
 > 学习日期：2026-04-22
 

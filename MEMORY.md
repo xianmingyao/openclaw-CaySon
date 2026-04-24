@@ -1490,6 +1490,47 @@ pip install openspec
 - 2026-04-19.md 已标记
 - 2026-04-20.md 已标记
 
+## 2026-04-24 Dream 整合记录
+
+### 整合范围
+- 扫描文件：2026-04-23 / 2026-04-24（2个文件）
+- 说明：两天文件以 Dream session corpus 为主，实际工作内容较少
+
+### 重大事件
+
+#### 1. continuous-ingest 定时任务运行稳定（04-23~04-24）
+- **Cron Job ID**: `f2199500-d455-4128-a2da-321efe083472`
+- **执行频率**：每小时或更频繁
+- **状态**：✅ 稳定运行，每次0个新增文件（raw/目录无待处理文件）
+- **执行结果**：SKIP，退出码0
+
+#### 2. MAGMA 知识验证 Cron 已设置（04-23）
+- **Job ID**: `5026d732-e146-4d71-a023-44323e676181`
+- **调度**：每天 23:00
+- **内容**：`python scripts/magma_memory/enhanced_cli.py --verify-a...`
+- **状态**：待首次执行验证
+
+#### 3. 知识库同步状态（04-22~04-23）
+- **Milvus 上传量**：稳定在 618-623 条
+- **编译**：所有文件已是最新，无需增量处理
+- **飞书**：跳过（内容写入需额外权限）
+
+#### 4. Dream corpus 膨胀问题持续
+- session-corpus 单次 Dream run 产生 300+ 行内容
+- memory 文件被 Dream 输出严重膨胀（建议：仅 03:00 执行Dream，日间不触发）
+
+### 待处理问题（延续）
+- [ ] 京麦Web版自动化（绕过CEF限制）
+- [ ] Notion 88条失败原因追溯
+- [ ] Cron isolated 环境 Python 工具限制
+- [ ] Dream corpus 膨胀问题（建议白天不触发 Dream diary）
+
+### 旧日志标记 consolidation
+- 2026-04-23.md 已标记 consolidation
+- 2026-04-24.md 已标记 consolidation
+
+---
+
 ## Promoted From Short-Term Memory (2026-04-23)
 
 <!-- openclaw-memory-promotion:memory:memory/2026-04-14.md:263:277 -->

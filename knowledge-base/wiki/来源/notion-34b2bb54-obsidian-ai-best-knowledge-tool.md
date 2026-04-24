@@ -1,4 +1,4 @@
-# 为什么Obsidian是AI时代最佳知识管理工具
+﻿# 为什么Obsidian是AI时代最佳知识管理工具
 
 > 来源：Blink的AI笔记抖音视频
 

@@ -1,0 +1,35 @@
+# 开源模型
+
+> 分类：概念
+
+> 创建时间：2026-04-14 20:01
+
+> AI生成：[~] pending
+
+开源模型是指其源代码对公众开放的机器学习模型或算法框架，允许用户自由查看、使用和修改模型结构与参数，促进技术创新与知识共享。
+
+## 相关概念
+
+- [[TTS]]
+
+- [[LongCat AudioDiT]]
+
+- [[Qwen2-TTS]]
+
+- [[Fish Audio S2 Pro]]
+
+- [[@电磁波Studio]]
+
+- [[LongCat-AudioDiT]]
+
+- [[Qwen2-TTS]]
+
+- [[Fish Audio S2 Pro]]
+
+## 来源
+
+- [[2026-04-14-articles\tts-models-comparison-20260410.md]]
+
+---
+
+*由 Karpathy 知识库系统自动生成*

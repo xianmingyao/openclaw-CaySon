@@ -1,4 +1,4 @@
-# Remotion Video Toolkit - React视频生成Skill研究报告
+﻿# Remotion Video Toolkit - React视频生成Skill研究报告
 
 > 研究日期：2026-04-03
 

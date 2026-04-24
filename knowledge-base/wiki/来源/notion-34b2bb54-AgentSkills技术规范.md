@@ -1,4 +1,4 @@
-# AgentSkills 技术规范
+﻿# AgentSkills 技术规范
 
 > 类型：概念/方法论
 

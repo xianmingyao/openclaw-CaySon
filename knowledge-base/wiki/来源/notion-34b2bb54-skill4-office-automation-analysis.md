@@ -1,4 +1,4 @@
-# 技能4：Office-Automation 办公自动化深度分析
+﻿# 技能4：Office-Automation 办公自动化深度分析
 
 > 来源：`E:\workspace\skills\office\SKILL.md` 官方文档
 

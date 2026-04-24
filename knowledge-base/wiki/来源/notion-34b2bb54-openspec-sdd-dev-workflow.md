@@ -1,4 +1,4 @@
-# OpenSpec SDD 规范驱动开发深度研究报告
+﻿# OpenSpec SDD 规范驱动开发深度研究报告
 
 ## 1. 🎯 这是什么
 

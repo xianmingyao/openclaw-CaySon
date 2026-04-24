@@ -1,4 +1,4 @@
-# Karpathy AI 知识库搭建教程
+﻿# Karpathy AI 知识库搭建教程
 
 ## 视频信息
 

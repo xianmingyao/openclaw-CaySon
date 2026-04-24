@@ -1,4 +1,4 @@
-# 技能1：Browser-Automation 浏览器自动化深度分析
+﻿# 技能1：Browser-Automation 浏览器自动化深度分析
 
 > 来源：`E:\workspace\skills\openclaw-agent-browser\` 源码 + 命令参考
 

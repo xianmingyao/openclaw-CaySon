@@ -1,4 +1,4 @@
-# Skill 写作规范指南
+﻿# Skill 写作规范指南
 
 > 基于 Google Agent Skills 五大模式
 

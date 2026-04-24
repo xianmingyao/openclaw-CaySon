@@ -1,4 +1,4 @@
-# MCP (Model Context Protocol)
+﻿# MCP (Model Context Protocol)
 
 > 分类：概念
 

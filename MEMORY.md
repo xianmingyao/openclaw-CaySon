@@ -1490,6 +1490,83 @@ pip install openspec
 - 2026-04-19.md 已标记
 - 2026-04-20.md 已标记
 
+## 2026-04-25 Dream 整合记录
+
+### 整合范围
+- 扫描文件：2026-04-19 / 2026-04-20 / 2026-04-21 / 2026-04-22 / 2026-04-23 / 2026-04-24 / 2026-04-25（7个文件）
+- 说明：04-22 文件达 1229 行（含大量 session-corpus）；实际工作内容集中在 04-22~04-25
+
+### 重大事件
+
+#### 1. Notion 10000 页分批拉取问题（04-24~04-25）
+- **根因确认**：Notion Database 有 10000 个页面，一次性加载内存不足 → 6次 SIGKILL
+- **关联会话**：brisk-ke / faint-pi / mellow-p / good-lob / cool-com / marine-r 全部被 SIGKILL
+- **关键发现**：`sync_pull_notion.py` 需要分批处理（每批 100-500 条）
+- **状态**：nimble-f 成功完成（找到 10000 页面），quiet-pr 被 SIGKILL
+
+#### 2. 京麦商品发布自动化关键突破（04-22~04-24）
+
+**坐标转换公式（宁兄教导）：**
+- 截图尺寸：2560 × 1392
+- 识别尺寸：1280 × 800
+- 换算：`实际X = 识别X × 2`，`实际Y = 识别Y × 1.74`
+
+**已修复的 4 个 Bug（04-24）：**
+| Bug | 严重程度 | 文件 | 问题 | 修复 |
+|-----|---------|------|------|------|
+| #1 | 🔴 高 | `app/agents/cli.py` | `import timedelta` 不存在 | → `from datetime import timedelta` |
+| #2 | 🔴 高 | `app/agents/cli.py` | `setup_file_logger()` API不存在 | → `setup_logging()` |
+| #3 | 🟡 中 | `app/agents/vision_agent.py` | aiohttp ClientSession资源泄漏 | → 添加 `await close()` |
+| #4 | 🟡 中 | `app/agents/base.py` | `List` 未导入 | → `from typing import List` |
+
+**Skill 已创建：** `E:\workspace\skills\jingmai-product-publish\`
+- 核心脚本：`jingmai_publisher.py` / `jingmai_logger.py` / `jingmai_locator.py` / `jingmai_monitor.py`
+- 技术栈：Playwright（反爬）+ Win32 API（键鼠操作）
+
+**核心障碍：** 京麦账号未绑定产品线
+- 页面提示：`此账号没有绑定此类产品线，跳转去绑定`
+- 可见类目：✅ 工业品 > 工控自动化 > 工业通讯 / ✅ 元器件；❌ 手机通讯（无权限）
+- **解决方案**：宁兄需去京麦后台绑定产品线
+
+#### 3. qwen3-vl:8b Ollama JSON 模式不稳定（04-22~04-24）
+- 简单描述请求：✅ 3秒完成
+- JSON 格式请求：❌ 超时（>25秒）
+- **解决方案**：改用 `format="text"` + 描述性方法 + 启发式定位
+- **测试脚本**：`jingmai_ufo_automation.py` / `test_ollama_direct.py` / `test_ollama_json.py`
+
+#### 4. MAGMA v2 五模块完善（04-23）
+| 优先级 | 优化项 | 状态 | 实现 |
+|--------|--------|------|------|
+| 🔴 P0 | 时间戳（created/updated/accessed） | ✅ | `core.py` + `writer.py` |
+| 🔴 P0 | 遗忘机制（N天降权） | ✅ | `forgetting.py` + `writer.py` |
+| 🟡 P1 | 冲突检测（矛盾高亮） | ✅ | `conflict_detector.py` |
+| 🟡 P1 | 检索命中率追踪 | ✅ | `retrieval_stats.py` |
+| 🟢 P2 | Harness Feedback（存后验证） | ✅ | `harness_feedback.py` |
+
+- **Git 推送**：`9fa1929f`
+- **MAGMA Cron 验证**：每天 23:00（Job ID: `5026d732-e146-4d71-a023-44323e676181`）
+
+#### 5. desktop-control-cli 分层反思系统（04-22）
+- `preflight_check` - 前置健康检查（窗口存在/可见/有效）
+- `lightweight_reflection` - 轻量反思（<100ms，基于规则）
+- `medium_reflection` - Ollama 本地分析（3秒超时）
+- 反思异步化 + `--wait-reflection` CLI 参数
+- 技能自动沉淀（成功率>60%）
+
+### 持续稳定运行的 Cron
+- **continuous-ingest**：✅ 稳定（0 个待处理文件，持续 SKIP）
+- **knowledge-base-sync**：✅ 稳定（Milvus 618-623 条）
+
+### 踩坑记录更新
+- ⚠️ Notion 10000 页一次性拉取 → 需分批 100-500 条
+- ⚠️ qwen3-vl:8b JSON 模式超时 → 改用 text 格式 + 描述方法
+- ⚠️ 京麦账号未绑定产品线 → 需宁兄手动绑定
+
+### 旧日志标记 consolidation
+- 2026-04-19 / 2026-04-20 / 2026-04-21 / 2026-04-22 / 2026-04-23 / 2026-04-24 已标记
+
+---
+
 ## 2026-04-24 Dream 整合记录
 
 ### 整合范围
@@ -1535,3 +1612,15 @@ pip install openspec
 
 <!-- openclaw-memory-promotion:memory:memory/2026-04-14.md:263:277 -->
 - - Candidate: User: System (untrusted): [2026-04-14 20:02:00 GMT+8] Exec completed (tide-nex, code 1) :: kspace\knowledge-base\compile.py", line 391, in run_ingest cache[str(f.relative_to(RAW_DIR))] = get_file_hash(f) ^^^^^^^^^^^^^^^^ File "E:\workspace\knowledge-base\compile.py", li… System ( - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-14.txt:386-386 - recalls: 0 - status: staged - Candidate: Assistant: 运行成功了，知识库编译没问题。之前的报错是**瞬时文件系统的时序问题**——`to_process`扫描时某些文件存在，但在更新缓存时文件已被移动/删除，导致`relative_to()`抛出异常。 现在跑通了，不用管。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-14.txt:387-387 - recalls: 0 - status: staged - Candidate: User: System (untrusted): [2026-04-14 20:14:03 GMT+8] Exec failed (swift-em, signal SIGKILL) :: [202/472] 2026-04-11-github_gitnexus-agan [OK] Doc: I8yxdOL9To0DYNxGWLccZ1ZSngx [OK] Content written (52 blocks) [203/472] 2026-04-11-github_gitnexus-douyin-20260410 [OK] Doc: QHj… An - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-14.txt:388-388 - recalls: 0 - status: staged [score=0.872 recalls=3 avg=0.812 source=memory/2026-04-14.md:263-277]
+
+## Promoted From Short-Term Memory (2026-04-25)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-04-03.md:93:121 -->
+- - 核心玩法：手机Agent、离线编码、跨设备流式推理 - 文档：`knowledge/gemma-local-deploy.md` ### 推荐视频清单 1. **LTX Studio**（@Ai风向标）- 3.6万播�? - 全球首款原生AI剪辑软件，免费开�? - PR和剪映要慌了 2. **OpenClaw外贸AI员工**（@OpenClaw俱乐部）- 9.8万播�? - 工具栈：1Panel + OpenClaw + Ollama - 零Token本地部署，数�?00%私有 3. **Claude Code做Skill**（@小天fotos�? 2.8万播�? - 自动做Skill的万能配�? 4. **Seedance 2.0**（@由乃2.0�? 3.5万播�? - 字节跳动出品，掀翻漫剧行�? ### 阿里Accio Work出海爆火（抖音@研究院的杨主任） - 标题�?0分钟就能开一家店，阿里又一企业级AI海外现身 - 数据�?*7.1万播�?* / 1003�?/ **2.8万收�?* / 1.7万评�? - 标签�?1000万老外正在用Accio做生�?#能搞钱的中国AI在海外爆�? - 核心：阿里EXOWORK海外用户**�?000�?*，Accio Work让创业门槛大幅降�? - 热点：评论区"直接把银行卡号发给它，让它帮我赚�? 😂 ### Harness Engineering（抖音@工具人研究Hive�? - 标题：给AI套方向盘和刹车，Harness Engineering Brief 第一�? - 数据�?505播放 / 98�?/ **3478收藏** / 582评论 - 标签�?AI #Agent #HarnessEngineering #程序�?#TTS [score=0.855 recalls=3 avg=0.862 source=memory/2026-04-03.md:93-121]
+
+## Promoted From Short-Term Memory (2026-04-25)
+
+<!-- openclaw-memory-promotion:memory:memory/2026-04-23.md:160:183 -->
+- - confidence: 0.00 - evidence: memory/2026-04-19.md:323-326 - recalls: 0 - status: staged - Candidate: Dream ���ϼ�¼��03:00��: ����MAGMA��ά����ϵͳv2������������������½�; ��Ǿ���־ consolidation��04-12/13/14/15/16/17��; ����־��� consolidation��2026-04-14.md / 2026-04-16.md / 2026-04-17.md / 2026-04-18.md - confidence: 0.00 - evidence: memory/2026-04-19.md:327-329 - recalls: 0 - status: staged - Candidate: User: [cron:f2199500-d455-4128-a2da-321efe083472 continuous-ingest] cd /d E:\workspace && python knowledge-base/continuous_ingest.py Current time: Thursday, April 23rd, 2026 - 12:45 (Asia/Shanghai) / 2026-04-23 04:45 UTC - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:452-452 - recalls: 0 - status: staged - Candidate: Assistant: **continuous_ingest.py 执行结果：** ``` [1/2] 扫描 raw/ 目录... → 0 个新增/修改文件 [SKIP] 没有新文件需要处理 [DONE] 扫描: 0 / ingest: 0 ``` **状态：正常** — raw/ 目录当前没有新文件，脚本执行完成。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:453-453 - recalls: 0 - status: staged - Candidate: Assistant: 脚本运行完成 ✅ ``` [SKIP] 没有文件需要摄取 [DONE] 扫描: 0 / ingest: 0 ``` raw/ 目录下目前没有待处理的文件，一切正常。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:457-457 - recalls: 0 - status: staged [score=0.900 recalls=6 avg=0.889 source=memory/2026-04-23.md:160-183]
+<!-- openclaw-memory-promotion:memory:memory/2026-04-23.md:74:88 -->
+- - Candidate: User: [cron:f2199500-d455-4128-a2da-321efe083472 continuous-ingest] cd /d E:\workspace && python knowledge-base/continuous_ingest.py Current time: Thursday, April 23rd, 2026 - 13:40 (Asia/Shanghai) / 2026-04-23 05:40 UTC - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:489-489 - recalls: 0 - status: staged - Candidate: Assistant: ✅ **持续摄入完成** ``` [1/2] 扫描 raw/ 目录... → 0 个新文件 [SKIP] 没有新文件需要摄入 [DONE] 扫描: 0 / ingest: 0 ``` 没有新文件，无需处理。😐 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:490-490 - recalls: 0 - status: staged - Candidate: Reflections: Theme: `assistant` kept surfacing across 1040 memories.; confidence: 1.00; evidence: memory/.dreams/session-corpus/2026-04-11.txt:2-2, memory/.dreams/session-corpus/2026-04-11.txt:4-4, memory/.dreams/session-corpus/2026-04-12.txt:2-2; note: reflection - confidence: 0.00 - evidence: memory/2026-04-16.md:378-381 - recalls: 0 - status: staged [score=0.874 recalls=5 avg=0.891 source=memory/2026-04-23.md:74-88]

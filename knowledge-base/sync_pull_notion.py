@@ -150,9 +150,17 @@ def get_page_content(page_id: str, token: str) -> Optional[str]:
 
 
 def get_all_pages(token: str, database_id: str) -> List[Dict]:
-    """获取 Database 所有页面"""
-    pages = []
+    """获取 Database 所有页面
+    
+    修复笔记（2026-04-25）：
+    - 原问题：Notion 10000 页面一次性加载到内存导致 SIGKILL
+    - 修复：改用生成器模式，分批 yield 页面，避免内存爆炸
+    - 返回：生成器，逐个产出页面字典
+    """
     cursor = None
+    last_cursor = None
+    consecutive_same_cursor = 0  # 计数器：检测 cursor 是否卡住
+    page_count = 0
     
     while True:
         endpoint = f"/databases/{database_id}/query"
@@ -165,6 +173,15 @@ def get_all_pages(token: str, database_id: str) -> List[Dict]:
         if result.get('error'):
             print(f"[ERROR] {result.get('error')}")
             break
+        
+        # 检查 request_status 是否表明查询不完整
+        request_status = result.get('request_status', {})
+        if request_status.get('state') == 'incomplete':
+            incomplete_reason = request_status.get('incomplete_reason', 'unknown')
+            print(f"[WARN] Query incomplete: {incomplete_reason}")
+            # 查询不完整时，如果有结果就继续，但没有更多则退出
+            if not result.get('has_more'):
+                break
         
         for page in result.get('results', []):
             page_id = page.get('id', '').replace('-', '')
@@ -180,19 +197,66 @@ def get_all_pages(token: str, database_id: str) -> List[Dict]:
             # 获取最后编辑时间
             last_edited = page.get('last_edited_time', '')
             
-            pages.append({
+            page_count += 1
+            
+            yield {
                 'id': page_id,
                 'title': title,
                 'last_edited': last_edited,
                 'url': page.get('url', '')
-            })
+            }
         
         if not result.get('has_more'):
             break
         
+        # 检测 cursor 是否有效推进
         cursor = result.get('next_cursor')
+        if cursor == last_cursor:
+            consecutive_same_cursor += 1
+            if consecutive_same_cursor >= 2:
+                print(f"[ERROR] Cursor not advancing (stuck at: {cursor}), breaking to prevent infinite loop")
+                break
+        else:
+            consecutive_same_cursor = 0
+        
+        last_cursor = cursor
+
+
+def iter_pages(token: str, database_id: str, last_sync_time: int, force: bool = False, limit: int = None):
+    """迭代需要更新的页面（生成器）
     
-    return pages
+    Args:
+        token: Notion token
+        database_id: Database ID
+        last_sync_time: 上次同步时间戳
+        force: 是否强制全量拉回
+        limit: 限制拉取页面数量
+    
+    Yields:
+        page dict that needs updating
+    """
+    count = 0
+    for page in get_all_pages(token, database_id):
+        last_edited = page.get('last_edited', '')
+        should_pull = False
+        
+        if force:
+            should_pull = True
+        elif last_edited:
+            try:
+                edited_ts = int(datetime.fromisoformat(last_edited.replace('Z', '+00:00')).timestamp())
+                if edited_ts > last_sync_time:
+                    should_pull = True
+            except:
+                should_pull = True
+        else:
+            should_pull = True
+        
+        if should_pull:
+            count += 1
+            if limit is not None and count > limit:
+                break
+            yield page
 
 
 def load_last_sync() -> Dict:
@@ -211,7 +275,7 @@ def save_last_sync(state: Dict):
 
 def sync_pull(force: bool = False, limit: int = None) -> Dict:
     """
-    从 Notion 拉回更新
+    从 Notion 拉回更新（生成器模式，避免内存爆炸）
     
     Args:
         force: 是否强制全量拉回
@@ -237,48 +301,44 @@ def sync_pull(force: bool = False, limit: int = None) -> Dict:
     last_sync_time = last_sync.get("timestamp", 0)
     is_first_sync = last_sync_time == 0 and not force
     
-    # 获取 Notion 页面列表
-    print("\n[1/3] 获取 Notion Database 页面列表...")
-    pages = get_all_pages(token, database_id)
-    print(f"      找到 {len(pages)} 个页面")
+    # 获取 Notion 页面列表（流式处理，不再一次性加载）
+    print("\n[1/3] 获取 Notion Database 页面列表（流式）...")
     
-    # 筛选需要更新的页面
-    to_pull = []
-    for page in pages:
-        last_edited = page.get('last_edited', '')
-        if last_edited:
-            try:
-                edited_ts = int(datetime.fromisoformat(last_edited.replace('Z', '+00:00')).timestamp())
-                if force or edited_ts > last_sync_time:
-                    to_pull.append(page)
-            except:
-                to_pull.append(page)
+    # 先快速统计总数（仅第一次迭代）
+    total_count = 0
+    sample_pages = []
+    for page in get_all_pages(token, database_id):
+        total_count += 1
+        if total_count <= 5:
+            sample_pages.append(page)
+        if total_count > 100:
+            # 只为获取前100条样本，不需要全部遍历完
+            break
+    
+    if total_count <= 100:
+        print(f"      找到约 {total_count} 个页面")
+    else:
+        print(f"      找到 {total_count}+ 个页面（使用流式处理）")
     
     # 首次同步限制数量，避免超时
-    if is_first_sync and len(to_pull) > 100:
-        print(f"\n[WARNING] 首次同步数量较大 ({len(to_pull)} 页)，限制为 100 页")
-        print(f"[WARNING] 使用 --force 强制全量同步，或分批同步")
-        to_pull = to_pull[:100]
+    effective_limit = limit
+    if is_first_sync and (limit is None or limit > 100):
+        print(f"\n[WARNING] 首次同步，限制为 100 页以避免超时")
+        print(f"[WARNING] 使用 --limit=X 调整，或 --force 强制全量")
+        effective_limit = min(limit or 100, 100)
     
-    print(f"\n[2/3] 筛选需要更新的页面...")
-    print(f"      需要更新: {len(to_pull)} 个")
+    print(f"\n[2/3] 流式筛选并下载页面...")
     
-    # 下载页面
-    print(f"\n[3/3] 下载页面到本地...")
+    # 使用生成器流式处理页面
     pulled = 0
     skipped = 0
     errors = 0
     
-    for page in to_pull:
-        # 如果设置了 limit，且已达到限制，则停止
-        if limit is not None and pulled >= limit:
-            print(f"\n      [LIMIT] 已达限制数量 ({limit})，停止同步")
-            break
-            
+    for page in iter_pages(token, database_id, last_sync_time, force, effective_limit):
         page_id = page.get('id')
         title = page.get('title', 'untitled')
         
-        print(f"      [{pulled + errors + 1}/{len(to_pull)}] {title}...", end=" ")
+        print(f"      [{pulled + errors + 1}] {title[:40]}...", end=" ")
         
         try:
             content = get_page_content(page_id, token)

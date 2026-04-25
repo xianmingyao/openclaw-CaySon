@@ -1,0 +1,35 @@
+# 开源
+
+> 分类：概念
+
+> 创建时间：2026-04-15 09:48
+
+> AI生成：[~] pending
+
+关于 开源 的概念页。
+
+## 相关概念
+
+- [[Hermes-agent]]
+
+- [[AI技术]]
+
+- [[Agent]]
+
+- [[自我进化]]
+
+- [[hermes-agent]]
+
+- [[抖音]]
+
+- [[AI真用法]]
+
+- [[GitHub]]
+
+## 来源
+
+- [[2026-04-15-github_hermes-agent-ai-zhenyongfa]]
+
+---
+
+*由 Karpathy 知识库系统自动生成*

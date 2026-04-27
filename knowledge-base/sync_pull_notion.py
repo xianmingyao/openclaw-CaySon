@@ -304,21 +304,18 @@ def sync_pull(force: bool = False, limit: int = None) -> Dict:
     # 获取 Notion 页面列表（流式处理，不再一次性加载）
     print("\n[1/3] 获取 Notion Database 页面列表（流式）...")
     
-    # 先快速统计总数（仅第一次迭代）
+    # 先快速统计总数（仅第一次迭代，不超过200页）
     total_count = 0
     sample_pages = []
     for page in get_all_pages(token, database_id):
         total_count += 1
         if total_count <= 5:
             sample_pages.append(page)
-        if total_count > 100:
-            # 只为获取前100条样本，不需要全部遍历完
+        if total_count >= 200:
+            # 最多采样200条用于计数，不需要全部遍历完
             break
     
-    if total_count <= 100:
-        print(f"      找到约 {total_count} 个页面")
-    else:
-        print(f"      找到 {total_count}+ 个页面（使用流式处理）")
+    print(f"      找到约 {total_count}+ 个页面（使用流式处理）")
     
     # 首次同步限制数量，避免超时
     effective_limit = limit

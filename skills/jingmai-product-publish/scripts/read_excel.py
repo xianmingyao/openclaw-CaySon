@@ -1,24 +1,15 @@
 # -*- coding: utf-8 -*-
-import openpyxl
-import os
+"""读取上架表格"""
+import pandas as pd
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
-xlsx_path = r'E:\workspace\skills\jingmai-product-publish\湖南上架表格.xlsx'
+df = pd.read_excel(r'C:\Users\Administrator\.openclaw\media\inbound\湖南上架表格---3d1a1330-8d02-4896-af00-272e57cf31e1.xlsx', engine='openpyxl')
 
-print(f"Reading: {xlsx_path}")
+print("=== 列名 ===")
+for i, col in enumerate(df.columns):
+    print(f"{i}: {col}")
 
-# 加载工作簿
-wb = openpyxl.load_workbook(xlsx_path)
-
-print(f"\nSheet names: {wb.sheetnames}")
-
-# 遍历所有sheet
-for sheet_name in wb.sheetnames:
-    ws = wb[sheet_name]
-    print(f"\n{'='*60}")
-    print(f"Sheet: {sheet_name}")
-    print(f"{'='*60}")
-    
-    # 读取前20行
-    for i, row in enumerate(ws.iter_rows(max_row=20, values_only=True)):
-        if any(cell is not None for cell in row):
-            print(f"Row {i+1}: {row}")
+print("\n=== 数据 ===")
+for i, row in df.iterrows():
+    print(f"Row {i}: {list(row.values)}")

@@ -1,0 +1,72 @@
+2026-04-27 21:59:02 | INFO  | app.service.common.base | base:create_task:131 | 创建任务: task_264819a6 - 测试任务
+2026-04-27 21:59:02 | INFO  | app.service.agents.base | base:execute:307 | [exec_7bf484e4] 步骤 1/20 [规划]: 思考
+2026-04-27 21:59:20 | INFO  | app.service.agents.base | base:execute:343 | [exec_7bf484e4] 规划成功，重置规划重试计数
+2026-04-27 21:59:20 | INFO  | app.service.agents.base | base:execute:363 | [exec_7bf484e4] 步骤 1/20 [规划]: 行动
+2026-04-27 21:59:20 | INFO  | app.service.agents.base | base:execute:397 | [exec_7bf484e4] 步骤 1/20 [规划]: 观察
+2026-04-27 21:59:46 | INFO  | app.service.agents.base | base:execute:414 | [exec_7bf484e4] 步骤 1/20 [规划]: 反思
+2026-04-27 22:00:00 | INFO  | app.service.agents.base | base:execute:307 | [exec_7bf484e4] 步骤 2/20 [ReAct-1]: 思考
+2026-04-27 22:00:12 | INFO  | app.service.agents.base | base:execute:363 | [exec_7bf484e4] 步骤 2/20 [ReAct-1]: 行动
+2026-04-27 22:00:48 | INFO  | app.service.agents.base | base:execute:397 | [exec_7bf484e4] 步骤 2/20 [ReAct-1]: 观察
+2026-04-27 22:01:15 | INFO  | app.service.agents.base | base:execute:414 | [exec_7bf484e4] 步骤 2/20 [ReAct-1]: 反思
+2026-04-27 22:01:32 | INFO  | app.service.agents.base | base:execute:307 | [exec_7bf484e4] 步骤 3/20 [ReAct-2]: 思考
+2026-04-27 22:01:43 | INFO  | app.service.agents.base | base:execute:363 | [exec_7bf484e4] 步骤 3/20 [ReAct-2]: 行动
+2026-04-27 22:02:17 | INFO  | app.service.agents.base | base:execute:397 | [exec_7bf484e4] 步骤 3/20 [ReAct-2]: 观察
+2026-04-27 22:02:51 | INFO  | app.service.agents.base | base:execute:414 | [exec_7bf484e4] 步骤 3/20 [ReAct-2]: 反思
+2026-04-27 22:03:09 | INFO  | app.service.agents.base | base:execute:307 | [exec_7bf484e4] 步骤 4/20 [ReAct-3]: 思考
+2026-04-27 22:03:24 | INFO  | app.service.agents.base | base:execute:363 | [exec_7bf484e4] 步骤 4/20 [ReAct-3]: 行动
+2026-04-27 22:03:43 | INFO  | app.service.agents.base | base:execute:397 | [exec_7bf484e4] 步骤 4/20 [ReAct-3]: 观察
+2026-04-27 22:04:09 | INFO  | app.service.common.base | base:create_task:131 | 创建任务: task_54d5f309 - 测试任务
+2026-04-27 22:04:09 | INFO  | app.service.agents.base | base:execute:307 | [exec_9c8faaa5] 步骤 1/20 [规划]: 思考
+2026-04-27 22:04:22 | INFO  | app.service.agents.base | base:execute:414 | [exec_7bf484e4] 步骤 4/20 [ReAct-3]: 反思
+2026-04-27 22:04:31 | INFO  | app.service.agents.base | base:execute:343 | [exec_9c8faaa5] 规划成功，重置规划重试计数
+2026-04-27 22:04:31 | INFO  | app.service.agents.base | base:execute:363 | [exec_9c8faaa5] 步骤 1/20 [规划]: 行动
+2026-04-27 22:04:31 | INFO  | app.service.agents.base | base:execute:397 | [exec_9c8faaa5] 步骤 1/20 [规划]: 观察
+2026-04-27 22:04:49 | INFO  | app.service.common.base | base:update_task_status:172 | 更新任务状态: task_264819a6 -> failed
+2026-04-27 22:05:18 | INFO  | app.service.agents.base | base:execute:414 | [exec_9c8faaa5] 步骤 1/20 [规划]: 反思
+2026-04-27 22:05:31 | INFO  | app.service.agents.base | base:execute:307 | [exec_9c8faaa5] 步骤 2/20 [ReAct-1]: 思考
+2026-04-27 22:05:41 | INFO  | app.service.agents.base | base:execute:363 | [exec_9c8faaa5] 步骤 2/20 [ReAct-1]: 行动
+2026-04-27 22:05:55 | INFO  | app.service.agents.base | base:execute:397 | [exec_9c8faaa5] 步骤 2/20 [ReAct-1]: 观察
+2026-04-27 22:06:27 | INFO  | app.service.agents.base | base:execute:414 | [exec_9c8faaa5] 步骤 2/20 [ReAct-1]: 反思
+2026-04-27 22:06:42 | INFO  | app.service.agents.base | base:execute:307 | [exec_9c8faaa5] 步骤 3/20 [ReAct-2]: 思考
+2026-04-27 22:06:54 | INFO  | app.service.agents.base | base:execute:363 | [exec_9c8faaa5] 步骤 3/20 [ReAct-2]: 行动
+2026-04-27 22:07:27 | INFO  | app.service.agents.base | base:execute:397 | [exec_9c8faaa5] 步骤 3/20 [ReAct-2]: 观察
+2026-04-27 22:08:01 | INFO  | app.service.agents.base | base:execute:414 | [exec_9c8faaa5] 步骤 3/20 [ReAct-2]: 反思
+2026-04-27 22:08:15 | INFO  | app.service.agents.base | base:execute:307 | [exec_9c8faaa5] 步骤 4/20 [ReAct-3]: 思考
+2026-04-27 22:08:29 | INFO  | app.service.agents.base | base:execute:363 | [exec_9c8faaa5] 步骤 4/20 [ReAct-3]: 行动
+2026-04-27 22:08:30 | INFO  | app.service.agents.base | base:execute:397 | [exec_9c8faaa5] 步骤 4/20 [ReAct-3]: 观察
+2026-04-27 22:08:58 | INFO  | app.service.agents.base | base:execute:414 | [exec_9c8faaa5] 步骤 4/20 [ReAct-3]: 反思
+2026-04-27 22:09:16 | INFO  | app.service.common.base | base:update_task_status:172 | 更新任务状态: task_54d5f309 -> failed
+2026-04-27 22:09:23 | INFO  | app.service.common.base | base:create_task:131 | 创建任务: task_82007636 - 京麦商品发布
+2026-04-27 22:09:23 | INFO  | app.service.agents.base | base:execute:307 | [exec_8674461c] 步骤 1/10 [规划]: 思考
+2026-04-27 22:09:31 | INFO  | app.service.agents.base | base:execute:343 | [exec_8674461c] 规划成功，重置规划重试计数
+2026-04-27 22:09:31 | INFO  | app.service.agents.base | base:execute:363 | [exec_8674461c] 步骤 1/10 [规划]: 行动
+2026-04-27 22:09:50 | INFO  | app.service.agents.base | base:execute:397 | [exec_8674461c] 步骤 1/10 [规划]: 观察
+2026-04-27 22:10:24 | INFO  | app.service.agents.base | base:execute:414 | [exec_8674461c] 步骤 1/10 [规划]: 反思
+2026-04-27 22:10:42 | INFO  | app.service.agents.base | base:execute:307 | [exec_8674461c] 步骤 2/10 [ReAct-1]: 思考
+2026-04-27 22:10:52 | INFO  | app.service.agents.base | base:execute:363 | [exec_8674461c] 步骤 2/10 [ReAct-1]: 行动
+2026-04-27 22:11:06 | INFO  | app.service.agents.base | base:execute:397 | [exec_8674461c] 步骤 2/10 [ReAct-1]: 观察
+2026-04-27 22:11:36 | INFO  | app.service.agents.base | base:execute:414 | [exec_8674461c] 步骤 2/10 [ReAct-1]: 反思
+2026-04-27 22:11:53 | INFO  | app.service.agents.base | base:execute:307 | [exec_8674461c] 步骤 3/10 [ReAct-2]: 思考
+2026-04-27 22:12:03 | INFO  | app.service.agents.base | base:execute:363 | [exec_8674461c] 步骤 3/10 [ReAct-2]: 行动
+2026-04-27 22:12:16 | INFO  | app.service.agents.base | base:execute:397 | [exec_8674461c] 步骤 3/10 [ReAct-2]: 观察
+2026-04-27 22:12:47 | INFO  | app.service.agents.base | base:execute:414 | [exec_8674461c] 步骤 3/10 [ReAct-2]: 反思
+2026-04-27 22:13:02 | INFO  | app.service.agents.base | base:execute:307 | [exec_8674461c] 步骤 4/10 [ReAct-3]: 思考
+2026-04-27 22:13:12 | INFO  | app.service.agents.base | base:execute:363 | [exec_8674461c] 步骤 4/10 [ReAct-3]: 行动
+2026-04-27 22:13:27 | INFO  | app.service.agents.base | base:execute:397 | [exec_8674461c] 步骤 4/10 [ReAct-3]: 观察
+2026-04-27 22:13:52 | INFO  | app.service.common.base | base:create_task:131 | 创建任务: task_2e616434 - 京麦商品发布
+2026-04-27 22:13:53 | INFO  | app.service.agents.base | base:execute:307 | [exec_d031b848] 步骤 1/5 [规划]: 思考
+2026-04-27 22:14:02 | INFO  | app.service.agents.base | base:execute:414 | [exec_8674461c] 步骤 4/10 [ReAct-3]: 反思
+2026-04-27 22:14:28 | INFO  | app.service.agents.base | base:execute:343 | [exec_d031b848] 规划成功，重置规划重试计数
+2026-04-27 22:14:28 | INFO  | app.service.agents.base | base:execute:363 | [exec_d031b848] 步骤 1/5 [规划]: 行动
+2026-04-27 22:14:44 | INFO  | app.service.common.base | base:update_task_status:172 | 更新任务状态: task_82007636 -> failed
+2026-04-27 22:16:15 | INFO  | app.service.agents.base | base:execute:397 | [exec_d031b848] 步骤 1/5 [规划]: 观察
+2026-04-27 22:16:47 | INFO  | app.service.agents.base | base:execute:414 | [exec_d031b848] 步骤 1/5 [规划]: 反思
+2026-04-27 22:17:04 | INFO  | app.service.agents.base | base:execute:307 | [exec_d031b848] 步骤 2/5 [ReAct-1]: 思考
+2026-04-27 22:17:17 | INFO  | app.service.agents.base | base:execute:363 | [exec_d031b848] 步骤 2/5 [ReAct-1]: 行动
+2026-04-27 22:17:33 | INFO  | app.service.agents.base | base:execute:397 | [exec_d031b848] 步骤 2/5 [ReAct-1]: 观察
+2026-04-27 22:18:02 | INFO  | app.service.agents.base | base:execute:414 | [exec_d031b848] 步骤 2/5 [ReAct-1]: 反思
+2026-04-27 22:18:16 | INFO  | app.service.agents.base | base:execute:307 | [exec_d031b848] 步骤 3/5 [ReAct-2]: 思考
+2026-04-27 22:18:28 | INFO  | app.service.agents.base | base:execute:363 | [exec_d031b848] 步骤 3/5 [ReAct-2]: 行动
+2026-04-27 22:18:45 | INFO  | app.service.agents.base | base:execute:397 | [exec_d031b848] 步骤 3/5 [ReAct-2]: 观察
+2026-04-27 22:19:23 | INFO  | app.service.agents.base | base:execute:414 | [exec_d031b848] 步骤 3/5 [ReAct-2]: 反思
+2026-04-27 22:19:40 | INFO  | app.service.common.base | base:update_task_status:172 | 更新任务状态: task_2e616434 -> failed

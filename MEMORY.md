@@ -1608,6 +1608,35 @@ pip install openspec
 
 ---
 
+## 2026-04-27 Dream 整合记录
+
+### 整合范围
+- 扫描文件：2026-04-19 / 04-20 / 04-21 / 04-22 / 04-23 / 04-24 / 04-25 / 04-26（8个文件）
+- 说明：04-26 不存在；本次 Dream 03:00 已执行（见 04-27 Dream Log）
+
+### 重大新增：code-review-graph（04-27 宁兄学习）
+| 项目 | 内容 |
+|------|------|
+| **名称** | code-review-graph |
+| **GitHub** | tirth8205/code-review-graph |
+| **核心原理** | Tree-sitter AST 解析 + 知识图谱 + MCP 协议 |
+| **Token节省** | 代码审查 6.8×，日常编码最高 49× |
+| **支持语言** | 23种 + Jupyter（Python/Go/Rust/JS/TS等）|
+| **支持平台** | Claude Code, Cursor, Windsurf, Codex, Zed, Continue, OpenCode, Kiro |
+| **文档** | `knowledge-base/wiki/概念/code-review-graph-代码知识图谱.md` ✅ |
+
+**与 graphify 对比：**
+| 项目 | Stars | Token节省 | 核心差异 |
+|------|-------|-----------|----------|
+| code-review-graph | - | 6.8×/49× | MCP集成，增量更新，Blast-radius分析 |
+| graphify | 25k | 71.5× | 多语言支持，代码→知识图谱 |
+
+### 旧日志标记 consolidation
+- 04-26 不存在（无需标记）
+- 2026-04-19 / 04-20 / 04-21 / 04-22 / 04-23 / 04-24 / 04-25 已标记（本次确认）
+
+---
+
 ## Promoted From Short-Term Memory (2026-04-23)
 
 <!-- openclaw-memory-promotion:memory:memory/2026-04-14.md:263:277 -->

@@ -1635,6 +1635,43 @@ pip install openspec
 - 04-26 不存在（无需标记）
 - 2026-04-19 / 04-20 / 04-21 / 04-22 / 04-23 / 04-24 / 04-25 已标记（本次确认）
 
+## 2026-04-28 Dream 整合记录（本次）
+
+### 整合范围
+- 扫描文件：04-27 / 04-28（2个文件，均为小文件）
+- 说明：上次 Dream 已标记 04-25 及之前；本次仅处理新增内容
+
+### 重大新增：安全告警（04-28）
+
+#### OpenClaw 安全评分下降：72/100
+| 项目 | 详情 |
+|------|------|
+| **评分** | 72/100（上次更高） |
+| **CVE数量** | 2个（1高危 + 1低危） |
+| **高危CVE** | GHSA-xmxx-7p24-h892（Gateway HTTP认证令牌缓存问题，旧令牌轮换后仍可授权） |
+| **低危CVE** | GHSA-xrq9-jm7v-g9h7（配对授权越权问题） |
+| **配置风险** | 11项 |
+| **高危Skill** | 9个（openclaw-weixin, cookie-sync, human-browser, web-search, apify-ultimate-scraper, doubao-chat, web-access等） |
+
+#### 待处理事项（紧急）
+1. 🔴 **紧急**：升级 OpenClaw 至 2026.4.20
+2. 🔴 **紧急**：审查 9 个高危 Skill 源码
+3. 🟡 **建议**：修改 Feishu groupPolicy 从 "open" 改为 "allowlist"
+
+#### Notion SIGKILL 问题已解决（04-27）
+- **根因**：Notion 10000 页面一次性拉取内存不足
+- **解决方案**：generator 模式分批处理
+- **状态**：✅ 稳定运行，无 SIGKILL
+
+#### 飞书 Token 问题（持续）
+- **问题**：.feishu_token 缺失
+- **影响**：knowledge-pull cron 无法同步飞书
+- **状态**：Notion 正常，飞书待配置
+
+### 旧日志标记 consolidation
+- 2026-04-27.md ✅ 已标记
+- 2026-04-28.md ✅ 已标记
+
 ---
 
 ## Promoted From Short-Term Memory (2026-04-23)

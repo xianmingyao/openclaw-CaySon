@@ -1,2 +1,0 @@
-Image: 2560x1392
-X button center: (2129, 92)

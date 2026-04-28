@@ -1,9 +1,0 @@
-{
-  "url": "https://item.jd.com/16793098028.html",
-  "product_id": "16793098028",
-  "title": null,
-  "price": null,
-  "brand": null,
-  "shop": null,
-  "specs": {}
-}

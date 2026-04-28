@@ -1,37 +1,38 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-24 17:21:43
+Date: 2026-04-28 18:55:26
 --- GIT COMMITS ---
-  06d60ad6 feat(jingmai): 瀹屽杽ActionExecuteStrategy + UFO-Galaxy瀛︿範
-  8a123eee feat(jingmai): UFO鏋舵瀯閲嶆瀯 - Processor妗嗘灦v3.0
+  3d5dc0a4 fix: 淇 run_skill 绫诲瀷琚鍒や负 open_app 鐨?bug
+  218ab8b1 docs: SKILL.md 鏂板 Session 闅旂璇存槑鍜岄厤缃枃妗?caf1de92 feat: UFOAgent 娣诲姞 Session 瀵归綈妫€鏌ュ拰浜害鑷姩鍚姩
+  2b59e635 feat: CLI 鍏ュ彛娣诲姞 Session 鑷姩妫€娴嬩笌杩佺Щ
+  ad656e07 feat: 鏂板 SESSION_MODE 鍜?TARGET_APP_PROCESS 閰嶇疆椤?e2c4ab43 feat: 鏂板 SessionDetector Windows Session 妫€娴嬩笌杩佺Щ宸ュ叿
+  560675a3 docs: 娣诲姞 Session 闅旂闂淇璁捐鏂囨。
 --- FILES MODIFIED ---
-  17:10 | skills\desktop-control-cli\.idea\workspace.xml
-  17:09 | .git\FETCH_HEAD
-  17:06 | knowledge-base\.notion_sync_state.json
-  16:49 | skills\jingmai-product-publish\logs\jingmai_now.png
-  16:49 | skills\jingmai-product-publish\scripts\uia_click_combo_keyboard.py
-  16:48 | skills\jingmai-product-publish\scripts\uia_fill_two_combos.py
-  16:47 | skills\jingmai-product-publish\scripts\uia_fill_attrs_via_edit.py
-  16:46 | skills\jingmai-product-publish\scripts\uia_close_popup.py
-  16:44 | skills\jingmai-product-publish\scripts\uia_input_via_edit.py
-  16:43 | skills\jingmai-product-publish\scripts\uia_refocus_jingmai.py
-  16:42 | skills\jingmai-product-publish\scripts\uia_type_title_direct.py
-  16:41 | skills\jingmai-product-publish\scripts\uia_fill_title_only.py
-  16:41 | skills\jingmai-product-publish\scripts\uia_analyze_edit_page.py
-  16:39 | skills\jingmai-product-publish\scripts\uia_click_edit_btn.py
-  16:39 | skills\jingmai-product-publish\scripts\uia_click_edit.py
-  16:38 | skills\jingmai-product-publish\scripts\uia_analyze_draft_list.py
-  16:38 | skills\jingmai-product-publish\scripts\uia_click_first_draft.py
-  16:35 | skills\jingmai-product-publish\scripts\uia_click_save.py
-  16:34 | skills\jingmai-product-publish\scripts\uia_save_draft_v2.py
-  16:29 | skills\jingmai-product-publish\scripts\uia_tab_navigation.py
+  18:44 | .git\FETCH_HEAD
+  16:07 | memory\2026-04-28.md
+  16:06 | knowledge-base\.notion_sync_state.json
+  15:32 | memory\.dreams\events.jsonl
+  15:32 | memory\.dreams\short-term-recall.json
+  12:54 | youdao_qr.png
+  12:52 | youdao_screenshot.png
+  12:49 | scripts\upload_to_feishu_api.py
+  12:49 | scripts\upload_to_feishu.py
+  12:48 | knowledge\千问创享日参会准备清单-2026-04-28.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-index.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-log.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-cursorrules.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-100篇_40万字规模.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-2026-04-10.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-3474 Commits.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-39k stars.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-39k视频中显示20万收藏.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-333k Stars.md
+  10:22 | knowledge-base\wiki\来源\notion-3502bb54-43k Forks.md
 --- SESSIONS ---
-  Count: 241
-  - 019228f5-9a21-4664-a614-06823ea62266.jsonl [04:40]
-  - 01f9fe4e-5b50-46b1-a77c-ac74ed375760.jsonl [15:02]
-  - 0300ddf4-ee87-4730-9c8d-c833d3c53d30.jsonl [10:55]
+  Count: 221
+  - 0120068b-4baf-4888-8e43-3f51b5f0605b.jsonl [00:10]
+  - 024e9873-dd70-4dab-be0b-f1c9b471720c.jsonl [14:05]
+  - 044fd3a9-73a2-4792-8c4d-1afee25d2bf4.jsonl [02:25]
 --- SKILLS ---
-  + jingmai-product-publish
-  + nuwa-skill
-  + nuwa-skill-temp
+  + jingmai-putaway
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-product-publish","nuwa-skill","nuwa-skill-temp"],"dayOfWeek":"Friday","sessionCount":241,"modifiedFiles":["E:\\workspace\\skills\\desktop-control-cli\\.idea\\workspace.xml","E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\skills\\jingmai-product-publish\\logs\\jingmai_now.png","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_click_combo_keyboard.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_fill_two_combos.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_fill_attrs_via_edit.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_close_popup.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_input_via_edit.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_refocus_jingmai.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_type_title_direct.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_fill_title_only.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_analyze_edit_page.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_click_edit_btn.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_click_edit.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_analyze_draft_list.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_click_first_draft.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_click_save.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_save_draft_v2.py","E:\\workspace\\skills\\jingmai-product-publish\\scripts\\uia_tab_navigation.py"],"gitCommits":["06d60ad6 feat(jingmai): 瀹屽杽ActionExecuteStrategy + UFO-Galaxy瀛︿範","8a123eee feat(jingmai): UFO鏋舵瀯閲嶆瀯 - Processor妗嗘灦v3.0"],"date":"2026.04.24"}
+{"skillsUpdated":["jingmai-putaway"],"dayOfWeek":"Tuesday","sessionCount":221,"modifiedFiles":["E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\memory\\2026-04-28.md","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\youdao_qr.png","E:\\workspace\\youdao_screenshot.png","E:\\workspace\\scripts\\upload_to_feishu_api.py","E:\\workspace\\scripts\\upload_to_feishu.py","E:\\workspace\\knowledge\\千问创享日参会准备清单-2026-04-28.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-index.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-log.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-cursorrules.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-100篇_40万字规模.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-2026-04-10.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-3474 Commits.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-39k stars.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-39k视频中显示20万收藏.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-333k Stars.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-43k Forks.md"],"gitCommits":["3d5dc0a4 fix: 淇 run_skill 绫诲瀷琚鍒や负 open_app 鐨?bug","218ab8b1 docs: SKILL.md 鏂板 Session 闅旂璇存槑鍜岄厤缃枃妗?caf1de92 feat: UFOAgent 娣诲姞 Session 瀵归綈妫€鏌ュ拰浜害鑷姩鍚姩","2b59e635 feat: CLI 鍏ュ彛娣诲姞 Session 鑷姩妫€娴嬩笌杩佺Щ","ad656e07 feat: 鏂板 SESSION_MODE 鍜?TARGET_APP_PROCESS 閰嶇疆椤?e2c4ab43 feat: 鏂板 SessionDetector Windows Session 妫€娴嬩笌杩佺Щ宸ュ叿","560675a3 docs: 娣诲姞 Session 闅旂闂淇璁捐鏂囨。"],"date":"2026.04.28"}

@@ -132,8 +132,8 @@ class Settings:
     SCREENSHOT_FORMAT: str = os.getenv("SCREENSHOT_FORMAT", "PNG")
 
     # ==================== 任务配置 ====================
-    MAX_TASK_STEPS: int = int(os.getenv("MAX_TASK_STEPS", "20"))
-    TASK_TIMEOUT: int = int(os.getenv("TASK_TIMEOUT", "600"))
+    MAX_TASK_STEPS: int = int(os.getenv("MAX_TASK_STEPS", "50"))
+    TASK_TIMEOUT: int = int(os.getenv("TASK_TIMEOUT", "1800"))
     MAX_CONCURRENT_TASKS: int = int(os.getenv("MAX_CONCURRENT_TASKS", "20"))
 
     # ==================== LangChain 配置 ====================
@@ -151,9 +151,9 @@ class Settings:
     RAG_RERANK_TOP_K: int = int(os.getenv("RAG_RERANK_TOP_K", "10"))
 
     # ==================== Agent 执行配置 ====================
-    AGENT_MAX_EXECUTION_TIME: int = int(os.getenv("AGENT_MAX_EXECUTION_TIME", "300"))
-    AGENT_MAX_RECURSION_DEPTH: int = int(os.getenv("AGENT_MAX_RECURSION_DEPTH", "10"))
-    AGENT_MAX_SAME_ACTION_REPEATS: int = int(os.getenv("AGENT_MAX_SAME_ACTION_REPEATS", "3"))
+    AGENT_MAX_EXECUTION_TIME: int = int(os.getenv("AGENT_MAX_EXECUTION_TIME", "900"))
+    AGENT_MAX_RECURSION_DEPTH: int = int(os.getenv("AGENT_MAX_RECURSION_DEPTH", "15"))
+    AGENT_MAX_SAME_ACTION_REPEATS: int = int(os.getenv("AGENT_MAX_SAME_ACTION_REPEATS", "5"))
     AGENT_BACKOFF_BASE: int = int(os.getenv("AGENT_BACKOFF_BASE", "1"))
     AGENT_BACKOFF_MAX: int = int(os.getenv("AGENT_BACKOFF_MAX", "10"))
 

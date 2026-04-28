@@ -311,6 +311,31 @@ uv run python cli.py skills search "商品发布" -k 5
 
 ---
 
+## Session 隔离
+
+当 jingmai-cli 在 Session 0（Windows 服务 / SSH）运行时，`pyautogui` 无法操作 Session 1（远程桌面）的京麦 GUI。
+
+系统提供三层 Session 对齐机制：
+
+```
+Layer 1: CLI 入口检查
+    cli() → _ensure_interactive_session()
+    如果当前在 Session 0 → 尝试迁移到交互式 Session
+
+Layer 2: Agent 执行前检查
+    UFOAgent.execute() → _ensure_session_alignment()
+    检查京麦进程所在 Session → 必要时启动京麦到当前 Session
+
+Layer 3: 配置控制
+    SESSION_MODE=auto      → 自动检测，迁移失败仅 warning（默认）
+    SESSION_MODE=force_same → 强制要求同 Session，否则报错
+    SESSION_MODE=manual    → 不做任何 Session 检查
+```
+
+**推荐用法：** 在远程桌面终端（Session 1）运行 jingmai-cli，确保与京麦在同一 Session。
+
+---
+
 ## 关键配置
 
 配置文件：`.env`（参考 `config.py`）
@@ -331,3 +356,5 @@ uv run python cli.py skills search "商品发布" -k 5
 | `SCREENSHOT_ENABLED` | `True` | 是否启用截图 |
 | `SKILL_EXTRA_DIRS` | 空 | 额外 Skill 搜索目录 |
 | `LOG_LEVEL` | `INFO` | 日志级别 |
+| `SESSION_MODE` | `auto` | Session 检测模式：`auto` 自动检测 / `force_same` 强制同 Session / `manual` 不检查 |
+| `TARGET_APP_PROCESS` | `Jingmai.exe` | 目标应用进程名（用于 Session 检测） |

@@ -1405,7 +1405,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             if action_plan:
                 _coord_required = {"click", "double_click", "scroll", "move", "drag"}
                 _text_required = {"type", "set_edit_text"}
-                _no_param_required = {"open_app", "run_command", "keyboard_input", "keypress", "wait", "check_process"}
+                _no_param_required = {"open_app", "run_command", "keyboard_input", "keypress", "wait", "check_process", "run_skill"}
                 _all_lack_params = True
                 for step in action_plan:
                     stype = step.get("type", "")
@@ -2883,6 +2883,9 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         action_aliases = {"action", "operation", "function", "command"}
         # 有效操作类型集合
         _valid_types = {a["name"] for a in UFO_AVAILABLE_ACTIONS}
+        # 扩展类型: 非标准 UI 操作但由子类 (如 SkillAwareUFOAgent) 处理的特殊类型
+        _extended_valid_types = {"run_skill"}
+        _all_valid_types = _valid_types | _extended_valid_types
         # type 值中的通用占位符 (LLM 经常输出的非操作类型)
         _generic_type_values = {"action", "step", "task", "操作", "execute", "do"}
 
@@ -3010,7 +3013,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                     else:
                         logger.warning(f"[UFOAgent] type 值 '{raw_type}' 为通用占位符且无法推断，description='{desc}'，跳过此步骤")
                         step["_skip_invalid_type"] = True
-            elif raw_type and raw_type not in _valid_types:
+            elif raw_type and raw_type not in _all_valid_types:
                 # type 值不是通用词但也不在有效列表中，先检查 alias 字段值
                 alias_value_found = False
                 for alias in action_aliases:
@@ -3425,6 +3428,43 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                                 if not _wait_ok:
                                     logger.warning(f"[UFOAgent] open_app 进程名回退等待也超时，标记为可能未成功")
                                     result["detail"] += " (警告: 窗口验证未确认目标进程在前台)"
+
+            elif action_type == "run_skill":
+                # 扩展类型: 由 SkillAwareUFOAgent 处理，基类中仅记录日志
+                skill_name = action.get("skill_name", "")
+                logger.info(f"[UFOAgent] run_skill 步骤: skill_name='{skill_name}', description='{description}'")
+                # 如果子类 (SkillAwareUFOAgent) 已在 act() 中处理，不会走到这里
+                # 走到这里说明 skill 匹配在 think() 中失败，尝试延迟执行
+                if hasattr(self, '_skill_runtime') and self._skill_runtime:
+                    registry = getattr(getattr(self, '_skill_loader', None), '_registry', None)
+                    if registry:
+                        self._skill_runtime.attach_registry(registry)
+                        skill = None
+                        for s in registry.list_skills():
+                            if s.entry_script and (skill_name and skill_name in s.name):
+                                skill = s
+                                break
+                        if not skill:
+                            skill = self._skill_runtime.find_matching_skill(description, description)
+                        if skill:
+                            execution = self.get_execution()
+                            execution_id = execution.id if execution else "run-skill-fallback"
+                            runtime_result = await self._skill_runtime.execute_skill(
+                                skill=skill,
+                                task_payload={"description": description, "skill_name": skill_name},
+                                execution_id=execution_id,
+                            )
+                            result["success"] = runtime_result.success
+                            result["skill_runtime"] = runtime_result
+                            result["detail"] = f"skill={skill.name}, success={runtime_result.success}"
+                            if not runtime_result.success:
+                                result["error"] = runtime_result.error or "skill 执行失败"
+                        else:
+                            result["error"] = f"run_skill: 未找到匹配的 skill (skill_name='{skill_name}')"
+                    else:
+                        result["error"] = f"run_skill: skill registry 不可用"
+                else:
+                    result["error"] = f"run_skill: skill runtime 不可用 (当前为基类 UFOAgent)"
 
             else:
                 result["error"] = f"不支持的操作类型: {action_type}"

@@ -59,7 +59,7 @@ class Settings:
 
     # ==================== 数据库配置 ====================
     DATABASE_ECHO: bool = False  # 数据库 SQL 日志输出
-    DATABASE_TYPE: str = os.getenv("DATABASE_TYPE", "mysql")  # mysql 或 sqlite
+    DATABASE_TYPE: str = os.getenv("DATABASE_TYPE", "sqlite")  # mysql 或 sqlite
 
     # MySQL 配置
     MYSQL_HOST: str = os.getenv("MYSQL_HOST", "localhost")
@@ -73,15 +73,19 @@ class Settings:
 
     # ==================== LLM 配置 ====================
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "ollama")
-    LLM_SIMPLE_MODEL: str = os.getenv("LLM_SIMPLE_MODEL", "qwen3-vl:32b")
-    LLM_MODEL: str = os.getenv("LLM_MODEL", "qwen3-vl:32b")
-    LLM_COMPLEX_MODEL: str = os.getenv("LLM_COMPLEX_MODEL", "qwen3-vl:32b")
+    LLM_SIMPLE_MODEL: str = os.getenv("LLM_SIMPLE_MODEL", "qwen3-vl:8b")
+    LLM_MODEL: str = os.getenv("LLM_MODEL", "qwen3-vl:8b")
+    LLM_COMPLEX_MODEL: str = os.getenv("LLM_COMPLEX_MODEL", "qwen3-vl:8b")
     LLM_BASE_URL: str = os.getenv("LLM_BASE_URL", "http://localhost:11434")
-    LLM_TIMEOUT: int = int(os.getenv("LLM_TIMEOUT", "60"))
+    LLM_TIMEOUT: int = int(os.getenv("LLM_TIMEOUT", "180"))
     LLM_MAX_RETRIES: int = int(os.getenv("LLM_MAX_RETRIES", "3"))
     LLM_TEMPERATURE: float = float(os.getenv("LLM_TEMPERATURE", "0.7"))
-    LLM_MAX_TOKENS: int = int(os.getenv("LLM_MAX_TOKENS", "2048"))
+    LLM_MAX_TOKENS: int = int(os.getenv("LLM_MAX_TOKENS", "4096"))
     LLM_EMBEDDING_MODEL: str = os.getenv("LLM_EMBEDDING_MODEL", "nomic-embed-text")
+
+    # ==================== vLLM 配置（二级回退 — 本地模型） ====================
+    VLLM_BASE_URL: str = os.getenv("VLLM_BASE_URL", "http://localhost:8001")
+    VLLM_MODEL: str = os.getenv("VLLM_MODEL", r"E:\Program Files\huggingface_model\Qwen3.6-VL-REAP-26B-A3B-W4A16")
 
     # ==================== 向量数据库配置 (Milvus) ====================
     MILVUS_HOST: str = os.getenv("MILVUS_HOST", "localhost")
@@ -158,7 +162,7 @@ class Settings:
     AGENT_BACKOFF_MAX: int = int(os.getenv("AGENT_BACKOFF_MAX", "10"))
 
     # ==================== Agent UI 操作配置 ====================
-    AGENT_DEFAULT_TIMEOUT: float = float(os.getenv("AGENT_DEFAULT_TIMEOUT", "3.0"))
+    AGENT_DEFAULT_TIMEOUT: float = float(os.getenv("AGENT_DEFAULT_TIMEOUT", "30.0"))
     AGENT_POLLING_INTERVAL: float = float(os.getenv("AGENT_POLLING_INTERVAL", "0.2"))
     AGENT_CROP_PADDING_BOTTOM: int = int(os.getenv("AGENT_CROP_PADDING_BOTTOM", "100"))
     AGENT_RECENT_STEPS_KEEP: int = int(os.getenv("AGENT_RECENT_STEPS_KEEP", "3"))
@@ -175,7 +179,7 @@ class Settings:
 
     # ==================== Session 配置 ====================
     SESSION_MODE: str = os.getenv("SESSION_MODE", "auto")  # auto / force_same / manual
-    TARGET_APP_PROCESS: str = os.getenv("TARGET_APP_PROCESS", "Jingmai.exe")
+    TARGET_APP_PROCESS: str = os.getenv("TARGET_APP_PROCESS", "JMWorkStation.exe")
 
     # ==================== RAG Agent 配置 ====================
     RAG_AGENT_MAX_SUMMARY_DOCS: int = int(os.getenv("RAG_AGENT_MAX_SUMMARY_DOCS", "5"))
@@ -272,6 +276,12 @@ class Settings:
             # 验证LLM提供者配置
             if self.LLM_PROVIDER_TIMEOUT < 30 or self.LLM_PROVIDER_TIMEOUT > 600:
                 raise ValueError(f'LLM提供者超时时间必须在 30-600 秒范围内')
+
+            # 验证 vLLM 配置
+            if not self.VLLM_BASE_URL:
+                raise ValueError('vLLM 服务地址不能为空')
+            if not self.VLLM_MODEL:
+                raise ValueError('vLLM 模型路径不能为空')
 
             return True
 

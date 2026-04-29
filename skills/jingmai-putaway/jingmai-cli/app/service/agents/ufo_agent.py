@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
+
+def _utcnow():
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 UFO 自动化 Agent (v2)
 
 参考 Agent-S (Simular AI) 架构改进:
@@ -25,7 +28,7 @@ import hashlib
 import subprocess
 import ctypes
 import ctypes.wintypes
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 import pyautogui
 import pyperclip
@@ -333,6 +336,22 @@ class UFOAgent(BaseAgent):
         launched = self._try_launch_jingmai(target_process)
         return launched
 
+    @staticmethod
+    def _scan_jmworkstation_versions(parent_dir: str, process_name: str) -> list:
+        """扫描 JMWorkStation 的版本号子目录（如 13.3.2.0）查找 exe"""
+        results = []
+        jm_dir = os.path.join(parent_dir, "JMWorkStation")
+        if not os.path.isdir(jm_dir):
+            return results
+        try:
+            for entry in os.listdir(jm_dir):
+                candidate = os.path.join(jm_dir, entry, process_name)
+                if os.path.isfile(candidate):
+                    results.append(candidate)
+        except OSError:
+            pass
+        return results
+
     def _try_launch_jingmai(self, process_name: str) -> bool:
         """
         启动目标应用并等待窗口就绪。
@@ -341,13 +360,34 @@ class UFOAgent(BaseAgent):
         """
         import time
 
-        # 常见京麦安装路径
-        possible_paths = [
-            os.path.join(os.environ.get("PROGRAMFILES", "C:\\Program Files"), "Jingmai", process_name),
-            os.path.join(os.environ.get("PROGRAMFILES(X86)", "C:\\Program Files (x86)"), "Jingmai", process_name),
-            os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "Jingmai", process_name),
+        # 常见京麦安装路径（按优先级排列）
+        _pf = os.environ.get("PROGRAMFILES", "C:\\Program Files")
+        _pf86 = os.environ.get("PROGRAMFILES(X86)", "C:\\Program Files (x86)")
+        _local = os.environ.get("LOCALAPPDATA", "")
+        _appdata = os.environ.get("APPDATA", "")
+        # 收集所有盘符的 Program Files（京麦可能安装在非系统盘）
+        _pf_dirs = set([_pf, _pf86])
+        for drive in "CDEFGH":
+            d = f"{drive}:\\Program Files"
+            d86 = f"{drive}:\\Program Files (x86)"
+            if os.path.isdir(d):
+                _pf_dirs.add(d)
+            if os.path.isdir(d86):
+                _pf_dirs.add(d86)
+        possible_paths = []
+        for _d in _pf_dirs:
+            # JMWorkStation（京麦新版）
+            possible_paths.append(os.path.join(_d, "JMWorkStation", process_name))
+            # JMWorkStation 带版本号子目录
+            possible_paths.extend(self._scan_jmworkstation_versions(_d, process_name))
+            # 旧版路径
+            possible_paths.append(os.path.join(_d, "Jingmai", process_name))
+            possible_paths.append(os.path.join(_d, "JD", "Jingmai", process_name))
+        possible_paths.extend([
+            os.path.join(_local, "Programs", "Jingmai", process_name),
+            os.path.join(_appdata, "Jingmai", process_name),
             process_name,  # 尝试 PATH 查找
-        ]
+        ])
 
         exe_path = None
         for path in possible_paths:
@@ -356,7 +396,7 @@ class UFOAgent(BaseAgent):
                 break
 
         if exe_path is None:
-            # 最后尝试 where 命令
+            # 尝试 where 命令
             try:
                 result = subprocess.run(
                     ["where", process_name],
@@ -365,6 +405,50 @@ class UFOAgent(BaseAgent):
                 if result.returncode == 0:
                     exe_path = result.stdout.strip().split("\n")[0]
             except Exception:
+                pass
+
+        if exe_path is None:
+            # 兜底: 从 Windows 注册表搜索安装路径
+            try:
+                import winreg
+                for hive, key_path in [
+                    (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"),
+                    (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"),
+                    (winreg.HKEY_CURRENT_USER, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"),
+                ]:
+                    try:
+                        with winreg.OpenKey(hive, key_path) as key:
+                            idx = 0
+                            while True:
+                                try:
+                                    subkey_name = winreg.EnumKey(key, idx)
+                                    idx += 1
+                                    sk_lower = subkey_name.lower()
+                                    if any(kw in sk_lower for kw in ("jingmai", "jmworkstation", "jmw", "京麦", "jdw")):
+                                        with winreg.OpenKey(key, subkey_name) as sk:
+                                            try:
+                                                location, _ = winreg.QueryValueEx(sk, "InstallLocation")
+                                                if location:
+                                                    candidate = os.path.join(location, process_name)
+                                                    if os.path.isfile(candidate):
+                                                        exe_path = candidate
+                                                        break
+                                            except FileNotFoundError:
+                                                pass
+                                            try:
+                                                display_icon, _ = winreg.QueryValueEx(sk, "DisplayIcon")
+                                                if display_icon and process_name.lower() in display_icon.lower():
+                                                    exe_path = display_icon.split(",")[0]
+                                                    break
+                                            except FileNotFoundError:
+                                                pass
+                                except OSError:
+                                    break
+                        if exe_path:
+                            break
+                    except OSError:
+                        continue
+            except ImportError:
                 pass
 
         if exe_path is None:
@@ -408,7 +492,7 @@ class UFOAgent(BaseAgent):
                         agent_type=self.__class__.__name__,
                         state=ExecutionState.FAILED,
                         error_message="Session 不对齐且 SESSION_MODE=force_same",
-                        started_at=datetime.utcnow(),
+                        started_at=_utcnow(),
                     )
                     session.add(execution)
                     await session.flush()
@@ -1108,6 +1192,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 ```
 
 重要规则:
+- **步骤数量限制: 最多输出 10 个步骤。如果任务复杂需要更多步骤，只输出前 10 个最关键的步骤，后续步骤会在执行循环中自动补充。**
 - 每个步骤必须对应一个可用的操作类型
 - 坐标值基于截图实际像素输出
 - 只包含该步骤需要的参数
@@ -1178,6 +1263,10 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             logger.info(f"[{eid}] 规划完成: {result[:150]}...")
             return result
 
+        except RuntimeError as e:
+            # LLM 全部不可用 → 重新抛出，让 SkillAwareUFOAgent 走 skip-agent
+            logger.error(f"[{eid}] 规划阶段 RuntimeError: {e}")
+            raise
         except Exception as e:
             logger.error(f"[{eid}] 规划阶段失败: {e}")
             return f"规划失败: {e}"
@@ -1352,6 +1441,10 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             logger.info(f"[{eid}] ReAct 思考完成: {result[:150]}...")
             return result
 
+        except RuntimeError as e:
+            # LLM 全部不可用 → 重新抛出，让 SkillAwareUFOAgent 走 skip-agent
+            logger.error(f"[{eid}] ReAct 思考 RuntimeError: {e}")
+            raise
         except Exception as e:
             logger.error(f"[{eid}] ReAct 思考失败: {e}")
             return f"思考失败: {e}"
@@ -1653,6 +1746,9 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                                 task_complexity=task.complexity
                             )
                             logger.info(f"[{eid}] 坐标分析LLM返回: {_coord_result[:300]}")
+
+                            # 清理 qwen3 thinking 标签，避免推理文本干扰 JSON 解析
+                            _coord_result = re.sub(r'<think[\s\S]*?</think\s*>', '', _coord_result, flags=re.IGNORECASE).strip()
 
                             def _parse_coord_result(result_text, img_w, img_h):
                                 """解析 LLM 返回的坐标，支持多种格式"""
@@ -2018,6 +2114,10 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                                         task_complexity=task.complexity
                                     )
 
+                                    # 清理 qwen3 thinking 标签，避免推理文本干扰 JSON 解析
+                                    if _type_verify_result:
+                                        _type_verify_result = re.sub(r'<think[\s\S]*?</think\s*>', '', _type_verify_result, flags=re.IGNORECASE).strip()
+
                                     # 解析验证结果
                                     _match = re.search(r'"match"\s*:\s*(true|false)', _type_verify_result, re.IGNORECASE)
                                     _actual = re.search(r'"actual"\s*:\s*"([^"]*)"', _type_verify_result, re.IGNORECASE)
@@ -2079,9 +2179,31 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                             if not _verify_processed and _type_verify_result:
                                 logger.warning(f"[{eid}] type验证结果解析失败，回退到简单匹配: {_type_verify_result[:100]}")
                                 if _match and _match.group(1).lower() == "false":
-                                    logger.warning(f"[{eid}] type验证失败(简单模式): 期望'{_expected_text.strip()}'")
-                                    action_result["success"] = False
-                                    action_result["error"] = f"type 验证失败: 文字'{_expected_text.strip()}'未正确输入到目标位置"
+                                    # URL 类型: 域名匹配（浏览器可能重定向 URL，不要求完全一致）
+                                    _exp = _expected_text.strip()
+                                    _is_url = _exp.startswith("http://") or _exp.startswith("https://")
+                                    _url_matched = False
+                                    if _is_url:
+                                        try:
+                                            from urllib.parse import urlparse
+                                            _exp_domain = urlparse(_exp).netloc
+                                            _actual_m = re.search(r'"actual"\s*:\s*"([^"]*)"', _type_verify_result, re.IGNORECASE)
+                                            if _actual_m:
+                                                _actual_url = _actual_m.group(1)
+                                                _actual_domain = urlparse(_actual_url).netloc if _actual_url.startswith("http") else ""
+                                                _exp_base = _exp_domain.replace("www.", "")
+                                                _actual_base = _actual_domain.replace("www.", "")
+                                                if _exp_base and _actual_base and (_exp_base in _actual_base or _actual_base in _exp_base):
+                                                    logger.info(f"[{eid}] URL域名匹配成功: 期望域='{_exp_domain}' 实际域='{_actual_domain}'")
+                                                    action_result["verification_success"] = True
+                                                    action_result["verification_type"] = "url_domain_match"
+                                                    _url_matched = True
+                                        except Exception as _url_err:
+                                            logger.debug(f"[{eid}] URL域名匹配异常: {_url_err}")
+                                    if not _url_matched:
+                                        logger.warning(f"[{eid}] type验证失败(简单模式): 期望'{_exp}'")
+                                        action_result["success"] = False
+                                        action_result["error"] = f"type 验证失败: 文字'{_exp}'未正确输入到目标位置"
 
                 # 只记录实际执行（非跳过）的操作
                 if action_result.get("success", True) or "缺少有效的" not in action_result.get("error", ""):
@@ -2418,6 +2540,9 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 
             return observation_text
 
+        except RuntimeError as e:
+            logger.error(f"[{eid}] 观察阶段 RuntimeError: {e}")
+            raise
         except Exception as e:
             logger.error(f"[{eid}] 观察阶段失败: {e}")
             return f"观察失败: {e}"
@@ -2578,7 +2703,19 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 }}
 ```"""
 
+        # O6: 本轮执行摘要 — 告知反思 LLM 实际执行了多少操作
+        _last_record = self._step_records[-1] if self._step_records else {}
+        _actions_performed = _last_record.get("actions_performed", [])
+        _action_count = len(_actions_performed) if _actions_performed else 0
+        _action_success = _last_record.get("action_success", False)
+        if _action_count == 0:
+            _exec_summary = "⚠️ 本轮未执行任何操作（规划阶段解析失败或操作全部失败），屏幕状态可能与上轮相同。"
+        else:
+            _exec_summary = f"本轮执行了 {_action_count} 个操作，整体结果: {'成功' if _action_success else '部分失败'}。"
+
         user_prompt = f"""任务目标: {task.description}
+
+本轮执行摘要: {_exec_summary}
 
 已执行操作的详细结果 (Thought-Action-Observation 轨迹):
 {self._get_history_text()}
@@ -2603,6 +2740,9 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 
             return reflection
 
+        except RuntimeError as e:
+            logger.error(f"[{eid}] 反思阶段 RuntimeError: {e}")
+            raise
         except Exception as e:
             logger.error(f"[{eid}] 反思阶段失败: {e}")
             return f"任务失败: {e}"
@@ -2874,7 +3014,143 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             except json.JSONDecodeError:
                 pass
 
+        # 截断 JSON 修复: LLM 长响应可能被截断，缺少闭合括号
+        if brace_start != -1:
+            repaired = self._repair_truncated_json(text[brace_start:])
+            if repaired:
+                try:
+                    data = json.loads(repaired)
+                    result = _extract(data)
+                    if result is not None:
+                        logger.info(f"[UFOAgent] 截断 JSON 修复成功，提取到步骤")
+                        return result
+                except json.JSONDecodeError:
+                    pass
+
+        # 正则提取: 从文本中逐个提取 step 对象 (最终兜底)
+        regex_steps = self._extract_steps_by_regex(text)
+        if regex_steps:
+            logger.info(f"[UFOAgent] 正则兜底提取到 {len(regex_steps)} 个步骤")
+            return regex_steps
+
         return []
+
+    def _repair_truncated_json(self, text: str) -> Optional[str]:
+        """修复被截断的 JSON 文本，尝试补全缺失的闭合括号。
+
+        常见场景: LLM 生成长 plan 时响应被截断，JSON 缺少 ] }
+        策略: 统计未闭合的括号，按逆序补全
+        """
+        if not text or '{' not in text:
+            return None
+
+        # 找到最后一个看起来完整的位置: 站在最后一个 } 或 ] 后面
+        last_brace = text.rfind('}')
+        last_bracket = text.rfind(']')
+        cut_pos = max(last_brace, last_bracket)
+        if cut_pos <= 0:
+            return None
+
+        candidate = text[:cut_pos + 1]
+
+        # 统计未闭合的括号
+        stack = []
+        in_string = False
+        escape_next = False
+        for ch in candidate:
+            if escape_next:
+                escape_next = False
+                continue
+            if ch == '\\' and in_string:
+                escape_next = True
+                continue
+            if ch == '"':
+                in_string = not in_string
+                continue
+            if in_string:
+                continue
+            if ch in ('{', '['):
+                stack.append(ch)
+            elif ch == '}':
+                if stack and stack[-1] == '{':
+                    stack.pop()
+            elif ch == ']':
+                if stack and stack[-1] == '[':
+                    stack.pop()
+
+        if not stack:
+            # 已经是有效 JSON，无需修复
+            return candidate
+
+        # 按逆序补全未闭合的括号
+        closing = []
+        for opener in reversed(stack):
+            closing.append('}' if opener == '{' else ']')
+        repaired = candidate + ''.join(closing)
+        return repaired
+
+    def _extract_steps_by_regex(self, text: str) -> List[Dict[str, Any]]:
+        """正则兜底: 从文本中逐个提取完整的 step 对象 { ... }。
+
+        当 JSON 整体解析失败时，用正则找到所有顶层的 step 对象。
+        """
+        if not text or '{' not in text:
+            return []
+
+        steps = []
+        # 匹配顶层 step 对象: 找到独立完整的 {...} 块
+        # 策略: 找 "steps" 数组内的元素，或独立出现的带 type 字段的对象
+        pos = 0
+        while True:
+            # 查找下一个可能的 step 对象起始位置
+            # 匹配模式: { 后紧跟 "type" 或其他已知字段
+            match = re.search(r'\{\s*"(?:type|action|operation|description)"', text[pos:])
+            if not match:
+                break
+
+            obj_start = pos + match.start()
+            # 从 obj_start 开始，找到匹配的闭合 }
+            depth = 0
+            in_str = False
+            esc = False
+            obj_end = -1
+            for i in range(obj_start, len(text)):
+                ch = text[i]
+                if esc:
+                    esc = False
+                    continue
+                if ch == '\\' and in_str:
+                    esc = True
+                    continue
+                if ch == '"':
+                    in_str = not in_str
+                    continue
+                if in_str:
+                    continue
+                if ch == '{':
+                    depth += 1
+                elif ch == '}':
+                    depth -= 1
+                    if depth == 0:
+                        obj_end = i
+                        break
+
+            if obj_end == -1:
+                # 没有找到闭合 }, 跳过
+                pos = obj_start + 1
+                continue
+
+            obj_text = text[obj_start:obj_end + 1]
+            try:
+                obj = json.loads(obj_text)
+                if isinstance(obj, dict):
+                    steps.append(obj)
+            except json.JSONDecodeError:
+                pass
+
+            pos = obj_end + 1
+
+        return steps
 
     @staticmethod
     def _normalize_step_fields(steps: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -3418,7 +3694,19 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                         # 验证: 检查前台窗口进程是否匹配目标应用
                         _fg_proc = self._get_foreground_process_name()
                         _target_proc = app_name.lower()
-                        if _fg_proc and _target_proc:
+                        # ms-search 启动方式: 前台是 searchhost，需要额外等待目标窗口
+                        _is_search_intermediate = _fg_proc and "search" in _fg_proc
+                        if _is_search_intermediate:
+                            logger.info(f"[UFOAgent] 前台为搜索窗口 '{_fg_proc}'，等待目标应用 '{_target_proc}' 窗口出现...")
+                            _wait_ok = await self._wait_for_target_window(
+                                process_name=_target_proc,
+                                timeout=max(settings.AGENT_PLAN_RETRY_OPEN_APP_TIMEOUT, 15)
+                            )
+                            if _wait_ok:
+                                logger.info(f"[UFOAgent] 搜索后成功等到目标窗口")
+                            else:
+                                logger.warning(f"[UFOAgent] 搜索后等待目标窗口超时，继续执行")
+                        elif _fg_proc and _target_proc:
                             if _target_proc in _fg_proc or _fg_proc in _target_proc:
                                 logger.info(f"[UFOAgent] open_app 窗口验证通过: 前台进程 '{_fg_proc}' 匹配目标 '{_target_proc}'")
                             else:
@@ -3853,9 +4141,13 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 
     def _try_launch_app(self, app_name: str, search: str) -> Dict[str, Any]:
         """通过快捷方式搜索、ms-search、常见安装路径等方式启动应用"""
+        # PowerShell UTF-8 编码前缀，解决中文路径乱码（GBK→UTF8）
+        _utf8_prefix = "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; "
+
         # 方法 A: 搜索开始菜单快捷方式
         logger.info(f"[open_app] 方法A: 搜索开始菜单快捷方式 (keyword='{search}')")
         search_cmd = (
+            _utf8_prefix +
             f"$searchTerm = '{search}'; "
             "$apps = Get-ChildItem 'C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs' -Recurse -Filter '*.lnk' -ErrorAction SilentlyContinue | "
             "Where-Object { $_.Name -like \"*$searchTerm*\" }; "
@@ -3869,11 +4161,11 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 
         if shortcut_path and shortcut_path != "not_found":
             # 优先用 Invoke-Item 启动 .lnk（更可靠），回退到 Start-Process
-            start_cmd = f"Invoke-Item -Path '{shortcut_path}'"
+            start_cmd = f"{_utf8_prefix}Invoke-Item -Path '{shortcut_path}'"
             start_result = self._run_system_command(start_cmd, shell="powershell", timeout=15)
             if not start_result["success"]:
                 logger.warning(f"[open_app] 方法A Invoke-Item 失败: {start_result.get('stderr', '')}, 尝试 Start-Process")
-                start_cmd = f"Start-Process '{shortcut_path}'"
+                start_cmd = f"{_utf8_prefix}Start-Process '{shortcut_path}'"
                 start_result = self._run_system_command(start_cmd, shell="powershell", timeout=15)
             if start_result["success"]:
                 return {
@@ -3898,6 +4190,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         # 方法 C: 搜索常见安装路径
         logger.info(f"[open_app] 方法C: 搜索常见安装路径 (keyword='{search}')")
         common_paths_cmd = (
+            _utf8_prefix +
             f"$searchTerm = '*{search}*'; "
             "$paths = @('C:\\Program Files', 'C:\\Program Files (x86)'); "
             "$found = $null; "
@@ -3913,7 +4206,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         logger.info(f"[open_app] 方法C 结果: {exe_path}")
 
         if exe_path and exe_path != "not_found":
-            start_cmd = f"Start-Process '{exe_path}'"
+            start_cmd = f"{_utf8_prefix}Start-Process '{exe_path}'"
             start_result = self._run_system_command(start_cmd, shell="powershell", timeout=15)
             if start_result["success"]:
                 return {

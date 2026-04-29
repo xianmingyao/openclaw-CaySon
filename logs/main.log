@@ -134,3 +134,20 @@
 2026-04-28 03:33:11 | INFO  | app.service.agents.base | base:execute:397 | [exec_41b04fd9] 步骤 4/10 [ReAct-3]: 观察
 2026-04-28 03:33:50 | INFO  | app.service.agents.base | base:execute:414 | [exec_41b04fd9] 步骤 4/10 [ReAct-3]: 反思
 2026-04-28 03:34:07 | INFO  | app.service.common.base | base:update_task_status:172 | 更新任务状态: task_b9695f8c -> failed
+2026-04-29 08:15:18 | INFO  | app.service.common.base | base:create_task:137 | 创建任务: task_b3da00ac - 公牛插座上架
+2026-04-29 08:15:19 | INFO  | app.service.agents.base | base:execute:311 | [exec_2ca81cc7] 步骤 1/30 [规划]: 思考
+2026-04-29 08:16:28 | WARNING | app.service.agents.base | base:execute:335 | [exec_2ca81cc7] 思考阶段返回无效结果 (连续 1 次)，跳过本步行动: 规划失败: Ollama 在 3 次尝试后返回空响应
+2026-04-29 08:16:28 | WARNING | app.service.agents.base | base:execute:345 | [exec_2ca81cc7] 连续 1 次思考失败，退避 2 秒后重试
+2026-04-29 08:16:30 | INFO  | app.service.agents.base | base:execute:311 | [exec_2ca81cc7] 步骤 2/30 [ReAct-1]: 思考
+2026-04-29 08:17:34 | WARNING | app.service.agents.base | base:execute:335 | [exec_2ca81cc7] 思考阶段返回无效结果 (连续 2 次)，跳过本步行动: 规划失败: Ollama 在 3 次尝试后返回空响应
+2026-04-29 08:17:34 | WARNING | app.service.agents.base | base:execute:345 | [exec_2ca81cc7] 连续 2 次思考失败，退避 4 秒后重试
+2026-04-29 08:17:38 | INFO  | app.service.agents.base | base:execute:311 | [exec_2ca81cc7] 步骤 3/30 [ReAct-2]: 思考
+2026-04-29 08:18:42 | WARNING | app.service.agents.base | base:execute:335 | [exec_2ca81cc7] 思考阶段返回无效结果 (连续 3 次)，跳过本步行动: 规划失败: Ollama 在 3 次尝试后返回空响应
+2026-04-29 08:18:42 | WARNING | app.service.agents.base | base:execute:345 | [exec_2ca81cc7] 连续 3 次思考失败，退避 8 秒后重试
+2026-04-29 08:18:50 | INFO  | app.service.agents.base | base:execute:311 | [exec_2ca81cc7] 步骤 4/30 [ReAct-3]: 思考
+2026-04-29 08:19:54 | WARNING | app.service.agents.base | base:execute:335 | [exec_2ca81cc7] 思考阶段返回无效结果 (连续 4 次)，跳过本步行动: 规划失败: Ollama 在 3 次尝试后返回空响应
+2026-04-29 08:19:54 | WARNING | app.service.agents.base | base:execute:345 | [exec_2ca81cc7] 连续 4 次思考失败，退避 15 秒后重试
+2026-04-29 08:20:09 | INFO  | app.service.agents.base | base:execute:311 | [exec_2ca81cc7] 步骤 5/30 [ReAct-4]: 思考
+2026-04-29 08:21:13 | WARNING | app.service.agents.base | base:execute:335 | [exec_2ca81cc7] 思考阶段返回无效结果 (连续 5 次)，跳过本步行动: 规划失败: Ollama 在 3 次尝试后返回空响应
+2026-04-29 08:21:13 | WARNING | app.service.agents.base | base:execute:345 | [exec_2ca81cc7] 连续 5 次思考失败，退避 15 秒后重试
+2026-04-29 08:21:28 | INFO  | app.service.common.base | base:update_task_status:176 | 更新任务状态: task_b3da00ac -> failed

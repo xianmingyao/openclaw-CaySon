@@ -47,7 +47,7 @@ except Exception:
 
 from config import settings
 from models.task import Task
-from app.service.agents.base import BaseAgent
+from app.service.agents.base import BaseAgent, _utcnow
 from app.service.llm.manager import LLMManager
 from app.service.skills.skill_loader import SkillLoader
 from app.service.skills.runtime_bridge import SkillRuntimeBridge
@@ -225,6 +225,7 @@ class UFOAgent(BaseAgent):
         if self._skill_loaded:
             return
         self._skill_loaded = True
+
         try:
             await self._skill_loader.initialize()
             skills = await self._skill_loader.load_builtin_skills()
@@ -477,6 +478,25 @@ class UFOAgent(BaseAgent):
 
         logger.warning(f"[UFOAgent] {process_name} 启动超时（30 秒内未检测到进程）")
         return False
+
+    @staticmethod
+    def _matches_open_app_foreground(target_proc: str, foreground_proc: str) -> bool:
+        """判断 open_app 后的前台进程是否可视为目标应用的有效前台状态。"""
+        if not target_proc or not foreground_proc:
+            return False
+
+        target_proc = str(target_proc).strip().lower()
+        foreground_proc = str(foreground_proc).strip().lower()
+        if not target_proc or not foreground_proc:
+            return False
+
+        if target_proc in foreground_proc or foreground_proc in target_proc:
+            return True
+
+        foreground_aliases = {
+            "jmworkstation": {"jmaccountcenter"},
+        }
+        return foreground_proc in foreground_aliases.get(target_proc, set())
 
     async def execute(self, task, session, max_steps=10, context=None):
         """重写 execute，在 ReAct 循环前做 Session 对齐检查"""
@@ -997,6 +1017,55 @@ class UFOAgent(BaseAgent):
         recent = recent_actions[-threshold:]
         return len(set(a for a in recent if a)) == 1
 
+    @staticmethod
+    def _is_jingmai_task(task: Task) -> bool:
+        """判断当前任务是否明显与京麦流程相关。"""
+        task_text = f"{getattr(task, 'title', '')} {getattr(task, 'description', '')}".lower()
+        return any(keyword in task_text for keyword in ("京麦", "jingmai", "jmworkstation"))
+
+    @staticmethod
+    def _observation_indicates_dev_environment(observation: str) -> bool:
+        """检测观察结果是否明确指向 IDE/开发环境，而不是业务界面。"""
+        if not observation:
+            return False
+        observation_lower = observation.lower()
+        keywords = (
+            "vs code",
+            "pycharm",
+            "代码编辑器",
+            "开发环境",
+            "集成开发环境",
+            "ide界面",
+            "ide 界面",
+            "终端日志",
+            "代码文件标签",
+        )
+        return any(keyword in observation_lower for keyword in keywords)
+
+    def _detect_stalled_execution_reason(self, task: Task, observation: str) -> str:
+        """识别明显无进展的卡死场景，避免空转到 max_steps。"""
+        if not self._is_jingmai_task(task):
+            return ""
+        if not self._observation_indicates_dev_environment(observation):
+            return ""
+
+        recent_records = [r for r in self._step_records[-5:] if isinstance(r, dict)]
+        if not recent_records:
+            return ""
+
+        recent_open_app = [r for r in recent_records if r.get("action_type") == "open_app"]
+        ide_hits = sum(
+            1 for r in recent_records
+            if self._observation_indicates_dev_environment(str(r.get("observation", "")))
+        )
+        failed_open_app = sum(1 for r in recent_open_app if not r.get("success", False))
+
+        if len(recent_open_app) >= 3 and ide_hits >= 3:
+            return "连续多次尝试 open_app 后观察结果仍为 IDE/开发环境界面，终止执行避免空转"
+        if failed_open_app >= 2 and ide_hits >= 2:
+            return "连续多次 open_app 前台验证失败，且观察结果仍为 IDE/开发环境界面，终止执行避免空转"
+        return ""
+
     def _get_failed_clicks(self, window: int = 10) -> List[Tuple[int, int]]:
         """
         获取最近失败操作的坐标列表 (用于坐标分析负反馈)
@@ -1119,7 +1188,8 @@ class UFOAgent(BaseAgent):
         Datawhale 第四章: Plan 阶段将复杂任务分解为清晰的步骤
         Agent-S: 初始规划时附带当前屏幕截图
         """
-        context = context or {}
+        if context is None:
+            context = {}
         eid = self._exec_id()
 
         # 规划重试计数: 跟踪已尝试次数，重试时跳过截图以降低 GPU 显存压力
@@ -1284,7 +1354,8 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         - 步骤2+ (step>0): ReAct 轻量思考，基于 History + Observation 上下文决定下一步
         - 核心公式: (th_t, a_t) = π(q, (a_1,o_1), ..., (a_{t-1},o_{t-1}))
         """
-        context = context or {}
+        if context is None:
+            context = {}
         eid = self._exec_id()
         current_step = len(self._step_records)
 
@@ -1477,7 +1548,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             if self._pre_action_screenshot:
                 logger.info(f"[{eid}] 行动前: 已保存操作前截图 (用于效果对比)")
 
-            # 解析操作计划
+            # 解析操作计划_parse_action_plan
             action_plan = await self._parse_action_plan(thought, task)
             logger.info(f"[{eid}] 解析到 {len(action_plan)} 个操作步骤")
 
@@ -1494,30 +1565,11 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 
             # 计划有效性预检: 如果所有步骤都缺少关键参数，提前标记失败避免空转
             if action_plan:
-                _coord_required = {"click", "double_click", "scroll", "move", "drag"}
-                _text_required = {"type", "set_edit_text"}
-                _no_param_required = {"open_app", "run_command", "keyboard_input", "keypress", "wait", "check_process", "run_skill"}
                 _all_lack_params = True
                 for step in action_plan:
-                    stype = step.get("type", "")
-                    if stype in _no_param_required:
-                        # open_app 等不一定缺参数（它们在 execute_action 中会检查 app_name 等），这里仅当 description 极短时才视为缺参数
-                        if len(step.get("description", "")) > settings.AGENT_MIN_DESCRIPTION_LENGTH:
-                            _all_lack_params = False
-                            break
-                    elif stype in _coord_required:
-                        if step.get("x") is not None and step.get("y") is not None:
-                            _all_lack_params = False
-                            break
-                    elif stype in _text_required:
-                        if step.get("text"):
-                            _all_lack_params = False
-                            break
-                    else:
-                        # 未知类型，只要 description 足够详细就放过
-                        if len(step.get("description", "")) > settings.AGENT_MIN_LONG_DESC_LENGTH:
-                            _all_lack_params = False
-                            break
+                    if self._step_has_precheck_params(step):
+                        _all_lack_params = False
+                        break
                 if _all_lack_params:
                     logger.warning(f"[{eid}] 计划有效性预检: 所有 {len(action_plan)} 个步骤均缺少关键参数（坐标/文本/app_name 等），跳过执行")
                     result["error"] = f"计划中所有步骤均缺少关键参数（共 {len(action_plan)} 步）"
@@ -1599,6 +1651,17 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                             _failed_str = ", ".join(f"({fx},{fy})" for fx, fy in _failed_coords[-5:])  # 最多展示最近 5 个
                             _failed_note = f"\n\n⚠️ 历史失败坐标（请避开这些位置）: {_failed_str}\n请选择与以上不同的坐标位置。\n"
                             logger.info(f"[{eid}] 坐标分析负反馈: 注入 {len(_failed_coords)} 个失败坐标")
+                        _invalid_llm_coords = action_step.get("_invalid_llm_coords")
+                        if isinstance(_invalid_llm_coords, dict):
+                            _bad_x = _invalid_llm_coords.get("x")
+                            _bad_y = _invalid_llm_coords.get("y")
+                            if _bad_x is not None and _bad_y is not None:
+                                _failed_note += (
+                                    f"\n⚠️ 刚刚有一个越界坐标猜测 ({_bad_x},{_bad_y})，"
+                                    "它不是当前截图坐标，请不要复用这个点，也不要按屏幕坐标去猜。\n"
+                                )
+                                if any(keyword in _target_desc for keyword in ("下一步", "提交", "确认", "进入商品信息录入")):
+                                    _failed_note += "提示：这类按钮通常是截图下半部靠中间的可见按钮，请优先检查按钮中心。\n"
 
                         # 计算窗口内容在裁剪图中的有效区域高度（不含 padding）
                         _content_h = _img_actual[1]  # 默认整个图像都是内容
@@ -1812,10 +1875,25 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                                     pass
                                 return _candidates
 
-                            _cx, _cy = _parse_coord_result(_coord_result, _img_actual[0], _img_actual[1])
-                            _candidates = _parse_candidates(_coord_result, _img_actual[0], _img_actual[1])
+                            _cx, _cy = self._parse_coordinate_result(_coord_result, _img_actual[0], _img_actual[1])
+                            _candidates = self._parse_coordinate_candidates(_coord_result, _img_actual[0], _img_actual[1])
                             if _candidates:
                                 logger.info(f"[{eid}] 解析到 {len(_candidates)} 个候选坐标: {_candidates[:3]}")
+
+                            if _cx is None or _cy is None:
+                                _repaired_coord_result = await self._repair_coordinate_json(
+                                    raw_result=_coord_result,
+                                    target_desc=_target_desc,
+                                    task=task,
+                                    img_w=_img_actual[0],
+                                    img_h=_img_actual[1],
+                                    screenshot=_crop_image,
+                                )
+                                if _repaired_coord_result:
+                                    logger.info(f"[{eid}] 坐标 JSON 修复响应: {_repaired_coord_result[:200]}")
+                                    _coord_result = _repaired_coord_result
+                                    _cx, _cy = self._parse_coordinate_result(_coord_result, _img_actual[0], _img_actual[1])
+                                    _candidates = self._parse_coordinate_candidates(_coord_result, _img_actual[0], _img_actual[1])
 
                             if _cx is not None and _cy is not None:
                                 # 坐标范围校验: 超出裁剪图范围时改用全屏截图重新分析
@@ -1887,7 +1965,20 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                                                 task_complexity=task.complexity
                                             )
                                             logger.info(f"[{eid}] 全屏重试坐标分析返回: {_retry_result[:200]}")
-                                            _rcx, _rcy = _parse_coord_result(_retry_result, sw, sh)
+                                            _rcx, _rcy = self._parse_coordinate_result(_retry_result, sw, sh)
+                                            if _rcx is None or _rcy is None:
+                                                _retry_repaired_result = await self._repair_coordinate_json(
+                                                    raw_result=_retry_result,
+                                                    target_desc=_target_desc,
+                                                    task=task,
+                                                    img_w=sw,
+                                                    img_h=sh,
+                                                    screenshot=coord_image,
+                                                )
+                                                if _retry_repaired_result:
+                                                    logger.info(f"[{eid}] 全屏坐标 JSON 修复响应: {_retry_repaired_result[:200]}")
+                                                    _retry_result = _retry_repaired_result
+                                                    _rcx, _rcy = self._parse_coordinate_result(_retry_result, sw, sh)
                                             if _rcx is not None and _rcy is not None:
                                                 # 全屏坐标直接使用 (无需偏移)
                                                 _cx, _cy = _rcx, _rcy
@@ -2567,12 +2658,36 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         - 操作效果验证
         - 任务完成度评估
         """
-        context = context or {}
+        if context is None:
+            context = {}
         eid = self._exec_id()
 
         # 循环检测 (Agent-S per-step reflection)
         recent_actions = self._get_recent_actions(window=5)
         loop_detected = self._detect_loop(recent_actions)
+
+        abort_reason = self._detect_stalled_execution_reason(task, observation)
+        if abort_reason:
+            context["abort_execution_reason"] = abort_reason
+            reflection_data = {
+                "completed": False,
+                "page_type": "other",
+                "progress": "执行中断：连续多轮尝试后仍未回到京麦业务界面",
+                "feedback": {
+                    "factual_errors": abort_reason,
+                    "logic_gaps": "当前策略重复尝试同一恢复动作，无法产生新进展",
+                    "efficiency_issues": "继续执行只会消耗 max_steps 和推理时间",
+                    "missing_info": "需要人工确认京麦窗口激活方式或 skill 触发后的真实前台窗口行为",
+                },
+                "next_steps": ["终止本次执行，等待外部修复或重新触发任务"],
+                "loop_detected": True,
+                "summary": abort_reason,
+            }
+            reflection = json.dumps(reflection_data, ensure_ascii=False)
+            logger.warning(f"[{eid}] 反思阶段触发无进展熔断: {abort_reason}")
+            if self._step_records:
+                self._step_records[-1]["reflection"] = reflection[:500]
+            return reflection
 
         # O5: 二次验证 - 检查最近的type操作是否真正成功
         _verification_note = ""
@@ -2755,7 +2870,6 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         """解析思考结果，提取操作计划。先尝试直接 JSON 提取，失败再调 LLM。"""
         eid = self._exec_id()
 
-        # 前置过滤: 跳过明显无效的输入 (空响应、LLM 错误文本、垃圾文本)
         if not thought or not thought.strip() or thought.strip() in ("` `", "``"):
             logger.warning(f"[{eid}] _parse_action_plan: 输入为空或无效，跳过解析")
             return []
@@ -2763,88 +2877,43 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             logger.warning(f"[{eid}] _parse_action_plan: 输入为错误消息，跳过解析: {thought[:100]}")
             return []
 
-        # 清理 qwen3 thinking 标签: 去除 <think...>...</think 推理部分
-        # OllamaProvider 在提取不到 JSON 时会将整个 thinking 内容作为 content 返回
-        _thought_cleaned = re.sub(r'<think[\s\S]*?</think\s*>', '', thought, flags=re.IGNORECASE).strip()
-        if _thought_cleaned and _thought_cleaned != thought.strip():
-            logger.info(f"[{eid}] _parse_action_plan: 清理 thinking 标签 (原文 {len(thought)} chars → 清理后 {len(_thought_cleaned)} chars)")
-            thought = _thought_cleaned
+        thought_cleaned = re.sub(r'<think[\s\S]*?</think\s*>', '', thought, flags=re.IGNORECASE).strip()
+        if thought_cleaned and thought_cleaned != thought.strip():
+            logger.info(
+                f"[{eid}] _parse_action_plan: ?? thinking ?? "
+                f"(?? {len(thought)} chars -> ??? {len(thought_cleaned)} chars)"
+            )
+            thought = thought_cleaned
 
-        # 垃圾文本检测: LLM 有时输出无意义的重复字符 (qwen3-vl 常见)
         stripped = thought.strip()
         if len(stripped) < settings.RAG_MIN_THOUGHT_LENGTH:
             logger.warning(f"[{eid}] _parse_action_plan: 输入过短 ({len(stripped)} chars)，可能为垃圾文本，跳过")
             return []
-        if '{' not in stripped and len(re.findall(r'["\']', stripped)) < 2:
-            # 纯推理文本（无 JSON 结构）但内容较长时，交给 LLM 回退解析而非直接丢弃
-            # qwen3 thinking 模式常返回纯推理文本，仍可能包含有用的屏幕分析
+
+        if '{' not in stripped and len(re.findall(r"[\"']", stripped)) < 2:
             if len(stripped) >= 50:
-                logger.info(f"[{eid}] _parse_action_plan: 输入不含 JSON 但为有效推理文本 ({len(stripped)} chars)，跳过直接提取，走 LLM 回退")
-                # 跳过直接提取，直接进入下方 LLM 回退
+                logger.info(
+                    f"[{eid}] _parse_action_plan: 输入不含 JSON 但为有效推理文本 "
+                    f"({len(stripped)} chars)，跳过直接提取，走 LLM 回退"
+                )
             else:
                 logger.warning(f"[{eid}] _parse_action_plan: 输入过短且无 JSON 结构，丢弃: {stripped[:100]}")
                 return []
 
-        # 仅在文本可能包含 JSON 时尝试直接提取
         if '{' in stripped:
             direct_steps = self._extract_json_steps(thought)
             if direct_steps:
-                # 后处理: 从任务描述补全 type 操作缺失的 text 参数
                 direct_steps = self._fill_missing_text_from_task(direct_steps, task)
                 logger.info(f"[{eid}] _parse_action_plan: 直接提取到 {len(direct_steps)} 个步骤 (跳过 LLM 调用)")
                 self._log_parsed_steps(direct_steps)
                 return direct_steps
 
-        # 直接提取失败，回退到 LLM 解析
-        logger.info(f"[{eid}] _parse_action_plan: 直接提取失败，使用 LLM 解析")
-
-        system_prompt = f"""请从思考结果中提取需要执行的操作步骤，以 JSON 格式输出。
-
-{self._build_system_prompt_suffix()}
-
-格式要求（必须严格遵守）：
-```json
-{{
-  "steps": [
-    {{
-      "type": "操作类型",
-      "description": "操作描述",
-      "target": "目标元素描述",
-      "x": 100,
-      "y": 200,
-      "text": "要输入的文本",
-      "keys": "快捷键",
-      "scroll_y": -3,
-      "seconds": 2,
-      "clear_current_text": false,
-      "app_name": "进程名",
-      "search_keyword": "搜索关键词",
-      "process_name": "进程名",
-      "command": "系统命令",
-      "shell": "cmd"
-    }}
-  ]
-}}
-```
-
-注意事项:
-- type 必须是以下之一: {self._get_action_names()}
-- 坐标值基于截图分辨率输出（{self._screenshot_size[0]}x{self._screenshot_size[1]}），系统会自动转换为屏幕坐标
-- 只包含该步骤需要的参数
-- **每个步骤必须包含该操作类型所需的全部必填参数**:
-  - click/double_click 必须有 x,y 坐标; type 必须有 text; open_app 必须有 app_name; keyboard_input 必须有 keys
-- 如果思考结果中没有明确的可执行操作，返回空步骤列表
-
-只输出 JSON，不要输出其他内容。"""
+        logger.info(f"[{eid}] parse_action_plan: 直接提取失败，使用 LLM 解析")
 
         try:
-            # 附加 ReAct 历史 (Datawhale Ch4: 将 History 注入提示词)
             history_text = self._get_history_text()
-            full_prompt = f"任务目标: {task.description}\n\n请从以下思考结果中提取操作步骤：\n\n{thought}"
-            if history_text:
-                full_prompt += f"\n\n历史执行记录 (参考):\n{history_text}"
-
-            # LLM 回退解析也需要截图上下文来生成坐标
+            system_prompt = self._build_action_plan_extraction_system_prompt()
+            full_prompt = self._build_action_plan_extraction_message(task, thought, history_text)
             latest_screenshot = self._pre_action_screenshot
             if latest_screenshot:
                 result = await self.llm.chat(
@@ -2860,31 +2929,334 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                     task_complexity=task.complexity
                 )
 
-            logger.info(f"[{eid}] _parse_action_plan LLM 原始响应:\n{result}")
+            logger.info(f"[{eid}] _parse_action_plan LLM 原始响应:\\n{result}")
 
-            # P2: 垃圾文本检测 — LLM fallback 有时输出 "0.5 0.5..." 等无意义重复数字
-            _stripped_result = result.strip() if result else ""
-            _is_coord_garbage = bool(re.match(r'^[\d\s.\-,]+$', _stripped_result)) and len(_stripped_result) < 200
-            if _is_coord_garbage:
-                logger.warning(f"[{eid}] _parse_action_plan: LLM fallback 返回坐标垃圾文本，丢弃: {_stripped_result[:80]}")
+            stripped_result = result.strip() if result else ""
+            is_coord_garbage = bool(re.match(r'^[\d\s.\-,]+$', stripped_result)) and len(stripped_result) < 200
+            if is_coord_garbage:
+                logger.warning(
+                    f"[{eid}] _parse_action_plan: LLM fallback 返回坐标垃圾文本，丢弃: {stripped_result[:80]}"
+                )
                 return []
 
-            steps = self._extract_json_steps(result)
-
+            steps = self._extract_json_steps(result, allow_reasoning_fallback=False)
             if not steps:
-                # P2: 空步骤防护 — 如果 LLM 返回了有效文本但解析不到步骤，
-                # 可能是因为 thought 本身包含操作计划但格式不标准，尝试宽松提取
-                if len(_stripped_result) > settings.AGENT_MIN_STRIPPED_RESULT_LENGTH and '{' in _stripped_result:
-                    logger.warning(f"[{eid}] _parse_action_plan: LLM 返回了含 JSON 的长文本但提取失败，可能是格式异常")
+                if len(stripped_result) > settings.AGENT_MIN_STRIPPED_RESULT_LENGTH and '{' in stripped_result:
+                    logger.warning(
+                        f"[{eid}] _parse_action_plan: LLM 返回了含 JSON 的长文本但提取失败，可能是格式异常"
+                    )
+                elif stripped_result:
+                    reasoning_steps = self._extract_steps_from_reasoning(result)
+                    if reasoning_steps and len(reasoning_steps) <= 8:
+                        steps = self._normalize_step_fields(reasoning_steps)
+                        steps = [s for s in steps if not (isinstance(s, dict) and s.pop("_skip_invalid_type", False))]
+                        steps = self._fill_missing_text_from_task(steps, task)
+                        logger.info(f"[{eid}] _parse_action_plan: 从纯推理文本兜底提取到 {len(steps)} 个步骤")
+                        self._log_parsed_steps(steps)
+                    elif reasoning_steps:
+                        logger.warning(
+                            f"[{eid}] _parse_action_plan: reasoning fallback 提取到 {len(reasoning_steps)} 个步骤，疑似误解析系统/推理文本，放弃兜底提取"
+                        )
             else:
                 steps = self._fill_missing_text_from_task(steps, task)
                 self._log_parsed_steps(steps)
 
+            if not steps:
+                repaired_result = await self._repair_action_plan_json(
+                    raw_result=result,
+                    task=task,
+                    thought=thought,
+                    history_text=history_text,
+                    screenshot=latest_screenshot,
+                )
+                if repaired_result:
+                    logger.info(f"[{eid}] _parse_action_plan JSON 修复响应:\\n{repaired_result}")
+                    steps = self._extract_json_steps(repaired_result, allow_reasoning_fallback=False)
+                    if steps:
+                        steps = self._fill_missing_text_from_task(steps, task)
+                        self._log_parsed_steps(steps)
+
+            if not steps:
+                steps = self._infer_default_steps_for_empty_plan(task, thought)
+                if steps:
+                    logger.info(f"[{eid}]  _parse_action_plan 空计划兜底生成 {len(steps)} 个步骤")
+                    self._log_parsed_steps(steps)
+
             return steps
 
         except Exception as e:
-            logger.error(f"[{eid}] 解析操作计划失败: {e}")
+            logger.error(f"[{eid}]解析操作计划失败: {e}")
             return []
+
+    def _build_action_plan_extraction_system_prompt(self) -> str:
+        """构建动作计划抽取提示词，强制 LLM 直接输出可执行 JSON。"""
+        return f"""请把输入内容转换成可直接执行的动作计划 JSON。
+
+你的任务不是解释，不是复述，也不是分析原因；你的任务是基于截图和任务目标，直接产出 steps。
+
+{self._build_system_prompt_suffix()}
+可用动作 schema:
+{self._build_action_schema_summary()}
+
+硬性要求（必须严格遵守）:
+1. 最终输出必须是可被 json.loads 直接解析的 JSON 对象。
+2. 顶层结构必须是 {{"steps": [...]}}。
+3. 禁止输出任何解释、前言、分析、Markdown、项目符号、代码块围栏。
+4. 如果步骤是 click / double_click / move，优先给出截图坐标整数 x,y。
+5. 坐标必须基于当前截图分辨率 {self._screenshot_size[0]}x{self._screenshot_size[1]}，不是屏幕分辨率，且不得越界。
+6. 如果截图中看得到按钮、输入框或目标元素，并且你能可靠定位，就给出对应 x,y。
+7. 如果动作意图明确但无法可靠确定坐标，不要猜坐标；保留该 step，省略 x,y。
+8. 只有在动作意图本身也不明确时，才返回 {{"steps":[]}}。
+9. 每个步骤只保留必要字段，不要输出无关键。
+10. type 必须是以下之一: {self._get_action_names()}
+11. 必填参数规则:
+   - click/double_click/move: 有可靠坐标时提供 x,y；不可靠时允许省略，后续系统会做截图坐标分析
+   - type/set_edit_text: 必须有 text
+   - open_app: 必须有 app_name
+   - keyboard_input: 必须有 keys
+
+正确示例:
+{{"steps":[{{"type":"click","description":"点击下一步按钮","x":640,"y":660}}]}}
+
+错误示例:
+- 我先分析当前页面...
+- ```json ... ```
+- {{"steps":[{{"type":"click","description":"点击下一步"}}]}}
+
+只输出 JSON。"""
+
+    @staticmethod
+    def _build_action_plan_extraction_message(task: Task, thought: str, history_text: str = "") -> str:
+        """构建动作计划抽取消息，强调从截图中给出可执行坐标。"""
+        message = (
+            f"任务目标: {task.description}\n\n"
+            "请从以下内容提取最终要执行的 UI 动作步骤。\n"
+            "如果要点击页面元素，请直接基于截图给出整数 x,y。\n"
+            "坐标必须是当前截图坐标，不是屏幕坐标；不要输出超出截图范围的坐标。\n"
+            "如果动作意图明确但无法可靠给出截图坐标，请保留该 step 的 type 和 description，省略 x,y；不要猜坐标。\n"
+            "不要输出分析过程，只输出 steps 对应的信息。\n\n"
+            f"思考结果:\n{thought}"
+        )
+        if history_text:
+            message += f"\n\n历史执行记录（仅供参考，不要复述）:\n{history_text}"
+        return message
+
+    @staticmethod
+    def _build_action_schema_summary() -> str:
+        """把 UFO_AVAILABLE_ACTIONS 压缩成 prompt 友好的 schema 文本。"""
+        lines = []
+        for action in UFO_AVAILABLE_ACTIONS:
+            name = action.get("name", "")
+            params = ", ".join(action.get("params", []))
+            lines.append(f"- {name}: params=[{params}]")
+        return "\n".join(lines)
+
+    def _build_action_plan_repair_system_prompt(self) -> str:
+        """构建动作计划 JSON 修复提示词。"""
+        return f"""你是一个动作计划 JSON 修复器。
+
+你会收到一段失败的模型回复、任务目标和截图。你的唯一任务是把它重写成可执行的 JSON。
+
+可用动作 schema:
+{self._build_action_schema_summary()}
+
+硬性要求:
+1. 最终输出必须是可被 json.loads 直接解析的 JSON 对象。
+2. 顶层结构必须是 {{"steps": [...]}}。
+3. 禁止输出任何解释、分析、Markdown、代码块围栏。
+4. click / double_click / move 如果能可靠定位，提供截图坐标整数 x,y。
+5. 坐标必须基于当前截图分辨率 {self._screenshot_size[0]}x{self._screenshot_size[1]}，禁止输出屏幕坐标，禁止越界。
+6. 如果动作意图明确但无法可靠给出坐标，保留该 step 但省略 x,y；系统会在后续做截图坐标分析。不要猜坐标。
+7. 只有在动作意图本身也不明确时，才返回 {{"steps":[]}}。
+8. type 必须是以下之一: {self._get_action_names()}
+
+只输出 JSON。"""
+
+    async def _repair_action_plan_json(
+        self,
+        raw_result: str,
+        task: Task,
+        thought: str,
+        history_text: str = "",
+        screenshot: Optional[Any] = None,
+    ) -> str:
+        """当首次 LLM 响应不是有效 JSON 时，发起一次严格的 JSON 修复调用。"""
+        if not raw_result or not str(raw_result).strip():
+            return ""
+
+        repair_message = (
+            f"任务目标: {task.description}\n\n"
+            "下面这段内容原本应该是可执行的 steps JSON，但失败了。"
+            "请结合截图，把它重写成最终可执行的 JSON。\n\n"
+            f"原始失败响应:\n{raw_result}\n\n"
+            f"原始思考结果:\n{thought}"
+        )
+        if history_text:
+            repair_message += f"\n\n历史执行记录（仅供参考，不要复述）:\n{history_text}"
+
+        try:
+            if screenshot:
+                repaired = await self.llm.chat(
+                    message=repair_message,
+                    system_prompt=self._build_action_plan_repair_system_prompt(),
+                    image=screenshot,
+                    task_complexity=task.complexity,
+                )
+            else:
+                repaired = await self.llm.chat(
+                    message=repair_message,
+                    system_prompt=self._build_action_plan_repair_system_prompt(),
+                    task_complexity=task.complexity,
+                )
+            return str(repaired or "").strip()
+        except Exception as e:
+            logger.warning(f"[UFOAgent] 动作计划 JSON 修复失败: {e}")
+            return ""
+
+    @staticmethod
+    def _parse_coordinate_result(result_text: str, img_w: int, img_h: int) -> Tuple[Optional[int], Optional[int]]:
+        """当 LLM 返回空计划时，根据任务描述做最小可执行兜底。"""
+        if not result_text:
+            return None, None
+
+        cx = cy = None
+        # 优先提取顶层 x/y，避免截断 JSON 时误吃到 candidates 里的坐标。
+        top_level_prefix = result_text
+        if '"candidates"' in result_text:
+            top_level_prefix = result_text.split('"candidates"', 1)[0]
+        top_level_x = re.search(r'"x"\s*:\s*(\d+)', top_level_prefix, re.IGNORECASE)
+        top_level_y = re.search(r'"y"\s*:\s*(\d+)', top_level_prefix, re.IGNORECASE)
+        if top_level_x and top_level_y:
+            cx, cy = int(top_level_x.group(1)), int(top_level_y.group(1))
+            return cx, cy
+
+        match = re.search(r'\{[^{}]*"x"\s*:\s*(\d+)[^{}]*"y"\s*:\s*(\d+)[^{}]*\}', result_text, re.IGNORECASE)
+        if match:
+            cx, cy = int(match.group(1)), int(match.group(2))
+        else:
+            try:
+                json_match = re.search(r'\{.*\}', result_text, re.DOTALL)
+                if json_match:
+                    parsed = json.loads(json_match.group(0))
+                    if isinstance(parsed, dict):
+                        def _to_int(value):
+                            if isinstance(value, (int, float)):
+                                return int(value)
+                            if isinstance(value, list) and value and isinstance(value[0], (int, float)):
+                                return int(value[0])
+                            return None
+
+                        cx = _to_int(parsed.get("x"))
+                        cy = _to_int(parsed.get("y"))
+            except (json.JSONDecodeError, TypeError, ValueError):
+                pass
+
+            if cx is None or cy is None:
+                any_num = re.findall(r'"x"\s*:\s*(\d+)', result_text, re.IGNORECASE)
+                any_num_y = re.findall(r'"y"\s*:\s*(\d+)', result_text, re.IGNORECASE)
+                if any_num and any_num_y:
+                    cx, cy = int(any_num[0]), int(any_num_y[0])
+                elif any_num and not any_num_y:
+                    fallback_nums = re.findall(r'"x"\s*:\s*\d+[,\s]+(\d+)', result_text, re.IGNORECASE)
+                    if fallback_nums:
+                        cx = int(any_num[0])
+                        cy = int(fallback_nums[0])
+
+        return cx, cy
+
+    @staticmethod
+    def _parse_coordinate_candidates(result_text: str, img_w: int, img_h: int) -> List[Dict[str, Any]]:
+        """从 JSON 文本中解析候选坐标列表"""
+        candidates: List[Dict[str, Any]] = []
+        if not result_text:
+            return candidates
+
+        try:
+            match = re.search(r'"candidates"\s*:\s*\[(.*?)\](?:\s*[,\}])', result_text, re.DOTALL)
+            if match:
+                for item in re.finditer(r'\{[^{}]*\}', match.group(1)):
+                    item_text = item.group(0)
+                    x_match = re.search(r'"x"\s*:\s*(\d+)', item_text, re.IGNORECASE)
+                    y_match = re.search(r'"y"\s*:\s*(\d+)', item_text, re.IGNORECASE)
+                    desc_match = re.search(r'"desc"\s*:\s*"([^"]*)"', item_text, re.IGNORECASE)
+                    if x_match and y_match:
+                        x_val, y_val = int(x_match.group(1)), int(y_match.group(1))
+                        if 0 <= x_val < img_w and 0 <= y_val < img_h:
+                            candidates.append({
+                                "x": x_val,
+                                "y": y_val,
+                                "desc": desc_match.group(1) if desc_match else "",
+                            })
+        except Exception:
+            pass
+
+        return candidates
+
+    def _build_coordinate_repair_system_prompt(self, img_w: int, img_h: int) -> str:
+        """构建坐标 JSON 修复的系统提示"""
+        return (
+            "你是一个坐标 JSON 修复助手。\n"
+            "用户的原始回复中包含坐标信息但格式不规范，请提取并修正为合法的 JSON。\n\n"
+            f"图片尺寸: {img_w}x{img_h}\n"
+            "要求:\n"
+            "1. 只输出 JSON，不要包含任何 Markdown 标记。\n"
+            '2. 格式为 {"x": 数值, "y": 数值, "candidates": [{"x": 数值, "y": 数值, "desc": "描述"}]}。\n'
+            f"3. x 取值范围 [0, {img_w - 1}]，y 取值范围 [0, {img_h - 1}]。\n"
+            "4. candidates 提供 2-3 个备选点击位置，如果没有则用空列表 {}。\n"
+        )
+
+    async def _repair_coordinate_json(
+        self,
+        raw_result: str,
+        target_desc: str,
+        task: Task,
+        img_w: int,
+        img_h: int,
+        screenshot: Optional[Any] = None,
+    ) -> str:
+        """将 LLM 返回的 prose 文本修复为合法的 JSON 坐标格式，返回修复后的 JSON 字符串"""
+        if not raw_result or not str(raw_result).strip():
+            return ""
+
+        repair_message = (
+            f"任务描述: {task.description}\n"
+            f"目标元素描述: {target_desc}\n"
+            f"图片尺寸: {img_w}x{img_h}\n\n"
+            "以下原始回复包含坐标信息但格式不规范，请提取并修正为合法的 JSON 格式。\n\n"
+            f"原始回复:\n{raw_result}"
+        )
+
+        try:
+            if screenshot:
+                repaired = await self.llm.chat(
+                    message=repair_message,
+                    system_prompt=self._build_coordinate_repair_system_prompt(img_w, img_h),
+                    image=screenshot,
+                    task_complexity=task.complexity,
+                )
+            else:
+                repaired = await self.llm.chat(
+                    message=repair_message,
+                    system_prompt=self._build_coordinate_repair_system_prompt(img_w, img_h),
+                    task_complexity=task.complexity,
+                )
+            return str(repaired or "").strip()
+        except Exception as e:
+            logger.warning(f"[UFOAgent] 修复 JSON 坐标失败: {e}")
+            return ""
+
+    @staticmethod
+    def _infer_default_steps_for_empty_plan(task: Task, thought: str = "") -> List[Dict[str, Any]]:
+        """当 LLM 返回空计划时，根据任务描述做最小可执行兜底。"""
+        text = f"{getattr(task, 'title', '')} {getattr(task, 'description', '')} {thought}".lower()
+        if any(keyword in text for keyword in ("京麦", "jingmai", "jmworkstation")):
+            return [{
+                "type": "open_app",
+                "app_name": "JMWorkStation",
+                "search_keyword": "京麦",
+                "description": "打开京麦桌面应用",
+            }]
+        return []
 
     def _fill_missing_text_from_task(self, steps: List[Dict[str, Any]], task: Task) -> List[Dict[str, Any]]:
         """从任务描述中提取文本，补全 type/set_edit_text 操作缺失的 text 参数"""
@@ -2938,9 +3310,9 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             else:
                 logger.info(f"[UFOAgent] 步骤 {idx+1}: type={stype}, 无坐标参数, 描述='{desc}'")
 
-    def _extract_json_steps(self, text: str) -> List[Dict[str, Any]]:
+    def _extract_json_steps(self, text: str, allow_reasoning_fallback: bool = True) -> List[Dict[str, Any]]:
         """从 LLM 响应文本中提取 JSON 步骤"""
-        steps = self._raw_extract_json(text)
+        steps = self._raw_extract_json(text, allow_reasoning_fallback=allow_reasoning_fallback)
 
         # 过滤掉非 dict 元素 (LLM 有时输出 step1:"描述" 这样的字符串值)
         steps = [s if isinstance(s, dict) else {"description": str(s)} for s in steps if s]
@@ -2952,10 +3324,17 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         steps = [s for s in steps if not (isinstance(s, dict) and s.pop("_skip_invalid_type", False))]
 
         if not steps:
+            try:
+                parsed = json.loads((text or "").strip())
+                if isinstance(parsed, dict) and parsed.get("steps") == []:
+                    logger.info("[UFOAgent] 响应包含空 steps 列表")
+                    return []
+            except Exception:
+                pass
             logger.warning(f"[UFOAgent] 无法从响应中提取有效 JSON steps: {text[:200]}...")
         return steps
 
-    def _raw_extract_json(self, text: str) -> List[Dict[str, Any]]:
+    def _raw_extract_json(self, text: str, allow_reasoning_fallback: bool = True) -> List[Dict[str, Any]]:
         """从文本中提取 JSON 步骤（原始提取，不做归一化）"""
         # LLM 输出的 steps 数组别名
         _steps_aliases = ("steps", "plan", "actions", "operations", "execution_plan")
@@ -3047,10 +3426,11 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             return regex_steps
 
         # 推理文本兜底: 从纯中文推理文本中提取操作意图 (qwen3 thinking 最终兜底)
-        reasoning_steps = self._extract_steps_from_reasoning(text)
-        if reasoning_steps:
-            logger.info(f"[UFOAgent] 推理文本兜底提取到 {len(reasoning_steps)} 个步骤")
-            return reasoning_steps
+        if allow_reasoning_fallback:
+            reasoning_steps = self._extract_steps_from_reasoning(text)
+            if reasoning_steps:
+                logger.info(f"[UFOAgent] 推理文本兜底提取到 {len(reasoning_steps)} 个步骤")
+                return reasoning_steps
 
         return []
 
@@ -3117,6 +3497,18 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             return []
 
         steps = []
+        meta_prefixes = (
+            "我需要", "首先", "然后", "接下来", "最后", "当前", "根据", "结合", "用户",
+            "任务", "页面", "观察", "分析", "判断", "确认", "规划", "思考", "推断",
+        )
+        meta_prefixes = (
+            "我需要", "首先", "然后", "接下来", "最后", "当前", "根据", "结合", "用户",
+            "任务", "页面", "观察", "分析", "判断", "确认", "规划", "思考", "推断",
+        )
+        meta_prefixes = (
+            "我需要", "首先", "然后", "接下来", "最后", "当前", "根据", "结合", "用户",
+            "任务", "页面", "观察", "分析", "判断", "确认", "规划", "思考", "推断",
+        )
         # 匹配顶层 step 对象: 找到独立完整的 {...} 块
         # 策略: 找 "steps" 数组内的元素，或独立出现的带 type 字段的对象
         pos = 0
@@ -3191,9 +3583,21 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 
         # 按行/句分割推理文本
         lines = re.split(r'[。\n；;]', text)
+        lines = re.split(r'[\r\n。；;]', text)
+        meta_prefixes = (
+            "我需要", "首先", "然后", "接下来", "最后", "当前", "根据", "结合", "用户",
+            "任务", "页面", "观察", "分析", "判断", "确认", "规划", "思考", "推断",
+        )
         for line in lines:
             line = line.strip()
             if not line or len(line) < 4:
+                continue
+            line = re.sub(r'^\s*(?:\d+[.)、：:]|[-*•])\s*', '', line).strip()
+            if not line or len(line) < 4:
+                continue
+            if any(line.startswith(prefix) for prefix in meta_prefixes):
+                continue
+            if not re.match(r'^(?:点击|选择|确认|勾选|按下|双击|输入|填写|键入|录入|打开|启动|运行|等待)', line):
                 continue
 
             # 匹配: 点击/选择/确认 + 目标描述
@@ -3203,6 +3607,8 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             )
             if _click_m:
                 _desc = _click_m.group(1).strip()
+                _desc = re.split(r'(?:以|来|后|并|进入|继续|完成|进行|即可)', _desc, maxsplit=1)[0].strip()
+                _desc = re.sub(r'(?:按钮|选项|链接|图标|位置|元素|区域)$', '', _desc).strip()
                 if _desc and len(_desc) >= 2:
                     steps.append({"type": "click", "description": f"点击 {_desc}", "target": _desc})
                 continue
@@ -3215,7 +3621,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             if _type_m:
                 _content = _type_m.group(1).strip()
                 _target = _type_m.group(2).strip() if _type_m.group(2) else ""
-                if _content and len(_content) >= 1:
+                if _content and len(_content) >= 2:
                     step = {"type": "type", "text": _content, "description": f"输入 {_content}"}
                     if _target:
                         step["target"] = _target
@@ -3226,7 +3632,9 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             _open_m = re.search(r'(?:打开|启动|运行)\s*(\S+)', line)
             if _open_m:
                 _app = _open_m.group(1).strip()
-                if _app and len(_app) >= 2:
+                _app = re.split(r'(?:后|并|然后|以便|进行|继续)', _app, maxsplit=1)[0].strip()
+                _app = _app.strip("\"'`“”‘’ ")
+                if self._is_likely_app_name(_app):
                     steps.append({"type": "open_app", "app_name": _app, "description": f"打开 {_app}"})
                 continue
 
@@ -3237,12 +3645,26 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                 steps.append({"type": "wait", "seconds": _sec, "description": f"等待 {_sec} 秒"})
                 continue
 
-        if steps:
-            logger.info(f"[UFOAgent] 从推理文本中提取到 {len(steps)} 个操作意图 (正则兜底)")
-        return steps
+        deduped_steps = []
+        seen_signatures = set()
+        for step in steps:
+            signature = (
+                step.get("type"),
+                step.get("description"),
+                step.get("text"),
+                step.get("target"),
+                step.get("app_name"),
+            )
+            if signature in seen_signatures:
+                continue
+            seen_signatures.add(signature)
+            deduped_steps.append(step)
 
-    @staticmethod
-    def _normalize_step_fields(steps: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        if deduped_steps:
+            logger.info(f"[UFOAgent] 从推理文本中提取到 {len(deduped_steps)} 个操作意图 (正则兜底)")
+        return deduped_steps
+
+    def _normalize_step_fields(self, steps: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """归一化步骤字段名，兼容 LLM 输出的字段名变体"""
         # LLM 常见的字段名映射: action/operation → type
         action_aliases = {"action", "operation", "function", "command"}
@@ -3251,6 +3673,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         # 扩展类型: 非标准 UI 操作但由子类 (如 SkillAwareUFOAgent) 处理的特殊类型
         _extended_valid_types = {"run_skill"}
         _all_valid_types = _valid_types | _extended_valid_types
+        _action_param_map = {a["name"]: a.get("params", []) for a in UFO_AVAILABLE_ACTIONS}
         # type 值中的通用占位符 (LLM 经常输出的非操作类型)
         _generic_type_values = {"action", "step", "task", "操作", "execute", "do"}
 
@@ -3344,6 +3767,12 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                 continue
             if not isinstance(step, dict):
                 continue
+            # LLM 经常将参数包在 arguments/params 里，先提升到顶层
+            for nested_key in ("arguments", "params", "kwargs"):
+                nested = step.get(nested_key)
+                if isinstance(nested, dict):
+                    for key, value in nested.items():
+                        step.setdefault(key, value)
             # type 字段名归一化: alias → type
             if "type" not in step:
                 for alias in action_aliases:
@@ -3354,6 +3783,16 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                         if alias_val.lower() not in _valid_types:
                             step["description"] = alias_val
                         break
+
+            # LLM 有时输出 {"type":"click","params":[320,400,"left"]}，按 action schema 展开数组参数
+            raw_nested_params = step.get("params")
+            current_type = str(step.get("type", "")).strip().lower()
+            if isinstance(raw_nested_params, (list, tuple)) and current_type:
+                expected_params = _action_param_map.get(current_type, [])
+                for index, param_name in enumerate(expected_params):
+                    if index >= len(raw_nested_params):
+                        break
+                    step.setdefault(param_name, raw_nested_params[index])
 
             # type 值验证与修正: 通用占位符 → alias 字段值 → description 推断 → 模糊匹配
             raw_type = str(step.get("type", "")).strip().lower()
@@ -3434,10 +3873,21 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                             if "y" not in step and "y" in val:
                                 step["y"] = val["y"]
                         break
+            # 时间参数归一化: duration/time -> seconds
+            if step.get("seconds") is None:
+                for alias in ("duration", "time", "wait_time"):
+                    if step.get(alias) is not None:
+                        step["seconds"] = step[alias]
+                        break
 
         # 坐标缺失标记: click/double_click/scroll/move/drag 缺少必要坐标时标记
         # 标记后不在此处跳过，由执行循环通过截图分析补充坐标
         _coord_required_types = {"click", "double_click", "scroll", "move", "drag"}
+        _img_w, _img_h = (
+            getattr(self, "_image_size", None)
+            or getattr(self, "_screenshot_size", None)
+            or (0, 0)
+        )
         for step in steps:
             if not isinstance(step, dict):
                 continue
@@ -3452,6 +3902,19 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             elif stype == "drag":
                 _missing = (step.get("start_x") is None or step.get("start_y") is None
                             or step.get("end_x") is None or step.get("end_y") is None)
+            # 关键修复: LLM 给出的截图坐标如果已经超出截图边界，不能继续沿用，必须回退到坐标分析
+            if not _missing and _img_w > 0 and _img_h > 0 and stype in {"click", "double_click", "move"}:
+                _x = int(step.get("x", 0))
+                _y = int(step.get("y", 0))
+                if _x < 0 or _x >= _img_w or _y < 0 or _y >= _img_h:
+                    logger.warning(
+                        f"[UFOAgent] 步骤 type={stype} 提供的截图坐标越界: ({_x},{_y}) 不在 [0,{_img_w}]x[0,{_img_h}] 内，"
+                        "回退为待截图分析"
+                    )
+                    step["_invalid_llm_coords"] = {"x": _x, "y": _y}
+                    step.pop("x", None)
+                    step.pop("y", None)
+                    _missing = True
             if _missing:
                 desc = step.get("description", step.get("target", ""))
                 logger.info(f"[UFOAgent] 步骤 type={stype} 缺少必要坐标参数，标记待截图分析补充，desc='{desc}'")
@@ -3493,6 +3956,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         # open_app 参数补全: 从 description 提取 app_name 和 search_keyword
         # 常见中文应用名 → 进程名映射
         _app_name_map = {
+            "京麦": "JMWorkStation", "jingmai": "JMWorkStation", "jmworkstation": "JMWorkStation",
             "qq音乐": "qqmusic", "qqmusic": "qqmusic",
             "微信": "wechat", "wechat": "wechat",
             "qq": "qq", "腾讯qq": "qq",
@@ -3553,9 +4017,11 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                 _am = re.search(r"(?:打开|启动|运行|open|launch|start)\s*(.+?)(?:应用|软件|程序|窗口|app|$|，|。|,)", _source, re.IGNORECASE)
                 if _am:
                     _raw_app = _am.group(1).strip()
-                    if _raw_app and len(_raw_app) <= 20:
+                    if self._is_likely_app_name(_raw_app):
                         step["app_name"] = _raw_app
                         logger.info(f"[UFOAgent] open_app 通用正则提取 app_name='{_raw_app}'")
+                    elif _raw_app:
+                        logger.info(f"[UFOAgent] open_app 提取到疑似自然语言片段 '{_raw_app}'，忽略该 app_name")
 
         # 打开应用检测: click 步骤描述"打开/启动应用"时转换为 open_app
         _open_app_pats = [
@@ -3575,14 +4041,57 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                         _am = re.search(r"点击.*?(?:的)?\s*(.+?)(?:图标|应用|窗口|软件|程序)", desc)
                     if _am:
                         _app = _am.group(1).strip()
-                        step["type"] = "open_app"
-                        step["app_name"] = _app
-                        step.pop("x", None)
-                        step.pop("y", None)
-                        logger.info(f"[UFOAgent] 检测到打开应用意图，click → open_app, app_name='{_app}'")
+                        if self._is_likely_app_name(_app):
+                            step["type"] = "open_app"
+                            step["app_name"] = _app
+                            step.pop("x", None)
+                            step.pop("y", None)
+                            logger.info(f"[UFOAgent] 检测到打开应用意图，click → open_app, app_name='{_app}'")
+                        else:
+                            logger.info(f"[UFOAgent] click 描述中提取到非应用名 '{_app}'，保留原 click 步骤")
                     break
 
         return steps
+
+    @staticmethod
+    def _step_has_precheck_params(step: Dict[str, Any]) -> bool:
+        """判断步骤是否具备最基本的执行参数，避免在行动前被误判为空计划。"""
+        if not isinstance(step, dict):
+            return False
+
+        stype = str(step.get("type", "")).strip().lower()
+        desc = str(step.get("description", ""))
+
+        if stype in {"click", "double_click", "move"}:
+            if step.get("_needs_coord_analysis"):
+                return True
+            return step.get("x") is not None and step.get("y") is not None
+        if stype == "scroll":
+            return step.get("scroll_y") is not None or step.get("scroll_x") is not None
+        if stype == "drag":
+            if step.get("_needs_coord_analysis"):
+                return True
+            return all(
+                step.get(key) is not None
+                for key in ("start_x", "start_y", "end_x", "end_y")
+            )
+        if stype in {"type", "set_edit_text"}:
+            return bool(step.get("text"))
+        if stype == "open_app":
+            return bool(step.get("app_name"))
+        if stype == "keyboard_input":
+            return bool(step.get("keys"))
+        if stype == "run_command":
+            return bool(step.get("command"))
+        if stype == "check_process":
+            return bool(step.get("process_name"))
+        if stype == "wait":
+            return step.get("seconds") is not None or len(desc) > settings.AGENT_MIN_DESCRIPTION_LENGTH
+        if stype in {"keypress", "run_skill"}:
+            return bool(step.get("key") or step.get("keys") or step.get("skill_name") or step.get("skill"))
+
+        # 未知类型：只要描述足够具体，允许进入执行阶段再由具体动作校验。
+        return len(desc) > settings.AGENT_MIN_LONG_DESC_LENGTH
 
     async def _execute_action(
         self,
@@ -3771,14 +4280,25 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                 if not app_name:
                     result["error"] = "open_app 缺少 app_name 参数"
                 else:
-                    app_result = self._open_or_focus_app(app_name, search_keyword)
+                    proc_result = self._check_process_running(app_name)
+                    app_result = (
+                        {
+                            "success": True,
+                            "action": "skipped_process_already_running",
+                            "detail": f"应用 '{app_name}' 进程已存在，跳过 open_app 执行",
+                        }
+                        if proc_result.get("running")
+                        else self._open_or_focus_app(app_name, search_keyword)
+                    )
                     result["success"] = app_result["success"]
                     result["app_action"] = app_result["action"]
                     result["detail"] = app_result["detail"]
+                    if app_result["action"] == "skipped_process_already_running":
+                        logger.info(f"[UFOAgent] open_app 跳过: 进程 '{app_name}' 已在运行，无需重复唤起")
                     if not app_result["success"]:
                         result["error"] = app_result["detail"]
                     # 打开应用后等待窗口出现并验证前台窗口属于目标进程
-                    if app_result["success"]:
+                    if app_result["success"] and app_result["action"] != "skipped_process_already_running":
                         await asyncio.sleep(2)
                         # 验证: 检查前台窗口进程是否匹配目标应用
                         _fg_proc = self._get_foreground_process_name()
@@ -3809,17 +4329,22 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                             if _wait_ok:
                                 logger.info(f"[UFOAgent] 搜索窗口关闭后成功等到目标窗口")
                             else:
-                                logger.warning(f"[UFOAgent] 搜索窗口关闭后等待目标窗口超时，继续执行")
+                                logger.warning(f"[UFOAgent] 搜索窗口关闭后等待目标窗口超时，标记 open_app 失败")
+                                result["success"] = False
+                                result["error"] = f"open_app 前台窗口验证失败: 未等到目标进程 '{_target_proc}'"
+                                result["detail"] += " (窗口验证失败: 搜索窗口关闭后未等到目标窗口)"
                         elif _fg_proc and _target_proc:
-                            if _target_proc in _fg_proc or _fg_proc in _target_proc:
+                            if self._matches_open_app_foreground(_target_proc, _fg_proc):
                                 logger.info(f"[UFOAgent] open_app 窗口验证通过: 前台进程 '{_fg_proc}' 匹配目标 '{_target_proc}'")
                             else:
                                 logger.warning(f"[UFOAgent] open_app 窗口验证失败: 前台进程 '{_fg_proc}' 不匹配目标 '{_target_proc}'，尝试进程名回退等待")
                                 # 用进程名再等待 N 秒
                                 _wait_ok = await self._wait_for_target_window(process_name=_target_proc, timeout=settings.AGENT_PLAN_RETRY_OPEN_APP_TIMEOUT)
                                 if not _wait_ok:
-                                    logger.warning(f"[UFOAgent] open_app 进程名回退等待也超时，标记为可能未成功")
-                                    result["detail"] += " (警告: 窗口验证未确认目标进程在前台)"
+                                    logger.warning(f"[UFOAgent] open_app 进程名回退等待也超时，标记 open_app 失败")
+                                    result["success"] = False
+                                    result["error"] = f"open_app 前台窗口验证失败: 当前前台进程 '{_fg_proc}' 未切换到 '{_target_proc}'"
+                                    result["detail"] += " (窗口验证失败: 未确认目标进程在前台)"
 
             elif action_type == "run_skill":
                 # 扩展类型: 由 SkillAwareUFOAgent 处理，基类中仅记录日志
@@ -4032,6 +4557,72 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             return {"running": False, "processes": [], "match_count": 0, "error": str(e)}
 
     @staticmethod
+    def _is_likely_app_name(candidate: str) -> bool:
+        """过滤明显不是应用名的自然语言片段，避免误触发 open_app。"""
+        if not candidate:
+            return False
+
+        value = str(candidate).strip().strip("\"'`“”‘’[]()（）")
+        if not value or len(value) < 2 or len(value) > 20:
+            return False
+
+        if re.search(r"[，。,:：；、！？!?\n\t]", value):
+            return False
+
+        invalid_exact = {
+            "后", "然后", "之后", "接着", "下一步", "这个", "那个",
+            "页面", "界面", "窗口", "应用", "软件", "程序", "桌面",
+            "如何", "怎么", "怎样", "操作", "步骤", "流程",
+        }
+        if value.lower() in invalid_exact or value in invalid_exact:
+            return False
+
+        invalid_keywords = (
+            "如何", "怎么", "怎样", "进行", "完成", "处理", "查看",
+            "商品", "发布", "上架", "登录", "打开后", "之后", "然后",
+            "点击", "输入", "选择", "搜索", "界面", "页面", "步骤", "流程",
+        )
+        if any(keyword in value for keyword in invalid_keywords):
+            return False
+        if any(keyword in value for keyword in ("必须", "优先", "使用", "操作", "时")):
+            return False
+
+        if re.fullmatch(r"[a-zA-Z0-9_. -\\]{2,20}", value):
+            return True
+
+        if re.fullmatch(r"[一-鿿A-Za-z0-9_. -\\]{2,20}", value):
+            return True
+
+        return False
+
+    @staticmethod
+    def _get_visible_window_titles_for_process(process_name: str) -> List[str]:
+        """返回匹配进程的可见主窗口标题列表。"""
+        try:
+            cmd = (
+                "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; "
+                f"Get-Process | Where-Object {{$_.ProcessName -like '*{process_name}*' -and $_.MainWindowTitle -ne ''}} | "
+                "Select-Object -ExpandProperty MainWindowTitle | ConvertTo-Json -Depth 1"
+            )
+            result = subprocess.run(
+                ["powershell", "-NoProfile", "-Command", cmd],
+                capture_output=True, text=True, timeout=8,
+                encoding="utf-8", errors="ignore",
+                creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0,
+            )
+            stdout = (result.stdout or "").strip()
+            if not stdout:
+                return []
+            data = json.loads(stdout)
+            if isinstance(data, list):
+                return [str(item).strip() for item in data if str(item).strip()]
+            if isinstance(data, str) and data.strip():
+                return [data.strip()]
+        except Exception:
+            return []
+        return []
+
+    @staticmethod
     def _get_taskbar_apps() -> List[str]:
         """
         获取 Windows 任务栏中可见的应用窗口标题列表
@@ -4153,12 +4744,25 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             # 托盘中找到应用 → 通过进程检查并恢复窗口
             process_info = self._check_process_running(app_name)
             if process_info["running"]:
+                current_fg_proc = self._get_foreground_process_name()
+                if current_fg_proc and app_lower in current_fg_proc:
+                    logger.info(f"[open_app] 步骤3 成功: 前台已是目标进程 '{current_fg_proc}'，跳过重复启动")
+                    return {
+                        "success": True,
+                        "action": "already_in_foreground",
+                        "detail": f"应用 '{app_name}' 已在前台，无需重新启动"
+                    }
+
+                visible_titles = self._get_visible_window_titles_for_process(app_name)
+                if visible_titles:
+                    logger.info(f"[open_app] 检测到进程已有可见窗口: {visible_titles[:3]}")
+
                 restore_result = self._try_restore_process_window(app_name)
                 if restore_result["success"]:
                     logger.info(f"[open_app] 步骤2 成功: 从托盘恢复窗口 ({restore_result['action']})")
                     restore_result["detail"] = f"应用 '{app_name}' 在系统托盘 '{matched_tray}' 运行，已从后台恢复到前台"
                     return restore_result
-            logger.warning(f"[open_app] 步骤2 恢复失败，继续下一步...")
+                logger.warning(f"[open_app] 步骤2 恢复失败，继续下一步...")
         else:
             logger.info(f"[open_app] 步骤2: 系统托盘中未找到 '{app_name}'")
 
@@ -4265,11 +4869,12 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 
         if shortcut_path and shortcut_path != "not_found":
             # 优先用 Invoke-Item 启动 .lnk（更可靠），回退到 Start-Process
-            start_cmd = f"{_utf8_prefix}Invoke-Item -Path '{shortcut_path}'"
+            start_cmd = f"Invoke-Item -Path '{shortcut_path}'"
             start_result = self._run_system_command(start_cmd, shell="powershell", timeout=15)
             if not start_result["success"]:
-                logger.warning(f"[open_app] 方法A Invoke-Item 失败: {start_result.get('stderr', '')}, 尝试 Start-Process")
-                start_cmd = f"{_utf8_prefix}Start-Process '{shortcut_path}'"
+                logger.warning(
+                    f"[open_app] 方法A Invoke-Item 失败: {start_result.get('stderr', '')}, 尝试 Start-Process")
+                start_cmd = f"Start-Process '{shortcut_path}'"
                 start_result = self._run_system_command(start_cmd, shell="powershell", timeout=15)
             if start_result["success"]:
                 return {
@@ -4280,34 +4885,20 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             else:
                 logger.warning(f"[open_app] 方法A 快捷方式启动失败: stderr={start_result.get('stderr', '')}")
 
-        # 方法 B: Windows 搜索 (ms-search) — 打开搜索后自动回车启动第一个结果
+        # 方法 B: Windows 搜索 (ms-search) — 作为最后手段，打开搜索让用户手动操作
         logger.info(f"[open_app] 方法B: 打开 Windows 搜索 (keyword='{search}')")
         search_cmd2 = f"Start-Process 'ms-search://query={search}'"
         result2 = self._run_system_command(search_cmd2, shell="powershell", timeout=10)
         if result2["success"]:
-            # 等待搜索结果加载，然后自动按回车启动第一个搜索结果
-            import time as _time
-            _time.sleep(2.5)  # 等待搜索面板和结果加载
-            try:
-                # 按 Enter 启动搜索结果中的第一个应用
-                pyautogui.press('enter')
-                logger.info("[open_app] 方法B: 已按 Enter 启动搜索结果")
-                _time.sleep(1.5)  # 等待应用启动
-                # 按 Escape 关闭残留的搜索窗口
-                pyautogui.press('escape')
-                logger.info("[open_app] 方法B: 已按 Escape 关闭搜索窗口")
-            except Exception as _search_err:
-                logger.warning(f"[open_app] 方法B: 搜索结果自动操作失败: {_search_err}")
             return {
                 "success": True,
                 "action": "opened_search",
-                "detail": f"已通过 Windows 搜索自动启动应用 '{app_name}'（关键词: {search}）"
+                "detail": f"已打开 Windows 搜索（关键词: {search}），将在搜索结果中查找并启动应用 '{app_name}'"
             }
 
         # 方法 C: 搜索常见安装路径
         logger.info(f"[open_app] 方法C: 搜索常见安装路径 (keyword='{search}')")
         common_paths_cmd = (
-            _utf8_prefix +
             f"$searchTerm = '*{search}*'; "
             "$paths = @('C:\\Program Files', 'C:\\Program Files (x86)'); "
             "$found = $null; "
@@ -4323,7 +4914,7 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         logger.info(f"[open_app] 方法C 结果: {exe_path}")
 
         if exe_path and exe_path != "not_found":
-            start_cmd = f"{_utf8_prefix}Start-Process '{exe_path}'"
+            start_cmd = f"Start-Process '{exe_path}'"
             start_result = self._run_system_command(start_cmd, shell="powershell", timeout=15)
             if start_result["success"]:
                 return {

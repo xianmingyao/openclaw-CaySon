@@ -360,6 +360,10 @@
     "opencode-acp-control-3": {
       "version": "0.1.1",
       "installedAt": 1776871722833
+    },
+    "huguanjin-libtv-skill": {
+      "version": "1.0.4",
+      "installedAt": 1777422441520
     }
   }
 }

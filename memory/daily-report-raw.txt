@@ -1,38 +1,37 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-28 18:55:26
+Date: 2026-04-29 17:25:04
 --- GIT COMMITS ---
-  3d5dc0a4 fix: 淇 run_skill 绫诲瀷琚鍒や负 open_app 鐨?bug
-  218ab8b1 docs: SKILL.md 鏂板 Session 闅旂璇存槑鍜岄厤缃枃妗?caf1de92 feat: UFOAgent 娣诲姞 Session 瀵归綈妫€鏌ュ拰浜害鑷姩鍚姩
-  2b59e635 feat: CLI 鍏ュ彛娣诲姞 Session 鑷姩妫€娴嬩笌杩佺Щ
-  ad656e07 feat: 鏂板 SESSION_MODE 鍜?TARGET_APP_PROCESS 閰嶇疆椤?e2c4ab43 feat: 鏂板 SessionDetector Windows Session 妫€娴嬩笌杩佺Щ宸ュ叿
-  560675a3 docs: 娣诲姞 Session 闅旂闂淇璁捐鏂囨。
+  5e5d5ffa fix: 鍔犲浐 _plan() 鎻愮ず璇嶅己鍒?JSON 杈撳嚭 + 鎺ㄧ悊鏂囨湰姝ｅ垯鍏滃簳
+  e255a35c fix: SKILL.md 娣诲姞绫荤洰鍏抽敭璇嶅瓧娈靛拰绫荤洰閫夋嫨鎿嶄綔姝ラ
+  34009489 fix: 淇 qwen3 thinking 绾帹鐞嗘枃鏈鑷?JSON 鎻愬彇澶辫触鐨勯棶棰?ea88f556 fix: ms-search 鍚姩搴旂敤鍚庤嚜鍔ㄥ叧闂悳绱㈢獥鍙?1ab62adf fix: 淇 qwen3 thinking 鍐呭瀵艰嚧鐨?6 涓繍琛屾椂鏁呴殰
 --- FILES MODIFIED ---
-  18:44 | .git\FETCH_HEAD
-  16:07 | memory\2026-04-28.md
-  16:06 | knowledge-base\.notion_sync_state.json
-  15:32 | memory\.dreams\events.jsonl
-  15:32 | memory\.dreams\short-term-recall.json
-  12:54 | youdao_qr.png
-  12:52 | youdao_screenshot.png
-  12:49 | scripts\upload_to_feishu_api.py
-  12:49 | scripts\upload_to_feishu.py
-  12:48 | knowledge\千问创享日参会准备清单-2026-04-28.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-index.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-log.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-cursorrules.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-100篇_40万字规模.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-2026-04-10.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-3474 Commits.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-39k stars.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-39k视频中显示20万收藏.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-333k Stars.md
-  10:22 | knowledge-base\wiki\来源\notion-3502bb54-43k Forks.md
+  17:24 | skills\jingmai-putaway\jingmai-cli\app\service\agents\ufo_agent.py
+  17:24 | knowledge-base\.notion_sync_state.json
+  17:24 | skills\jingmai-putaway\jingmai-cli\resources\jingmai_product_publish\artifacts\exec_c604c1aa\task.json
+  17:23 | skills\jingmai-putaway\jingmai-cli\resources\screenshots\20260429_172304_692684_post_act.png
+  17:23 | skills\jingmai-putaway\jingmai-cli\resources\jingmai_product_publish\artifacts\exec_c604c1aa\runtime_result.json
+  17:23 | skills\jingmai-putaway\jingmai-cli\resources\jingmai_product_publish\artifacts\exec_c604c1aa\stdout.log
+  17:23 | skills\jingmai-putaway\jingmai-cli\resources\jingmai_product_publish\artifacts\exec_c604c1aa\stderr.log
+  17:23 | skills\jingmai-putaway\jingmai-cli\resources\jingmai_product_publish\artifacts\exec_c604c1aa\logs\skill_run.log
+  17:22 | skills\jingmai-putaway\jingmai-cli\resources\screenshots\20260429_172210_922325_pre_act.png
+  17:22 | skills\jingmai-putaway\jingmai-cli\jingmai_agent.db-journal
+  17:22 | skills\jingmai-putaway\jingmai-cli\jingmai_agent.db
+  17:22 | skills\jingmai-putaway\logs\app.log
+  17:20 | skills\jingmai-putaway\jingmai-cli\logs\app.log
+  17:20 | skills\jingmai-putaway\jingmai-cli\resources\screenshots\20260429_172049_442966_pre_act.png
+  17:20 | skills\jingmai-putaway\jingmai-cli\logs\main.log
+  17:20 | skills\jingmai-putaway\jingmai-cli\resources\screenshots\20260429_172002_814032_think.png
+  17:19 | .git\FETCH_HEAD
+  17:19 | skills\jingmai-putaway\jingmai-cli\resources\screenshots\20260429_171901_315103_post_act.png
+  17:18 | skills\jingmai-putaway\jingmai-cli\resources\screenshots\20260429_171805_542474_pre_act.png
+  17:17 | skills\jingmai-putaway\jingmai-cli\resources\screenshots\20260429_171719_002717_think.png
 --- SESSIONS ---
-  Count: 221
-  - 0120068b-4baf-4888-8e43-3f51b5f0605b.jsonl [00:10]
-  - 024e9873-dd70-4dab-be0b-f1c9b471720c.jsonl [14:05]
-  - 044fd3a9-73a2-4792-8c4d-1afee25d2bf4.jsonl [02:25]
+  Count: 138
+  - 02f34dd2-118b-4f30-a746-683a83c6a3c7.checkpoint.43ccadef-6d52-4a6d-a69c-24c6f06b11ee.jsonl [10:51]
+  - 02f34dd2-118b-4f30-a746-683a83c6a3c7.jsonl [17:24]
+  - 081b6c2a-7545-4cfe-932e-6d8830ed26a3.jsonl [02:55]
 --- SKILLS ---
+  + huguanjin-libtv-skill
   + jingmai-putaway
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-putaway"],"dayOfWeek":"Tuesday","sessionCount":221,"modifiedFiles":["E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\memory\\2026-04-28.md","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\youdao_qr.png","E:\\workspace\\youdao_screenshot.png","E:\\workspace\\scripts\\upload_to_feishu_api.py","E:\\workspace\\scripts\\upload_to_feishu.py","E:\\workspace\\knowledge\\千问创享日参会准备清单-2026-04-28.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-index.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-log.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-cursorrules.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-100篇_40万字规模.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-2026-04-10.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-3474 Commits.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-39k stars.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-39k视频中显示20万收藏.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-333k Stars.md","E:\\workspace\\knowledge-base\\wiki\\来源\\notion-3502bb54-43k Forks.md"],"gitCommits":["3d5dc0a4 fix: 淇 run_skill 绫诲瀷琚鍒や负 open_app 鐨?bug","218ab8b1 docs: SKILL.md 鏂板 Session 闅旂璇存槑鍜岄厤缃枃妗?caf1de92 feat: UFOAgent 娣诲姞 Session 瀵归綈妫€鏌ュ拰浜害鑷姩鍚姩","2b59e635 feat: CLI 鍏ュ彛娣诲姞 Session 鑷姩妫€娴嬩笌杩佺Щ","ad656e07 feat: 鏂板 SESSION_MODE 鍜?TARGET_APP_PROCESS 閰嶇疆椤?e2c4ab43 feat: 鏂板 SessionDetector Windows Session 妫€娴嬩笌杩佺Щ宸ュ叿","560675a3 docs: 娣诲姞 Session 闅旂闂淇璁捐鏂囨。"],"date":"2026.04.28"}
+{"skillsUpdated":["huguanjin-libtv-skill","jingmai-putaway"],"dayOfWeek":"Wednesday","sessionCount":138,"modifiedFiles":["E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\app\\service\\agents\\ufo_agent.py","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\jingmai_product_publish\\artifacts\\exec_c604c1aa\\task.json","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\screenshots\\20260429_172304_692684_post_act.png","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\jingmai_product_publish\\artifacts\\exec_c604c1aa\\runtime_result.json","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\jingmai_product_publish\\artifacts\\exec_c604c1aa\\stdout.log","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\jingmai_product_publish\\artifacts\\exec_c604c1aa\\stderr.log","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\jingmai_product_publish\\artifacts\\exec_c604c1aa\\logs\\skill_run.log","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\screenshots\\20260429_172210_922325_pre_act.png","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\jingmai_agent.db-journal","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\jingmai_agent.db","E:\\workspace\\skills\\jingmai-putaway\\logs\\app.log","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\logs\\app.log","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\screenshots\\20260429_172049_442966_pre_act.png","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\logs\\main.log","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\screenshots\\20260429_172002_814032_think.png","E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\screenshots\\20260429_171901_315103_post_act.png","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\screenshots\\20260429_171805_542474_pre_act.png","E:\\workspace\\skills\\jingmai-putaway\\jingmai-cli\\resources\\screenshots\\20260429_171719_002717_think.png"],"gitCommits":["5e5d5ffa fix: 鍔犲浐 _plan() 鎻愮ず璇嶅己鍒?JSON 杈撳嚭 + 鎺ㄧ悊鏂囨湰姝ｅ垯鍏滃簳","e255a35c fix: SKILL.md 娣诲姞绫荤洰鍏抽敭璇嶅瓧娈靛拰绫荤洰閫夋嫨鎿嶄綔姝ラ","34009489 fix: 淇 qwen3 thinking 绾帹鐞嗘枃鏈鑷?JSON 鎻愬彇澶辫触鐨勯棶棰?ea88f556 fix: ms-search 鍚姩搴旂敤鍚庤嚜鍔ㄥ叧闂悳绱㈢獥鍙?1ab62adf fix: 淇 qwen3 thinking 鍐呭瀵艰嚧鐨?6 涓繍琛屾椂鏁呴殰"],"date":"2026.04.29"}

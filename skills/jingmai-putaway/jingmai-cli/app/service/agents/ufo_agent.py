@@ -3694,18 +3694,33 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
                         # 验证: 检查前台窗口进程是否匹配目标应用
                         _fg_proc = self._get_foreground_process_name()
                         _target_proc = app_name.lower()
-                        # ms-search 启动方式: 前台是 searchhost，需要额外等待目标窗口
+                        # ms-search 启动方式: 前台是 searchhost，需要关闭搜索窗口再等待目标窗口
                         _is_search_intermediate = _fg_proc and "search" in _fg_proc
                         if _is_search_intermediate:
-                            logger.info(f"[UFOAgent] 前台为搜索窗口 '{_fg_proc}'，等待目标应用 '{_target_proc}' 窗口出现...")
+                            logger.info(f"[UFOAgent] 前台为搜索窗口 '{_fg_proc}'，按 Escape 关闭搜索窗口...")
+                            # 关闭搜索窗口: Escape 键关闭 Windows Search 面板
+                            try:
+                                pyautogui.press('escape')
+                                await asyncio.sleep(1.0)
+                            except Exception as _esc_err:
+                                logger.warning(f"[UFOAgent] Escape 关闭搜索窗口失败: {_esc_err}")
+                            # 再次检查前台窗口
+                            _fg_proc_after = self._get_foreground_process_name()
+                            logger.info(f"[UFOAgent] Escape 后前台进程: '{_fg_proc_after}'")
+                            if _fg_proc_after and "search" in _fg_proc_after:
+                                # Escape 没关掉，再试一次
+                                logger.info("[UFOAgent] 搜索窗口仍在，尝试 ALT+TAB 切换...")
+                                pyautogui.hotkey('alt', 'tab')
+                                await asyncio.sleep(1.0)
+                            # 等待目标窗口出现
                             _wait_ok = await self._wait_for_target_window(
                                 process_name=_target_proc,
                                 timeout=max(settings.AGENT_PLAN_RETRY_OPEN_APP_TIMEOUT, 15)
                             )
                             if _wait_ok:
-                                logger.info(f"[UFOAgent] 搜索后成功等到目标窗口")
+                                logger.info(f"[UFOAgent] 搜索窗口关闭后成功等到目标窗口")
                             else:
-                                logger.warning(f"[UFOAgent] 搜索后等待目标窗口超时，继续执行")
+                                logger.warning(f"[UFOAgent] 搜索窗口关闭后等待目标窗口超时，继续执行")
                         elif _fg_proc and _target_proc:
                             if _target_proc in _fg_proc or _fg_proc in _target_proc:
                                 logger.info(f"[UFOAgent] open_app 窗口验证通过: 前台进程 '{_fg_proc}' 匹配目标 '{_target_proc}'")
@@ -4176,15 +4191,28 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             else:
                 logger.warning(f"[open_app] 方法A 快捷方式启动失败: stderr={start_result.get('stderr', '')}")
 
-        # 方法 B: Windows 搜索 (ms-search) — 作为最后手段，打开搜索让用户手动操作
+        # 方法 B: Windows 搜索 (ms-search) — 打开搜索后自动回车启动第一个结果
         logger.info(f"[open_app] 方法B: 打开 Windows 搜索 (keyword='{search}')")
         search_cmd2 = f"Start-Process 'ms-search://query={search}'"
         result2 = self._run_system_command(search_cmd2, shell="powershell", timeout=10)
         if result2["success"]:
+            # 等待搜索结果加载，然后自动按回车启动第一个搜索结果
+            import time as _time
+            _time.sleep(2.5)  # 等待搜索面板和结果加载
+            try:
+                # 按 Enter 启动搜索结果中的第一个应用
+                pyautogui.press('enter')
+                logger.info("[open_app] 方法B: 已按 Enter 启动搜索结果")
+                _time.sleep(1.5)  # 等待应用启动
+                # 按 Escape 关闭残留的搜索窗口
+                pyautogui.press('escape')
+                logger.info("[open_app] 方法B: 已按 Escape 关闭搜索窗口")
+            except Exception as _search_err:
+                logger.warning(f"[open_app] 方法B: 搜索结果自动操作失败: {_search_err}")
             return {
                 "success": True,
                 "action": "opened_search",
-                "detail": f"已打开 Windows 搜索（关键词: {search}），将在搜索结果中查找并启动应用 '{app_name}'"
+                "detail": f"已通过 Windows 搜索自动启动应用 '{app_name}'（关键词: {search}）"
             }
 
         # 方法 C: 搜索常见安装路径

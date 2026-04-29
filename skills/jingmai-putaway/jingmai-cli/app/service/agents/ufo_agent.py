@@ -1161,10 +1161,8 @@ class UFOAgent(BaseAgent):
 4. 如果进程未运行 → 自动搜索快捷方式并启动
 open_app 执行后会自动等待 3 秒让窗口加载完成。
 
-请按照以下格式输出计划:
-1. 任务理解: 简要描述对任务的理解
-2. 执行步骤: 列出需要执行的具体步骤，每个步骤对应一个操作
-3. 预期结果: 描述任务完成后的预期状态
+**【最重要】你必须且只能输出 JSON 格式的操作计划，不要输出任何中文分析、推理或说明文字。**
+直接输出 JSON 对象，不要包裹在思考标签中，不要先写分析再写 JSON。
 
 输出 JSON 格式:
 ```json
@@ -3048,6 +3046,12 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
             logger.info(f"[UFOAgent] 正则兜底提取到 {len(regex_steps)} 个步骤")
             return regex_steps
 
+        # 推理文本兜底: 从纯中文推理文本中提取操作意图 (qwen3 thinking 最终兜底)
+        reasoning_steps = self._extract_steps_from_reasoning(text)
+        if reasoning_steps:
+            logger.info(f"[UFOAgent] 推理文本兜底提取到 {len(reasoning_steps)} 个步骤")
+            return reasoning_steps
+
         return []
 
     def _repair_truncated_json(self, text: str) -> Optional[str]:
@@ -3165,6 +3169,76 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
 
             pos = obj_end + 1
 
+        return steps
+
+    def _extract_steps_from_reasoning(self, text: str) -> List[Dict[str, Any]]:
+        """
+        从纯中文推理文本中提取操作意图 (qwen3 thinking 兜底)
+
+        当 LLM 返回纯推理文本（无任何 JSON）时，通过正则匹配中文操作描述，
+        将其转为结构化步骤。匹配模式:
+        - "点击/选择/勾选 xxx" → click
+        - "输入/填写/键入 xxx" → type
+        - "打开/启动 xxx" → open_app
+        - "等待 x 秒" → wait
+        - "滚动/向下/向上" → scroll
+        - "按下/按 Enter/Ctrl+A" → keypress
+        """
+        if not text or len(text) < 20:
+            return []
+
+        steps = []
+
+        # 按行/句分割推理文本
+        lines = re.split(r'[。\n；;]', text)
+        for line in lines:
+            line = line.strip()
+            if not line or len(line) < 4:
+                continue
+
+            # 匹配: 点击/选择/确认 + 目标描述
+            _click_m = re.search(
+                r'(?:点击|选择|确认|勾选|按下|双击)\s*["""]?([^"",，。；\n]+?)["""]?\s*(?:按钮|选项|链接|图标|位置|元素|区域)?$',
+                line
+            )
+            if _click_m:
+                _desc = _click_m.group(1).strip()
+                if _desc and len(_desc) >= 2:
+                    steps.append({"type": "click", "description": f"点击 {_desc}", "target": _desc})
+                continue
+
+            # 匹配: 输入/填写/键入 + 内容
+            _type_m = re.search(
+                r'(?:输入|填写|键入|录入)\s*["""]?([^"",，。；\n]+?)["""]?\s*(?:到|进|入)?\s*(.*)$',
+                line
+            )
+            if _type_m:
+                _content = _type_m.group(1).strip()
+                _target = _type_m.group(2).strip() if _type_m.group(2) else ""
+                if _content and len(_content) >= 1:
+                    step = {"type": "type", "text": _content, "description": f"输入 {_content}"}
+                    if _target:
+                        step["target"] = _target
+                    steps.append(step)
+                continue
+
+            # 匹配: 打开/启动 + 应用名
+            _open_m = re.search(r'(?:打开|启动|运行)\s*(\S+)', line)
+            if _open_m:
+                _app = _open_m.group(1).strip()
+                if _app and len(_app) >= 2:
+                    steps.append({"type": "open_app", "app_name": _app, "description": f"打开 {_app}"})
+                continue
+
+            # 匹配: 等待 + 时间
+            _wait_m = re.search(r'等待\s*(\d+\.?\d*)\s*(?:秒|s|秒)', line)
+            if _wait_m:
+                _sec = float(_wait_m.group(1))
+                steps.append({"type": "wait", "seconds": _sec, "description": f"等待 {_sec} 秒"})
+                continue
+
+        if steps:
+            logger.info(f"[UFOAgent] 从推理文本中提取到 {len(steps)} 个操作意图 (正则兜底)")
         return steps
 
     @staticmethod

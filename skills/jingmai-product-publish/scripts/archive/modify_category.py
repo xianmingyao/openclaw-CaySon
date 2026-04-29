@@ -1,0 +1,41 @@
+# -*- coding: utf-8 -*-
+import win32gui
+import win32con
+import win32api
+from PIL import ImageGrab
+import time
+
+hwnd = 18289096
+rect = win32gui.GetWindowRect(hwnd)
+print(f"Window: {rect}")
+
+win32gui.SetForegroundWindow(hwnd)
+time.sleep(0.5)
+
+def save_screenshot(name):
+    img = ImageGrab.grab(bbox=rect)
+    path = rf'E:\workspace\skills\jingmai-product-publish\logs\{name}.png'
+    img.save(path)
+    print(f"Saved: {path}")
+
+def click(x, y, delay=0.3):
+    win32api.SetCursorPos((x, y))
+    time.sleep(0.2)
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
+    time.sleep(0.05)
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+    time.sleep(delay)
+
+# 修改按钮坐标 (归一化388,169 -> 实际994,235)
+modify_x, modify_y = 994, 235
+
+print(f"\nStep 1: Click '修改' button at ({modify_x}, {modify_y})")
+click(modify_x, modify_y, 2)
+save_screenshot('click_modify')
+
+print("\n等待类目选择页面出现...")
+time.sleep(2)
+img = ImageGrab.grab(bbox=rect)
+img.save(r'E:\workspace\skills\jingmai-product-publish\logs\category_page.png')
+
+print("\n请查看截图，告诉我是否进入了类目选择页面")

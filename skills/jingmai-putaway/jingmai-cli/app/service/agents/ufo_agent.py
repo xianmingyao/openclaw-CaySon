@@ -2764,23 +2764,38 @@ open_app 执行后会自动等待 3 秒让窗口加载完成。
         if any(thought.startswith(prefix) for prefix in ("思考失败:", "规划失败:")):
             logger.warning(f"[{eid}] _parse_action_plan: 输入为错误消息，跳过解析: {thought[:100]}")
             return []
+
+        # 清理 qwen3 thinking 标签: 去除 <think...>...</think 推理部分
+        # OllamaProvider 在提取不到 JSON 时会将整个 thinking 内容作为 content 返回
+        _thought_cleaned = re.sub(r'<think[\s\S]*?</think\s*>', '', thought, flags=re.IGNORECASE).strip()
+        if _thought_cleaned and _thought_cleaned != thought.strip():
+            logger.info(f"[{eid}] _parse_action_plan: 清理 thinking 标签 (原文 {len(thought)} chars → 清理后 {len(_thought_cleaned)} chars)")
+            thought = _thought_cleaned
+
         # 垃圾文本检测: LLM 有时输出无意义的重复字符 (qwen3-vl 常见)
         stripped = thought.strip()
         if len(stripped) < settings.RAG_MIN_THOUGHT_LENGTH:
             logger.warning(f"[{eid}] _parse_action_plan: 输入过短 ({len(stripped)} chars)，可能为垃圾文本，跳过")
             return []
         if '{' not in stripped and len(re.findall(r'["\']', stripped)) < 2:
-            logger.warning(f"[{eid}] _parse_action_plan: 输入不含 JSON 结构，可能为垃圾文本，跳过: {stripped[:100]}")
-            return []
+            # 纯推理文本（无 JSON 结构）但内容较长时，交给 LLM 回退解析而非直接丢弃
+            # qwen3 thinking 模式常返回纯推理文本，仍可能包含有用的屏幕分析
+            if len(stripped) >= 50:
+                logger.info(f"[{eid}] _parse_action_plan: 输入不含 JSON 但为有效推理文本 ({len(stripped)} chars)，跳过直接提取，走 LLM 回退")
+                # 跳过直接提取，直接进入下方 LLM 回退
+            else:
+                logger.warning(f"[{eid}] _parse_action_plan: 输入过短且无 JSON 结构，丢弃: {stripped[:100]}")
+                return []
 
-        # 优化: 先尝试直接从 think 输出中提取 JSON (省掉 1 次 LLM 调用)
-        direct_steps = self._extract_json_steps(thought)
-        if direct_steps:
-            # 后处理: 从任务描述补全 type 操作缺失的 text 参数
-            direct_steps = self._fill_missing_text_from_task(direct_steps, task)
-            logger.info(f"[{eid}] _parse_action_plan: 直接提取到 {len(direct_steps)} 个步骤 (跳过 LLM 调用)")
-            self._log_parsed_steps(direct_steps)
-            return direct_steps
+        # 仅在文本可能包含 JSON 时尝试直接提取
+        if '{' in stripped:
+            direct_steps = self._extract_json_steps(thought)
+            if direct_steps:
+                # 后处理: 从任务描述补全 type 操作缺失的 text 参数
+                direct_steps = self._fill_missing_text_from_task(direct_steps, task)
+                logger.info(f"[{eid}] _parse_action_plan: 直接提取到 {len(direct_steps)} 个步骤 (跳过 LLM 调用)")
+                self._log_parsed_steps(direct_steps)
+                return direct_steps
 
         # 直接提取失败，回退到 LLM 解析
         logger.info(f"[{eid}] _parse_action_plan: 直接提取失败，使用 LLM 解析")

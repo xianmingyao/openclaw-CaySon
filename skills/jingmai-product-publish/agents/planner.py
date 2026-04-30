@@ -150,7 +150,8 @@ publish_product
         product_info = product_data.get("product", product_data)
         title = product_info.get("title", "") or task_desc
         price = product_info.get("price", "")
-        category = product_info.get("category") or product_info.get("category_path", "")
+        # 优先使用 category，忽略 category_path（路径太具体，不适合搜索）
+        category = product_info.get("category", "") or ""
 
         plan: List[Dict[str, Any]] = [
             {"action": "find_window", "params": {}, "required": True},
@@ -252,7 +253,8 @@ publish_product
     def _normalize_llm_steps(self, raw_steps: List[Dict[str, Any]], product_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """LLM 负责步骤顺序，本地规则统一补全参数。"""
         normalized: List[Dict[str, Any]] = []
-        category = product_data.get("category") or product_data.get("category_path", "")
+        # 优先使用 category，忽略 category_path（路径太具体，不适合搜索）
+        category = product_data.get("category", "") or ""
         title = product_data.get("title", "")
         price = product_data.get("price", "")
 
@@ -265,7 +267,12 @@ publish_product
                 required = True
             else:
                 action = raw_step.get("action", "")
-                raw_params = raw_step.get("params", {}) or {}
+                raw_params = raw_step.get("params", {})
+                # 处理 params 是字符串的情况（如 LLM 返回 "params": "插座"）
+                if isinstance(raw_params, str):
+                    raw_params = {"search_text": raw_params}
+                elif not isinstance(raw_params, dict):
+                    raw_params = {}
                 required = raw_step.get("required", True)
 
             if not action:

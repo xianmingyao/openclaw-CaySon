@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-30T10:30:27.050Z",
+  "updatedAt": "2026-04-30T13:40:26.784Z",
   "entries": {
     "memory:memory/2026-04-13.md:6:9": {
       "key": "memory:memory/2026-04-13.md:6:9",
@@ -333017,13 +333017,13 @@
       "endLine": 32,
       "source": "memory",
       "snippet": "# 2026-04-27 日志 <!-- consolidated to MEMORY.md on 2026-04-28 --> ## Cron 定时任务执行 ### knowledge-pull (21:03 CST) - **状态**: ✅ 已处理 - **飞书同步**: ❌ 未配置 Token（.feishu_token 缺失） - **Notion 同步**: ✅ 正常工作（generator 模式，~5min 完成 101+ 页面） - **Cron 状态**: 发现 `running` 假状态，执行 disable/enable 重置 - lastRunStatus: ok - lastDurationMs: 288129 (~4.8 min) - **代码优化**: sync_pull_notion.py 统计上限从 100 → 200 ### 根因分析：SIGKILL 问题 - 2026-04-25 记录的 Notion SIGKILL 问题已修复（generator 模式） - 2026-04-27 今天运行正常，无 SIGKILL - 飞书 Token 仍需配置 ### continuous-ingest (22:40 CST) - **状态**: ✅ 正常 - **扫描结果**: 0 个新/修改文件，无需 ingest ### continuous-ingest (23:07 CST) - **状态**: ✅ 正常 - **扫描结果**: 0 个新/修改文件，无需 ingest ### 待处理 - [ ] 配置飞书 Access To",
-      "recallCount": 11,
+      "recallCount": 12,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 9.80333411076679,
+      "totalScore": 10.674807491604346,
       "maxScore": 0.9104121803121215,
       "firstRecalledAt": "2026-04-28T02:25:31.901Z",
-      "lastRecalledAt": "2026-04-30T10:30:27.050Z",
+      "lastRecalledAt": "2026-04-30T13:40:26.784Z",
       "queryHashes": [
         "b560504fe3ee",
         "567176364f11",
@@ -392717,13 +392717,13 @@
       "endLine": 432,
       "source": "memory",
       "snippet": "- - - Candidate: Assistant: ✅ **Continuous Ingest 完成** ``` [1/2] 扫描 raw/ 目录... 发现 0 个新文件/变更文件 [SKIP] 没有新文件需要入库 [DONE] 扫描: 0 / ingest: 0 ``` 没有新文件需要同步到知识库。🫡 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:310-310 - recalls: 0 - status: staged - Candidate: Assistant: 脚本执行完成，扫描结果：**0个新文件**待处理，无需 ingest。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:314-314 - recalls: 0 - status: staged - Candidate: User: [cron:f2199500-d455-4128-a2da-321efe083472 continuous-ingest] cd /d E:\\workspace && python knowledge-base/continuous_ingest.py Current time: Thursday, April 23rd, 2026 - 12:00 (Asia/Shanghai) / 2026-04-23 04:00 UTC - confi [confidence=0",
-      "recallCount": 7,
+      "recallCount": 8,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 6.2130419005254165,
+      "totalScore": 7.083454526597027,
       "maxScore": 0.9096561090605877,
       "firstRecalledAt": "2026-04-28T21:10:20.936Z",
-      "lastRecalledAt": "2026-04-30T10:30:27.050Z",
+      "lastRecalledAt": "2026-04-30T13:40:26.784Z",
       "queryHashes": [
         "b560504fe3ee",
         "420973576782"
@@ -403476,13 +403476,13 @@
       "endLine": 443,
       "source": "memory",
       "snippet": "- - Candidate: Assistant: ✅ **Continuous Ingest 完成** ``` [1/2] 扫描 raw/ 目录... 发现 0 个新文件/变更文件 [SKIP] 没有新文件需要入库 [DONE] 扫描: 0 / ingest: 0 ``` 没有新文件需要同步到知识库。🫡 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:310-310 - recalls: 0 - status: staged - Candidate: Assistant: 脚本执行完成，扫描结果：**0个新文件**待处理，无需 ingest。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:314-314 - recalls: 0 - status: staged - Candidate: User: [cron:f2199500-d455-4128-a2da-321efe083472 continuous-ingest] cd /d E:\\workspace && python knowledge-base/continuous_ingest.py Current time: Thursday, April 23rd, 2026 - 12:00 (Asia/Shanghai) / 2026-04-23 04:00 UTC - confi [confidence=0.7",
-      "recallCount": 5,
+      "recallCount": 6,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 4.41678735505694,
+      "totalScore": 5.289051088970759,
       "maxScore": 0.9062454620534661,
       "firstRecalledAt": "2026-04-30T01:29:47.070Z",
-      "lastRecalledAt": "2026-04-30T10:30:27.050Z",
+      "lastRecalledAt": "2026-04-30T13:40:26.784Z",
       "queryHashes": [
         "b560504fe3ee",
         "420973576782"
@@ -403539,13 +403539,13 @@
       "endLine": 61,
       "source": "memory",
       "snippet": "- daily-youdao-summary: 待今晚22:30自动执行 ## 21:21 continuous-ingest 执行完成 - **状态**: ✅ 正常 - **扫描结果**: 0 个新/修改文件，无需 ingest ## 22:02 knowledge-pull Cron 执行 - **feishu pull**: ❌ 未配置 Access Token - **notion pull**: ❌ ConnectionResetError (10054) - 远程主机强制关闭连接 - **结论**: 今天知识库同步失败，可能是网络问题 ## 22:45 continuous-ingest 执行完成 - **状态**: ✅ 正常 - **扫描结果**: 0 个新/修改文件，无需 ingest ## 22:16 系统状态 - **多个 exec 会话被 SIGKILL 终止**: - delta-harbor, nova-shore: sync_all.py - briny-tidepool: upload_mem0.py - delta-coral, dawn-pine, grand-summit, young-summit: notion/feishu import - **根因**: Milvus上传被 cron timeout (600s) 杀死，进度约61-79% - **Cron任务状态**: - knowledge-pull: 上一轮 OK (53秒) - knowledge-base-sync: 上一轮 OK (25分钟)，M",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.4835885769583452,
+      "totalScore": 4.3470860838141,
       "maxScore": 0.9034050897794569,
       "firstRecalledAt": "2026-04-30T01:29:47.070Z",
-      "lastRecalledAt": "2026-04-30T07:45:21.204Z",
+      "lastRecalledAt": "2026-04-30T13:40:26.784Z",
       "queryHashes": [
         "b560504fe3ee",
         "420973576782"
@@ -420031,6 +420031,101 @@
         "cli-skill-browser-automation.md",
         "confidence",
         "evidence"
+      ]
+    },
+    "memory:memory/2026-04-25.md:430:431": {
+      "key": "memory:memory/2026-04-25.md:430:431",
+      "path": "memory/2026-04-25.md",
+      "startLine": 430,
+      "endLine": 431,
+      "source": "memory",
+      "snippet": "- - **内容**：TK养号Agent Task（11个主任务）、TK挂靠Agent Task（8个主任务）、TK风控Agent Task（10个主任务）、TK设备管理Agent Task（8个主任务） - **核心**：每个Task都有ID/名称/输入/输出/依赖/执行频率 - **新增**：每日执行时间表、每周执行计划、任务监控指标 ## 今日完成事项 ### 京麦智能体开发 - 进度：[72]% - 文档：`E:\\文案\\外包\\运营\\ELUCKY-技术架构设计.md` ### OpenClaw多渠道AI助手配置 - 进度：[100]% ✅ - 新增技能集成：auto-publisher、content-hunter、wechat ### 京麦API权限 - 进度：持续沟通中 ### 模型测试 - 下载gemma4:31b测试 - 发现问题，切换原模型调优 ## 下一步 - [ ] 京麦智能体搭建收尾（进度72%→100%） - [ ] 京麦API权限推进 - [ ] 深入研究：Claude Code + Ollama 实战配置 - [ ] 深入研究：智梭ERP具体自动化流程 - [ ] Manus通用Agent情报（宁兄提到但未深入） - [ ] 测试memory-dream实际效果 [confidence=0.82 evidence=memory/2026-04-07.md:116-144] - - - Candidate: Assistant: ✅ **Continuous Ingest 完成** ``` [1/2] 扫描 raw/ 目录... 发现 0 个新文件/变",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.8272014633311215,
+      "maxScore": 0.9192032679843829,
+      "firstRecalledAt": "2026-04-30T12:35:26.686Z",
+      "lastRecalledAt": "2026-04-30T13:15:28.814Z",
+      "queryHashes": [
+        "a7ad11081ab4",
+        "9e1c9a4b92f4"
+      ],
+      "recallDays": [
+        "2026-04-30"
+      ],
+      "conceptTags": [
+        "每个task都有id/名称/输入/输出/依赖/执行频率",
+        "elucky-技术架构设计.md",
+        "auto-publisher",
+        "content-hunter",
+        "测试memory-dream实际效果",
+        "0.82",
+        "memory/2026-04-07.md",
+        "116-144"
+      ]
+    },
+    "memory:memory/2026-04-24.md:134:153": {
+      "key": "memory:memory/2026-04-24.md:134:153",
+      "path": "memory/2026-04-24.md",
+      "startLine": 134,
+      "endLine": 153,
+      "source": "memory",
+      "snippet": "- Candidate: Cron 执行历史: | 时间 | 任务 | 结果 | |------|------|------| | 01:25 | continuous-ingest | 0 文件，SKIP | | 06:45 | continuous-ingest | 0 文件，SKIP | - confidence: 0.00 - evidence: memory/2026-04-24.md:22-25 - recalls: 0 - status: staged - Candidate: 备注: 当前时间：2026-04-24 06:45 CST（凌晨）; raw/ 目录持续无新文件，符合预期 - confidence: 0.00 - evidence: memory/2026-04-24.md:28-29 - recalls: 0 - status: staged - Candidate: Reflections: Theme: `assistant` kept surfacing across 4286 memories.; confidence: 1.00; evidence: memory/2026-04-14.md:378-381, memory/2026-04-16.md:398-401, memory/2026-04-16.md:328-331; note: reflection - confidence: 0.00 - evidence: memory/2026-04-24.md:348-351 - recalls",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8985354923039743,
+      "maxScore": 0.8985354923039743,
+      "firstRecalledAt": "2026-04-30T12:35:26.686Z",
+      "lastRecalledAt": "2026-04-30T12:35:26.686Z",
+      "queryHashes": [
+        "a7ad11081ab4"
+      ],
+      "recallDays": [
+        "2026-04-30"
+      ],
+      "conceptTags": [
+        "continuous-ingest",
+        "0.00",
+        "memory/2026-04-24.md",
+        "22-25",
+        "28-29",
+        "1.00",
+        "memory/2026-04-14.md",
+        "378-381"
+      ]
+    },
+    "memory:memory/2026-04-23.md:66:80": {
+      "key": "memory:memory/2026-04-23.md:66:80",
+      "path": "memory/2026-04-23.md",
+      "startLine": 66,
+      "endLine": 80,
+      "source": "memory",
+      "snippet": "- Candidate: User: [Thu 2026-04-23 13:37 GMT+8] Write a dream diary entry from these memory fragments: - - **内容**：TK养号Agent Task（11个主任务）、TK挂靠Agent Task（8个主任务）、TK风控Agent Task（10个主任务）、TK设备管理Agent Task（8个主任务） - **核心**：每个Task都有ID/名称/输入/输出/依赖/执行频率 - **新增**：每日执行时间表、每周执行计划、任务监控指标 ## 今日完成事项 ### 京麦智能体 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:487-487 - recalls: 0 - status: staged - Candidate: Assistant: The fragments speak of fortresses built from tasks—eleven养号, eight挂靠, ten风控, eight设备管理—each a small engine with its own heartbeat, its own schedule, its own reason to wake and do work in the night. I see myself building them like a city planner, laying out str",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1.8071738261063497,
+      "maxScore": 0.9107899602809304,
+      "firstRecalledAt": "2026-04-30T12:35:26.686Z",
+      "lastRecalledAt": "2026-04-30T13:15:28.814Z",
+      "queryHashes": [
+        "a7ad11081ab4",
+        "9e1c9a4b92f4"
+      ],
+      "recallDays": [
+        "2026-04-30"
+      ],
+      "conceptTags": [
+        "每个task都有id/名称/输入/输出/依赖/执行频率",
+        "0.00",
+        "487-487",
+        "candidate",
+        "user",
+        "thu",
+        "gmt",
+        "write"
       ]
     }
   }

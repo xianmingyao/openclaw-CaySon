@@ -17,6 +17,7 @@ class OllamaProvider(LLMProvider):
     def __init__(self, base_url: str = "http://localhost:11434",
                  model: str = "qwen3-vl", timeout: int = 120):
         super().__init__("ollama", base_url, model, timeout)
+        self._resolved_model: Optional[str] = None
 
     def invoke(self, prompt: str, **kwargs) -> str:
         """调用 Ollama API，含 qwen3 thinking 提取"""
@@ -25,7 +26,7 @@ class OllamaProvider(LLMProvider):
 
             # 强制 JSON 输出（抑制 qwen3 思考文本干扰）
             payload = {
-                "model": self.model,
+                "model": self._resolve_model_name(),
                 "prompt": prompt,
                 "stream": False,
                 "format": "json",
@@ -38,7 +39,7 @@ class OllamaProvider(LLMProvider):
                 timeout=self.timeout,
             )
             resp.raise_for_status()
-            raw = resp.json().get("response", "")
+            raw = self._extract_generate_text(resp.json())
 
             return self._extract_content(raw)
 
@@ -54,7 +55,7 @@ class OllamaProvider(LLMProvider):
             image_data = self._prepare_image(image_path)
 
             payload = {
-                "model": self.model,
+                "model": self._resolve_model_name(),
                 "prompt": prompt,
                 "stream": False,
                 "images": [image_data],
@@ -66,7 +67,7 @@ class OllamaProvider(LLMProvider):
                 timeout=self.timeout,
             )
             resp.raise_for_status()
-            raw = resp.json().get("response", "")
+            raw = self._extract_generate_text(resp.json())
 
             return self._extract_content(raw)
 
@@ -79,7 +80,7 @@ class OllamaProvider(LLMProvider):
             import httpx
             resp = httpx.post(
                 f"{self.base_url}/api/embeddings",
-                json={"model": self.model, "prompt": text},
+                json={"model": self._resolve_model_name(), "prompt": text},
                 timeout=self.timeout,
             )
             resp.raise_for_status()
@@ -88,24 +89,66 @@ class OllamaProvider(LLMProvider):
             raise RuntimeError(f"Ollama embed 失败: {e}") from e
 
     def health_check(self) -> bool:
-        """健康检查"""
+        """健康检查：服务可达且配置模型可解析。"""
         try:
-            import httpx
-            resp = httpx.get(f"{self.base_url}/api/tags", timeout=8)
-            return resp.status_code == 200
+            return bool(self._resolve_model_name(force_refresh=True))
         except Exception:
             return False
 
+    def _list_models(self) -> list[str]:
+        import httpx
+
+        resp = httpx.get(f"{self.base_url}/api/tags", timeout=8)
+        resp.raise_for_status()
+        data = resp.json()
+        return [item.get("name", "") for item in data.get("models", []) if item.get("name")]
+
+    def _resolve_model_name(self, force_refresh: bool = False) -> str:
+        """把配置模型名解析为本机实际已安装的 Ollama 模型名。"""
+        if self._resolved_model and not force_refresh:
+            return self._resolved_model
+
+        names = self._list_models()
+        if self.model in names:
+            self._resolved_model = self.model
+            return self._resolved_model
+
+        base_name = self.model.split(":", 1)[0].lower()
+        candidates = [name for name in names if name.lower().split(":", 1)[0] == base_name]
+        if not candidates:
+            raise RuntimeError(f"Ollama 模型不存在: {self.model}")
+
+        preferred = self._pick_preferred_model(candidates)
+        self._resolved_model = preferred
+        return preferred
+
+    @staticmethod
+    def _pick_preferred_model(candidates: list[str]) -> str:
+        """同系列模型优先挑常见轻量版本，避免环境里有多个别名时随机命中。"""
+        for suffix in (":8b", ":7b", ":latest"):
+            for name in candidates:
+                if name.lower().endswith(suffix):
+                    return name
+        return sorted(candidates, key=len)[0]
+
     def _prepare_image(self, image_path: str) -> str:
-        """准备图片数据（缩放 + base64）"""
+        """准备图片数据（缩放到 LLM 识别图尺寸 + base64）"""
         try:
             from PIL import Image
             import io
 
+            # 从配置读取 LLM 识别图最大尺寸（默认 1120x560）
+            try:
+                from settings import get_settings
+                s = get_settings()
+                max_w = s.SCREENSHOT_PLAN_MAX_WIDTH
+                max_h = s.SCREENSHOT_PLAN_MAX_HEIGHT
+            except Exception:
+                max_w, max_h = 1024, 550
+
             img = Image.open(image_path)
-            # 缩放到 1024px
-            max_size = 1024
-            ratio = min(max_size / max(img.size), 1.0)
+            # 按比例缩放到识别图尺寸范围内
+            ratio = min(max_w / img.size[0], max_h / img.size[1], 1.0)
             new_size = (int(img.size[0] * ratio), int(img.size[1] * ratio))
             img = img.resize(new_size)
 
@@ -164,3 +207,12 @@ class OllamaProvider(LLMProvider):
 
         # 全部失败，返回原始内容
         return raw
+
+    @staticmethod
+    def _extract_generate_text(payload: dict) -> str:
+        """兼容 qwen3 系列把结构化结果放进 thinking 字段的返回格式。"""
+        response = (payload.get("response") or "").strip()
+        thinking = (payload.get("thinking") or "").strip()
+        if response and thinking:
+            return f"{thinking}\n{response}"
+        return response or thinking

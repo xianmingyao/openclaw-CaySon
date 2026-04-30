@@ -1,159 +1,220 @@
 """
 京麦商品发布自动化 - Planner Agent
-LLM 生成执行计划，将商品信息转化为动作序列
+将商品数据或自然语言任务转换成执行计划。
 """
 import json
+import re
 import uuid
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
-from agents.base import BaseAgent
 from actions import ActionRegistry
+from agents.base import BaseAgent
 
 
 class PlannerAgent(BaseAgent):
-    """规划 Agent — 商品信息 → 动作序列"""
+    """规划 Agent。"""
 
     def __init__(self, settings=None):
         super().__init__(name="Planner", settings=settings)
 
     def run(self, **kwargs) -> Dict[str, Any]:
-        """入口 — 生成执行计划"""
-        product_data = kwargs.get("product_data", {})
-        if not product_data:
-            return {"success": False, "error": "缺少商品数据"}
+        product_data = kwargs.get("product_data") or {}
+        task_desc = (kwargs.get("task_desc") or "").strip()
+        if not product_data and not task_desc:
+            return {"success": False, "error": "缺少商品数据或任务描述"}
 
+        derived = self._derive_product_data_from_task(task_desc) if task_desc else {}
+        merged = {**derived, **product_data}
         task_id = kwargs.get("task_id", str(uuid.uuid4())[:8])
-        return self.plan(task_id, product_data)
+        return self.plan(task_id=task_id, product_data=merged, task_desc=task_desc)
 
-    def plan(self, task_id: str, product_data: Dict[str, Any]) -> Dict[str, Any]:
-        """生成执行计划"""
+    def plan(self, task_id: str, product_data: Dict[str, Any], task_desc: str = "") -> Dict[str, Any]:
         self.start()
-        self._log("info", f"规划任务 {task_id}: {product_data.get('title', '?')[:30]}")
+        src = product_data.get("product", product_data)
+        display_title = src.get("title") or task_desc or "未命名商品"
+        self._log("info", f"规划任务 {task_id}: {display_title[:30]}")
 
-        # 先尝试 LLM 规划
-        plan = self._llm_plan(product_data)
+        plan = self._llm_plan(src, task_desc=task_desc)
+        template_plan = self._template_plan(src, task_desc=task_desc)
         if plan:
             self._log("info", f"LLM 规划成功，{len(plan)} 步")
         else:
-            # 降级：基于规则生成模板计划
-            plan = self._template_plan(product_data)
+            plan = template_plan
             self._log("info", f"使用模板规划，{len(plan)} 步")
 
-        # 验证计划中动作是否有效
         valid_plan = self._validate_plan(plan)
 
-        # 保存到 DB
         if self._db:
-            from models import PublishTask
+            from models import PublishTask, TaskStep
+
             task = PublishTask(
                 task_id=task_id,
-                product_id=product_data.get("product_id", ""),
-                status="pending",
+                product_id=src.get("product_id", src.get("sku", "")),
+                status="planning",
                 plan={"steps": valid_plan},
+                result={"source": "llm" if plan != template_plan else "template"},
             )
             self._db.create_task(task)
 
-            # 保存步骤
-            for i, step in enumerate(valid_plan):
-                from models import TaskStep
-                self._db.save_step(TaskStep(
-                    task_id=task_id,
-                    step_index=i,
-                    action_name=step.get("action", ""),
-                    params=step.get("params", {}),
-                ))
+            for index, step in enumerate(valid_plan):
+                self._db.save_step(
+                    TaskStep(
+                        task_id=task_id,
+                        step_index=index,
+                        action_name=step.get("action", ""),
+                        params=step.get("params", {}),
+                        status="pending",
+                    )
+                )
 
         self._remember(f"任务 {task_id} 规划完成，{len(valid_plan)} 步", importance=0.6, task_id=task_id)
         self.finish(True)
         return {
             "success": True,
             "task_id": task_id,
+            "product_data": src,
             "plan": valid_plan,
             "total_steps": len(valid_plan),
         }
 
-    def _llm_plan(self, product_data: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """LLM 生成计划"""
+    def _llm_plan(self, product_data: Dict[str, Any], task_desc: str = "") -> List[Dict[str, Any]]:
         if not self._llm:
+            self._log("warning", "LLM 未注入，跳过 LLM 规划，使用模板降级")
             return []
 
-        # 获取可用动作列表
-        actions_summary = ActionRegistry.summary()
+        # 快速检查 LLM 是否可用，避免长时间等待超时
+        try:
+            available = self._llm.is_available()
+        except Exception:
+            available = False
 
-        prompt = f"""根据商品信息，生成京麦商品发布的操作步骤。
+        if not available:
+            self._log("warning", "所有 LLM provider 不健康，跳过 LLM 规划，使用模板降级")
+            return []
 
-## 可用动作
-{actions_summary}
+        prompt = f"""你是京麦商品发布规划器。
+只返回 JSON，不要解释，不要 markdown。
 
-## 商品信息
-{json.dumps(product_data, ensure_ascii=False, indent=2)}
+可用 action 名称:
+find_window
+activate_window
+navigate_to
+select_category
+fill_text
+fill_product_info
+save_draft
+verify_result
+publish_product
 
-请生成 JSON 格式的操作计划：
+要求:
+1. 只输出 {{"steps":[...]}} JSON
+2. 每个 step 至少包含 action
+3. params 可以留空，系统会自动补全
+4. required 字段可省略
+
+商品信息:
+{json.dumps(product_data, ensure_ascii=False)}
+
+任务描述:
+{task_desc or "无"}
+
+示例:
 {{
   "steps": [
-    {{"action": "动作名", "params": {{...}}, "required": true}},
-    ...
+    {{"action": "find_window"}},
+    {{"action": "activate_window"}},
+    {{"action": "navigate_to"}},
+    {{"action": "select_category"}},
+    {{"action": "fill_text"}},
+    {{"action": "fill_product_info"}},
+    {{"action": "save_draft"}},
+    {{"action": "verify_result"}},
+    {{"action": "publish_product"}},
+    {{"action": "verify_result"}}
   ]
-}}
-
-注意：
-1. 先 find_window 找到京麦窗口
-2. 再 navigate_to 进入商品发布页
-3. 填写商品信息
-4. 最后 publish_product
-5. 只使用上面列出的可用动作"""
+}}"""
 
         try:
-            response = self._llm.invoke(prompt)
-            data = json.loads(response)
-            return data.get("steps", [])
-        except Exception as e:
-            self._log("warning", f"LLM 规划失败: {e}")
+            response = (self._llm.invoke(prompt) or "").strip()
+            if not response:
+                return []
+            data = self._parse_llm_plan_response(response)
+            raw_steps = data.get("steps", []) if isinstance(data, dict) else []
+            return self._normalize_llm_steps(raw_steps, product_data)
+        except Exception as exc:
+            self._log("info", f"LLM 规划失败: {exc}")
             return []
 
-    def _template_plan(self, product_data: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """模板计划 — 基于商品信息的默认流程"""
-        title = product_data.get("title", "")
-        price = product_data.get("price", "")
-        category = product_data.get("category", "")
+    def _template_plan(self, product_data: Dict[str, Any], task_desc: str = "") -> List[Dict[str, Any]]:
+        # 支持两种数据格式：嵌套 {"product": {...}} 和扁平结构
+        product_info = product_data.get("product", product_data)
+        title = product_info.get("title", "") or task_desc
+        price = product_info.get("price", "")
+        category = product_info.get("category") or product_info.get("category_path", "")
 
-        plan = [
+        plan: List[Dict[str, Any]] = [
             {"action": "find_window", "params": {}, "required": True},
             {"action": "activate_window", "params": {}, "required": True},
+            {"action": "navigate_to", "params": {"page": "publish"}, "required": True},
         ]
 
-        # 类目选择
         if category:
-            plan.append({"action": "select_category", "params": {"category": category}, "required": True})
+            plan.append(
+                {"action": "select_category", "params": {"search_text": category}, "required": True}
+            )
 
-        # 导航到发布页
-        plan.append({"action": "navigate_to", "params": {"target": "publish_page"}, "required": True})
-
-        # 填写基本信息
         if title:
-            plan.append({"action": "fill_text", "params": {"field": "title", "value": title}, "required": True})
+            from config.jingmai_coords import PRODUCT_INFO_PAGE
 
-        # 填写商品详情
-        plan.append({
-            "action": "fill_product_info",
-            "params": {"product_data": product_data},
-            "required": True,
-        })
+            title_coords = PRODUCT_INFO_PAGE.get("title_input")
+            params = {"text": title}
+            if title_coords:
+                params.update({"x": title_coords[0], "y": title_coords[1]})
+            plan.append({"action": "fill_text", "params": params, "required": True})
 
-        if price:
-            plan.append({"action": "fill_text", "params": {"field": "price", "value": str(price)}, "required": True})
+        plan.append({"action": "fill_product_info", "params": {"product": product_data}, "required": True})
 
-        # 发布
-        plan.append({"action": "save_draft", "params": {}})
-        plan.append({"action": "verify_result", "params": {"expected": "草稿保存成功"}})
-        plan.append({"action": "publish_product", "params": {}, "required": True})
-        plan.append({"action": "verify_result", "params": {"expected": "发布成功"}})
+        if price not in ("", None):
+            from config.jingmai_coords import PRODUCT_INFO_PAGE
 
+            price_coords = PRODUCT_INFO_PAGE.get("market_price")
+            params = {"text": str(price)}
+            if price_coords:
+                params.update({"x": price_coords[0], "y": price_coords[1]})
+            plan.append({"action": "fill_text", "params": params, "required": True})
+
+        plan.extend(
+            [
+                {"action": "save_draft", "params": {}, "required": False},
+                {"action": "verify_result", "params": {"check_errors": True}, "required": False},
+                {"action": "publish_product", "params": {}, "required": True},
+                {"action": "verify_result", "params": {"check_errors": True}, "required": True},
+            ]
+        )
         return plan
 
+    def _derive_product_data_from_task(self, task_desc: str) -> Dict[str, Any]:
+        if not task_desc:
+            return {}
+
+        product: Dict[str, Any] = {"title": task_desc}
+
+        price_match = re.search(r"(\d+(?:\.\d+)?)\s*(元|块)?", task_desc)
+        if price_match:
+            product["price"] = float(price_match.group(1))
+
+        category_match = re.search(r"(?:类目|分类|类别)[:：]?\s*([^\s，,]+)", task_desc)
+        if category_match:
+            product["category"] = category_match.group(1)
+
+        sku_match = re.search(r"(?:sku|SKU|货号)[:：]?\s*([A-Za-z0-9_-]+)", task_desc)
+        if sku_match:
+            product["sku"] = sku_match.group(1)
+
+        return product
+
     def _validate_plan(self, plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """验证计划中动作是否已注册"""
-        valid = []
+        valid: List[Dict[str, Any]] = []
         registered = set(ActionRegistry.list_actions())
         for step in plan:
             action = step.get("action", "")
@@ -162,3 +223,100 @@ class PlannerAgent(BaseAgent):
             else:
                 self._log("warning", f"跳过未注册动作: {action}")
         return valid
+
+    def _parse_llm_plan_response(self, response: str) -> Dict[str, Any]:
+        """兼容代码块包裹、单 step 对象等常见 LLM 输出。"""
+        text = response.strip()
+        if text.startswith("```"):
+            lines = text.splitlines()
+            if lines and lines[0].startswith("```"):
+                lines = lines[1:]
+            if lines and lines[-1].startswith("```"):
+                lines = lines[:-1]
+            text = "\n".join(lines).strip()
+            if text.lower().startswith("json"):
+                text = text[4:].strip()
+
+        try:
+            data = json.loads(text)
+        except json.JSONDecodeError:
+            match = re.search(r"\{.*\}", text, re.DOTALL)
+            if not match:
+                return {}
+            data = json.loads(match.group(0))
+
+        if isinstance(data, dict) and "steps" not in data and "action" in data:
+            return {"steps": [data]}
+        return data if isinstance(data, dict) else {}
+
+    def _normalize_llm_steps(self, raw_steps: List[Dict[str, Any]], product_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """LLM 负责步骤顺序，本地规则统一补全参数。"""
+        normalized: List[Dict[str, Any]] = []
+        category = product_data.get("category") or product_data.get("category_path", "")
+        title = product_data.get("title", "")
+        price = product_data.get("price", "")
+
+        from config.jingmai_coords import PRODUCT_INFO_PAGE
+
+        for raw_step in raw_steps:
+            if isinstance(raw_step, str):
+                action = raw_step
+                raw_params = {}
+                required = True
+            else:
+                action = raw_step.get("action", "")
+                raw_params = raw_step.get("params", {}) or {}
+                required = raw_step.get("required", True)
+
+            if not action:
+                continue
+
+            params: Dict[str, Any] = {}
+            if action == "select_category" and category:
+                params = {"search_text": str(raw_params.get("search_text") or raw_params.get("category") or category)}
+            elif action == "navigate_to":
+                page = str(raw_params.get("page") or "publish")
+                params = {"page": page if page in {"publish", "products"} else "publish"}
+            elif action == "fill_text":
+                target = str(raw_params.get("field") or raw_params.get("name") or "").lower()
+                raw_text = str(raw_params.get("text") or "").strip()
+                wants_price = target in {"price", "market_price", "jd_price"} or raw_text == str(price)
+                wants_title = target in {"title", "name"} or (not target and raw_text in {"", title})
+
+                if wants_title and title:
+                    coords = PRODUCT_INFO_PAGE.get("title_input")
+                    params = {"text": title}
+                    if coords:
+                        params.update({"x": coords[0], "y": coords[1]})
+                elif wants_price and price not in ("", None):
+                    coords = PRODUCT_INFO_PAGE.get("market_price")
+                    params = {"text": str(price)}
+                    if coords:
+                        params.update({"x": coords[0], "y": coords[1]})
+                else:
+                    continue
+            elif action == "fill_product_info":
+                params = {"product": product_data}
+            elif action == "verify_result":
+                params = {"check_errors": True}
+
+            normalized.append({
+                "action": action,
+                "params": params,
+                "required": required,
+            })
+
+        return self._enforce_plan_order(normalized)
+
+    @staticmethod
+    def _enforce_plan_order(plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """强制关键步骤顺序，避免类目选择后又被重新导航覆盖。"""
+        select_index = next((i for i, step in enumerate(plan) if step.get("action") == "select_category"), -1)
+        navigate_index = next((i for i, step in enumerate(plan) if step.get("action") == "navigate_to"), -1)
+        if select_index == -1 or navigate_index == -1 or navigate_index < select_index:
+            return plan
+
+        reordered = list(plan)
+        navigate_step = reordered.pop(navigate_index)
+        reordered.insert(select_index, navigate_step)
+        return reordered

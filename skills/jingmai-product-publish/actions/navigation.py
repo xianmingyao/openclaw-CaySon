@@ -16,6 +16,47 @@ def _get_locator(locator=None, log=None):
     return locator
 
 
+def _select_search_result(search_text: str, log=None) -> bool:
+    """搜索类目后，尝试点击最匹配的结果。"""
+    try:
+        from pywinauto import Desktop
+        import pyautogui
+        from infrastructure.locator import WINDOW_KEYWORDS
+
+        desktop = Desktop(backend="uia")
+        candidates = []
+        for w in desktop.windows():
+            title = w.window_text()
+            if not any(kw in (title or "").lower() for kw in WINDOW_KEYWORDS):
+                continue
+            for elem in w.descendants():
+                try:
+                    name = (elem.element_info.name or "").strip()
+                    if not name or search_text not in name:
+                        continue
+                    rect = elem.rectangle()
+                    if rect.width() <= 0 or rect.height() <= 0:
+                        continue
+                    score = 0 if name == search_text else len(name)
+                    candidates.append((score, rect))
+                except Exception:
+                    continue
+            break
+
+        if not candidates:
+            return False
+
+        _, rect = min(candidates, key=lambda item: item[0])
+        pyautogui.click(rect.left + min(10, max(rect.width() // 2, 1)),
+                        rect.top + min(10, max(rect.height() // 2, 1)))
+        time.sleep(1.0)
+        return True
+    except Exception as exc:
+        if log:
+            log.warning(f"类目搜索结果点击失败: {exc}")
+        return False
+
+
 @ActionRegistry.register("select_category", "navigation", "选择商品类目")
 def select_category(search_text: str = "", level3_coords: tuple = None,
                     level4_coords: tuple = None, locator=None, log=None) -> Dict[str, Any]:
@@ -30,11 +71,14 @@ def select_category(search_text: str = "", level3_coords: tuple = None,
         # 搜索方式：在类目搜索框输入关键词
         # 类目搜索框坐标
         search_coords = (640, 260)
-        locator.click(search_coords[0], search_coords[1], delay=0.3)
+        if not locator.click(search_coords[0], search_coords[1], delay=0.3):
+            return {"success": False, "message": "点击类目搜索框失败"}
 
         # 输入搜索词
         from actions.form import fill_text
-        fill_text(search_text, x=search_coords[0], y=search_coords[1], locator=locator, log=log)
+        fill_result = fill_text(search_text, x=search_coords[0], y=search_coords[1], locator=locator, log=log)
+        if not fill_result["success"]:
+            return fill_result
         time.sleep(1.0)
 
         # 按回车搜索
@@ -44,16 +88,23 @@ def select_category(search_text: str = "", level3_coords: tuple = None,
         except Exception:
             locator.press_enter()
         time.sleep(2.0)
+        results = ["search"]
+        if not _select_search_result(search_text, log=log):
+            return {"success": False, "message": f"未找到类目搜索结果: {search_text}", "steps": results}
+        results.append("search_select")
+    else:
+        results = []
 
     # 坐标点击方式
-    results = []
     if level3_coords:
-        locator.click(level3_coords[0], level3_coords[1], delay=0.5)
+        if not locator.click(level3_coords[0], level3_coords[1], delay=0.5):
+            return {"success": False, "message": "点击三级类目失败", "steps": results}
         results.append("level3")
         time.sleep(1.0)
 
     if level4_coords:
-        locator.click(level4_coords[0], level4_coords[1], delay=0.5)
+        if not locator.click(level4_coords[0], level4_coords[1], delay=0.5):
+            return {"success": False, "message": "点击四级类目失败", "steps": results}
         results.append("level4")
         time.sleep(1.0)
     elif not level3_coords and not search_text:
@@ -61,18 +112,21 @@ def select_category(search_text: str = "", level3_coords: tuple = None,
         l3 = CATEGORY_PAGE.get("level3_third_col")
         l4 = CATEGORY_PAGE.get("level4")
         if l3:
-            locator.click(l3[0], l3[1], delay=0.5)
+            if not locator.click(l3[0], l3[1], delay=0.5):
+                return {"success": False, "message": "点击默认三级类目失败", "steps": results}
             results.append("level3_default")
             time.sleep(1.0)
         if l4:
-            locator.click(l4[0], l4[1], delay=0.5)
+            if not locator.click(l4[0], l4[1], delay=0.5):
+                return {"success": False, "message": "点击默认四级类目失败", "steps": results}
             results.append("level4_default")
             time.sleep(1.0)
 
     # 点击下一步
     next_btn = CATEGORY_PAGE.get("next_button")
     if next_btn:
-        locator.click(next_btn[0], next_btn[1], delay=1.5)
+        if not locator.click(next_btn[0], next_btn[1], delay=1.5):
+            return {"success": False, "message": "点击下一步失败", "steps": results}
         results.append("next")
 
     return {"success": True, "steps": results}
@@ -106,8 +160,8 @@ def save_draft(locator=None, log=None) -> Dict[str, Any]:
 
     coords = PRODUCT_INFO_PAGE.get("save_draft_button")
     if coords:
-        locator.click(coords[0], coords[1], delay=1.5)
-        return {"success": True}
+        success = locator.click(coords[0], coords[1], delay=1.5)
+        return {"success": success, "method": "coordinate", "message": "" if success else "点击保存草稿失败"}
 
     # fallback: UIA 查找
     try:
@@ -136,8 +190,8 @@ def publish_product(locator=None, log=None) -> Dict[str, Any]:
 
     coords = PRODUCT_INFO_PAGE.get("publish_button")
     if coords:
-        locator.click(coords[0], coords[1], delay=2.0)
-        return {"success": True}
+        success = locator.click(coords[0], coords[1], delay=2.0)
+        return {"success": success, "method": "coordinate", "message": "" if success else "点击发布按钮失败"}
 
     # fallback: UIA
     try:
@@ -195,9 +249,10 @@ def click_modify(locator=None, log=None) -> Dict[str, Any]:
 
     # fallback: 坐标点击第一个
     for coords in modify_coords:
-        locator.click(coords[0], coords[1], delay=1.0)
+        if locator.click(coords[0], coords[1], delay=1.0):
+            return {"success": True, "method": "coordinate_fallback"}
 
-    return {"success": True, "method": "coordinate_fallback"}
+    return {"success": False, "message": "点击修改链接失败"}
 
 
 @ActionRegistry.register("go_back", "navigation", "返回上一页")

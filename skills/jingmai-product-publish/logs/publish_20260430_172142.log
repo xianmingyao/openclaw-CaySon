@@ -1,0 +1,26 @@
+[2026-04-30 17:21:42] [DEBUG] [Planner] 规划任务 47083aa5: 公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/
+[2026-04-30 17:21:47] [DEBUG] [Planner] LLM 规划成功，8 步
+[2026-04-30 17:21:47] [DEBUG] [Executor] 开始 TAO 循环，8 个步骤
+[2026-04-30 17:21:47] [DEBUG] [Executor] 步骤 1/8: find_window
+[2026-04-30 17:21:51] [DEBUG] 查找京麦窗口...
+[2026-04-30 17:21:51] [DEBUG] 查找京麦窗口...
+[2026-04-30 17:21:52] [DEBUG] [Executor] 观察结果: 成功
+[2026-04-30 17:21:52] [DEBUG] [Executor] 步骤 2/8: activate_window
+[2026-04-30 17:21:55] [DEBUG] 查找京麦窗口...
+[2026-04-30 17:21:56] [DEBUG] 窗口已激活: (0, 0, 2560, 1392)
+[2026-04-30 17:21:56] [DEBUG] [Executor] 观察结果: 成功
+[2026-04-30 17:21:56] [DEBUG] [Executor] 步骤 3/8: select_category
+[2026-04-30 17:22:07] [DEBUG] [Executor] 观察结果: 成功
+[2026-04-30 17:22:07] [DEBUG] [Executor] 步骤 4/8: navigate_to
+[2026-04-30 17:22:11] [DEBUG] 导航: 点击商品菜单
+[2026-04-30 17:22:14] [DEBUG] 导航: 点击发布商品
+[2026-04-30 17:22:17] [DEBUG] [Executor] 观察结果: 成功
+[2026-04-30 17:22:17] [DEBUG] [Executor] 步骤 5/8: fill_product_info
+[2026-04-30 17:22:31] [DEBUG] [Executor] 观察结果: 成功
+[2026-04-30 17:22:31] [DEBUG] [Executor] 步骤 6/8: save_draft
+[2026-04-30 17:22:40] [DEBUG] [Executor] 观察结果: 成功
+[2026-04-30 17:22:40] [DEBUG] [Executor] 步骤 7/8: verify_result
+[2026-04-30 17:22:47] [DEBUG] [Executor] 观察结果: 成功
+[2026-04-30 17:22:47] [DEBUG] [Executor] 步骤 8/8: publish_product
+[2026-04-30 17:23:02] [DEBUG] [Executor] 观察结果: 成功
+[2026-04-30 17:23:02] [DEBUG] [Executor] TAO 循环完成，共 8 步

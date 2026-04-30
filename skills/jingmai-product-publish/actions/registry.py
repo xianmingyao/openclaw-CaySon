@@ -56,9 +56,9 @@ class ActionRegistry:
         """打印 Action 汇总"""
         cats = cls.list_categories()
         total = len(cls._actions)
-        lines = [f"ActionRegistry: {total} 个 Action"]
+        lines = [f"ActionRegistry: {total} actions"]
         for cat, count in sorted(cats.items()):
-            lines.append(f"  {cat}: {count} 个")
+            lines.append(f"  {cat}: {count}")
         return "\n".join(lines)
 
 

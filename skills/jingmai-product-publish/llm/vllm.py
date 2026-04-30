@@ -47,10 +47,18 @@ class VLLMProvider(LLMProvider):
             from PIL import Image
             import io
 
-            # 准备图片
+            # 从配置读取 LLM 识别图最大尺寸（默认 1120x560）
+            try:
+                from settings import get_settings
+                s = get_settings()
+                max_w = s.SCREENSHOT_PLAN_MAX_WIDTH
+                max_h = s.SCREENSHOT_PLAN_MAX_HEIGHT
+            except Exception:
+                max_w, max_h = 1120, 560
+
+            # 准备图片（缩放到识别图尺寸范围内）
             img = Image.open(image_path)
-            max_size = 1024
-            ratio = min(max_size / max(img.size), 1.0)
+            ratio = min(max_w / img.size[0], max_h / img.size[1], 1.0)
             new_size = (int(img.size[0] * ratio), int(img.size[1] * ratio))
             img = img.resize(new_size)
             buf = io.BytesIO()

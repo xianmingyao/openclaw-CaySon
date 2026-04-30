@@ -1,0 +1,13 @@
+{
+  "id": "9d9808c1",
+  "type": "short_term",
+  "content": "[Executor] 步骤 4/10 navigate_to: 成功",
+  "metadata": {
+    "agent": "Executor",
+    "action": "navigate_to",
+    "success": true
+  },
+  "importance": 0.5,
+  "created_at": "2026-04-30T17:28:13.762817",
+  "access_count": 0
+}

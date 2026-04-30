@@ -17,6 +17,10 @@
 - **Cron Job ID**: 67e39d09-e4b9-405e-88d5-b877739c6b3d
 - **最近状态**：2026-04-28 20:00 cron 正常完成（报告已发送）
 
+### 📊 2026-04-30 09:51 更新
+- vivid-willow session 被 SIGKILL：运行 `sync_pull_notion.py`，持续 2m5s 后被终止
+- 又是 knowledge-base sync 问题，模式跟之前一样
+
 ### 📊 2026-04-28 20:12 更新
 - SIGKILL 模式：多个 exec 会话被系统强制终止（可能是 cron timeout 或内存不足）
 - knowledge-base-sync cron 已完成：报告已生成（Milvus ~250/422 条因超时中断）

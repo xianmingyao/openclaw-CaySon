@@ -11,7 +11,7 @@ class LLMProvider(ABC):
 
     def __init__(self, name: str, base_url: str, model: str, timeout: int = 120):
         self.name = name
-        self.base_url = base_url
+        self.base_url = base_url.rstrip("/")
         self.model = model
         self.timeout = timeout
 

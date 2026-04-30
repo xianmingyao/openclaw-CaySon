@@ -1,0 +1,13 @@
+{
+  "id": "9eefb0ad",
+  "type": "short_term",
+  "content": "[Executor] 步骤 5/10 fill_text: 成功",
+  "metadata": {
+    "agent": "Executor",
+    "action": "fill_text",
+    "success": true
+  },
+  "importance": 0.5,
+  "created_at": "2026-04-30T17:28:22.312731",
+  "access_count": 0
+}

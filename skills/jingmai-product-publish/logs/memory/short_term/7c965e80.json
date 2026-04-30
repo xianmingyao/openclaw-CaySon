@@ -1,0 +1,13 @@
+{
+  "id": "7c965e80",
+  "type": "short_term",
+  "content": "[Executor] 步骤 6/10 fill_product_info: 成功",
+  "metadata": {
+    "agent": "Executor",
+    "action": "fill_product_info",
+    "success": true
+  },
+  "importance": 0.5,
+  "created_at": "2026-04-30T17:28:30.650280",
+  "access_count": 0
+}

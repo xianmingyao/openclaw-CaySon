@@ -1,0 +1,13 @@
+{
+  "id": "3413b0e9",
+  "type": "short_term",
+  "content": "[Executor] 步骤 9/10 publish_product: 失败",
+  "metadata": {
+    "agent": "Executor",
+    "action": "publish_product",
+    "success": false
+  },
+  "importance": 0.7,
+  "created_at": "2026-04-30T17:29:06.755474",
+  "access_count": 0
+}

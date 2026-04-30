@@ -1,0 +1,13 @@
+{
+  "id": "8477a5fa",
+  "type": "short_term",
+  "content": "[Executor] 步骤 6/8 save_draft: 成功",
+  "metadata": {
+    "agent": "Executor",
+    "action": "save_draft",
+    "success": true
+  },
+  "importance": 0.5,
+  "created_at": "2026-04-30T17:22:40.367645",
+  "access_count": 0
+}

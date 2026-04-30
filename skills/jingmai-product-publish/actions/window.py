@@ -72,7 +72,8 @@ def navigate_to(page: str = "publish", locator=None, log=None) -> Dict[str, Any]
     for desc, x, y in steps:
         if log:
             log.info(f"导航: {desc}")
-        locator.click(x, y, delay=1.0)
+        if not locator.click(x, y, delay=1.0):
+            return {"success": False, "message": f"导航失败: {desc}", "steps": results}
         results.append(desc)
         time.sleep(1.5)
 

@@ -97,3 +97,7 @@ class ShortTermMemory(MemoryStore):
             except Exception:
                 continue
         return cleaned
+
+    def count(self) -> int:
+        """返回当前记忆条数"""
+        return len(list(self.base_dir.glob("*.json")))

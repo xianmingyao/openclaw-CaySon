@@ -30,7 +30,8 @@ def fill_text(text: str, x: int = None, y: int = None, name: str = "",
 
     # 先点击目标位置激活输入框
     if x is not None and y is not None:
-        locator.click(x, y, delay=0.3)
+        if not locator.click(x, y, delay=0.3):
+            return {"success": False, "message": f"激活输入框失败: ({x}, {y})"}
         time.sleep(0.2)
 
     # 清除已有内容
@@ -115,6 +116,7 @@ def fill_text(text: str, x: int = None, y: int = None, name: str = "",
         try:
             import pyautogui
             pyautogui.typewrite(text, interval=0.05)
+            input_ok = True
         except Exception:
             return {"success": False, "message": f"输入失败: {text[:20]}"}
 
@@ -282,3 +284,89 @@ def fix_field(x: int, y: int, correct_value: str, locator=None, log=None) -> Dic
     # 输入正确值
     result = fill_text(correct_value, x=x, y=y, clear=False, locator=locator, log=log)
     return result
+
+
+@ActionRegistry.register("upload_image", "form", "上传商品图片")
+def upload_image(image_path: str, x: int = None, y: int = None,
+                 locator=None, log=None) -> Dict[str, Any]:
+    """上传商品图片到指定位置"""
+    import os
+    if not os.path.exists(image_path):
+        return {"success": False, "message": f"图片文件不存在: {image_path}"}
+
+    locator = _get_locator(locator, log)
+
+    # 点击上传区域激活
+    if x is not None and y is not None:
+        locator.click(x, y, delay=0.5)
+
+    # 尝试 Ctrl+V 粘贴（如果图片已在剪贴板）
+    try:
+        from PIL import Image
+        import win32clipboard
+        import win32con
+        import io
+
+        img = Image.open(image_path)
+        output = io.BytesIO()
+        img.save(output, "PNG")
+        data = output.getvalue()
+
+        win32clipboard.OpenClipboard()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.SetClipboardData(win32clipboard.CF_DIB, data)
+        win32clipboard.CloseClipboard()
+
+        import win32api
+        win32api.keybd_event(0x11, 0, 0, 0)
+        win32api.keybd_event(0x56, 0, 0, 0)
+        win32api.keybd_event(0x56, 0, win32con.KEYEVENTF_KEYUP, 0)
+        win32api.keybd_event(0x11, 0, win32con.KEYEVENTF_KEYUP, 0)
+        time.sleep(0.5)
+        return {"success": True, "method": "clipboard_paste", "image": image_path}
+    except Exception:
+        pass
+
+    return {"success": False, "message": "图片上传失败，尝试粘贴方式未成功"}
+
+
+@ActionRegistry.register("wait_and_click", "form", "等待元素出现后点击")
+def wait_and_click(name: str = "", x: int = None, y: int = None,
+                   timeout: float = 10.0, interval: float = 1.0,
+                   locator=None, log=None) -> Dict[str, Any]:
+    """等待指定元素出现后点击，超时返回失败"""
+    import time as _time
+    locator = _get_locator(locator, log)
+    start = _time.time()
+
+    while _time.time() - start < timeout:
+        # 坐标方式：直接尝试点击
+        if x is not None and y is not None:
+            locator.click(x, y, delay=0.3)
+            return {"success": True, "method": "coordinate"}
+
+        # 名称方式：尝试 UIA 查找
+        if name:
+            try:
+                from pywinauto import Desktop
+                desktop = Desktop(backend="uia")
+                from infrastructure.locator import WINDOW_KEYWORDS
+                for w in desktop.windows():
+                    title = w.window_text()
+                    if not any(kw in (title or "").lower() for kw in WINDOW_KEYWORDS):
+                        continue
+                    for elem in w.descendants():
+                        try:
+                            elem_name = elem.element_info.name or ""
+                            if name in elem_name:
+                                elem.invoke()
+                                return {"success": True, "method": "uia", "name": name}
+                        except Exception:
+                            continue
+                    break
+            except Exception:
+                pass
+
+        _time.sleep(interval)
+
+    return {"success": False, "message": f"等待超时: {name or (x, y)}"}

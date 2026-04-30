@@ -144,3 +144,68 @@ def check_status(locator=None, log=None) -> Dict[str, Any]:
         pass
 
     return result
+
+
+@ActionRegistry.register("wait_for_text", "verification", "等待指定文本出现")
+def wait_for_text(expected_text: str, timeout: float = 10.0, interval: float = 1.0,
+                  locator=None, log=None) -> Dict[str, Any]:
+    """等待页面中出现指定文本"""
+    import time as _time
+    locator = _get_locator(locator, log)
+    start = _time.time()
+
+    while _time.time() - start < timeout:
+        try:
+            from pywinauto import Desktop
+            desktop = Desktop(backend="uia")
+            from infrastructure.locator import WINDOW_KEYWORDS
+
+            for w in desktop.windows():
+                title = w.window_text()
+                if not any(kw in (title or "").lower() for kw in WINDOW_KEYWORDS):
+                    continue
+                for elem in w.descendants():
+                    try:
+                        name = elem.element_info.name or ""
+                        if expected_text in name:
+                            return {"success": True, "found": name, "text": expected_text}
+                    except Exception:
+                        continue
+                break
+        except Exception:
+            pass
+        _time.sleep(interval)
+
+    return {"success": False, "message": f"等待文本超时: {expected_text}"}
+
+
+@ActionRegistry.register("get_page_info", "verification", "获取当前页面信息")
+def get_page_info(fields: list = None, locator=None, log=None) -> Dict[str, Any]:
+    """获取当前页面中所有 Edit 控件的值，用于状态检查"""
+    locator = _get_locator(locator, log)
+    result = {"success": True, "fields": {}, "count": 0}
+
+    try:
+        from pywinauto import Desktop
+        desktop = Desktop(backend="uia")
+        from infrastructure.locator import WINDOW_KEYWORDS
+
+        for w in desktop.windows():
+            title = w.window_text()
+            if not any(kw in (title or "").lower() for kw in WINDOW_KEYWORDS):
+                continue
+            for elem in w.descendants(control_type="Edit"):
+                try:
+                    name = elem.element_info.name or f"edit_{result['count']}"
+                    value = elem.get_value() or ""
+                    if value.strip():
+                        result["fields"][name] = value
+                        result["count"] += 1
+                except Exception:
+                    continue
+            break
+    except Exception as e:
+        result["success"] = False
+        result["error"] = str(e)
+
+    return result

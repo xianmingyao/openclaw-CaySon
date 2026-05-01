@@ -17,44 +17,37 @@ def _get_locator(locator=None, log=None):
 
 
 def _select_search_result(search_text: str, log=None) -> bool:
-    """搜索类目后，尝试点击最匹配的结果。"""
+    """搜索类目后，尝试选择最匹配的搜索结果。"""
     try:
-        from pywinauto import Desktop
         import pyautogui
-        from infrastructure.locator import WINDOW_KEYWORDS
-
-        desktop = Desktop(backend="uia")
-        candidates = []
-        for w in desktop.windows():
-            title = w.window_text()
-            if not any(kw in (title or "").lower() for kw in WINDOW_KEYWORDS):
-                continue
-            for elem in w.descendants():
-                try:
-                    name = (elem.element_info.name or "").strip()
-                    if not name or search_text not in name:
-                        continue
-                    rect = elem.rectangle()
-                    if rect.width() <= 0 or rect.height() <= 0:
-                        continue
-                    score = 0 if name == search_text else len(name)
-                    candidates.append((score, rect))
-                except Exception:
-                    continue
-            break
-
-        if not candidates:
-            return False
-
-        _, rect = min(candidates, key=lambda item: item[0])
-        pyautogui.click(rect.left + min(10, max(rect.width() // 2, 1)),
-                        rect.top + min(10, max(rect.height() // 2, 1)))
+        # 京麦搜索后通常会有下拉列表，先按一次 ↓ 选中高亮项
+        pyautogui.press("down")
+        time.sleep(0.5)
+        # 如果搜索词包含"插座"，尝试再按一次 ↓ 跳过可能的第一层分类
+        if "插座" in search_text:
+            pyautogui.press("down")
+            time.sleep(0.3)
+        pyautogui.press("enter")
         time.sleep(1.0)
         return True
     except Exception as exc:
         if log:
-            log.warning(f"类目搜索结果点击失败: {exc}")
+            log.warning(f"类目搜索结果选择失败: {exc}")
         return False
+
+
+def _page_contains_text(expected_text: str, locator=None, log=None) -> bool:
+    """使用 UIA 扫描当前窗口文本，判断页面是否出现目标文本。"""
+    locator = _get_locator(locator, log)
+    try:
+        for elem in locator.inspect_elements():
+            name = str(elem.get("name") or "")
+            if expected_text in name:
+                return True
+    except Exception as exc:
+        if log:
+            log.warning(f"页面文本扫描失败: {exc}")
+    return False
 
 
 @ActionRegistry.register("select_category", "navigation", "选择商品类目")
@@ -92,6 +85,13 @@ def select_category(search_text: str = "", level3_coords: tuple = None,
         if not _select_search_result(search_text, log=log):
             return {"success": False, "message": f"未找到类目搜索结果: {search_text}", "steps": results}
         results.append("search_select")
+        time.sleep(1.0)
+        if not _page_contains_text(search_text, locator=locator, log=log):
+            return {
+                "success": False,
+                "message": f"类目选择后页面未出现目标关键词: {search_text}",
+                "steps": results,
+            }
     else:
         results = []
 
@@ -128,6 +128,13 @@ def select_category(search_text: str = "", level3_coords: tuple = None,
         if not locator.click(next_btn[0], next_btn[1], delay=1.5):
             return {"success": False, "message": "点击下一步失败", "steps": results}
         results.append("next")
+        time.sleep(2.0)
+        if _page_contains_text("类目选择发品", locator=locator, log=log):
+            return {
+                "success": False,
+                "message": "点击下一步后仍停留在类目选择页",
+                "steps": results,
+            }
 
     return {"success": True, "steps": results}
 

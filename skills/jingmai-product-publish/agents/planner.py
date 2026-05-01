@@ -1,6 +1,5 @@
 """
 京麦商品发布自动化 - Planner Agent
-将商品数据或自然语言任务转换成执行计划。
 """
 import json
 import re
@@ -37,10 +36,10 @@ class PlannerAgent(BaseAgent):
         plan = self._llm_plan(src, task_desc=task_desc)
         template_plan = self._template_plan(src, task_desc=task_desc)
         if plan:
-            self._log("info", f"LLM 规划成功，{len(plan)} 步")
+            self._log("info", f"LLM 规划成功，共 {len(plan)} 步")
         else:
             plan = template_plan
-            self._log("info", f"使用模板规划，{len(plan)} 步")
+            self._log("info", f"使用模板规划，共 {len(plan)} 步")
 
         valid_plan = self._validate_plan(plan)
 
@@ -67,7 +66,7 @@ class PlannerAgent(BaseAgent):
                     )
                 )
 
-        self._remember(f"任务 {task_id} 规划完成，{len(valid_plan)} 步", importance=0.6, task_id=task_id)
+        self._remember(f"任务 {task_id} 规划完成，共 {len(valid_plan)} 步", importance=0.6, task_id=task_id)
         self.finish(True)
         return {
             "success": True,
@@ -82,7 +81,6 @@ class PlannerAgent(BaseAgent):
             self._log("warning", "LLM 未注入，跳过 LLM 规划，使用模板降级")
             return []
 
-        # 快速检查 LLM 是否可用，避免长时间等待超时
         try:
             available = self._llm.is_available()
         except Exception:
@@ -92,25 +90,24 @@ class PlannerAgent(BaseAgent):
             self._log("warning", "所有 LLM provider 不健康，跳过 LLM 规划，使用模板降级")
             return []
 
-        prompt = f"""你是京麦商品发布规划器。
-只返回 JSON，不要解释，不要 markdown。
-
+        prompt = f"""你是京麦商品发布规划器。只返回 JSON，不要解释，不要 markdown。
 可用 action 名称:
-find_window
-activate_window
-navigate_to
-select_category
-fill_text
-fill_product_info
-save_draft
-verify_result
-publish_product
+find_window - 查找京麦窗口
+activate_window - 激活京麦窗口
+navigate_to - 导航到发布商品页面
+select_category - 选择商品类目（参数用 search_text）
+fill_product_info - 批量填写商品信息（title, brand, model, sku, price 等）
+fill_text - 单独填写文本字段（仅在 fill_product_info 不适用时使用）
+save_draft - 保存草稿
+verify_result - 验证结果
+publish_product - 发布商品
 
-要求:
-1. 只输出 {{"steps":[...]}} JSON
-2. 每个 step 至少包含 action
-3. params 可以留空，系统会自动补全
-4. required 字段可省略
+重要规则:
+1. fill_product_info 会填入 title, brand, model, sku, price 等所有字段
+2. 不要在 fill_product_info 之后又单独生成 fill_text 来填充相同字段
+3. 只输出 {{"steps":[...]}} JSON
+4. 每个 step 至少包含 action
+5. params 可以留空，系统会自动补全
 
 商品信息:
 {json.dumps(product_data, ensure_ascii=False)}
@@ -118,19 +115,17 @@ publish_product
 任务描述:
 {task_desc or "无"}
 
-示例:
+正确示例:
 {{
   "steps": [
     {{"action": "find_window"}},
     {{"action": "activate_window"}},
     {{"action": "navigate_to"}},
-    {{"action": "select_category"}},
-    {{"action": "fill_text"}},
+    {{"action": "select_category", "params": {{"search_text": "插座"}}}},
     {{"action": "fill_product_info"}},
     {{"action": "save_draft"}},
     {{"action": "verify_result"}},
-    {{"action": "publish_product"}},
-    {{"action": "verify_result"}}
+    {{"action": "publish_product"}}
   ]
 }}"""
 
@@ -146,11 +141,9 @@ publish_product
             return []
 
     def _template_plan(self, product_data: Dict[str, Any], task_desc: str = "") -> List[Dict[str, Any]]:
-        # 支持两种数据格式：嵌套 {"product": {...}} 和扁平结构
         product_info = product_data.get("product", product_data)
         title = product_info.get("title", "") or task_desc
         price = product_info.get("price", "")
-        # 优先使用 category，忽略 category_path（路径太具体，不适合搜索）
         category = product_info.get("category", "") or ""
 
         plan: List[Dict[str, Any]] = [
@@ -160,9 +153,7 @@ publish_product
         ]
 
         if category:
-            plan.append(
-                {"action": "select_category", "params": {"search_text": category}, "required": True}
-            )
+            plan.append({"action": "select_category", "params": {"search_text": category}, "required": True})
 
         if title:
             from config.jingmai_coords import PRODUCT_INFO_PAGE
@@ -226,7 +217,6 @@ publish_product
         return valid
 
     def _parse_llm_plan_response(self, response: str) -> Dict[str, Any]:
-        """兼容代码块包裹、单 step 对象等常见 LLM 输出。"""
         text = response.strip()
         if text.startswith("```"):
             lines = text.splitlines()
@@ -253,7 +243,6 @@ publish_product
     def _normalize_llm_steps(self, raw_steps: List[Dict[str, Any]], product_data: Dict[str, Any]) -> List[Dict[str, Any]]:
         """LLM 负责步骤顺序，本地规则统一补全参数。"""
         normalized: List[Dict[str, Any]] = []
-        # 优先使用 category，忽略 category_path（路径太具体，不适合搜索）
         category = product_data.get("category", "") or ""
         title = product_data.get("title", "")
         price = product_data.get("price", "")
@@ -268,7 +257,6 @@ publish_product
             else:
                 action = raw_step.get("action", "")
                 raw_params = raw_step.get("params", {})
-                # 处理 params 是字符串的情况（如 LLM 返回 "params": "插座"）
                 if isinstance(raw_params, str):
                     raw_params = {"search_text": raw_params}
                 elif not isinstance(raw_params, dict):
@@ -279,8 +267,16 @@ publish_product
                 continue
 
             params: Dict[str, Any] = {}
-            if action == "select_category" and category:
-                params = {"search_text": str(raw_params.get("search_text") or raw_params.get("category") or category)}
+            if action == "select_category":
+                raw_category = (
+                    raw_params.get("search_text")
+                    or raw_params.get("category")
+                    or raw_params.get("category_name")
+                    or category
+                )
+                if not raw_category:
+                    continue
+                params = {"search_text": str(raw_category).strip()}
             elif action == "navigate_to":
                 page = str(raw_params.get("page") or "publish")
                 params = {"page": page if page in {"publish", "products"} else "publish"}
@@ -307,17 +303,19 @@ publish_product
             elif action == "verify_result":
                 params = {"check_errors": True}
 
-            normalized.append({
-                "action": action,
-                "params": params,
-                "required": required,
-            })
+            normalized.append(
+                {
+                    "action": action,
+                    "params": params,
+                    "required": required,
+                }
+            )
 
         return self._enforce_plan_order(normalized)
 
     @staticmethod
     def _enforce_plan_order(plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """强制关键步骤顺序，避免类目选择后又被重新导航覆盖。"""
+        """确保 navigate_to 在 select_category 之前。"""
         select_index = next((i for i, step in enumerate(plan) if step.get("action") == "select_category"), -1)
         navigate_index = next((i for i, step in enumerate(plan) if step.get("action") == "navigate_to"), -1)
         if select_index == -1 or navigate_index == -1 or navigate_index < select_index:

@@ -1,16 +1,17 @@
 """
 京麦商品发布自动化 - CLI 入口
 """
+import inspect
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, List
 
 import click
 
 
 def _read_json_file(path: Path) -> Any:
-    """兼容普通 UTF-8 与 UTF-8 BOM。"""
+    """兼容普通 UTF-8 和 UTF-8 BOM。"""
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
@@ -42,7 +43,7 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
         mapped_headers = [_normalize_header(header) for header in headers]
         items: List[Dict[str, Any]] = []
         for row in rows[1:]:
-            payload = {}
+            payload: Dict[str, Any] = {}
             for index, cell in enumerate(row):
                 key = mapped_headers[index] if index < len(mapped_headers) else ""
                 if not key or cell in (None, ""):
@@ -135,6 +136,117 @@ def _extract_plan_payload(plan_data: Any) -> Dict[str, Any]:
     raise ValueError("计划文件格式无效")
 
 
+def _build_plan_package(plan_result: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "task_id": plan_result["task_id"],
+        "product_data": plan_result["product_data"],
+        "plan": plan_result["plan"],
+        "total_steps": plan_result["total_steps"],
+    }
+
+
+def _resolve_resume_step_index(plan_data: Any, steps: List[Dict[str, Any]]) -> int:
+    if not isinstance(plan_data, dict):
+        return 0
+
+    plan_steps = plan_data.get("plan")
+    if not isinstance(plan_steps, list):
+        return 0
+
+    for idx, step in enumerate(plan_steps):
+        if str(step.get("status", "")).lower() != "success":
+            return idx
+    return len(steps)
+
+
+def _build_progress_callback(prefix: str = ""):
+    def on_progress(step_index, total_steps, action, success, retries, observation, **_):
+        status_icon = "OK" if success else "FAIL"
+        obs_reason = (observation.get("reason", "") if observation else "")[:40]
+        retry_info = f"（重试 {retries} 次）" if retries > 1 else ""
+        line = f"[{step_index}/{total_steps}] {action}: {status_icon}{retry_info} {obs_reason}".rstrip()
+        click.echo(f"{prefix}{line}" if prefix else line)
+
+    return on_progress
+
+
+def _print_execution_diagnostics(result: Dict[str, Any], prefix: str = ""):
+    risk_stats = result.get("risk_stats") or {}
+    high_risk_count = int(risk_stats.get("high_risk_window_shift_count", 0) or 0)
+    if high_risk_count > 0:
+        click.echo(f"{prefix}高风险窗口漂移: {high_risk_count} 次")
+
+    recovery_error = result.get("recovery_error", "")
+    if recovery_error:
+        click.echo(f"{prefix}恢复错误: {recovery_error}")
+
+
+def _default_plan_path(task_id: str) -> str:
+    plan_dir = Path("data/plans")
+    plan_dir.mkdir(parents=True, exist_ok=True)
+    return str((plan_dir / f"{task_id}.json").resolve())
+
+
+def _resolve_plan_output_path(plan_out: str, task_id: str, treat_as_dir: bool = False) -> str:
+    if not plan_out:
+        return _default_plan_path(task_id)
+
+    output_path = Path(plan_out)
+    if treat_as_dir:
+        output_path.mkdir(parents=True, exist_ok=True)
+        return str((output_path / f"{task_id}.json").resolve())
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    return str(output_path.resolve())
+
+
+def _invoke_executor_run(executor, **kwargs):
+    run_method = executor.run
+    try:
+        signature = inspect.signature(run_method)
+    except (TypeError, ValueError):
+        return run_method(**kwargs)
+
+    parameters = signature.parameters
+    if any(param.kind == inspect.Parameter.VAR_KEYWORD for param in parameters.values()):
+        return run_method(**kwargs)
+
+    filtered_kwargs = {name: value for name, value in kwargs.items() if name in parameters}
+    return run_method(**filtered_kwargs)
+
+
+def _run_publish_flow(product_data: Dict[str, Any], plan_out: str = "", progress_prefix: str = "") -> Dict[str, Any]:
+    from agents.factory import AgentFactory
+
+    factory = AgentFactory()
+    planner = factory.create_planner()
+    plan_result = planner.run(product_data=product_data)
+    if not plan_result.get("success"):
+        return {"success": False, "stage": "plan", "error": plan_result.get("error", "规划失败")}
+
+    plan_package = _build_plan_package(plan_result)
+    plan_file_path = _resolve_plan_output_path(plan_out, plan_result["task_id"])
+    plan_path = Path(plan_file_path)
+    plan_path.parent.mkdir(parents=True, exist_ok=True)
+    plan_path.write_text(json.dumps(plan_package, ensure_ascii=False, indent=2), encoding="utf-8")
+    plan_file = str(plan_path.resolve())
+
+    click.echo(f"{progress_prefix}Plan-and-Solve 完成，共 {plan_result['total_steps']} 步")
+
+    executor = factory.create_executor()
+    exec_result = _invoke_executor_run(
+        executor,
+        plan=plan_result["plan"],
+        task_id=plan_result["task_id"],
+        plan_file=plan_file,
+        original_plan_data=plan_package,
+        on_progress=_build_progress_callback(progress_prefix),
+    )
+    exec_result["task_id"] = plan_result["task_id"]
+    exec_result["plan"] = plan_package
+    return exec_result
+
+
 @click.group()
 @click.version_option(version="2.0.0", prog_name="jingmai")
 def cli():
@@ -144,28 +256,21 @@ def cli():
 @cli.command()
 @click.option("--config", "-c", "config_file", help="商品数据 JSON 文件路径")
 @click.option("--data", "-d", help="商品数据 JSON 字符串")
-def publish(config_file, data):
-    """发布商品（规划 + 执行）"""
-    from agents.factory import AgentFactory
-
+@click.option("--plan-out", default="", help="可选：保存完整计划包 JSON，供监控/恢复执行")
+def publish(config_file, data, plan_out):
+    """发布商品（默认主入口：Plan-and-Solve → ReAct → Reflection）"""
     product_data = _load_product_data(config_file, data)
-    factory = AgentFactory()
-
-    planner = factory.create_planner()
-    plan_result = planner.run(product_data=product_data)
-    if not plan_result.get("success"):
-        click.echo(f"规划失败: {plan_result.get('error')}", err=True)
-        sys.exit(1)
-
-    click.echo(f"规划完成: {plan_result['total_steps']} 步")
-    executor = factory.create_executor()
-    result = executor.run(plan=plan_result["plan"], task_id=plan_result["task_id"])
+    result = _run_publish_flow(product_data=product_data, plan_out=plan_out, progress_prefix="  ")
 
     if result["success"]:
-        click.echo("发布成功")
+        _print_execution_diagnostics(result)
+        click.echo(f"发布成功: task_id={result['task_id']}")
         return
 
+    _print_execution_diagnostics(result)
     click.echo(f"发布失败: {result.get('error')}", err=True)
+    if result.get("failed_step"):
+        click.echo(f"失败步骤: {result['failed_step']}")
     sys.exit(1)
 
 
@@ -179,16 +284,10 @@ def plan(task_desc, config_file, data, steps_only):
     from agents.factory import AgentFactory
 
     product_data = _load_product_data(config_file, data) if (config_file or data) else {}
-    factory = AgentFactory()
-    planner = factory.create_planner()
+    planner = AgentFactory().create_planner()
     result = planner.run(product_data=product_data, task_desc=task_desc)
     if result.get("success"):
-        payload = result["plan"] if steps_only else {
-            "task_id": result["task_id"],
-            "product_data": result["product_data"],
-            "plan": result["plan"],
-            "total_steps": result["total_steps"],
-        }
+        payload = result["plan"] if steps_only else _build_plan_package(result)
         click.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
 
@@ -199,27 +298,49 @@ def plan(task_desc, config_file, data, steps_only):
 @cli.command()
 @click.option("--config", "-c", "config_file", required=True, help="计划 JSON 文件路径")
 @click.option("--task-id", "-t", default="", help="任务 ID")
-def execute(config_file, task_id):
-    """执行已有计划文件。"""
+@click.option("--resume/--from-start", default=True, help="默认从首个非 success 步骤续跑；--from-start 强制从第 1 步重跑")
+def execute(config_file, task_id, resume):
+    """执行已有计划文件（默认断点续跑；每步截图视觉验证，失败递进重试 3 次）"""
     from agents.factory import AgentFactory
 
     plan_data = _read_json_file(Path(config_file))
     payload = _extract_plan_payload(plan_data)
     steps = payload["steps"]
     actual_task_id = task_id or payload["task_id"]
+
     if not steps:
         click.echo("执行失败: 计划文件中没有可执行步骤", err=True)
         sys.exit(1)
-    factory = AgentFactory()
-    result = factory.create_executor().run(plan=steps, task_id=actual_task_id)
+
+    resume_step_index = _resolve_resume_step_index(plan_data, steps) if resume else 0
+    if resume_step_index >= len(steps):
+        click.echo(f"计划中的 {len(steps)} 个步骤都已成功，无需重跑")
+        return
+    if resume_step_index > 0:
+        click.echo(f"检测到前 {resume_step_index} 步已成功，从步骤 {resume_step_index + 1} 续跑")
+
+    click.echo(f"ReAct 执行开始，共 {len(steps)} 步")
+
+    executor = AgentFactory().create_executor()
+    result = _invoke_executor_run(
+        executor,
+        plan=steps,
+        task_id=actual_task_id,
+        plan_file=str(Path(config_file).resolve()),
+        original_plan_data=plan_data if isinstance(plan_data, dict) else {},
+        on_progress=_build_progress_callback("  "),
+        resume_step_index=resume_step_index,
+    )
+
     if result["success"]:
-        if actual_task_id:
-            click.echo(f"执行成功: task_id={actual_task_id}")
-        else:
-            click.echo("执行成功")
+        _print_execution_diagnostics(result)
+        click.echo(f"执行成功: task_id={actual_task_id or 'N/A'}")
         return
 
+    _print_execution_diagnostics(result)
     click.echo(f"执行失败: {result.get('error')}", err=True)
+    if result.get("failed_step"):
+        click.echo(f"失败步骤: {result['failed_step']}")
     sys.exit(1)
 
 
@@ -249,11 +370,9 @@ def think(question, screenshot, question_arg):
 @click.option("--file", "-f", "batch_file", help="批量商品 JSON/XLSX 文件")
 @click.option("--dir", "-d", "dir_path", help="包含多个商品 JSON 的目录")
 @click.option("--stop-on-error", is_flag=True, help="遇到错误时停止")
-def batch(batch_file, dir_path, stop_on_error):
+@click.option("--plan-out", default="", help="可选：保存计划包的目录，每个商品自动生成 {task_id}.json")
+def batch(batch_file, dir_path, stop_on_error, plan_out):
     """批量发布商品。"""
-    from agents.factory import AgentFactory
-
-    factory = AgentFactory()
     if batch_file:
         items = _load_batch_items(Path(batch_file))
     elif dir_path:
@@ -269,27 +388,55 @@ def batch(batch_file, dir_path, stop_on_error):
 
     success_count = 0
     fail_count = 0
+    total_high_risk_count = 0
+    products_with_recovery_error = 0
+    risky_titles: List[str] = []
+    batch_plan_dir = Path(plan_out).resolve() if plan_out else None
+
     for index, product_data in enumerate(items, start=1):
         title = (_product_payload(product_data).get("title") or "?")[:30]
         click.echo(f"\n[{index}/{len(items)}] 处理: {title}")
         try:
-            plan_result = factory.create_planner().run(product_data=product_data)
-            if not plan_result.get("success"):
-                click.echo(f"  规划失败: {plan_result.get('error')}")
-                fail_count += 1
-                if stop_on_error:
-                    break
-                continue
+            item_plan_out = ""
+            if batch_plan_dir is not None:
+                item_plan_out = str(batch_plan_dir / f"item-{index}.json")
 
-            exec_result = factory.create_executor().run(
-                plan=plan_result["plan"],
-                task_id=plan_result["task_id"],
+            exec_result = _run_publish_flow(
+                product_data=product_data,
+                plan_out=item_plan_out,
+                progress_prefix="  ",
             )
+            task_id = exec_result.get("task_id", "")
+            if batch_plan_dir is not None and task_id:
+                final_path = _resolve_plan_output_path(str(batch_plan_dir), task_id, treat_as_dir=True)
+                interim_path = Path(item_plan_out)
+                if interim_path.exists() and str(interim_path.resolve()) != final_path:
+                    Path(final_path).write_text(interim_path.read_text(encoding="utf-8"), encoding="utf-8")
+                    interim_path.unlink()
+
+            risk_count = int((exec_result.get("risk_stats") or {}).get("high_risk_window_shift_count", 0) or 0)
+            recovery_error = exec_result.get("recovery_error", "")
+            total_high_risk_count += risk_count
+            if recovery_error:
+                products_with_recovery_error += 1
+            if risk_count > 0 or recovery_error:
+                risk_reasons = []
+                if risk_count > 0:
+                    risk_reasons.append(f"{risk_count}次高风险漂移")
+                if recovery_error:
+                    risk_reasons.append("有恢复错误")
+                risky_titles.append(f"{title}（{'，'.join(risk_reasons)}）")
+
             if exec_result.get("success"):
-                click.echo("  成功")
+                _print_execution_diagnostics(exec_result, prefix="  ")
+                click.echo(f"  成功: task_id={exec_result.get('task_id', 'N/A')}")
                 success_count += 1
             else:
-                click.echo(f"  失败: {exec_result.get('error')}")
+                _print_execution_diagnostics(exec_result, prefix="  ")
+                stage = exec_result.get("stage", "execute")
+                click.echo(f"  失败({stage}): {exec_result.get('error')}")
+                if exec_result.get("failed_step"):
+                    click.echo(f"  失败步骤: {exec_result['failed_step']}")
                 fail_count += 1
                 if stop_on_error:
                     break
@@ -299,7 +446,13 @@ def batch(batch_file, dir_path, stop_on_error):
             if stop_on_error:
                 break
 
-    click.echo(f"\n批量完成: {success_count} 成功, {fail_count} 失败")
+    click.echo(
+        f"\n批量完成: {success_count} 成功, {fail_count} 失败, "
+        f"{total_high_risk_count} 次高风险窗口漂移, "
+        f"{products_with_recovery_error} 个商品出现恢复错误"
+    )
+    if risky_titles:
+        click.echo("高风险商品: " + "；".join(risky_titles))
 
 
 @cli.command()
@@ -309,7 +462,6 @@ def batch(batch_file, dir_path, stop_on_error):
 @click.option("--no-save", is_flag=True, help="只抓取，不写入数据库")
 def scrape(url_arg, url, output, no_save):
     """采集商品信息，并默认写入 Product 表。"""
-    from db import DatabaseManager
     from scraper import JDScraper
     from settings import get_settings
 
@@ -352,11 +504,9 @@ def actions():
 @click.option("--limit", "-l", default=20, help="显示数量")
 def list_tasks(status, limit):
     """查看任务列表。"""
-    from db import DatabaseManager
     from settings import get_settings
 
-    settings = get_settings()
-    db = _build_db(settings)
+    db = _build_db(get_settings())
     tasks = db.list_tasks(status=status, limit=limit)
     if not tasks:
         click.echo("暂无任务")
@@ -371,11 +521,9 @@ def list_tasks(status, limit):
 @click.option("--list", "-l", "list_products", is_flag=True, help="列出已导入商品")
 def products(file, list_products):
     """商品数据管理。"""
-    from db import DatabaseManager
     from settings import get_settings
 
-    settings = get_settings()
-    db = _build_db(settings)
+    db = _build_db(get_settings())
     db.create_tables()
 
     if list_products:
@@ -400,12 +548,10 @@ def products(file, list_products):
 @click.argument("task_id", required=False, default="")
 def status(task_id):
     """环境检查或查看任务状态。"""
-    from db import DatabaseManager
     from settings import get_settings
 
     settings = get_settings()
 
-    # 有 task_id 参数时：查看任务执行状态
     if task_id:
         db = _build_db(settings)
         task = db.get_task(task_id)
@@ -420,14 +566,13 @@ def status(task_id):
             click.echo(f"  步骤 {step.get('step_index', '?')}: {step.get('action_name', '?')} - {step.get('status', '?')}")
         return
 
-    # 无参数时：环境检查
     checks = {
         "数据库": False,
         "LLM (Ollama)": False,
+        "LLM (vLLM)": False,
         "Milvus": False,
     }
 
-    # 检查数据库
     try:
         db = _build_db(settings)
         db.create_tables()
@@ -435,9 +580,9 @@ def status(task_id):
     except Exception:
         checks["数据库"] = False
 
-    # 检查 LLM
     try:
         from llm.manager import LLMManager
+
         llm = LLMManager(settings)
         checks["LLM (Ollama)"] = llm.ollama.health_check()
         checks["LLM (vLLM)"] = llm.vllm.health_check()
@@ -445,9 +590,9 @@ def status(task_id):
         checks["LLM (Ollama)"] = False
         checks["LLM (vLLM)"] = False
 
-    # 检查 Milvus
     try:
         from memory.long_term import LongTermMemory
+
         ltm = LongTermMemory(
             host=settings.MILVUS_HOST,
             port=settings.MILVUS_PORT,
@@ -534,7 +679,7 @@ def memory_stats():
 
 
 @memory.command("search")
-@click.option("--query", "-q", required=True, help="搜索关键字")
+@click.option("--query", "-q", required=True, help="搜索关键词")
 @click.option("--top", "-t", default=5, help="返回数量")
 def memory_search(query, top):
     from memory.manager import MemoryManager

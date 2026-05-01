@@ -1,0 +1,15 @@
+﻿[2026-05-01 22:24:57] [INFO] [Executor] 开始 ReAct 执行循环，2 个步骤
+[2026-05-01 22:24:57] [INFO] [Executor] --- 步骤 1/2: fill_product_info ---
+[2026-05-01 22:24:57] [INFO] [Executor] locator 未初始化，执行本地预检恢复
+[2026-05-01 22:24:57] [INFO] 查找京麦窗口...
+[2026-05-01 22:24:57] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-01 22:24:58] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-01 22:24:58] [INFO] [Executor] 窗口恢复成功(missing-locator): hwnd=1377392
+[2026-05-01 22:24:58] [INFO] 查找京麦窗口...
+[2026-05-01 22:24:58] [DEBUG] [Executor] 执行参数 fill_product_info: {'product': {'purchase_price': 70, 'jd_price': 70}}
+[2026-05-01 22:29:28] [DEBUG] [ActionHook] fill_product_info took 270.70s
+[2026-05-01 22:29:28] [INFO] 查找京麦窗口...
+[2026-05-01 22:29:29] [WARNING] [Executor] Step 1 action failed (retry 1/3): Some product fields failed verification: jd_price, purchase_price
+[2026-05-01 22:29:29] [INFO] 查找京麦窗口...
+[2026-05-01 22:29:29] [INFO] [Executor] 重试 [2/3]: 等待 3.0s 后重试
+[2026-05-01 22:29:32] [DEBUG] [Executor] 执行参数 fill_product_info: {'product': {'purchase_price': 70, 'jd_price': 70}}

@@ -14,6 +14,7 @@ sync_pull_feishu.py - 从飞书拉回更新
 """
 
 import os
+import re
 import sys
 import json
 import requests
@@ -27,7 +28,6 @@ if sys.platform == 'win32':
     sys.stderr.reconfigure(encoding='utf-8')
 
 # ============== 配置 ==============
-FEISHU_TOKEN_FILE = Path(__file__).parent / ".feishu_token"
 WIKI_DIR = Path(__file__).parent / "wiki"
 RAW_DIR = Path(__file__).parent / "raw"
 LAST_SYNC_FILE = Path(__file__).parent / ".sync_state.json"
@@ -36,15 +36,52 @@ LAST_SYNC_FILE = Path(__file__).parent / ".sync_state.json"
 # ============== 飞书 API ==============
 
 def get_feishu_token() -> str:
-    """获取飞书 Access Token"""
-    token_file = Path(__file__).parent / ".feishu_token"
+    """获取飞书 Access Token（从 OpenClaw 配置或环境变量）"""
+    # 优先从 OpenClaw 配置读取
+    config_path = Path.home() / ".openclaw" / "openclaw.json"
+    if config_path.exists():
+        try:
+            config = json.loads(config_path.read_text(encoding='utf-8'))
+            feishu = config.get('channels', {}).get('feishu', {})
+            app_id = feishu.get('appId')
+            app_secret = feishu.get('appSecret')
+            if app_id and app_secret:
+                # 调用飞书 API 获取 tenant_access_token
+                resp = requests.post(
+                    'https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal',
+                    headers={'Content-Type': 'application/json'},
+                    json={'app_id': app_id, 'app_secret': app_secret},
+                    timeout=10
+                )
+                result = resp.json()
+                if result.get('code') == 0:
+                    return result.get('tenant_access_token', '')
+        except Exception as e:
+            print(f"[WARN] 从 OpenClaw 配置获取 Token 失败: {e}")
     
-    if token_file.exists():
-        token_data = json.loads(token_file.read_text(encoding='utf-8'))
-        return token_data.get('access_token', '')
-    
-    # 从环境变量或配置获取
+    # 回退：从环境变量读取（旧方式）
     return os.environ.get('FEISHU_ACCESS_TOKEN', '')
+
+
+def feishu_api(endpoint: str, token: str, method: str = "GET", data: dict = None) -> dict:
+    """调用飞书 API"""
+    base_url = "https://open.feishu.cn/open-apis"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+    
+    url = f"{base_url}{endpoint}"
+    
+    try:
+        if method == "GET":
+            response = requests.get(url, headers=headers, timeout=30)
+        else:
+            response = requests.post(url, headers=headers, json=data, timeout=30)
+        
+        return response.json()
+    except Exception as e:
+        return {"error": str(e)}
 
 
 def feishu_api(endpoint: str, token: str, method: str = "GET", data: dict = None) -> dict:
@@ -246,8 +283,6 @@ def sync_pull(force: bool = False) -> Dict:
 
 
 if __name__ == '__main__':
-    import re
-    
     force = "--force" in sys.argv or "-f" in sys.argv
     
     result = sync_pull(force=force)

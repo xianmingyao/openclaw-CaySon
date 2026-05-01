@@ -3,6 +3,7 @@
 从 scripts/jingmai_logger.py 迁移，保持接口兼容
 """
 import logging
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -25,6 +26,7 @@ class JingmaiLogger:
     def __init__(self, name: str = "jingmai", log_file: Optional[str] = None, log_dir: str = None):
         self.name = name
         self.start_time = datetime.now()
+        self._configure_stdio()
 
         # 日志目录
         if log_dir:
@@ -45,7 +47,7 @@ class JingmaiLogger:
         self.logger.handlers.clear()
 
         file_handler = RotatingFileHandler(
-            self.log_path, maxBytes=10 * 1024 * 1024, backupCount=5, encoding='utf-8'
+            self.log_path, maxBytes=10 * 1024 * 1024, backupCount=5, encoding='utf-8-sig'
         )
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(
@@ -65,7 +67,16 @@ class JingmaiLogger:
 
     def _print(self, level: str, msg: str):
         print(self._format(level, msg))
-        self.logger.debug(msg)
+        # 按实际级别写入文件（不再全用 DEBUG）
+        level_map = {
+            'INFO': logging.INFO,
+            'OK': logging.INFO,
+            'STEP': logging.INFO,
+            'WARN': logging.WARNING,
+            'ERROR': logging.ERROR,
+            'DEBUG': logging.DEBUG,
+        }
+        self.logger.log(level_map.get(level, logging.DEBUG), msg)
 
     def info(self, msg: str):
         self._print('INFO', msg)
@@ -76,6 +87,9 @@ class JingmaiLogger:
     def warn(self, msg: str):
         self.warning_count += 1
         self._print('WARN', msg)
+
+    def warning(self, msg: str):
+        self.warn(msg)
 
     def error(self, msg: str):
         self.error_count += 1
@@ -88,6 +102,17 @@ class JingmaiLogger:
 
     def debug(self, msg: str):
         self._print('DEBUG', msg)
+
+    @staticmethod
+    def _configure_stdio():
+        for stream_name in ("stdout", "stderr"):
+            stream = getattr(sys, stream_name, None)
+            reconfigure = getattr(stream, "reconfigure", None)
+            if callable(reconfigure):
+                try:
+                    reconfigure(encoding="utf-8", errors="replace")
+                except Exception:
+                    pass
 
     def header(self, msg: str):
         line = "=" * 60

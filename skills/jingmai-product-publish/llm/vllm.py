@@ -12,8 +12,8 @@ from llm.base import LLMProvider
 class VLLMProvider(LLMProvider):
     """vLLM 远程模型 Provider（OpenAI 兼容 API）"""
 
-    def __init__(self, base_url: str = "http://localhost:8000",
-                 model: str = "qwen3-vl", timeout: int = 120):
+    def __init__(self, base_url: str = "http://localhost:8001",
+                 model: str = "Qwen3.6-VL-REAP-26B-A3B-W4A16", timeout: int = 120):
         super().__init__("vllm", base_url, model, timeout)
 
     def invoke(self, prompt: str, **kwargs) -> str:

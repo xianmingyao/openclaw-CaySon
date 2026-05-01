@@ -1,37 +1,34 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-30 17:20:32
+Date: 2026-05-01 17:20:24
 --- GIT COMMITS ---
-  5ec4b523 chore: 娣诲姞 .gitignore锛屾竻鐞?__pycache__
-  aa824004 feat: 浜害鍟嗗搧鍙戝竷 v2.0 妗嗘灦閲嶆瀯
-  679c92f4 docs: 浜害鍟嗗搧鍙戝竷 v2.0 鏋舵瀯璁捐鏂囨。
+  (none today)
 --- FILES MODIFIED ---
-  17:17 | skills\jingmai-product-publish\.idea\workspace.xml
-  17:16 | skills\jingmai-product-publish\.pytest_cache\v\cache\nodeids
-  17:16 | skills\jingmai-product-publish\.pytest_cache\v\cache\lastfailed
-  17:16 | skills\jingmai-product-publish\infrastructure\__pycache__\locator.cpython-312.pyc
-  17:16 | skills\jingmai-product-publish\tests\__pycache__\test_behavior.cpython-312-pytest-9.0.3.pyc
-  17:16 | skills\jingmai-product-publish\tests\test_behavior.py
-  17:16 | skills\jingmai-product-publish\infrastructure\locator.py
-  17:11 | skills\jingmai-product-publish\.idea\claudeCodeTabState.xml
-  17:10 | .git\FETCH_HEAD
-  17:09 | knowledge-base\.notion_sync_state.json
-  17:04 | memory\.dreams\events.jsonl
-  17:04 | memory\.dreams\short-term-recall.json
-  17:02 | skills\jingmai-product-publish\data\jingmai.db
-  17:01 | skills\jingmai-product-publish\__pycache__\settings.cpython-312.pyc
-  17:01 | skills\jingmai-product-publish\llm\__pycache__\vllm.cpython-312.pyc
-  17:01 | skills\jingmai-product-publish\llm\__pycache__\ollama.cpython-312.pyc
-  16:50 | skills\jingmai-product-publish\llm\ollama.py
-  16:49 | skills\jingmai-product-publish\settings.py
-  16:49 | skills\jingmai-product-publish\.env
-  16:48 | skills\jingmai-product-publish\llm\vllm.py
+  17:13 | .git\FETCH_HEAD
+  17:10 | memory\.dreams\events.jsonl
+  17:10 | memory\.dreams\short-term-recall.json
+  17:05 | knowledge-base\.notion_sync_state.json
+  17:03 | knowledge-base\.sync_state.json
+  16:40 | skills\jingmai-product-publish\logs\publish_20260501_163523.log
+  16:40 | skills\jingmai-product-publish\resources\screenshots\verify_1777624832615.png
+  16:40 | skills\jingmai-product-publish\resources\screenshots\verify_1777624828817.png
+  16:40 | skills\jingmai-product-publish\resources\screenshots\verify_1777624828764.png
+  16:40 | skills\jingmai-product-publish\resources\screenshots\verify_1777624824968.png
+  16:40 | skills\jingmai-product-publish\resources\screenshots\verify_1777624815038.png
+  16:40 | skills\jingmai-product-publish\resources\screenshots\verify_1777624809895.png
+  16:39 | skills\jingmai-product-publish\resources\screenshots\verify_1777624798656.png
+  16:38 | skills\jingmai-product-publish\resources\screenshots\verify_1777624714639.png
+  16:38 | skills\jingmai-product-publish\resources\screenshots\verify_1777624702844.png
+  16:36 | skills\jingmai-product-publish\resources\screenshots\verify_1777624618502.png
+  16:36 | skills\jingmai-product-publish\resources\screenshots\verify_1777624608688.png
+  16:35 | skills\jingmai-product-publish\resources\screenshots\verify_1777624523847.png
+  16:35 | skills\jingmai-product-publish\run_smart.bat
+  16:35 | jingmai_test_small.jpg
 --- SESSIONS ---
-  Count: 111
-  - 00e91015-033f-436b-b4e5-fff3b7a36dbc.jsonl [14:15]
-  - 02f34dd2-118b-4f30-a746-683a83c6a3c7.checkpoint.a5bcc695-ac78-4c40-bed4-8fdc7df4b756.jsonl [09:27]
-  - 02f34dd2-118b-4f30-a746-683a83c6a3c7.checkpoint.b32d4248-c822-48c5-8f19-04d82b95472e.jsonl [02:29]
+  Count: 238
+  - 003f86cf-682f-47d0-9443-288c3d4672b6.jsonl [16:30]
+  - 014823de-77f5-4c7e-8513-d79b5bbb8d5e.jsonl [12:05]
+  - 02101226-626d-4802-be89-ed38d4827f99.jsonl [04:50]
 --- SKILLS ---
   + jingmai-product-publish
-  + jingmai-putaway
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-product-publish","jingmai-putaway"],"dayOfWeek":"Thursday","sessionCount":111,"modifiedFiles":["E:\\workspace\\skills\\jingmai-product-publish\\.idea\\workspace.xml","E:\\workspace\\skills\\jingmai-product-publish\\.pytest_cache\\v\\cache\\nodeids","E:\\workspace\\skills\\jingmai-product-publish\\.pytest_cache\\v\\cache\\lastfailed","E:\\workspace\\skills\\jingmai-product-publish\\infrastructure\\__pycache__\\locator.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\tests\\__pycache__\\test_behavior.cpython-312-pytest-9.0.3.pyc","E:\\workspace\\skills\\jingmai-product-publish\\tests\\test_behavior.py","E:\\workspace\\skills\\jingmai-product-publish\\infrastructure\\locator.py","E:\\workspace\\skills\\jingmai-product-publish\\.idea\\claudeCodeTabState.xml","E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\skills\\jingmai-product-publish\\data\\jingmai.db","E:\\workspace\\skills\\jingmai-product-publish\\__pycache__\\settings.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\llm\\__pycache__\\vllm.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\llm\\__pycache__\\ollama.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\llm\\ollama.py","E:\\workspace\\skills\\jingmai-product-publish\\settings.py","E:\\workspace\\skills\\jingmai-product-publish\\.env","E:\\workspace\\skills\\jingmai-product-publish\\llm\\vllm.py"],"gitCommits":["5ec4b523 chore: 娣诲姞 .gitignore锛屾竻鐞?__pycache__","aa824004 feat: 浜害鍟嗗搧鍙戝竷 v2.0 妗嗘灦閲嶆瀯","679c92f4 docs: 浜害鍟嗗搧鍙戝竷 v2.0 鏋舵瀯璁捐鏂囨。"],"date":"2026.04.30"}
+{"skillsUpdated":["jingmai-product-publish"],"dayOfWeek":"Friday","sessionCount":238,"modifiedFiles":["E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\skills\\jingmai-product-publish\\logs\\publish_20260501_163523.log","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624832615.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624828817.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624828764.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624824968.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624815038.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624809895.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624798656.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624714639.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624702844.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624618502.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624608688.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\verify_1777624523847.png","E:\\workspace\\skills\\jingmai-product-publish\\run_smart.bat","E:\\workspace\\jingmai_test_small.jpg"],"gitCommits":[],"date":"2026.05.01"}

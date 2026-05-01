@@ -2,6 +2,11 @@
 京麦商品发布自动化 - 双引擎元素定位器
 UIA 元素查找 + 坐标 fallback
 """
+import ctypes
+import ctypes.wintypes
+import math
+import os
+import random
 import time
 from typing import Optional, Tuple, Dict, Any, List
 from dataclasses import dataclass
@@ -45,9 +50,13 @@ class ElementPosition:
 
 # 京麦窗口标题关键词（精确匹配，避免匹配 IDE/编辑器窗口）
 WINDOW_KEYWORDS = ["jd_", "京麦"]
-# 排除关键词（标题含这些的不匹配）
-WINDOW_EXCLUDE_KEYWORDS = ["code", "vscode", "visual studio", "pycharm", "idea", "terminal", "cmd", "powershell"]
-MIN_WINDOW_SIZE = (1024, 768)
+# 排除关键词（标题含这些的不匹配，防止 IDE 项目名误命中）
+WINDOW_EXCLUDE_KEYWORDS = [
+    "code", "vscode", "visual studio", "pycharm", "idea",
+    "terminal", "cmd", "powershell",
+    "jingmai-product-publish", "jingmai-agent",  # IDE 项目标题
+]
+BROWSER_PROCESS_HINTS = {"chrome", "msedge", "360chrome", "360se", "iexplore", "jingmai", "jd"}
 
 
 class JingmaiLocator:
@@ -154,6 +163,31 @@ class JingmaiLocator:
         """查找京麦窗口（优先 UIA，fallback win32gui）"""
         self._log('info', "查找京麦窗口...")
 
+        # 优先复用已命中的句柄
+        if WIN32_AVAILABLE and self.hwnd:
+            try:
+                rect = win32gui.GetWindowRect(self.hwnd)
+                if self._is_usable_rect(rect):
+                    title = win32gui.GetWindowText(self.hwnd)
+                    left, top, right, bottom = rect
+                    self.window_rect = rect
+                    return WindowInfo(
+                        hwnd=self.hwnd,
+                        title=title,
+                        rect=rect,
+                        width=right - left,
+                        height=bottom - top,
+                        is_visible=bool(win32gui.IsWindowVisible(self.hwnd)),
+                    )
+            except Exception:
+                pass
+
+        # 引擎0: 前台窗口优先（借鉴 UFOAgent 的前台窗口上下文逻辑）
+        if WIN32_AVAILABLE:
+            result = self._find_window_foreground()
+            if result:
+                return result
+
         # 引擎1: pywinauto UIA
         if PYWINAUTO_AVAILABLE:
             result = self._find_window_uia()
@@ -169,43 +203,101 @@ class JingmaiLocator:
         self._log('error', "未找到京麦窗口")
         return None
 
-    def _find_window_uia(self) -> Optional[WindowInfo]:
-        """UIA 方式查找窗口"""
+    def _find_window_foreground(self) -> Optional[WindowInfo]:
+        """优先使用当前前台大窗口，解决 jd_ 幽灵句柄误命中的问题。"""
         try:
-            desktop = Desktop(backend="uia")
-            best = None
-            best_area = 0
-            for w in desktop.windows():
-                try:
-                    title = w.window_text()
-                    if not self._is_matching_title(title):
-                        continue
-                    rect = w.rectangle()
-                    if not self._is_usable_rect((rect.left, rect.top, rect.right, rect.bottom)):
-                        continue
-                    width, height = rect.width(), rect.height()
-                    area = width * height
-                    if area > best_area:
-                        best_area = area
-                        best = w
-                except Exception:
-                    continue
+            hwnd = ctypes.windll.user32.GetForegroundWindow()
+            if not hwnd:
+                return None
 
-            if best:
-                rect = best.rectangle()
-                self.hwnd = best.handle if hasattr(best, 'handle') else 0
-                self.window_rect = (rect.left, rect.top, rect.right, rect.bottom)
-                return WindowInfo(
-                    hwnd=self.hwnd,
-                    title=best.window_text(),
-                    rect=self.window_rect,
-                    width=rect.width(),
-                    height=rect.height(),
-                    is_visible=True,
-                )
+            rect_obj = ctypes.wintypes.RECT()
+            ctypes.windll.user32.GetWindowRect(hwnd, ctypes.pointer(rect_obj))
+            rect = (rect_obj.left, rect_obj.top, rect_obj.right, rect_obj.bottom)
+            if not self._is_usable_rect(rect):
+                return None
+
+            length = ctypes.windll.user32.GetWindowTextLengthW(hwnd)
+            buf = ctypes.create_unicode_buffer(length + 1)
+            ctypes.windll.user32.GetWindowTextW(hwnd, buf, length + 1)
+            title = buf.value or ""
+            if self._is_excluded_title(title):
+                return None
+
+            process_name = self._get_process_name(hwnd)
+            has_jingmai_hint = self._has_any_jingmai_window()
+            if not self._is_matching_title(title):
+                if not (has_jingmai_hint and process_name in BROWSER_PROCESS_HINTS):
+                    return None
+
+            left, top, right, bottom = rect
+            self.hwnd = hwnd
+            self.window_rect = rect
+            self._log('info', f"命中前台窗口: title='{title}', process='{process_name}', rect={rect}")
+            return WindowInfo(
+                hwnd=hwnd,
+                title=title,
+                rect=rect,
+                width=right - left,
+                height=bottom - top,
+                is_visible=True,
+            )
         except Exception as e:
-            self._log('debug', f"UIA 查找失败: {e}")
-        return None
+            self._log('debug', f"前台窗口查找失败: {e}")
+            return None
+
+    def _find_window_uia(self, timeout: float = 10.0) -> Optional[WindowInfo]:
+        """
+        UIA 方式查找窗口（带超时）。
+
+        Desktop(backend="uia").windows() 在京麦窗口不存在时会遍历所有窗口，
+        耗时 1-2 分钟。加超时保护，避免无意义等待。
+        """
+        import threading
+        result_holder = {"result": None}
+
+        def _uia_search():
+            try:
+                desktop = Desktop(backend="uia")
+                best = None
+                best_area = 0
+                for w in desktop.windows():
+                    try:
+                        title = w.window_text()
+                        if not self._is_matching_title(title):
+                            continue
+                        rect = w.rectangle()
+                        if not self._is_usable_rect((rect.left, rect.top, rect.right, rect.bottom)):
+                            continue
+                        width, height = rect.width(), rect.height()
+                        area = width * height
+                        if area > best_area:
+                            best_area = area
+                            best = w
+                    except Exception:
+                        continue
+
+                if best:
+                    rect = best.rectangle()
+                    self.hwnd = best.handle if hasattr(best, 'handle') else 0
+                    self.window_rect = (rect.left, rect.top, rect.right, rect.bottom)
+                    result_holder["result"] = WindowInfo(
+                        hwnd=self.hwnd,
+                        title=best.window_text(),
+                        rect=self.window_rect,
+                        width=rect.width(),
+                        height=rect.height(),
+                        is_visible=True,
+                    )
+            except Exception as e:
+                self._log('debug', f"UIA 查找失败: {e}")
+
+        t = threading.Thread(target=_uia_search, daemon=True)
+        t.start()
+        t.join(timeout=timeout)
+        if t.is_alive():
+            self._log('warning', f"UIA 查找超时 ({timeout}s)，跳过")
+            return None
+        return result_holder["result"]
 
     def _find_window_win32(self) -> Optional[WindowInfo]:
         """win32gui 方式查找窗口"""
@@ -256,7 +348,19 @@ class JingmaiLocator:
                         self.hwnd, 0, 100, 100, settings.WINDOW_WIDTH, settings.WINDOW_HEIGHT, 0
                     )
                     time.sleep(0.2)
-            win32gui.SetForegroundWindow(self.hwnd)
+            # 使用多种方式激活窗口
+            try:
+                win32gui.SetForegroundWindow(self.hwnd)
+            except Exception as fg_err:
+                self._log('warning', f"SetForegroundWindow 失败: {fg_err}, 尝试其他方式")
+                try:
+                    # 尝试使用 SwitchToThisWindow (更强制的方式)
+                    win32api.SwitchToThisWindow(self.hwnd, True)
+                except Exception as sw_err:
+                    self._log('warning', f"SwitchToThisWindow 也失败: {sw_err}")
+                    # 最后尝试使用 ShowWindow + BringWindowToTop
+                    win32gui.ShowWindow(self.hwnd, win32con.SW_SHOW)
+                    win32gui.BringWindowToTop(self.hwnd)
             time.sleep(0.3)
             self.window_rect = win32gui.GetWindowRect(self.hwnd)
             if not self._is_usable_rect(self.window_rect):
@@ -279,20 +383,93 @@ class JingmaiLocator:
         )
 
     @staticmethod
+    def _is_excluded_title(title: str) -> bool:
+        if not title:
+            return False
+        title_lower = title.lower()
+        return any(ex in title_lower for ex in WINDOW_EXCLUDE_KEYWORDS)
+
+    @staticmethod
     def _is_usable_rect(rect: Tuple[int, int, int, int]) -> bool:
-        """过滤最小化/离屏/尺寸异常窗口，避免命中 Session 幽灵窗口。"""
+        """
+        过滤最小化/离屏/尺寸异常窗口，避免命中 Session 幽灵窗口。
+
+        参考 UFOAgent 的 _update_window_context 逻辑：
+        - 最小尺寸放宽到 100x100（京麦窗口不一定最大化，可能 800x600 等）
+        - 屏幕范围检查用动态分辨率（允许多显示器和 DPI 缩放）
+        - 允许 -10px 偏移（窗口阴影/边框的常见行为）
+        """
         left, top, right, bottom = rect
         width = right - left
         height = bottom - top
-        if width < MIN_WINDOW_SIZE[0] or height < MIN_WINDOW_SIZE[1]:
+        # 尺寸过小 → 最小化或幽灵窗口
+        if width < 100 or height < 100:
             return False
+        # 坐标明显异常
         if right <= left or bottom <= top:
             return False
+        # Session 幽灵窗口（坐标 -32000 附近）
         if left <= -30000 or top <= -30000:
             return False
-        if right <= 0 or bottom <= 0:
+        # 窗口完全在屏幕外（允许负偏移 -10，窗口边框/阴影的常见行为）
+        if right <= -10 or bottom <= -10:
             return False
+        # 窗口尺寸上限检查：超过 2 倍屏幕分辨率 → 异常
+        try:
+            screen_w = ctypes.windll.user32.GetSystemMetrics(0)
+            screen_h = ctypes.windll.user32.GetSystemMetrics(1)
+            if width > screen_w * 2 or height > screen_h * 2:
+                return False
+        except Exception:
+            pass
         return True
+
+    def _has_any_jingmai_window(self) -> bool:
+        """检测系统里是否存在京麦相关句柄，包括最小化/离屏窗口。"""
+        if not WIN32_AVAILABLE:
+            return False
+
+        found = {"value": False}
+
+        def enum_handler(hwnd, _):
+            title = win32gui.GetWindowText(hwnd)
+            if self._is_matching_title(title):
+                found["value"] = True
+
+        try:
+            win32gui.EnumWindows(enum_handler, None)
+        except Exception:
+            return False
+        return found["value"]
+
+    @staticmethod
+    def _get_process_name(hwnd: int) -> str:
+        """获取窗口所属进程名（不含 .exe）。"""
+        try:
+            pid = ctypes.wintypes.DWORD()
+            ctypes.windll.user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+            if not pid.value:
+                return ""
+
+            PROCESS_QUERY_INFORMATION = 0x0400
+            PROCESS_VM_READ = 0x0010
+            handle = ctypes.windll.kernel32.OpenProcess(
+                PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
+                False,
+                pid.value,
+            )
+            if not handle:
+                return ""
+
+            try:
+                buf = ctypes.create_unicode_buffer(260)
+                ctypes.windll.psapi.GetModuleFileNameExW(handle, None, buf, 260)
+                exe_path = buf.value
+                return os.path.splitext(os.path.basename(exe_path))[0].lower()
+            finally:
+                ctypes.windll.kernel32.CloseHandle(handle)
+        except Exception:
+            return ""
 
     def window_to_screen(self, x: int, y: int) -> Tuple[int, int]:
         """窗口坐标转屏幕坐标"""
@@ -308,9 +485,68 @@ class JingmaiLocator:
 
     # ==================== 点击操作 ====================
 
+    def _human_move_to(self, screen_x: int, screen_y: int):
+        """仿人鼠标移动：三次贝塞尔曲线 + Ease Out 缓动 + 随机抖动
+        参考 sightflow-desktop-agent 的 humanLikeMove()
+        """
+        import pyautogui
+        start_x, start_y = pyautogui.position()
+        dx = screen_x - start_x
+        dy = screen_y - start_y
+        distance = math.sqrt(dx * dx + dy * dy)
+
+        if distance < 3:
+            pyautogui.moveTo(screen_x, screen_y)
+            return
+
+        # 步数根据距离自适应（5-15步）
+        steps = min(15, max(5, int(distance / 40) + random.randint(0, 2)))
+
+        # 随机控制点（Cubic Bezier）
+        ctrl1_x = start_x + dx * random.random() * 0.5 + (random.random() - 0.5) * distance * 0.2
+        ctrl1_y = start_y + dy * random.random() * 0.5 + (random.random() - 0.5) * distance * 0.2
+        ctrl2_x = start_x + dx * (0.5 + random.random() * 0.5) + (random.random() - 0.5) * distance * 0.2
+        ctrl2_y = start_y + dy * (0.5 + random.random() * 0.5) + (random.random() - 0.5) * distance * 0.2
+
+        for i in range(1, steps + 1):
+            t = i / steps
+            # Ease Out 非线性缓动
+            ease_t = t * (2 - t)
+            mt = 1 - ease_t
+
+            # 贝塞尔曲线公式: B(t) = (1-t)^3*P0 + 3*(1-t)^2*t*P1 + 3*(1-t)*t^2*P2 + t^3*P3
+            bx = (mt**3 * start_x + 3 * mt**2 * ease_t * ctrl1_x
+                  + 3 * mt * ease_t**2 * ctrl2_x + ease_t**3 * screen_x)
+            by = (mt**3 * start_y + 3 * mt**2 * ease_t * ctrl1_y
+                  + 3 * mt * ease_t**2 * ctrl2_y + ease_t**3 * screen_y)
+
+            # 随机抖动（最后一步不加，确保精准落点）
+            if i < steps:
+                bx += (random.random() - 0.5) * 2
+                by += (random.random() - 0.5) * 2
+
+            pyautogui.moveTo(int(bx), int(by))
+
+            # 变频延迟：尾部 20% 减速
+            step_delay = 0.002 + random.random() * 0.003
+            if i > steps * 0.8:
+                step_delay += 0.003
+            time.sleep(step_delay)
+
+    def _human_click(self, button: str = 'left'):
+        """仿人点击：按下 → 随机按压时长 → 抬起 → 随机后停顿
+        参考 sightflow-desktop-agent 的 humanLikeClick()
+        """
+        import pyautogui
+        # 按下
+        pyautogui.mouseDown(button=button)
+        time.sleep(0.08 + random.random() * 0.06)  # 80-140ms 按压时长
+        # 抬起
+        pyautogui.mouseUp(button=button)
+        time.sleep(0.05 + random.random() * 0.1)   # 50-150ms 后停顿
+
     def click(self, x: int, y: int, delay: float = 0.5) -> bool:
-        """在窗口坐标处点击（自动缩放坐标）"""
-        # 坐标自适应缩放
+        """在窗口坐标处点击（自动缩放坐标）- 仿人移动+点击"""
         x, y = self.adapt_coords(x, y)
         if not WIN32_AVAILABLE:
             self._log('debug', f"[模拟] 点击 ({x}, {y})")
@@ -319,46 +555,179 @@ class JingmaiLocator:
         if not self.hwnd:
             self._log('error', "窗口未找到")
             return False
+        screen_x, screen_y = self.window_to_screen(x, y)
         try:
+            import pyautogui
             win32gui.SetForegroundWindow(self.hwnd)
             time.sleep(0.1)
-            screen_x, screen_y = self.window_to_screen(x, y)
-            win32api.SetCursorPos((screen_x, screen_y))
-            time.sleep(0.05)
-            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
-            time.sleep(0.05)
-            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+            # 仿人移动 + 仿人点击
+            self._human_move_to(screen_x, screen_y)
+            time.sleep(0.05 + random.random() * 0.1)
+            self._human_click(button='left')
             time.sleep(delay)
             return True
-        except Exception as e:
-            self._log('error', f"点击失败: {e}")
-            return False
+        except Exception:
+            # 降级：pyautogui 原子点击
+            try:
+                pyautogui.click(screen_x, screen_y)
+                time.sleep(delay)
+                return True
+            except Exception as e:
+                self._log('error', f"点击失败: {e}")
+                return False
 
     def double_click(self, x: int, y: int, delay: float = 0.5) -> bool:
-        """双击"""
-        self.click(x, y, delay=0.05)
-        time.sleep(0.1)
-        self.click(x, y, delay=delay)
-        return True
-
-    def right_click(self, x: int, y: int, delay: float = 0.5) -> bool:
-        """右键点击（自动缩放坐标）"""
+        """双击 - 单次前置激活 + 两次快速点击（40-100ms 间隔）"""
         x, y = self.adapt_coords(x, y)
         if not WIN32_AVAILABLE or not self.hwnd:
             return False
         try:
+            import pyautogui
             win32gui.SetForegroundWindow(self.hwnd)
+            time.sleep(0.1)
             screen_x, screen_y = self.window_to_screen(x, y)
-            win32api.SetCursorPos((screen_x, screen_y))
-            time.sleep(0.05)
-            win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0)
-            time.sleep(0.05)
-            win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0)
+            # 只做一次仿人移动
+            self._human_move_to(screen_x, screen_y)
+            time.sleep(0.05 + random.random() * 0.1)
+            # 第一次点击
+            pyautogui.mouseDown(button='left')
+            time.sleep(0.08 + random.random() * 0.04)
+            pyautogui.mouseUp(button='left')
+            # 双击间隔 40-100ms（人类双击特征）
+            time.sleep(0.04 + random.random() * 0.06)
+            # 第二次点击
+            pyautogui.mouseDown(button='left')
+            time.sleep(0.08 + random.random() * 0.04)
+            pyautogui.mouseUp(button='left')
             time.sleep(delay)
             return True
         except Exception as e:
-            self._log('error', f"右键点击失败: {e}")
+            self._log('error', f"双击失败: {e}")
             return False
+
+    def right_click(self, x: int, y: int, delay: float = 0.5) -> bool:
+        """右键点击（自动缩放坐标）- 仿人移动+点击"""
+        x, y = self.adapt_coords(x, y)
+        if not WIN32_AVAILABLE or not self.hwnd:
+            return False
+        screen_x, screen_y = self.window_to_screen(x, y)
+        try:
+            import pyautogui
+            win32gui.SetForegroundWindow(self.hwnd)
+            time.sleep(0.1)
+            self._human_move_to(screen_x, screen_y)
+            time.sleep(0.05 + random.random() * 0.1)
+            self._human_click(button='right')
+            time.sleep(delay)
+            return True
+        except Exception:
+            # 降级
+            try:
+                pyautogui.click(screen_x, screen_y, button='right')
+                time.sleep(delay)
+                return True
+            except Exception as e:
+                self._log('error', f"右键点击失败: {e}")
+                return False
+
+    # ==================== UIA 窗口缓存 ====================
+
+    def get_uia_window(self, timeout: float = 10.0):
+        """获取京麦 UIA 窗口对象（带 5s TTL 缓存，避免重复遍历）
+        参考 sightflow window-utils.ts 的窗口信息缓存
+        """
+        if not PYWINAUTO_AVAILABLE:
+            return None
+
+        # 检查缓存是否有效（5秒 TTL）
+        cache_key = '_uia_window_cache'
+        cache_time_key = '_uia_window_cache_time'
+        if hasattr(self, cache_key) and hasattr(self, cache_time_key):
+            if time.time() - getattr(self, cache_time_key) < 5.0:
+                try:
+                    cached = getattr(self, cache_key)
+                    cached.window_text()  # 验证窗口仍然有效
+                    return cached
+                except Exception:
+                    pass  # 缓存失效，重新查找
+
+        # 带超时的窗口查找（UIA 枚举可能很慢）
+        result = {"window": None}
+
+        def _search():
+            try:
+                desktop = Desktop(backend="uia")
+                for w in desktop.windows():
+                    try:
+                        title = w.window_text()
+                        if not any(kw in (title or "").lower() for kw in WINDOW_KEYWORDS):
+                            continue
+                        result["window"] = w
+                        return
+                    except Exception:
+                        continue
+            except Exception:
+                pass
+
+        import threading
+        t = threading.Thread(target=_search, daemon=True)
+        t.start()
+        t.join(timeout=timeout)
+
+        window = result["window"]
+        if window:
+            setattr(self, cache_key, window)
+            setattr(self, cache_time_key, time.time())
+        return window
+
+    # ==================== 页面等待 ====================
+
+    def wait_for_ready(self, timeout: float = 5.0, check_interval: float = 0.3) -> bool:
+        """等待页面稳定（通过连续截图像素 hash 变化检测）
+        参考 sightflow image-compare.ts 的 pixelmatch diff 检测
+        连续 2 次截图 hash 相同 → 页面加载完毕
+        """
+        if not self.hwnd or not WIN32_AVAILABLE:
+            time.sleep(timeout)
+            return True
+        import hashlib
+        start = time.time()
+        last_hash = None
+        stable_count = 0
+        while time.time() - start < timeout:
+            try:
+                left, top, right, bottom = win32gui.GetWindowRect(self.hwnd)
+                width, height = right - left, bottom - top
+                # 只采样中心 50% 区域（避免边缘动画干扰）
+                sample_w = width // 2
+                sample_h = height // 2
+                hwindc = win32gui.GetWindowDC(self.hwnd)
+                mfcdc = win32ui.CreateDCFromHandle(hwindc)
+                savedc = mfcdc.CreateCompatibleDC()
+                bitmap = win32ui.CreateBitmap()
+                bitmap.CreateCompatibleBitmap(mfcdc, sample_w, sample_h)
+                savedc.SelectObject(bitmap)
+                savedc.BitBlt((0, 0), (sample_w, sample_h), mfcdc,
+                              (width // 4, height // 4), win32con.SRCCOPY)
+                bits = bitmap.GetBitmapBits(True)
+                current_hash = hashlib.md5(bits).hexdigest()
+                win32gui.DeleteObject(bitmap.GetHandle())
+                savedc.DeleteDC()
+                mfcdc.DeleteDC()
+                win32gui.ReleaseDC(self.hwnd, hwindc)
+                if current_hash == last_hash:
+                    stable_count += 1
+                    if stable_count >= 2:
+                        self._log('debug', f"页面稳定 (耗时 {time.time()-start:.1f}s)")
+                        return True
+                else:
+                    stable_count = 0
+                    last_hash = current_hash
+                time.sleep(check_interval)
+            except Exception:
+                time.sleep(check_interval)
+        self._log('debug', f"页面等待超时 ({timeout}s)")
+        return False
 
     # ==================== 键盘操作 ====================
 
@@ -411,22 +780,14 @@ class JingmaiLocator:
 
         try:
             desktop = Desktop(backend="uia")
-            # 重新查找窗口
-            if control_type:
-                elements = desktop.windows()
-            else:
-                elements = []
-
             results = []
             for w in desktop.windows():
                 try:
                     title = w.window_text()
                     if not any(kw in (title or "").lower() for kw in WINDOW_KEYWORDS):
                         continue
-                    if control_type:
-                        descendants = w.descendants(control_type=control_type)
-                    else:
-                        descendants = w.descendants()
+                    descendants = (w.descendants(control_type=control_type)
+                                   if control_type else w.descendants())
 
                     for elem in descendants:
                         try:
@@ -452,16 +813,24 @@ class JingmaiLocator:
             self._log('error', f"元素扫描失败: {e}")
             return []
 
-    def take_screenshot(self, save_path: str = None) -> Optional[str]:
+    def take_screenshot(self, save_path: str = None, for_vision: bool = False) -> Optional[str]:
         """截图"""
         if not WIN32_AVAILABLE or not self.hwnd:
             return None
+        hwindc = None
+        mfcdc = None
+        savedc = None
+        bitmap = None
         try:
+            from pathlib import Path
+
+            from PIL import Image
             import win32ui
+            from settings import get_settings
+
+            settings = get_settings()
             if not save_path:
-                from pathlib import Path
-                from settings import get_settings
-                screenshot_dir = get_settings().SCREENSHOT_DIR
+                screenshot_dir = settings.SCREENSHOT_DIR
                 Path(screenshot_dir).mkdir(parents=True, exist_ok=True)
                 save_path = str(Path(screenshot_dir) / f"screenshot_{int(time.time())}.png")
 
@@ -475,7 +844,34 @@ class JingmaiLocator:
             bitmap.CreateCompatibleBitmap(mfcdc, width, height)
             savedc.SelectObject(bitmap)
             savedc.BitBlt((0, 0), (width, height), mfcdc, (0, 0), win32con.SRCCOPY)
-            bitmap.SaveBitmapFile(savedc, save_path)
+            bmpinfo = bitmap.GetInfo()
+            bmpbytes = bitmap.GetBitmapBits(True)
+            image = Image.frombuffer(
+                "RGB",
+                (bmpinfo["bmWidth"], bmpinfo["bmHeight"]),
+                bmpbytes,
+                "raw",
+                "BGRX",
+                0,
+                1,
+            )
+
+            output = image
+            if for_vision:
+                output = image.copy()
+                output.thumbnail(
+                    (settings.SCREENSHOT_PLAN_MAX_WIDTH, settings.SCREENSHOT_PLAN_MAX_HEIGHT),
+                    Image.Resampling.LANCZOS,
+                )
+
+            save_path = str(Path(save_path))
+            Path(save_path).parent.mkdir(parents=True, exist_ok=True)
+            output.save(save_path, format="PNG", optimize=True)
+
+            debug_enabled = os.environ.get("JINGMAI_DEBUG_SCREENSHOTS", "").strip().lower() in {"1", "true", "yes"}
+            if for_vision and debug_enabled:
+                debug_path = str(Path(save_path).with_name(f"{Path(save_path).stem}_full.png"))
+                image.save(debug_path, format="PNG", optimize=True)
 
             win32gui.DeleteObject(bitmap.GetHandle())
             savedc.DeleteDC()

@@ -1,0 +1,32 @@
+﻿[2026-05-01 21:41:11] [INFO] [Executor] 开始 ReAct 执行循环，1 个步骤
+[2026-05-01 21:41:11] [INFO] [Executor] --- 步骤 1/1: fill_product_info ---
+[2026-05-01 21:41:11] [INFO] [Executor] locator 未初始化，执行本地预检恢复
+[2026-05-01 21:41:11] [INFO] 查找京麦窗口...
+[2026-05-01 21:41:11] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-01 21:41:12] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-01 21:41:12] [INFO] [Executor] 窗口恢复成功(missing-locator): hwnd=1377392
+[2026-05-01 21:41:12] [INFO] 查找京麦窗口...
+[2026-05-01 21:41:12] [DEBUG] [Executor] 执行参数 fill_product_info: {'product': {'purchase_price': 70, 'jd_price': 70}}
+[2026-05-01 21:41:18] [DEBUG] [ActionHook] fill_product_info took 6.28s
+[2026-05-01 21:41:18] [INFO] 查找京麦窗口...
+[2026-05-01 21:41:28] [WARNING] [Executor] 步骤 1 视觉验证失败（重试 1/3）: 页面显示为填写表单状态，无成功提交提示信息
+[2026-05-01 21:41:28] [INFO] 查找京麦窗口...
+[2026-05-01 21:41:28] [INFO] [Executor] 重试 [2/3]: 等待 2.6s 后重试
+[2026-05-01 21:41:31] [DEBUG] [Executor] 执行参数 fill_product_info: {'product': {'purchase_price': 70, 'jd_price': 70}}
+[2026-05-01 21:41:37] [DEBUG] [ActionHook] fill_product_info took 6.32s
+[2026-05-01 21:41:37] [INFO] 查找京麦窗口...
+[2026-05-01 21:41:49] [WARNING] [Executor] 步骤 1 视觉验证失败（重试 2/3）: 无成功提示
+[2026-05-01 21:41:49] [INFO] 查找京麦窗口...
+[2026-05-01 21:41:49] [INFO] [Executor] 重试 [3/3]: 清除缓存，强制重定位窗口
+[2026-05-01 21:41:49] [INFO] 查找京麦窗口...
+[2026-05-01 21:41:49] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-01 21:41:49] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-01 21:41:49] [INFO] [Executor] 窗口恢复成功(force-relocate): hwnd=1377392
+[2026-05-01 21:41:49] [DEBUG] [Executor] 执行参数 fill_product_info: {'product': {'purchase_price': 70, 'jd_price': 70}}
+[2026-05-01 21:41:55] [DEBUG] [ActionHook] fill_product_info took 6.21s
+[2026-05-01 21:41:55] [INFO] 查找京麦窗口...
+[2026-05-01 21:42:06] [INFO] [Executor] 步骤 1 LLM 无法判断，使用动作结果: 成功
+[2026-05-01 21:42:06] [DEBUG] [Executor] 计划文件已更新: 步骤 1/1
+[2026-05-01 21:42:06] [INFO] [Executor] 步骤 1/1 完成: OK
+[2026-05-01 21:42:06] [INFO] [Executor] ReAct 循环完成，共 1 步
+[2026-05-01 21:42:06] [DEBUG] [Executor] 计划文件顶层状态已更新: success

@@ -7,6 +7,7 @@
 - _call_text 遍历所有 provider 逐个尝试调用
 - 都不可用时抛 RuntimeError，由 Agent 层走降级模式
 """
+import time
 from typing import Any, List, Optional
 
 from loguru import logger
@@ -21,6 +22,7 @@ class LLMManager:
 
     # 标记是否有任何健康的 provider（供 Agent 层快速判断）
     _llm_available: bool = True
+    _embed_cooldown_seconds: int = 300
 
     def __init__(self, settings=None):
         if settings is None:
@@ -38,6 +40,7 @@ class LLMManager:
             timeout=settings.LLM_TIMEOUT,
         )
         self.router = MoERouter([self.ollama, self.vllm])
+        self._embed_disabled_until: dict[str, float] = {}
 
     def invoke(self, prompt: str, **kwargs) -> str:
         """同步调用 LLM（纯文本）"""
@@ -48,19 +51,30 @@ class LLMManager:
         return self._call_text("invoke_multimodal", prompt, image_path, **kwargs)
 
     def embed_text(self, text: str) -> list:
-        """文本向量化（遍历所有 provider）"""
-        providers = self._all_providers_ordered()
-        last_error = None
+        """文本向量化。
+
+        embeddings 只服务于记忆检索，不应因 provider 不支持而污染主流程日志。
+        失败时返回空向量结果，让上层走零向量降级。
+        """
+        now = time.time()
+        providers = self._providers_for_embedding()
         for provider in providers:
+            if not self._provider_supports_embeddings(provider):
+                self._disable_embedding_provider(provider.name)
+                continue
+            if self._embed_disabled_until.get(provider.name, 0) > now:
+                continue
             try:
                 embedding = provider.embed_text(text)
                 if embedding:
+                    self._embed_disabled_until.pop(provider.name, None)
                     return embedding
-                last_error = RuntimeError(f"{provider.name} 返回空 embedding")
+                self._disable_embedding_provider(provider.name)
+                logger.debug(f"[LLMManager] {provider.name} embedding 返回空结果，已临时降级")
             except Exception as exc:
-                last_error = exc
-                logger.debug(f"[LLMManager] {provider.name} embed 失败: {exc}")
-        raise RuntimeError(f"LLM embed 全部不可用: {last_error}")
+                self._disable_embedding_provider(provider.name)
+                logger.debug(f"[LLMManager] {provider.name} embed 不可用，已临时降级: {exc}")
+        return []
 
     def is_available(self) -> bool:
         """快速检查是否有可用的 LLM provider"""
@@ -123,3 +137,27 @@ class LLMManager:
             if provider.name != primary.name:
                 ordered.append(provider)
         return ordered
+
+    def _providers_for_embedding(self) -> List[Any]:
+        """embedding 默认只尝试健康 provider；若都不健康，再按原顺序兜底一次。"""
+        health = self.router.get_health_status()
+        healthy = [provider for provider in self.router.providers if health.get(provider.name, False)]
+        return healthy or list(self.router.providers)
+
+    def _disable_embedding_provider(self, provider_name: str) -> None:
+        self._embed_disabled_until[provider_name] = time.time() + self._embed_cooldown_seconds
+
+    @staticmethod
+    def _provider_supports_embeddings(provider: Any) -> bool:
+        """基于模型名做轻量能力判断，避免对明显不支持 embedding 的生成模型发请求。"""
+        model_name = str(getattr(provider, "model", "") or "").lower()
+        embedding_keywords = (
+            "embed",
+            "embedding",
+            "bge",
+            "gte",
+            "e5",
+            "nomic",
+            "mxbai",
+        )
+        return any(keyword in model_name for keyword in embedding_keywords)

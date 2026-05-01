@@ -1,6 +1,7 @@
 import json
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 from click.testing import CliRunner
 from openpyxl import Workbook
@@ -18,6 +19,7 @@ from llm.manager import LLMManager
 from memory.long_term import LongTermMemory
 from models import Product, PublishTask, TaskStep
 from actions.form import fill_text
+from actions import ActionRegistry
 from actions.navigation import publish_product, save_draft, select_category
 from actions.window import navigate_to
 from infrastructure.locator import JingmaiLocator
@@ -305,6 +307,35 @@ def test_locator_refreshes_live_window_rect_before_scaling(monkeypatch):
     assert locator.window_rect == (0, 0, 2560, 1392)
 
 
+def test_locator_click_fallback_uses_precomputed_screen_coords(monkeypatch):
+    import infrastructure.locator as locator_module
+
+    monkeypatch.setattr(locator_module, "WIN32_AVAILABLE", True)
+
+    class FakeWin32Gui:
+        @staticmethod
+        def SetForegroundWindow(_hwnd):
+            raise RuntimeError("boom")
+
+    clicks = []
+
+    class FakePyAutoGUI:
+        @staticmethod
+        def click(x, y):
+            clicks.append((x, y))
+
+    monkeypatch.setattr(locator_module, "win32gui", FakeWin32Gui)
+    monkeypatch.setitem(sys.modules, "pyautogui", FakePyAutoGUI)
+    monkeypatch.setattr(locator_module.time, "sleep", lambda *_args, **_kwargs: None)
+
+    locator = JingmaiLocator()
+    locator.hwnd = 123
+    locator.window_rect = (10, 20, 2570, 1412)
+
+    assert locator.click(100, 200) is True
+    assert clicks == [(110, 220)]
+
+
 def test_activate_window_does_not_shrink_large_window(monkeypatch):
     import infrastructure.locator as locator_module
 
@@ -414,6 +445,299 @@ def test_save_draft_and_publish_propagate_click_failures(monkeypatch):
     assert publish_result["success"] is False
 
 
+def test_action_registry_execute_allows_action_param_named_name():
+    class DummyLocator:
+        pass
+
+    result = ActionRegistry.execute("click_element", name="缂栬緫", locator=DummyLocator())
+
+    assert isinstance(result, dict)
+    assert result["success"] is False
+
+
+def test_fill_product_info_fails_when_any_field_write_fails(monkeypatch):
+    import actions.form as form_module
+
+    def fake_fill_text(text, x=None, y=None, locator=None, log=None, clear=True, name="", index=0):
+        return {"success": text != "bad-price"}
+
+    monkeypatch.setattr(form_module, "fill_text", fake_fill_text)
+    monkeypatch.setattr(
+        form_module,
+        "_verify_text_field",
+        lambda locator, field, x, y, expected: {
+            "success": True,
+            "actual": str(expected),
+            "expected": str(expected),
+            "method": "test",
+            "compare_mode": "text",
+        },
+    )
+    monkeypatch.setattr(form_module, "_select_dropdown_option", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(
+        "config.jingmai_coords.PRODUCT_INFO_PAGE",
+        {
+            "title_input": (1, 1),
+            "model_input": (2, 2),
+            "sku_input": (3, 3),
+            "market_price": (4, 4),
+            "jd_price": (5, 5),
+            "purchase_price": (6, 6),
+            "brand_select": (7, 7),
+        },
+    )
+
+    result = form_module.fill_product_info(
+        {
+            "title": "ok",
+            "purchase_price": "bad-price",
+            "brand": "brand-a",
+        },
+        locator=SimpleNamespace(),
+    )
+
+    assert result["success"] is False
+    assert result["filled"] == 2
+    assert "purchase_price" in result["failed_fields"]
+
+
+def test_fill_product_info_fails_when_readback_mismatches(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "fill_text",
+        lambda text, **kwargs: {"success": True, "text": text},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_verify_text_field",
+        lambda locator, field, x, y, expected: {
+            "success": False,
+            "actual": "wrong",
+            "message": "readback mismatch",
+            "failures": [{"method": "test", "reason": "value mismatch"}],
+        },
+    )
+    monkeypatch.setattr(
+        "config.jingmai_coords.PRODUCT_INFO_PAGE",
+        {
+            "title_input": (1, 1),
+            "model_input": (2, 2),
+            "sku_input": (3, 3),
+            "market_price": (4, 4),
+            "jd_price": (5, 5),
+            "purchase_price": (6, 6),
+            "brand_select": (7, 7),
+        },
+    )
+
+    result = form_module.fill_product_info({"title": "ok"}, locator=SimpleNamespace())
+
+    assert result["success"] is False
+    assert result["failed_fields"] == ["title"]
+    assert result["details"][0]["verify_error"] == "readback mismatch"
+    assert result["details"][0]["write_success"] is True
+    assert result["details"][0]["verify_success"] is False
+
+
+def test_verify_text_field_prefers_uia_and_normalizes_price(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_read_uia_value_for_field",
+        lambda locator, x, y: {"success": True, "actual": "70.00", "method": "uia-get-value"},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_read_clipboard_value_for_field",
+        lambda locator, x, y: {"success": True, "actual": "wrong", "method": "clipboard-readback"},
+    )
+
+    result = form_module._verify_text_field(SimpleNamespace(), "jd_price", 1, 2, "70")
+
+    assert result["success"] is True
+    assert result["method"] == "uia-get-value"
+    assert result["compare_mode"] == "numeric"
+    assert result["actual"] == "70"
+
+
+def test_verify_text_field_returns_structured_failures(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_read_uia_value_for_field",
+        lambda locator, x, y: {"success": False, "message": "uia unavailable", "method": "uia-get-value"},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_read_clipboard_value_for_field",
+        lambda locator, x, y: {"success": True, "actual": "71", "method": "clipboard-readback"},
+    )
+
+    result = form_module._verify_text_field(SimpleNamespace(), "purchase_price", 1, 2, "70")
+
+    assert result["success"] is False
+    assert result["failures"][0]["method"] == "uia-get-value"
+    assert result["failures"][1]["method"] == "clipboard-readback"
+    assert result["failures"][1]["compare_mode"] == "numeric"
+
+
+def test_executor_does_not_turn_action_failure_into_success(tmp_path: Path):
+    agent = ExecutorAgent()
+    agent.set_llm(_LLMReturning('{"status":"ok","reason":"looks good"}'))
+    agent._resume_step_index = 0
+    agent._check_safety = lambda _action: True
+    agent._ensure_locator = lambda: None
+    agent._capture_window_summary = lambda: {}
+    agent._diff_window_summary = lambda before, after: {}
+    agent._log_window_diff_risk = lambda *args, **kwargs: None
+    screenshot = tmp_path / "shot.png"
+    screenshot.write_bytes(b"fake")
+    agent._take_screenshot = lambda _action: str(screenshot)
+    agent.act = lambda _action, _params: {"success": False, "error": "boom"}
+
+    result = agent.run_react_loop([{"action": "click_element", "params": {"name": "缂栬緫"}}])
+
+    assert result["success"] is False
+    assert result["failed_step"] == 1
+    assert result["results"][0]["success"] is False
+    assert result["results"][0]["result"]["error"] == "boom"
+
+
+def test_executor_records_memory_metadata_for_failed_step(tmp_path: Path):
+    class FakeMemory:
+        def __init__(self):
+            self.entries = []
+
+        def remember_short_term(self, content, importance, **meta):
+            self.entries.append((content, importance, meta))
+
+    agent = ExecutorAgent()
+    fake_memory = FakeMemory()
+    agent.set_memory(fake_memory)
+    agent._resume_step_index = 0
+    agent._check_safety = lambda _action: True
+    agent._ensure_locator = lambda: None
+    agent._capture_window_summary = lambda: {}
+    agent._diff_window_summary = lambda before, after: {}
+    agent._log_window_diff_risk = lambda *args, **kwargs: None
+    screenshot = tmp_path / "shot.png"
+    screenshot.write_bytes(b"fake")
+    agent._take_screenshot = lambda _action: str(screenshot)
+    agent.act = lambda _action, _params: {"success": False, "error": "boom"}
+
+    result = agent.run_react_loop([{"action": "click_element", "params": {"name": "缂栬緫"}}])
+
+    assert result["success"] is False
+    assert len(fake_memory.entries) == 1
+    _, _, meta = fake_memory.entries[0]
+    assert meta["action_result_success"] is False
+    assert meta["vision_status"] == "error"
+    assert meta["retry_count"] == 3
+    assert meta["error"] == "boom"
+    assert meta["screenshot"] == str(screenshot)
+
+
+def test_finalize_plan_file_resets_later_steps_to_pending_after_failure(tmp_path: Path):
+    agent = ExecutorAgent()
+    agent._task_id = "task-reset"
+    agent._plan_file = str(tmp_path / "plan.json")
+
+    plan = [
+        {"action": "step-1", "status": "failed"},
+        {"action": "step-2", "status": "success"},
+        {"action": "step-3", "status": "success"},
+    ]
+
+    agent._finalize_plan_file(plan, success=False, failed_step=1, error="boom")
+
+    payload = json.loads(Path(agent._plan_file).read_text(encoding="utf-8"))
+    statuses = [step["status"] for step in payload["plan"]]
+
+    assert payload["status"] == "failed"
+    assert statuses == ["failed", "pending", "pending"]
+
+
+def test_locator_take_screenshot_writes_real_png(monkeypatch, tmp_path: Path):
+    import infrastructure.locator as locator_module
+
+    monkeypatch.setattr(locator_module, "WIN32_AVAILABLE", True)
+
+    class FakeBitmap:
+        def CreateCompatibleBitmap(self, *_args, **_kwargs):
+            return None
+
+        def GetInfo(self):
+            return {"bmWidth": 40, "bmHeight": 20}
+
+        def GetBitmapBits(self, _signed):
+            return b"\x00\x00\x00\x00" * (40 * 20)
+
+        def GetHandle(self):
+            return 1
+
+    class FakeSaveDC:
+        def SelectObject(self, *_args, **_kwargs):
+            return None
+
+        def BitBlt(self, *_args, **_kwargs):
+            return None
+
+        def DeleteDC(self):
+            return None
+
+    class FakeMfcDC:
+        def CreateCompatibleDC(self):
+            return FakeSaveDC()
+
+        def DeleteDC(self):
+            return None
+
+    class FakeWin32UI:
+        @staticmethod
+        def CreateDCFromHandle(_handle):
+            return FakeMfcDC()
+
+        @staticmethod
+        def CreateBitmap():
+            return FakeBitmap()
+
+    class FakeWin32Gui:
+        @staticmethod
+        def GetWindowRect(_hwnd):
+            return (0, 0, 40, 20)
+
+        @staticmethod
+        def GetWindowDC(_hwnd):
+            return 1
+
+        @staticmethod
+        def DeleteObject(_handle):
+            return None
+
+        @staticmethod
+        def ReleaseDC(_hwnd, _dc):
+            return None
+
+    monkeypatch.setitem(sys.modules, "win32ui", FakeWin32UI)
+    monkeypatch.setattr(locator_module, "win32gui", FakeWin32Gui)
+    monkeypatch.setattr(locator_module, "win32con", SimpleNamespace(SRCCOPY=0))
+
+    locator = JingmaiLocator()
+    locator.hwnd = 1
+    locator.window_rect = (0, 0, 40, 20)
+
+    path = tmp_path / "vision.png"
+    saved = locator.take_screenshot(str(path), for_vision=True)
+
+    assert saved == str(path)
+    assert path.exists()
+    assert path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+
+
 def test_plan_command_outputs_full_payload_by_default(monkeypatch):
     runner = CliRunner()
 
@@ -468,6 +792,60 @@ def test_execute_command_reuses_task_id_from_plan_file(monkeypatch, tmp_path: Pa
     assert result.exit_code == 0
     assert fake_executor.last_task_id == "task-xyz"
     assert "task_id=task-xyz" in result.output
+
+
+def test_batch_plan_out_creates_one_plan_file_per_task(monkeypatch, tmp_path: Path):
+    runner = CliRunner()
+    batch_path = tmp_path / "products.json"
+    plan_dir = tmp_path / "plans"
+    batch_path.write_text(
+        json.dumps(
+            [
+                {"title": "商品A", "price": 10},
+                {"title": "商品B", "price": 20},
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    class FakePlanner:
+        def __init__(self):
+            self.counter = 0
+
+        def run(self, **kwargs):
+            self.counter += 1
+            return {
+                "success": True,
+                "task_id": f"task-{self.counter}",
+                "product_data": kwargs["product_data"],
+                "plan": [{"action": "find_window", "params": {}}],
+                "total_steps": 1,
+            }
+
+    class FakeExecutor:
+        def run(self, plan, task_id="", **kwargs):
+            return {
+                "success": True,
+                "risk_stats": {"high_risk_window_shift_count": 0},
+                "recovery_error": "",
+            }
+
+    fake_planner = FakePlanner()
+
+    class FakeFactory:
+        def create_planner(self):
+            return fake_planner
+
+        def create_executor(self):
+            return FakeExecutor()
+
+    monkeypatch.setattr("agents.factory.AgentFactory", lambda: FakeFactory())
+    result = runner.invoke(cli, ["batch", "--file", str(batch_path), "--plan-out", str(plan_dir)])
+
+    assert result.exit_code == 0
+    assert (plan_dir / "task-1.json").exists()
+    assert (plan_dir / "task-2.json").exists()
 
 
 def test_ollama_provider_resolves_model_alias():

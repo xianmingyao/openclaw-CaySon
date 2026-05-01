@@ -9,7 +9,11 @@
 
 ## 待处理任务
 
-### ⚠️ knowledge-pull cron 异常（待调查）
+### ⚠️ Feishu/Notion Sync SIGKILL 模式（持续跟踪）
+- **问题**：多个知识同步脚本被系统 SIGKILL 终止
+- **模式**：进程运行 ~2分钟后被强制终止
+- **已知受影响**：`sync_pull_notion.py`、`feishu pull`
+- **可能原因**：内存不足 / cron timeout太短 / 进程挂起
 - **问题**：`knowledge-base/sync_pull_notion.py` 多次被 SIGKILL 终止
 - **影响**：凌晨3点多5个实例全部失败，cron状态却显示"ok"
 - **可能原因**：内存不足 / 进程挂起 / 超时

@@ -3,6 +3,7 @@
     "continuous_ingest": 1746057600
   },
   "sigkill_events": {
-    "feishu_pull_2026-05-01": "22:07 - 飞书拉取被SIGKILL，0文档"
+    "feishu_pull_2026-05-01_22:07": "SIGKILL，0文档",
+    "feishu_pull_2026-05-01_23:07": "SIGKILL，0文档"
   }
 }

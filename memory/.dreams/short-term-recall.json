@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-01T13:40:17.185Z",
+  "updatedAt": "2026-05-03T02:18:42.471Z",
   "entries": {
     "memory:memory/2026-04-13.md:6:9": {
       "key": "memory:memory/2026-04-13.md:6:9",
@@ -62612,20 +62612,22 @@
       "endLine": 97,
       "source": "memory",
       "snippet": "**CaySon职责�?* 跳过调研/无设计稿/无GitHub �?🔴立即暂停 ## SkillHub 技能管�? **CLI路径�?* `~/.skillhub/skills_store_cli.py` **用法�?* `search / install / update <关键�?` **安全流程（铁律）�?* 安装�?edgeone-clawscan 扫描 **已安装：** | 技�?| 版本 | 用�?| |------|------|------| | summarize | 1.0.0 | 总结网页/PDF/YouTube | | nano-banana-pro | 1.0.1 | AI图片生成（Gemini 3 Pro�?| ## Cron 定时任务 | 任务 | ID | 时间 | |------|------|------| | 每日安全扫描 | 5227d14e | 00:30 | ## 知识库文�? - `knowledge/browser-use-cli.md` - `knowledge/webmcp-mcp-browser-automation.md` - `knowledge/github-repos-comparison.md` - `knowledge/kiloclaw.md` - `knowledge/ai-native-workflow-SOP.md` ## Git提交�?1条） 1. docs: add browser-use CLI 2.0 深度研究报告 2. do",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.6341341715673292,
+      "totalScore": 2.4179052608368004,
       "maxScore": 0.8242791211865362,
       "firstRecalledAt": "2026-04-17T04:44:35.201Z",
-      "lastRecalledAt": "2026-04-28T04:19:12.954Z",
+      "lastRecalledAt": "2026-05-03T02:18:42.471Z",
       "queryHashes": [
         "e800e0cb9cbc",
-        "c49c61031908"
+        "c49c61031908",
+        "26bb76fd3a51"
       ],
       "recallDays": [
         "2026-04-17",
-        "2026-04-28"
+        "2026-04-28",
+        "2026-05-03"
       ],
       "conceptTags": [
         "跳过调研/无设计稿/无github",
@@ -332871,21 +332873,23 @@
       "endLine": 407,
       "source": "memory",
       "snippet": "- Candidate: Assistant: The server hums its midnight lullaby, and I find myself counting tasks like stars — thirty-seven of them, orbiting four constellations: 养号, 挂靠, 风控, 设备管理. Each one a small universe of input and output, dependency graphs threading through the day like constellations thro - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-20.txt:167-167 - recalls: 0 - status: staged - Candidate: User: [Mon 2026-04-20 04:42 GMT+8] Write a dream diary entry from these memory fragments: - Security Scan Completed: **Time:** 2026-04-20 00:33 (Asia/Shanghai) - Security Scan Completed: **Source:** edgeone-clawscan (scheduled cron job) - Security Scan Completed: **Resul",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.6435621063141956,
+      "totalScore": 2.4805289823998926,
       "maxScore": 0.8382808429879958,
       "firstRecalledAt": "2026-04-27T16:34:35.182Z",
-      "lastRecalledAt": "2026-05-01T02:06:56.502Z",
+      "lastRecalledAt": "2026-05-03T02:18:42.471Z",
       "queryHashes": [
         "a843037be4f3",
-        "747f5146e355"
+        "747f5146e355",
+        "26bb76fd3a51"
       ],
       "recallDays": [
         "2026-04-28",
         "2026-04-27",
-        "2026-05-01"
+        "2026-05-01",
+        "2026-05-03"
       ],
       "conceptTags": [
         "thirty-seven",
@@ -333031,13 +333035,13 @@
       "endLine": 32,
       "source": "memory",
       "snippet": "# 2026-04-27 日志 <!-- consolidated to MEMORY.md on 2026-04-28 --> ## Cron 定时任务执行 ### knowledge-pull (21:03 CST) - **状态**: ✅ 已处理 - **飞书同步**: ❌ 未配置 Token（.feishu_token 缺失） - **Notion 同步**: ✅ 正常工作（generator 模式，~5min 完成 101+ 页面） - **Cron 状态**: 发现 `running` 假状态，执行 disable/enable 重置 - lastRunStatus: ok - lastDurationMs: 288129 (~4.8 min) - **代码优化**: sync_pull_notion.py 统计上限从 100 → 200 ### 根因分析：SIGKILL 问题 - 2026-04-25 记录的 Notion SIGKILL 问题已修复（generator 模式） - 2026-04-27 今天运行正常，无 SIGKILL - 飞书 Token 仍需配置 ### continuous-ingest (22:40 CST) - **状态**: ✅ 正常 - **扫描结果**: 0 个新/修改文件，无需 ingest ### continuous-ingest (23:07 CST) - **状态**: ✅ 正常 - **扫描结果**: 0 个新/修改文件，无需 ingest ### 待处理 - [ ] 配置飞书 Access To",
-      "recallCount": 22,
+      "recallCount": 23,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 19.27358809089384,
+      "totalScore": 20.10973167049399,
       "maxScore": 0.9104121803121215,
       "firstRecalledAt": "2026-04-28T02:25:31.901Z",
-      "lastRecalledAt": "2026-05-01T13:40:17.185Z",
+      "lastRecalledAt": "2026-05-01T15:25:28.971Z",
       "queryHashes": [
         "b560504fe3ee",
         "567176364f11",
@@ -392795,13 +392799,13 @@
       "endLine": 432,
       "source": "memory",
       "snippet": "- - - Candidate: Assistant: ✅ **Continuous Ingest 完成** ``` [1/2] 扫描 raw/ 目录... 发现 0 个新文件/变更文件 [SKIP] 没有新文件需要入库 [DONE] 扫描: 0 / ingest: 0 ``` 没有新文件需要同步到知识库。🫡 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:310-310 - recalls: 0 - status: staged - Candidate: Assistant: 脚本执行完成，扫描结果：**0个新文件**待处理，无需 ingest。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:314-314 - recalls: 0 - status: staged - Candidate: User: [cron:f2199500-d455-4128-a2da-321efe083472 continuous-ingest] cd /d E:\\workspace && python knowledge-base/continuous_ingest.py Current time: Thursday, April 23rd, 2026 - 12:00 (Asia/Shanghai) / 2026-04-23 04:00 UTC - confi [confidence=0",
-      "recallCount": 18,
+      "recallCount": 19,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 15.658901824726497,
+      "totalScore": 16.492474959916024,
       "maxScore": 0.9096561090605877,
       "firstRecalledAt": "2026-04-28T21:10:20.936Z",
-      "lastRecalledAt": "2026-05-01T13:40:17.185Z",
+      "lastRecalledAt": "2026-05-01T15:25:28.971Z",
       "queryHashes": [
         "b560504fe3ee",
         "420973576782",
@@ -403557,13 +403561,13 @@
       "endLine": 443,
       "source": "memory",
       "snippet": "- - Candidate: Assistant: ✅ **Continuous Ingest 完成** ``` [1/2] 扫描 raw/ 目录... 发现 0 个新文件/变更文件 [SKIP] 没有新文件需要入库 [DONE] 扫描: 0 / ingest: 0 ``` 没有新文件需要同步到知识库。🫡 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:310-310 - recalls: 0 - status: staged - Candidate: Assistant: 脚本执行完成，扫描结果：**0个新文件**待处理，无需 ingest。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-23.txt:314-314 - recalls: 0 - status: staged - Candidate: User: [cron:f2199500-d455-4128-a2da-321efe083472 continuous-ingest] cd /d E:\\workspace && python knowledge-base/continuous_ingest.py Current time: Thursday, April 23rd, 2026 - 12:00 (Asia/Shanghai) / 2026-04-23 04:00 UTC - confi [confidence=0.7",
-      "recallCount": 13,
+      "recallCount": 14,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 11.163921705449626,
+      "totalScore": 12.001764301772683,
       "maxScore": 0.9062454620534661,
       "firstRecalledAt": "2026-04-30T01:29:47.070Z",
-      "lastRecalledAt": "2026-05-01T11:50:27.518Z",
+      "lastRecalledAt": "2026-05-01T15:25:28.971Z",
       "queryHashes": [
         "b560504fe3ee",
         "420973576782",
@@ -506744,13 +506748,13 @@
       "endLine": 277,
       "source": "memory",
       "snippet": "- Candidate: Assistant: ✅ **continuous_ingest.py 运行正常** - 扫描了 `raw/` 目录，暂无新文件需要 ingest - 扫描结果：0 个新增文件 - 状态：SKIP（正常工作） 脚本运行符合预期，无需干预。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-05-01.txt:427-427 - recalls: 0 - status: staged - Candidate: Assistant: **Cron 触发正常** ✅ `continuous-ingest` 任务每5分钟执行一次，当前状态： | 项目 | 值 | |------|-----| | 状态 | running（调度活跃） | | 上次执行 | 7分钟前 | | 下次执行 | 约3分钟后 | | 监控目录 | `knowledge-base/raw/` | | 上次摄入 | 2026-04-28 | **现状**：raw目录只有1个文件（README.md，4月23日），最近没有新文件需要处理，所以每次执行很快完成。这是正常的——没东西就空转，有新文件才会 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-05-01.txt:429-429 - recalls: 0 - status: staged - Candidate: User: [cron:f219",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.4633057572857084,
+      "totalScore": 4.312088425353573,
       "maxScore": 0.8829065878749355,
       "firstRecalledAt": "2026-05-01T11:45:29.337Z",
-      "lastRecalledAt": "2026-05-01T13:40:17.185Z",
+      "lastRecalledAt": "2026-05-01T15:25:28.971Z",
       "queryHashes": [
         "420973576782",
         "b560504fe3ee"
@@ -506860,6 +506864,130 @@
         "candidate",
         "assistant",
         "任务"
+      ]
+    },
+    "memory:memory/2026-04-07.md:52:77": {
+      "key": "memory:memory/2026-04-07.md:52:77",
+      "path": "memory/2026-04-07.md",
+      "startLine": 52,
+      "endLine": 77,
+      "source": "memory",
+      "snippet": "- [25ca375d](https://github.com/xianmingyao/openclaw-CaySon/commit/25ca375d) - docs: add Claude Code Chinese ecosystem and Shopify AI Agent 2026 research reports ## Dream整合记录 - 🌙 08:38 - 执行dream skill首次整合 - MEMORY.md 更新：添加2026-04-07 section、Dream System section - 新增已安装技能：memory-dream@1.0.3 - 新增Cron：dream-nightly（每天03:00） ## Git提交记录 - [95c5a71a](https://github.com/xianmingyao/openclaw-CaySon/commit/95c5a71a) - docs: add OpenClaw 4.5 dreaming memory system research report - [49a4b6bd](https://github.com/xianmingyao/openclaw-CaySon/commit/49a4b6bd) - docs: add HKUDS OpenSpace and OpenHarness reports - [0c145a33](https://github.com/xianmingyao/openclaw-CaySon/commit/0c145a33) - doc",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8509167324819886,
+      "maxScore": 0.8509167324819886,
+      "firstRecalledAt": "2026-05-03T02:18:42.471Z",
+      "lastRecalledAt": "2026-05-03T02:18:42.471Z",
+      "queryHashes": [
+        "26bb76fd3a51"
+      ],
+      "recallDays": [
+        "2026-05-03"
+      ],
+      "conceptTags": [
+        "memory.md",
+        "添加2026-04-07",
+        "memory-dream",
+        "1.0.3",
+        "dream-nightly",
+        "4.5",
+        "25ca375d",
+        "https"
+      ]
+    },
+    "memory:memory/2026-04-28.md:1:39": {
+      "key": "memory:memory/2026-04-28.md:1:39",
+      "path": "memory/2026-04-28.md",
+      "startLine": 1,
+      "endLine": 39,
+      "source": "memory",
+      "snippet": "# 2026-04-28 日常记录 <!-- consolidated to MEMORY.md on 2026-04-28 --> ## 00:30 定时安全扫描完成 ### 安全扫描结果（daily-skill-security-scan） - **安全评分**: 72/100 - **版本漏洞**: 2个（1高危GHSA-xmxx-7p24-h892 + 1低危GHSA-xrq9-jm7v-g9h7） - **配置风险**: 11项 - **高危Skill**: 9个检测到高危代码模式 ### 待处理事项 1. **紧急**: 升级OpenClaw至2026.4.20 2. **紧急**: 审查9个高危Skill源码（openclaw-weixin, cookie-sync, human-browser, web-search, apify-ultimate-scraper, doubao-chat, web-access等） 3. **建议**: 修改Feishu groupPolicy从\"open\"改为\"allowlist\" ### CVE详情 - GHSA-xmxx-7p24-h892 (HIGH): Gateway HTTP认证令牌缓存问题，旧令牌在轮换后仍可授权 - GHSA-xrq9-jm7v-g9h7 (LOW): 配对授权越权问题 --- ## 异步命令完成记录 - `plaid-cl`: openclaw status --all (连接/认证调试) - `vivid-cr`: openclaw升级信息获取（2026.4.20修复内容）",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8371503946253605,
+      "maxScore": 0.8371503946253605,
+      "firstRecalledAt": "2026-05-03T02:18:42.471Z",
+      "lastRecalledAt": "2026-05-03T02:18:42.471Z",
+      "queryHashes": [
+        "26bb76fd3a51"
+      ],
+      "recallDays": [
+        "2026-05-03"
+      ],
+      "conceptTags": [
+        "gateway",
+        "memory.md",
+        "daily-skill-security-scan",
+        "72/100",
+        "1高危ghsa-xmxx-7p24-h892",
+        "1低危ghsa-xrq9-jm7v-g9h7",
+        "升级openclaw至2026.4.20",
+        "openclaw-weixin"
+      ]
+    },
+    "memory:memory/2026-04-28.md:30:68": {
+      "key": "memory:memory/2026-04-28.md:30:68",
+      "path": "memory/2026-04-28.md",
+      "startLine": 30,
+      "endLine": 68,
+      "source": "memory",
+      "snippet": "- MEMORY.md：+安全告警1条 / ~SIGKILL已解决 / -无 - 重大更新：OpenClaw安全评分72/100，9个高危Skill需审查，升级2026.4.20 # 2026-04-28 日常记录 <!-- consolidated to MEMORY.md on 2026-04-28 --> ## 00:30 定时安全扫描完成 ### 安全扫描结果（daily-skill-security-scan） - **安全评分**: 72/100 - **版本漏洞**: 2个（1高危GHSA-xmxx-7p24-h892 + 1低危GHSA-xrq9-jm7v-g9h7） - **配置风险**: 11项 - **高危Skill**: 9个检测到高危代码模式 ### 待处理事项 1. **紧急**: 升级OpenClaw至2026.4.20 2. **紧急**: 审查9个高危Skill源码（openclaw-weixin, cookie-sync, human-browser, web-search, apify-ultimate-scraper, doubao-chat, web-access等） 3. **建议**: 修改Feishu groupPolicy从\"open\"改为\"allowlist\" ### CVE详情 - GHSA-xmxx-7p24-h892 (HIGH): Gateway HTTP认证令牌缓存问题，旧令牌在轮换后仍可授权 - GHSA-xrq9-jm7v-g9h7 (LOW): 配对授权越权问题 --- ## 异步命令完成记录 -",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.793817398007961,
+      "maxScore": 0.793817398007961,
+      "firstRecalledAt": "2026-05-03T02:18:42.471Z",
+      "lastRecalledAt": "2026-05-03T02:18:42.471Z",
+      "queryHashes": [
+        "26bb76fd3a51"
+      ],
+      "recallDays": [
+        "2026-05-03"
+      ],
+      "conceptTags": [
+        "gateway",
+        "memory.md",
+        "openclaw安全评分72/100",
+        "升级2026.4.20",
+        "daily-skill-security-scan",
+        "72/100",
+        "1高危ghsa-xmxx-7p24-h892",
+        "1低危ghsa-xrq9-jm7v-g9h7"
+      ]
+    },
+    "memory:memory/2026-05-01.md:136:155": {
+      "key": "memory:memory/2026-05-01.md:136:155",
+      "path": "memory/2026-05-01.md",
+      "startLine": 136,
+      "endLine": 155,
+      "source": "memory",
+      "snippet": "- Candidate: 安全扫描结果（daily-skill-security-scan）: **安全评分**: 72/100; **版本漏洞**: 2个（1高危GHSA-xmxx-7p24-h892 + 1低危GHSA-xrq9-jm7v-g9h7）; **配置风险**: 11项; **高危Skill**: 9个检测到高危代码模式 - confidence: 0.00 - evidence: memory/2026-04-28.md:8-11 - recalls: 0 - status: staged - Candidate: 待处理事项: **紧急**: 升级OpenClaw至2026.4.20; **紧急**: 审查9个高危Skill源码（openclaw-weixin, cookie-sync, human-browser, web-search, apify-ultimate-scraper, doubao-chat, web-access等）; **建议**: 修改Feishu groupPolicy从\"open\"改为\"allowlist\" - confidence: 0.00 - evidence: memory/2026-04-28.md:14-16 - recalls: 0 - status: staged - Candidate: CVE详情: GHSA-xmxx-7p24-h892 (HIGH): Gateway HTTP认证令牌缓存问题，旧令牌在轮换后仍可授权; GHSA-xrq9-jm7v-g9h7 (LOW): 配对",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7911718750449434,
+      "maxScore": 0.7911718750449434,
+      "firstRecalledAt": "2026-05-03T02:18:42.471Z",
+      "lastRecalledAt": "2026-05-03T02:18:42.471Z",
+      "queryHashes": [
+        "26bb76fd3a51"
+      ],
+      "recallDays": [
+        "2026-05-03"
+      ],
+      "conceptTags": [
+        "gateway",
+        "daily-skill-security-scan",
+        "72/100",
+        "1高危ghsa-xmxx-7p24-h892",
+        "1低危ghsa-xrq9-jm7v-g9h7",
+        "0.00",
+        "memory/2026-04-28.md",
+        "8-11"
       ]
     }
   }

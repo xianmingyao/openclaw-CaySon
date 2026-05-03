@@ -465,7 +465,7 @@ def test_fill_product_info_fails_when_any_field_write_fails(monkeypatch):
     monkeypatch.setattr(
         form_module,
         "_verify_text_field",
-        lambda locator, field, x, y, expected: {
+        lambda locator, field, x, y, expected, prefer_uia=True: {
             "success": True,
             "actual": str(expected),
             "expected": str(expected),
@@ -512,7 +512,7 @@ def test_fill_product_info_fails_when_readback_mismatches(monkeypatch):
     monkeypatch.setattr(
         form_module,
         "_verify_text_field",
-        lambda locator, field, x, y, expected: {
+        lambda locator, field, x, y, expected, prefer_uia=True: {
             "success": False,
             "actual": "wrong",
             "message": "readback mismatch",
@@ -547,7 +547,7 @@ def test_verify_text_field_prefers_uia_and_normalizes_price(monkeypatch):
     monkeypatch.setattr(
         form_module,
         "_read_uia_value_for_field",
-        lambda locator, x, y: {"success": True, "actual": "70.00", "method": "uia-get-value"},
+        lambda locator, field, x, y: {"success": True, "actual": "70.00", "method": "uia-get-value"},
     )
     monkeypatch.setattr(
         form_module,
@@ -569,7 +569,7 @@ def test_verify_text_field_returns_structured_failures(monkeypatch):
     monkeypatch.setattr(
         form_module,
         "_read_uia_value_for_field",
-        lambda locator, x, y: {"success": False, "message": "uia unavailable", "method": "uia-get-value"},
+        lambda locator, field, x, y: {"success": False, "message": "uia unavailable", "method": "uia-get-value"},
     )
     monkeypatch.setattr(
         form_module,
@@ -583,6 +583,68 @@ def test_verify_text_field_returns_structured_failures(monkeypatch):
     assert result["failures"][0]["method"] == "uia-get-value"
     assert result["failures"][1]["method"] == "clipboard-readback"
     assert result["failures"][1]["compare_mode"] == "numeric"
+
+
+def test_verify_text_field_marks_uia_timeout(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_read_uia_value_for_field",
+        lambda locator, field, x, y: {"success": False, "message": "uia read timeout (1.5s)", "method": "uia-timeout"},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_read_clipboard_value_for_field",
+        lambda locator, x, y: {"success": False, "message": "clipboard empty", "method": "clipboard-readback"},
+    )
+
+    result = form_module._verify_text_field(SimpleNamespace(), "jd_price", 1, 2, "70")
+
+    assert result["success"] is False
+    assert result["uia_timeout"] is True
+
+
+def test_read_uia_value_prefers_local_candidates(monkeypatch):
+    import actions.form as form_module
+
+    class FakeRect:
+        def __init__(self, left, top, right, bottom):
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    class FakeEdit:
+        def __init__(self, rect, value):
+            self._rect = rect
+            self._value = value
+
+        def rectangle(self):
+            return self._rect
+
+        def get_value(self):
+            return self._value
+
+    monkeypatch.setattr("actions._uia_helpers.find_jingmai_uia_window", lambda locator=None, log=None: object())
+    monkeypatch.setattr(
+        "infrastructure.uia_inspector.UIAControlInspector.find_descendants",
+        lambda window, control_type_list, is_visible, is_enabled, limit: [
+            FakeEdit(FakeRect(900, 450, 980, 500), "999"),
+            FakeEdit(FakeRect(1450, 470, 1540, 520), "70.00"),
+        ],
+    )
+
+    locator = SimpleNamespace(
+        adapt_coords=lambda x, y: (x, y),
+        window_to_screen=lambda x, y: (x, y),
+    )
+
+    result = form_module._read_uia_value_for_field(locator, "jd_price", 1590, 493)
+
+    assert result["success"] is True
+    assert result["method"] == "uia-local-edit"
+    assert result["actual"] == "70.00"
 
 
 def test_executor_does_not_turn_action_failure_into_success(tmp_path: Path):

@@ -55,6 +55,12 @@ def _compare_field_value(field: str, expected: Any, actual: Any) -> Dict[str, An
     }
 
 
+def _field_search_margin(field: str) -> tuple[int, int, int, int]:
+    if field in {"market_price", "jd_price", "purchase_price"}:
+        return (140, 45, 260, 90)
+    return (180, 60, 320, 140)
+
+
 def _read_clipboard_text() -> str:
     try:
         import win32clipboard
@@ -76,50 +82,83 @@ def _read_clipboard_text() -> str:
         return ""
 
 
-def _read_uia_value_for_field(locator, x: int, y: int) -> Dict[str, Any]:
-    try:
-        from actions._uia_helpers import find_jingmai_uia_window
+def _read_uia_value_for_field(locator, field: str, x: int, y: int) -> Dict[str, Any]:
+    result_holder: Dict[str, Any] = {}
 
-        window = find_jingmai_uia_window(locator=locator)
-        if not window:
-            return {"success": False, "message": "uia window not found"}
+    def _search():
+        try:
+            from actions._uia_helpers import find_jingmai_uia_window
+            from infrastructure.uia_inspector import UIAControlInspector
 
-        screen_x, screen_y = locator.window_to_screen(*locator.adapt_coords(x, y))
-        best = None
-        best_distance = None
-        for edit in window.descendants(control_type="Edit"):
-            try:
-                rect = edit.rectangle()
-                if rect.left <= screen_x <= rect.right and rect.top <= screen_y <= rect.bottom:
-                    value = ""
-                    try:
-                        value = edit.get_value() or ""
-                    except Exception:
+            window = find_jingmai_uia_window(locator=locator)
+            if not window:
+                result_holder["result"] = {"success": False, "message": "uia window not found", "method": "uia-get-value"}
+                return
+
+            screen_x, screen_y = locator.window_to_screen(*locator.adapt_coords(x, y))
+            local_x_margin, local_y_margin, expanded_x_margin, expanded_y_margin = _field_search_margin(field)
+            local_candidates = []
+            expanded_candidates = []
+            for edit in UIAControlInspector.find_descendants(
+                window,
+                control_type_list=["Edit"],
+                is_visible=True,
+                is_enabled=True,
+                limit=80,
+            ):
+                try:
+                    rect = edit.rectangle()
+                    if rect.left <= screen_x <= rect.right and rect.top <= screen_y <= rect.bottom:
                         value = ""
-                    if value:
-                        return {"success": True, "actual": value, "method": "uia-get-value"}
-                    return {"success": False, "message": "uia value empty", "method": "uia-get-value"}
+                        try:
+                            value = edit.get_value() or ""
+                        except Exception:
+                            value = ""
+                        if value:
+                            result_holder["result"] = {"success": True, "actual": value, "method": "uia-get-value"}
+                            return
+                        result_holder["result"] = {"success": False, "message": "uia value empty", "method": "uia-get-value"}
+                        return
 
-                center_x = (rect.left + rect.right) / 2
-                center_y = (rect.top + rect.bottom) / 2
-                distance = abs(center_x - screen_x) + abs(center_y - screen_y)
-                if best_distance is None or distance < best_distance:
-                    best_distance = distance
-                    best = edit
-            except Exception:
-                continue
+                    center_x = (rect.left + rect.right) / 2
+                    center_y = (rect.top + rect.bottom) / 2
+                    distance = abs(center_x - screen_x) + abs(center_y - screen_y)
+                    if abs(center_x - screen_x) <= local_x_margin and abs(center_y - screen_y) <= local_y_margin:
+                        local_candidates.append((distance, edit))
+                    elif abs(center_x - screen_x) <= expanded_x_margin and abs(center_y - screen_y) <= expanded_y_margin:
+                        expanded_candidates.append((distance, edit))
+                except Exception:
+                    continue
 
-        if best is not None and best_distance is not None and best_distance <= 120:
-            try:
-                value = best.get_value() or ""
-            except Exception:
-                value = ""
-            if value:
-                return {"success": True, "actual": value, "method": "uia-nearest-edit"}
-            return {"success": False, "message": "uia nearest value empty", "method": "uia-nearest-edit"}
-        return {"success": False, "message": "no matching uia edit"}
+            candidates = local_candidates or expanded_candidates
+            if candidates:
+                _, best = sorted(candidates, key=lambda item: item[0])[0]
+                try:
+                    value = best.get_value() or ""
+                except Exception:
+                    value = ""
+                if value:
+                    method = "uia-local-edit" if local_candidates else "uia-expanded-edit"
+                    result_holder["result"] = {"success": True, "actual": value, "method": method}
+                    return
+                method = "uia-local-edit" if local_candidates else "uia-expanded-edit"
+                result_holder["result"] = {"success": False, "message": "uia candidate value empty", "method": method}
+                return
+            result_holder["result"] = {"success": False, "message": "no matching uia edit", "method": "uia-get-value"}
+        except Exception as exc:
+            result_holder["result"] = {"success": False, "message": f"uia read failed: {exc}", "method": "uia-get-value"}
+
+    try:
+        import threading
+
+        worker = threading.Thread(target=_search, daemon=True)
+        worker.start()
+        worker.join(timeout=1.5)
+        if worker.is_alive():
+            return {"success": False, "message": "uia read timeout (1.5s)", "method": "uia-timeout"}
+        return result_holder.get("result", {"success": False, "message": "uia read returned no result", "method": "uia-get-value"})
     except Exception as exc:
-        return {"success": False, "message": f"uia read failed: {exc}"}
+        return {"success": False, "message": f"uia thread failed: {exc}", "method": "uia-get-value"}
 
 
 def _read_clipboard_value_for_field(locator, x: int, y: int) -> Dict[str, Any]:
@@ -157,11 +196,16 @@ def _read_clipboard_value_for_field(locator, x: int, y: int) -> Dict[str, Any]:
     return {"success": True, "actual": actual_text, "method": "clipboard-readback"}
 
 
-def _verify_text_field(locator, field: str, x: int, y: int, expected: Any) -> Dict[str, Any]:
-    readers = (_read_uia_value_for_field, _read_clipboard_value_for_field)
+def _verify_text_field(locator, field: str, x: int, y: int, expected: Any, prefer_uia: bool = True) -> Dict[str, Any]:
+    readers = [_read_clipboard_value_for_field]
+    if prefer_uia:
+        readers.insert(0, _read_uia_value_for_field)
     failures = []
     for reader in readers:
-        read_result = reader(locator, x, y)
+        if reader is _read_uia_value_for_field:
+            read_result = reader(locator, field, x, y)
+        else:
+            read_result = reader(locator, x, y)
         method = read_result.get("method", reader.__name__)
         if not read_result.get("success"):
             failures.append({"method": method, "reason": read_result.get("message", "read failed")})
@@ -187,12 +231,13 @@ def _verify_text_field(locator, field: str, x: int, y: int, expected: Any) -> Di
             }
         )
 
+    uia_timeout = any(item["method"] == "uia-timeout" for item in failures)
     summary = "; ".join(
         f"{item['method']}: {item['reason']}"
         + (f" (expected={item.get('expected')!r}, actual={item.get('actual')!r})" if "expected" in item else "")
         for item in failures
     ) or "no verification method available"
-    return {"success": False, "message": summary, "failures": failures}
+    return {"success": False, "message": summary, "failures": failures, "uia_timeout": uia_timeout}
 
 
 @ActionRegistry.register("fill_text", "form", "4 层输入 fallback 填充文本")
@@ -386,6 +431,7 @@ def fill_product_info(product: Dict[str, Any], locator=None, log=None) -> Dict[s
         "purchase_price": PRODUCT_INFO_PAGE.get("purchase_price"),
     }
 
+    prefer_uia_read = True
     for field, coords in text_fields.items():
         value = product.get(field)
         if value and coords:
@@ -399,7 +445,7 @@ def fill_product_info(product: Dict[str, Any], locator=None, log=None) -> Dict[s
                 "expected": str(value),
             }
             if r["success"]:
-                verify = _verify_text_field(locator, field, coords[0], coords[1], value)
+                verify = _verify_text_field(locator, field, coords[0], coords[1], value, prefer_uia=prefer_uia_read)
                 field_result["verify_success"] = verify["success"]
                 field_result["verification_method"] = verify.get("method", "")
                 field_result["compare_mode"] = verify.get("compare_mode", "")
@@ -411,6 +457,8 @@ def fill_product_info(product: Dict[str, Any], locator=None, log=None) -> Dict[s
                     field_result["success"] = False
                     field_result["verify_error"] = verify.get("message", "readback failed")
                     field_result["verification_failures"] = verify.get("failures", [])
+                    if verify.get("uia_timeout"):
+                        prefer_uia_read = False
             else:
                 field_result["verify_error"] = r.get("message", "write failed")
             results.append(field_result)

@@ -162,9 +162,19 @@ def _resolve_resume_step_index(plan_data: Any, steps: List[Dict[str, Any]]) -> i
 def _build_progress_callback(prefix: str = ""):
     def on_progress(step_index, total_steps, action, success, retries, observation, **_):
         status_icon = "OK" if success else "FAIL"
-        obs_reason = (observation.get("reason", "") if observation else "")[:40]
         retry_info = f"（重试 {retries} 次）" if retries > 1 else ""
-        line = f"[{step_index}/{total_steps}] {action}: {status_icon}{retry_info} {obs_reason}".rstrip()
+        obs_status = ""
+        if observation:
+            vision = observation.get("status", "")
+            if vision == "ok":
+                obs_status = " [视觉验证通过]"
+            elif vision == "error":
+                obs_status = " [视觉验证失败]"
+            elif vision == "unknown":
+                obs_status = " [动作结果兜底]"
+            else:
+                obs_status = f" [{observation.get('reason', '')[:30]}]"
+        line = f"[{step_index}/{total_steps}] {action}: {status_icon}{retry_info}{obs_status}".rstrip()
         click.echo(f"{prefix}{line}" if prefix else line)
 
     return on_progress

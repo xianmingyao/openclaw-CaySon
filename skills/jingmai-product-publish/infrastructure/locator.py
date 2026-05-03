@@ -813,6 +813,56 @@ class JingmaiLocator:
             self._log('error', f"元素扫描失败: {e}")
             return []
 
+    @staticmethod
+    def _print_window_capture(hwnd: int):
+        try:
+            from PIL import Image
+            import win32ui
+
+            rect = win32gui.GetWindowRect(hwnd)
+            width = rect[2] - rect[0]
+            height = rect[3] - rect[1]
+            if width <= 0 or height <= 0:
+                return None
+
+            hwnd_dc = win32gui.GetWindowDC(hwnd)
+            mfc_dc = win32ui.CreateDCFromHandle(hwnd_dc)
+            save_dc = mfc_dc.CreateCompatibleDC()
+            bmp = win32ui.CreateBitmap()
+            bmp.CreateCompatibleBitmap(mfc_dc, width, height)
+            save_dc.SelectObject(bmp)
+
+            pw_render_full_content = 2
+            result = ctypes.windll.user32.PrintWindow(hwnd, save_dc.GetSafeHdc(), pw_render_full_content)
+            if not result:
+                result = ctypes.windll.user32.PrintWindow(hwnd, save_dc.GetSafeHdc(), 1)
+            if not result:
+                save_dc.DeleteDC()
+                mfc_dc.DeleteDC()
+                win32gui.ReleaseDC(hwnd, hwnd_dc)
+                win32gui.DeleteObject(bmp.GetHandle())
+                return None
+
+            bmpinfo = bmp.GetInfo()
+            bmpbytes = bmp.GetBitmapBits(True)
+            image = Image.frombuffer(
+                "RGB",
+                (bmpinfo["bmWidth"], bmpinfo["bmHeight"]),
+                bmpbytes,
+                "raw",
+                "BGRX",
+                0,
+                1,
+            )
+
+            save_dc.DeleteDC()
+            mfc_dc.DeleteDC()
+            win32gui.ReleaseDC(hwnd, hwnd_dc)
+            win32gui.DeleteObject(bmp.GetHandle())
+            return image
+        except Exception:
+            return None
+
     def take_screenshot(self, save_path: str = None, for_vision: bool = False) -> Optional[str]:
         """截图"""
         if not WIN32_AVAILABLE or not self.hwnd:
@@ -826,6 +876,7 @@ class JingmaiLocator:
 
             from PIL import Image
             import win32ui
+            from infrastructure.path_validator import validate_save_path
             from settings import get_settings
 
             settings = get_settings()
@@ -833,6 +884,9 @@ class JingmaiLocator:
                 screenshot_dir = settings.SCREENSHOT_DIR
                 Path(screenshot_dir).mkdir(parents=True, exist_ok=True)
                 save_path = str(Path(screenshot_dir) / f"screenshot_{int(time.time())}.png")
+            else:
+                save_dir = validate_save_path(str(Path(save_path).parent), document_dir=settings.SCREENSHOT_DIR)
+                save_path = str(Path(save_dir) / Path(save_path).name)
 
             left, top, right, bottom = self.refresh_window_rect() or win32gui.GetWindowRect(self.hwnd)
             width, height = right - left, bottom - top
@@ -855,6 +909,11 @@ class JingmaiLocator:
                 0,
                 1,
             )
+            if image.getbbox() is None:
+                self._log('warning', "BitBlt screenshot empty, trying PrintWindow fallback")
+                fallback_image = self._print_window_capture(self.hwnd)
+                if fallback_image is not None:
+                    image = fallback_image
 
             output = image
             if for_vision:

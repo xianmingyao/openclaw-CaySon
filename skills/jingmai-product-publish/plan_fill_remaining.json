@@ -2,7 +2,7 @@
   "task_id": "",
   "status": "failed",
   "current_step": 1,
-  "total_steps": 2,
+  "total_steps": 1,
   "plan": [
     {
       "action": "fill_product_info",
@@ -20,7 +20,7 @@
           "reason": "missing-locator",
           "success": true,
           "error": "",
-          "at": 1777645498,
+          "at": 1777652355,
           "window": {
             "hwnd": 1377392,
             "title": "jd_465d1abd3ee76",
@@ -38,7 +38,7 @@
           "reason": "force-relocate",
           "success": true,
           "error": "",
-          "at": 1777646043,
+          "at": 1777652379,
           "window": {
             "hwnd": 1377392,
             "title": "jd_465d1abd3ee76",
@@ -53,17 +53,9 @@
           }
         }
       ]
-    },
-    {
-      "action": "save_draft",
-      "params": {},
-      "required": true,
-      "expected_effect": "草稿保存成功",
-      "status": "pending"
     }
   ],
   "error": "Some product fields failed verification: jd_price, purchase_price",
-  "product_data": {},
   "risk_stats": {
     "high_risk_window_shift_count": 0,
     "high_risk_window_shift_steps": []

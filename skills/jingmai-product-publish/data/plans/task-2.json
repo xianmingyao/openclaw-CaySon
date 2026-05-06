@@ -1,0 +1,18 @@
+{
+  "task_id": "task-2",
+  "product_data": {
+    "title": "商品B",
+    "price": 20
+  },
+  "plan": [
+    {
+      "action": "find_window",
+      "params": {},
+      "phase": "window_ready"
+    }
+  ],
+  "total_steps": 1,
+  "phases": [
+    "window_ready"
+  ]
+}

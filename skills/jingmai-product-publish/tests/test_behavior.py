@@ -13,13 +13,22 @@ if str(PROJECT_ROOT) not in sys.path:
 from agents.executor import ExecutorAgent
 from agents.planner import PlannerAgent
 from agents.thinker import ThinkerAgent
-from cli import _build_product_model, _extract_plan_payload, _load_batch_items, _read_json_file, cli
+from cli import (
+    _build_plan_package,
+    _build_product_model,
+    _extract_plan_payload,
+    _load_batch_items,
+    _read_json_file,
+    _resolve_phase_step_index,
+    cli,
+)
 from db import DatabaseManager
 from llm.manager import LLMManager
 from memory.long_term import LongTermMemory
 from models import Product, PublishTask, TaskStep
 from actions.form import fill_text
 from actions import ActionRegistry
+from actions._uia_helpers import resolve_template_path
 from actions.navigation import publish_product, save_draft, select_category
 from actions.window import navigate_to
 from infrastructure.locator import JingmaiLocator
@@ -826,6 +835,36 @@ def test_plan_command_outputs_full_payload_by_default(monkeypatch):
     assert payload["plan"][0]["action"] == "find_window"
 
 
+def test_build_plan_package_includes_phase_summary():
+    payload = _build_plan_package(
+        {
+            "task_id": "task-1",
+            "product_data": {"title": "测试商品"},
+            "plan": [
+                {"action": "find_window", "params": {}, "phase": "window_ready"},
+                {"action": "navigate_to", "params": {}, "phase": "publish_page_ready"},
+                {"action": "fill_product_info", "params": {}, "phase": "product_info_ready"},
+            ],
+            "total_steps": 3,
+        }
+    )
+
+    assert payload["phases"] == ["window_ready", "publish_page_ready", "product_info_ready"]
+
+
+def test_resolve_phase_step_index_supports_aliases():
+    steps = [
+        {"action": "find_window", "phase": "window_ready"},
+        {"action": "select_category", "phase": "category_ready"},
+        {"action": "fill_product_info", "phase": "product_info_ready"},
+    ]
+
+    index, phase = _resolve_phase_step_index(steps, "4")
+
+    assert index == 2
+    assert phase == "product_info_ready"
+
+
 def test_execute_command_reuses_task_id_from_plan_file(monkeypatch, tmp_path: Path):
     runner = CliRunner()
     plan_path = tmp_path / "plan.json"
@@ -854,6 +893,45 @@ def test_execute_command_reuses_task_id_from_plan_file(monkeypatch, tmp_path: Pa
     assert result.exit_code == 0
     assert fake_executor.last_task_id == "task-xyz"
     assert "task_id=task-xyz" in result.output
+
+
+def test_execute_command_can_start_from_phase(monkeypatch, tmp_path: Path):
+    runner = CliRunner()
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(
+        json.dumps(
+            {
+                "task_id": "task-phase",
+                "plan": [
+                    {"action": "find_window", "params": {}, "phase": "window_ready"},
+                    {"action": "navigate_to", "params": {}, "phase": "publish_page_ready"},
+                    {"action": "fill_product_info", "params": {}, "phase": "product_info_ready"},
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    class FakeExecutor:
+        def __init__(self):
+            self.last_resume_step_index = None
+
+        def run(self, plan, task_id="", resume_step_index=0, **kwargs):
+            self.last_resume_step_index = resume_step_index
+            return {"success": True}
+
+    fake_executor = FakeExecutor()
+
+    class FakeFactory:
+        def create_executor(self):
+            return fake_executor
+
+    monkeypatch.setattr("agents.factory.AgentFactory", lambda: FakeFactory())
+    result = runner.invoke(cli, ["execute", "--config", str(plan_path), "--start-from-phase", "product_info"])
+
+    assert result.exit_code == 0
+    assert fake_executor.last_resume_step_index == 2
 
 
 def test_batch_plan_out_creates_one_plan_file_per_task(monkeypatch, tmp_path: Path):
@@ -910,6 +988,67 @@ def test_batch_plan_out_creates_one_plan_file_per_task(monkeypatch, tmp_path: Pa
     assert (plan_dir / "task-2.json").exists()
 
 
+def test_batch_resume_skips_completed_items_and_updates_progress(monkeypatch, tmp_path: Path):
+    runner = CliRunner()
+    batch_path = tmp_path / "products.json"
+    progress_path = tmp_path / "progress.json"
+    batch_path.write_text(
+        json.dumps(
+            [
+                {"title": "商品A", "price": 10},
+                {"title": "商品B", "price": 20},
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    progress_path.write_text(
+        json.dumps({"completed_count": 1, "failed_indices": [], "items": []}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    class FakePlanner:
+        def __init__(self):
+            self.counter = 1
+            self.seen_titles = []
+
+        def run(self, **kwargs):
+            self.counter += 1
+            self.seen_titles.append(kwargs["product_data"]["title"])
+            return {
+                "success": True,
+                "task_id": f"task-{self.counter}",
+                "product_data": kwargs["product_data"],
+                "plan": [{"action": "find_window", "params": {}, "phase": "window_ready"}],
+                "total_steps": 1,
+            }
+
+    class FakeExecutor:
+        def run(self, plan, task_id="", **kwargs):
+            return {"success": True, "risk_stats": {"high_risk_window_shift_count": 0}, "recovery_error": ""}
+
+    fake_planner = FakePlanner()
+
+    class FakeFactory:
+        def create_planner(self):
+            return fake_planner
+
+        def create_executor(self):
+            return FakeExecutor()
+
+    monkeypatch.setattr("agents.factory.AgentFactory", lambda: FakeFactory())
+    result = runner.invoke(
+        cli,
+        ["batch", "--file", str(batch_path), "--resume", "--progress-file", str(progress_path)],
+    )
+
+    assert result.exit_code == 0
+    assert fake_planner.seen_titles == ["商品B"]
+    progress = json.loads(progress_path.read_text(encoding="utf-8"))
+    assert progress["completed_count"] == 2
+    assert progress["items"][0]["title"] == "商品B"
+
+
 def test_ollama_provider_resolves_model_alias():
     provider = OllamaProvider(model="qwen3-vl")
     provider._list_models = lambda: ["qwen3-vl:8b", "llama3.1:8b"]
@@ -924,3 +1063,204 @@ def test_ollama_provider_uses_thinking_when_response_empty():
     }
 
     assert OllamaProvider._extract_generate_text(payload) == payload["thinking"]
+
+
+def test_select_search_result_prefers_local_uia_candidate(monkeypatch):
+    import actions.navigation as navigation_module
+
+    class FakeRect:
+        def __init__(self, left, top, right, bottom):
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    clicked = []
+
+    monkeypatch.setattr(navigation_module, "find_jingmai_uia_window", lambda locator=None, log=None: object())
+    monkeypatch.setattr(
+        navigation_module,
+        "iter_named_descendants",
+        lambda window, top_range=None, max_name_length=120, limit=240: [
+            {
+                "element": object(),
+                "name": "工业品 > 中低压配电 > 插座",
+                "control_type": "Text",
+                "rect": FakeRect(320, 240, 820, 270),
+            }
+        ],
+    )
+    monkeypatch.setattr(
+        navigation_module,
+        "click_uia_element",
+        lambda element, log=None: clicked.append(element) or True,
+    )
+
+    assert navigation_module._select_search_result("中低压配电 插座", locator=SimpleNamespace()) is True
+    assert len(clicked) == 1
+
+
+def test_fill_product_info_supports_attributes(monkeypatch):
+    import actions.form as form_module
+
+    dropdown_calls = []
+
+    monkeypatch.setattr(form_module, "fill_text", lambda text, **kwargs: {"success": True, "text": text})
+    monkeypatch.setattr(
+        form_module,
+        "_verify_text_field",
+        lambda locator, field, x, y, expected, prefer_uia=True: {
+            "success": True,
+            "actual": str(expected),
+            "expected": str(expected),
+            "method": "test",
+            "compare_mode": "text",
+        },
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_select_dropdown_option",
+        lambda option_text, x, y, locator=None, log=None, preferred_keywords=None, top_range=None, vision_template="": (
+            dropdown_calls.append((option_text, x, y, tuple(preferred_keywords or []), vision_template))
+            or {"success": True, "option": option_text, "method": "uia-local"}
+        ),
+    )
+    monkeypatch.setattr(
+        "config.jingmai_coords.PRODUCT_INFO_PAGE",
+        {
+            "title_input": (1, 1),
+            "model_input": (2, 2),
+            "sku_input": (3, 3),
+            "market_price": (4, 4),
+            "jd_price": (5, 5),
+            "purchase_price": (6, 6),
+            "brand_select": (7, 7),
+            "protection_level": (8, 8),
+            "material": (9, 9),
+        },
+    )
+
+    result = form_module.fill_product_info(
+        {
+            "title": "ok",
+            "brand": "brand-a",
+            "attributes": {"protection_level": "IP65", "material": "尼龙"},
+        },
+        locator=SimpleNamespace(),
+    )
+
+    assert result["success"] is True
+    assert [item[0] for item in dropdown_calls] == ["brand-a", "IP65", "尼龙"]
+
+
+def test_dismiss_popup_prefers_uia_button(monkeypatch):
+    import actions.popup as popup_module
+
+    clicked = []
+
+    monkeypatch.setattr(popup_module, "find_jingmai_uia_window", lambda locator=None, log=None: object())
+    monkeypatch.setattr(
+        popup_module,
+        "iter_named_descendants",
+        lambda window, control_types=None, limit=160: [
+            {
+                "element": object(),
+                "name": "确定",
+                "control_type": "Button",
+                "rect": SimpleNamespace(top=240),
+            }
+        ],
+    )
+    monkeypatch.setattr(
+        popup_module,
+        "click_uia_element",
+        lambda element, log=None: clicked.append(element) or True,
+    )
+
+    result = popup_module.dismiss_popup(method="click_ok", locator=SimpleNamespace())
+
+    assert result["success"] is True
+    assert len(clicked) == 1
+
+
+def test_resolve_template_path_finds_generated_assets():
+    path = resolve_template_path("templates", "category_next_button.png")
+
+    assert path is not None
+    assert Path(path).exists()
+
+
+def test_executor_act_marks_vision_fallback(monkeypatch):
+    agent = ExecutorAgent()
+    agent.state.step_index = 1
+    monkeypatch.setattr(
+        "actions.registry.ActionRegistry.execute",
+        lambda action_name, **kwargs: {
+            "success": True,
+            "method": "vision",
+            "vision_fallback": {
+                "success": True,
+                "template": "popup_close_button.png",
+                "template_path": "x",
+            },
+        },
+    )
+
+    result = agent.act("dismiss_popup", {})
+
+    assert result["used_vision_fallback"] is True
+    assert result["vision_fallback"]["template"] == "popup_close_button.png"
+
+
+def test_executor_records_vision_fallback_stats(tmp_path: Path):
+    agent = ExecutorAgent()
+    agent._resume_step_index = 0
+    agent._task_id = "task-vision"
+    agent._plan_file = str(tmp_path / "plan.json")
+    agent._risk_stats = {"high_risk_window_shift_count": 0, "high_risk_window_shift_steps": []}
+    agent._vision_fallback_stats = {"count": 0, "steps": [], "templates": {}}
+    agent._check_safety = lambda _action: True
+    agent._ensure_locator = lambda: None
+    agent._capture_window_summary = lambda: {}
+    agent._diff_window_summary = lambda before, after: {}
+    agent._log_window_diff_risk = lambda *args, **kwargs: None
+    screenshot = tmp_path / "shot.png"
+    screenshot.write_bytes(b"fake")
+    agent._take_screenshot = lambda _action: str(screenshot)
+    agent._react_observe = lambda action_name, screenshot_path, act_result: {"status": "ok", "reason": "vision ok"}
+    agent.act = lambda _action, _params: {
+        "success": True,
+        "method": "vision",
+        "used_vision_fallback": True,
+        "vision_fallback": {
+            "success": True,
+            "template": "publish_button.png",
+            "template_path": "resources/screenshots/templates/publish_button.png",
+        },
+    }
+
+    result = agent.run_react_loop([{"action": "publish_product", "params": {}}])
+
+    assert result["success"] is True
+    assert result["vision_fallback_stats"]["count"] == 1
+    assert result["vision_fallback_stats"]["templates"]["publish_button.png"] == 1
+    assert result["results"][0]["used_vision_fallback"] is True
+
+
+def test_finalize_plan_file_persists_vision_fallback_stats(tmp_path: Path):
+    agent = ExecutorAgent()
+    agent._task_id = "task-vision-plan"
+    agent._plan_file = str(tmp_path / "plan.json")
+    agent._vision_fallback_stats = {
+        "count": 1,
+        "steps": [{"step": 1, "action": "publish_product", "template": "publish_button.png", "template_path": "x"}],
+        "templates": {"publish_button.png": 1},
+    }
+    agent._risk_stats = {"high_risk_window_shift_count": 0, "high_risk_window_shift_steps": []}
+
+    plan = [{"action": "publish_product", "status": "success"}]
+    agent._finalize_plan_file(plan, success=True)
+
+    payload = json.loads(Path(agent._plan_file).read_text(encoding="utf-8"))
+    assert payload["vision_fallback_stats"]["count"] == 1
+    assert payload["vision_fallback_stats"]["templates"]["publish_button.png"] == 1

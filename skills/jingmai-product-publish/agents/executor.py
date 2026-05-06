@@ -50,6 +50,7 @@ class ExecutorAgent(BaseAgent):
         self._last_recovery_error = ""
         self._recovery_attempts: Dict[int, List[Dict[str, Any]]] = {}
         self._risk_stats: Dict[str, Any] = {}
+        self._vision_fallback_stats: Dict[str, Any] = {}
 
     def run(self, plan: List[Dict[str, Any]], **kwargs) -> Dict[str, Any]:
         self._task_id = kwargs.get("task_id", "")
@@ -62,6 +63,11 @@ class ExecutorAgent(BaseAgent):
         self._risk_stats = {
             "high_risk_window_shift_count": 0,
             "high_risk_window_shift_steps": [],
+        }
+        self._vision_fallback_stats = {
+            "count": 0,
+            "steps": [],
+            "templates": {},
         }
 
         if self._db and self._task_id:
@@ -87,6 +93,7 @@ class ExecutorAgent(BaseAgent):
             error=result.get("error", ""),
         )
         result["risk_stats"] = dict(self._risk_stats)
+        result["vision_fallback_stats"] = dict(self._vision_fallback_stats)
         result["recovery_error"] = self._last_recovery_error
         return result
 
@@ -119,6 +126,11 @@ class ExecutorAgent(BaseAgent):
             self._logger.debug(f"[Executor] 执行参数 {action_name}: {params}")
 
         result = ActionRegistry.execute(action_name, **action_params)
+        if isinstance(result, dict):
+            vision_meta = self._extract_vision_fallback(result)
+            if vision_meta:
+                result["used_vision_fallback"] = True
+                result["vision_fallback"] = vision_meta
 
         # 窗口类动作成功后初始化 locator
         if action_name in {"find_window", "activate_window"} and result.get("success"):
@@ -129,6 +141,41 @@ class ExecutorAgent(BaseAgent):
                 self._locator.find_window()
 
         return result
+
+    def _extract_vision_fallback(self, result: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        vision_meta = result.get("vision_fallback")
+        if isinstance(vision_meta, dict) and vision_meta.get("success"):
+            return vision_meta
+
+        method = str(result.get("method", "") or "").lower()
+        if "vision" in method:
+            return {
+                "success": True,
+                "template": "",
+                "template_path": "",
+                "match_confidence": None,
+            }
+        return None
+
+    def _record_vision_fallback(self, step_index: int, action_name: str, act_result: Optional[Dict[str, Any]]):
+        vision_meta = self._extract_vision_fallback(act_result or {})
+        if not vision_meta:
+            return
+
+        template_name = str(vision_meta.get("template", "") or "")
+        self._vision_fallback_stats["count"] += 1
+        self._vision_fallback_stats["steps"].append(
+            {
+                "step": step_index,
+                "action": action_name,
+                "template": template_name,
+                "template_path": vision_meta.get("template_path", ""),
+            }
+        )
+        if template_name:
+            self._vision_fallback_stats["templates"][template_name] = (
+                self._vision_fallback_stats["templates"].get(template_name, 0) + 1
+            )
 
     # ── ReAct 执行循环 ─────────────────────────────
 
@@ -173,6 +220,7 @@ class ExecutorAgent(BaseAgent):
                 "history": history,
                 "skipped_completed": True,
                 "risk_stats": dict(self._risk_stats),
+                "vision_fallback_stats": dict(self._vision_fallback_stats),
                 "recovery_error": self._last_recovery_error,
             }
 
@@ -194,6 +242,7 @@ class ExecutorAgent(BaseAgent):
                     "results": results,
                     "error": "安全拦截",
                     "risk_stats": dict(self._risk_stats),
+                    "vision_fallback_stats": dict(self._vision_fallback_stats),
                     "recovery_error": self._last_recovery_error,
                 }
 
@@ -205,6 +254,7 @@ class ExecutorAgent(BaseAgent):
                     "results": results,
                     "error": "熔断器开启",
                     "risk_stats": dict(self._risk_stats),
+                    "vision_fallback_stats": dict(self._vision_fallback_stats),
                     "recovery_error": self._last_recovery_error,
                 }
 
@@ -300,12 +350,15 @@ class ExecutorAgent(BaseAgent):
 
             # ── 记录步骤结果 ──
             retry_count = retry + 1
+            self._record_vision_fallback(i + 1, action_name, last_act_result)
             step_result = {
                 "step": i + 1,
                 "action": action_name,
                 "success": step_success,
                 "result": last_act_result,
                 "retries": retry_count,
+                "used_vision_fallback": bool((last_act_result or {}).get("used_vision_fallback")),
+                "vision_template": ((last_act_result or {}).get("vision_fallback") or {}).get("template", ""),
             }
             results.append(step_result)
 
@@ -338,6 +391,8 @@ class ExecutorAgent(BaseAgent):
                 action=action_name,
                 action_result_success=bool((last_act_result or {}).get("success", False)),
                 vision_status=(observation or {}).get("status", "none"),
+                used_vision_fallback=bool((last_act_result or {}).get("used_vision_fallback")),
+                vision_template=((last_act_result or {}).get("vision_fallback") or {}).get("template", ""),
                 retry_count=retry_count,
                 error=(last_act_result or {}).get("error", ""),
                 screenshot=screenshot_path or "",
@@ -370,6 +425,7 @@ class ExecutorAgent(BaseAgent):
                     "failed_step": i + 1,
                     "history": history,
                     "risk_stats": dict(self._risk_stats),
+                    "vision_fallback_stats": dict(self._vision_fallback_stats),
                     "recovery_error": self._last_recovery_error,
                 }
 
@@ -382,6 +438,7 @@ class ExecutorAgent(BaseAgent):
             "results": results,
             "history": history,
             "risk_stats": dict(self._risk_stats),
+            "vision_fallback_stats": dict(self._vision_fallback_stats),
             "recovery_error": self._last_recovery_error,
         }
 
@@ -696,6 +753,7 @@ class ExecutorAgent(BaseAgent):
             if self._last_recovery_error:
                 plan_package["recovery_error"] = self._last_recovery_error
             plan_package["risk_stats"] = dict(self._risk_stats)
+            plan_package["vision_fallback_stats"] = dict(self._vision_fallback_stats)
 
             import os
             os.makedirs(os.path.dirname(self._plan_file) or ".", exist_ok=True)
@@ -746,6 +804,7 @@ class ExecutorAgent(BaseAgent):
             if self._original_plan_data:
                 plan_package.setdefault("product_data", self._original_plan_data.get("product_data", {}))
             plan_package["risk_stats"] = dict(self._risk_stats)
+            plan_package["vision_fallback_stats"] = dict(self._vision_fallback_stats)
 
             import os
             os.makedirs(os.path.dirname(self._plan_file) or ".", exist_ok=True)

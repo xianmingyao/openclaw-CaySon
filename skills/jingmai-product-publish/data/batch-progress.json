@@ -1,0 +1,104 @@
+{
+  "completed_count": 2,
+  "failed_indices": [],
+  "items": [
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": ""
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": ""
+    }
+  ]
+}

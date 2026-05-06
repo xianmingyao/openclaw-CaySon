@@ -41,7 +41,7 @@ class PlannerAgent(BaseAgent):
             plan = template_plan
             self._log("info", f"使用模板规划，共 {len(plan)} 步")
 
-        valid_plan = self._validate_plan(plan)
+        valid_plan = self._annotate_plan_phases(self._validate_plan(plan))
 
         if self._db:
             from models import PublishTask, TaskStep
@@ -312,6 +312,43 @@ publish_product - 发布商品
             )
 
         return self._enforce_plan_order(normalized)
+
+    @staticmethod
+    def _annotate_plan_phases(plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Annotate each step with a business phase for hybrid/manual resume support."""
+        annotated: List[Dict[str, Any]] = []
+        publish_seen = False
+
+        for step in plan:
+            item = dict(step)
+            action = item.get("action", "")
+            phase = item.get("phase")
+
+            if not phase:
+                if action in {"find_window", "activate_window"}:
+                    phase = "window_ready"
+                elif action == "navigate_to":
+                    phase = "publish_page_ready"
+                elif action == "select_category":
+                    phase = "category_ready"
+                elif action in {"fill_text", "fill_product_info", "select_dropdown", "paste_and_search"}:
+                    phase = "product_info_ready"
+                elif action == "save_draft":
+                    phase = "draft_saved"
+                elif action == "publish_product":
+                    phase = "publish_submitted"
+                elif action == "verify_result":
+                    phase = "publish_verified" if publish_seen else "draft_verified"
+                else:
+                    phase = "execution_in_progress"
+
+            item["phase"] = phase
+            annotated.append(item)
+
+            if action == "publish_product":
+                publish_seen = True
+
+        return annotated
 
     @staticmethod
     def _enforce_plan_order(plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:

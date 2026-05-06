@@ -5,7 +5,7 @@ import inspect
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 import click
 
@@ -137,11 +137,13 @@ def _extract_plan_payload(plan_data: Any) -> Dict[str, Any]:
 
 
 def _build_plan_package(plan_result: Dict[str, Any]) -> Dict[str, Any]:
+    plan_steps = plan_result["plan"]
     return {
         "task_id": plan_result["task_id"],
         "product_data": plan_result["product_data"],
-        "plan": plan_result["plan"],
+        "plan": plan_steps,
         "total_steps": plan_result["total_steps"],
+        "phases": _summarize_plan_phases(plan_steps),
     }
 
 
@@ -157,6 +159,77 @@ def _resolve_resume_step_index(plan_data: Any, steps: List[Dict[str, Any]]) -> i
         if str(step.get("status", "")).lower() != "success":
             return idx
     return len(steps)
+
+
+_PHASE_ALIASES = {
+    "1": "window_ready",
+    "window": "window_ready",
+    "window_ready": "window_ready",
+    "2": "publish_page_ready",
+    "page": "publish_page_ready",
+    "publish_page": "publish_page_ready",
+    "publish_page_ready": "publish_page_ready",
+    "3": "category_ready",
+    "category": "category_ready",
+    "category_ready": "category_ready",
+    "4": "product_info_ready",
+    "product": "product_info_ready",
+    "product_info": "product_info_ready",
+    "product_info_ready": "product_info_ready",
+    "5": "draft_saved",
+    "draft": "draft_saved",
+    "draft_saved": "draft_saved",
+    "6": "draft_verified",
+    "draft_verified": "draft_verified",
+    "7": "publish_submitted",
+    "publish": "publish_submitted",
+    "publish_submitted": "publish_submitted",
+    "8": "publish_verified",
+    "publish_verified": "publish_verified",
+}
+
+
+def _normalize_phase_name(phase_name: str) -> str:
+    key = str(phase_name or "").strip().lower().replace("-", "_").replace(" ", "_")
+    return _PHASE_ALIASES.get(key, key)
+
+
+def _summarize_plan_phases(steps: List[Dict[str, Any]]) -> List[str]:
+    phases: List[str] = []
+    for step in steps:
+        phase = str(step.get("phase", "")).strip()
+        if phase and phase not in phases:
+            phases.append(phase)
+    return phases
+
+
+def _resolve_phase_step_index(steps: List[Dict[str, Any]], start_from_phase: str) -> Tuple[int, str]:
+    normalized_phase = _normalize_phase_name(start_from_phase)
+    if not normalized_phase:
+        return 0, ""
+
+    for idx, step in enumerate(steps):
+        if _normalize_phase_name(step.get("phase", "")) == normalized_phase:
+            return idx, normalized_phase
+
+    available = ", ".join(_summarize_plan_phases(steps))
+    raise ValueError(f"未找到 phase: {start_from_phase}。可用 phases: {available or '无'}")
+
+
+def _read_batch_progress(progress_file: str) -> Dict[str, Any]:
+    path = Path(progress_file)
+    if not path.exists():
+        return {"completed_count": 0, "failed_indices": [], "items": []}
+    try:
+        return json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return {"completed_count": 0, "failed_indices": [], "items": []}
+
+
+def _write_batch_progress(progress_file: str, payload: Dict[str, Any]) -> None:
+    path = Path(progress_file)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def _build_progress_callback(prefix: str = ""):
@@ -225,7 +298,12 @@ def _invoke_executor_run(executor, **kwargs):
     return run_method(**filtered_kwargs)
 
 
-def _run_publish_flow(product_data: Dict[str, Any], plan_out: str = "", progress_prefix: str = "") -> Dict[str, Any]:
+def _run_publish_flow(
+    product_data: Dict[str, Any],
+    plan_out: str = "",
+    progress_prefix: str = "",
+    start_from_phase: str = "",
+) -> Dict[str, Any]:
     from agents.factory import AgentFactory
 
     factory = AgentFactory()
@@ -244,6 +322,12 @@ def _run_publish_flow(product_data: Dict[str, Any], plan_out: str = "", progress
     click.echo(f"{progress_prefix}Plan-and-Solve 完成，共 {plan_result['total_steps']} 步")
 
     executor = factory.create_executor()
+    resume_step_index = 0
+    resolved_phase = ""
+    if start_from_phase:
+        resume_step_index, resolved_phase = _resolve_phase_step_index(plan_result["plan"], start_from_phase)
+        click.echo(f"{progress_prefix}混合执行：从 phase={resolved_phase}（步骤 {resume_step_index + 1}）开始")
+
     exec_result = _invoke_executor_run(
         executor,
         plan=plan_result["plan"],
@@ -251,9 +335,11 @@ def _run_publish_flow(product_data: Dict[str, Any], plan_out: str = "", progress
         plan_file=plan_file,
         original_plan_data=plan_package,
         on_progress=_build_progress_callback(progress_prefix),
+        resume_step_index=resume_step_index,
     )
     exec_result["task_id"] = plan_result["task_id"]
     exec_result["plan"] = plan_package
+    exec_result["start_from_phase"] = resolved_phase
     return exec_result
 
 
@@ -267,10 +353,16 @@ def cli():
 @click.option("--config", "-c", "config_file", help="商品数据 JSON 文件路径")
 @click.option("--data", "-d", help="商品数据 JSON 字符串")
 @click.option("--plan-out", default="", help="可选：保存完整计划包 JSON，供监控/恢复执行")
-def publish(config_file, data, plan_out):
+@click.option("--start-from-phase", default="", help="混合执行：从指定业务 phase 开始，如 category_ready / product_info_ready / publish_submitted")
+def publish(config_file, data, plan_out, start_from_phase):
     """发布商品（默认主入口：Plan-and-Solve → ReAct → Reflection）"""
     product_data = _load_product_data(config_file, data)
-    result = _run_publish_flow(product_data=product_data, plan_out=plan_out, progress_prefix="  ")
+    result = _run_publish_flow(
+        product_data=product_data,
+        plan_out=plan_out,
+        progress_prefix="  ",
+        start_from_phase=start_from_phase,
+    )
 
     if result["success"]:
         _print_execution_diagnostics(result)
@@ -309,7 +401,8 @@ def plan(task_desc, config_file, data, steps_only):
 @click.option("--config", "-c", "config_file", required=True, help="计划 JSON 文件路径")
 @click.option("--task-id", "-t", default="", help="任务 ID")
 @click.option("--resume/--from-start", default=True, help="默认从首个非 success 步骤续跑；--from-start 强制从第 1 步重跑")
-def execute(config_file, task_id, resume):
+@click.option("--start-from-phase", default="", help="从指定业务 phase 开始执行，覆盖默认 resume 行为")
+def execute(config_file, task_id, resume, start_from_phase):
     """执行已有计划文件（默认断点续跑；每步截图视觉验证，失败递进重试 3 次）"""
     from agents.factory import AgentFactory
 
@@ -322,11 +415,17 @@ def execute(config_file, task_id, resume):
         click.echo("执行失败: 计划文件中没有可执行步骤", err=True)
         sys.exit(1)
 
-    resume_step_index = _resolve_resume_step_index(plan_data, steps) if resume else 0
+    resolved_phase = ""
+    if start_from_phase:
+        resume_step_index, resolved_phase = _resolve_phase_step_index(steps, start_from_phase)
+    else:
+        resume_step_index = _resolve_resume_step_index(plan_data, steps) if resume else 0
     if resume_step_index >= len(steps):
         click.echo(f"计划中的 {len(steps)} 个步骤都已成功，无需重跑")
         return
-    if resume_step_index > 0:
+    if resolved_phase:
+        click.echo(f"从 phase={resolved_phase} 开始执行，起始步骤 {resume_step_index + 1}")
+    elif resume_step_index > 0:
         click.echo(f"检测到前 {resume_step_index} 步已成功，从步骤 {resume_step_index + 1} 续跑")
 
     click.echo(f"ReAct 执行开始，共 {len(steps)} 步")
@@ -381,7 +480,10 @@ def think(question, screenshot, question_arg):
 @click.option("--dir", "-d", "dir_path", help="包含多个商品 JSON 的目录")
 @click.option("--stop-on-error", is_flag=True, help="遇到错误时停止")
 @click.option("--plan-out", default="", help="可选：保存计划包的目录，每个商品自动生成 {task_id}.json")
-def batch(batch_file, dir_path, stop_on_error, plan_out):
+@click.option("--resume", is_flag=True, help="从 progress-file 继续批量上架")
+@click.option("--progress-file", default="data/batch-progress.json", help="批量进度文件路径")
+@click.option("--start-from-phase", default="", help="批量模式下每个商品从指定 phase 开始")
+def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, start_from_phase):
     """批量发布商品。"""
     if batch_file:
         items = _load_batch_items(Path(batch_file))
@@ -402,8 +504,15 @@ def batch(batch_file, dir_path, stop_on_error, plan_out):
     products_with_recovery_error = 0
     risky_titles: List[str] = []
     batch_plan_dir = Path(plan_out).resolve() if plan_out else None
+    progress = _read_batch_progress(progress_file)
+    start_index = int(progress.get("completed_count", 0) or 0) if resume else 0
+
+    if start_index > 0:
+        click.echo(f"批量续跑：从第 {start_index + 1} 个商品开始")
 
     for index, product_data in enumerate(items, start=1):
+        if index <= start_index:
+            continue
         title = (_product_payload(product_data).get("title") or "?")[:30]
         click.echo(f"\n[{index}/{len(items)}] 处理: {title}")
         try:
@@ -415,6 +524,7 @@ def batch(batch_file, dir_path, stop_on_error, plan_out):
                 product_data=product_data,
                 plan_out=item_plan_out,
                 progress_prefix="  ",
+                start_from_phase=start_from_phase,
             )
             task_id = exec_result.get("task_id", "")
             if batch_plan_dir is not None and task_id:
@@ -441,6 +551,17 @@ def batch(batch_file, dir_path, stop_on_error, plan_out):
                 _print_execution_diagnostics(exec_result, prefix="  ")
                 click.echo(f"  成功: task_id={exec_result.get('task_id', 'N/A')}")
                 success_count += 1
+                progress["completed_count"] = index
+                progress.setdefault("items", []).append(
+                    {
+                        "index": index,
+                        "title": title,
+                        "task_id": task_id,
+                        "success": True,
+                        "start_from_phase": exec_result.get("start_from_phase", ""),
+                    }
+                )
+                _write_batch_progress(progress_file, progress)
             else:
                 _print_execution_diagnostics(exec_result, prefix="  ")
                 stage = exec_result.get("stage", "execute")
@@ -448,11 +569,41 @@ def batch(batch_file, dir_path, stop_on_error, plan_out):
                 if exec_result.get("failed_step"):
                     click.echo(f"  失败步骤: {exec_result['failed_step']}")
                 fail_count += 1
+                failed = progress.setdefault("failed_indices", [])
+                if index not in failed:
+                    failed.append(index)
+                progress.setdefault("items", []).append(
+                    {
+                        "index": index,
+                        "title": title,
+                        "task_id": task_id,
+                        "success": False,
+                        "error": exec_result.get("error", ""),
+                        "failed_step": exec_result.get("failed_step", 0),
+                        "start_from_phase": exec_result.get("start_from_phase", ""),
+                    }
+                )
+                _write_batch_progress(progress_file, progress)
                 if stop_on_error:
                     break
         except Exception as exc:
             click.echo(f"  异常: {exc}")
             fail_count += 1
+            failed = progress.setdefault("failed_indices", [])
+            if index not in failed:
+                failed.append(index)
+            progress.setdefault("items", []).append(
+                {
+                    "index": index,
+                    "title": title,
+                    "task_id": "",
+                    "success": False,
+                    "error": str(exc),
+                    "failed_step": 0,
+                    "start_from_phase": _normalize_phase_name(start_from_phase) if start_from_phase else "",
+                }
+            )
+            _write_batch_progress(progress_file, progress)
             if stop_on_error:
                 break
 

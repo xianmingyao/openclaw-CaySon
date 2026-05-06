@@ -30,5 +30,10 @@
 - knowledge-base-sync cron 已完成：报告已生成（Milvus ~250/422 条因超时中断）
 - 旧失败记录（4月25日）已过期，清理
 
+## Cron 状态更新 (2026-05-03 14:36)
+- ✅ MAGMA知识验证报告：delivery 修复为 none
+- ✅ morning-wechat-login-check：delivery 修复为 none（timeout 问题待查）
+- ⚠️ MAGMA 记忆衰减：99.8% 知识老化，10条即将衰减（需要定期检索激活）
+
 ## 心跳检查
 - 上次检查：HEARTBEAT_OK

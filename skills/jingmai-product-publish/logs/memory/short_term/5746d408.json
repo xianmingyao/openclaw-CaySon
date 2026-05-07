@@ -1,0 +1,19 @@
+{
+  "id": "5746d408",
+  "type": "short_term",
+  "content": "步骤 1 find_window: 失败（重试3次）",
+  "metadata": {
+    "step": 1,
+    "action": "find_window",
+    "action_result_success": false,
+    "vision_status": "error",
+    "used_vision_fallback": false,
+    "vision_template": "",
+    "retry_count": 3,
+    "error": "视觉验证失败: 余额已用完",
+    "screenshot": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\12886225_find_window_1778081590.png"
+  },
+  "importance": 0.7,
+  "created_at": "2026-05-06T23:33:11.328809",
+  "access_count": 0
+}

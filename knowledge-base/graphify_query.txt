@@ -1,0 +1,13 @@
+﻿graphify : Traceback (most recent call last):
+所在位置 行:1 字符: 35
++ ... edge-base"; graphify query "what does compile.py do" --graph "graphif ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "E:\Program Files\Python\Python312\Scripts\graphify.exe\__main__.py", line 5, in <module>
+  File "E:\Program Files\Python\Python312\Lib\site-packages\graphify\__main__.py", line 1153, in main
+    print(_subgraph_to_text(G, nodes, edges, token_budget=budget))
+UnicodeEncodeError: 'gbk' codec can't encode character '\u02b5' in position 19: illegal multibyte sequence

@@ -438,8 +438,69 @@ def test_select_category_fails_when_search_result_not_found(monkeypatch):
     result = navigation_module.select_category(search_text="插座", locator=locator)
 
     assert result["success"] is False
-    assert "未找到类目搜索结果" in result["message"]
+    assert "category search result not found" in result["message"]
     assert result["steps"] == ["search"]
+
+
+def test_select_category_skips_when_already_past_category_page(monkeypatch):
+    import actions.navigation as navigation_module
+
+    class Locator:
+        def click(self, x, y, delay=0):
+            raise AssertionError("click should not be used when category page is already past")
+
+    monkeypatch.setattr(navigation_module, "_find_category_search_input", lambda *args, **kwargs: None)
+    monkeypatch.setattr(navigation_module, "_has_category_page_markers", lambda *args, **kwargs: False)
+
+    result = navigation_module.select_category(search_text="鎻掑骇", locator=Locator())
+
+    assert result["success"] is True
+    assert result["steps"] == ["already_past_category"]
+
+
+def test_select_category_fails_when_next_button_stays_disabled(monkeypatch):
+    import actions.navigation as navigation_module
+    import actions.form as form_module
+
+    class Locator:
+        def click(self, x, y, delay=0):
+            return True
+
+    monkeypatch.setattr(form_module, "fill_text", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: True)
+    monkeypatch.setattr(navigation_module, "_is_category_next_enabled", lambda *args, **kwargs: False)
+
+    result = navigation_module.select_category(search_text="插座", locator=Locator())
+
+    assert result["success"] is False
+    assert "next button is still disabled" in result["message"]
+    assert result["steps"] == ["search", "search_select"]
+
+
+def test_select_category_fails_when_next_click_does_not_advance(monkeypatch):
+    import actions.navigation as navigation_module
+    import actions.form as form_module
+
+    class Locator:
+        def click(self, x, y, delay=0):
+            return True
+
+    state = {"count": 0}
+
+    def fake_next_enabled(*args, **kwargs):
+        state["count"] += 1
+        return True
+
+    monkeypatch.setattr(form_module, "fill_text", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: True)
+    monkeypatch.setattr(navigation_module, "_click_category_next", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_is_category_next_enabled", fake_next_enabled)
+
+    result = navigation_module.select_category(search_text="插座", locator=Locator())
+
+    assert result["success"] is False
+    assert "did not advance" in result["message"]
+    assert result["steps"] == ["search", "search_select", "next"]
 
 
 def test_save_draft_and_publish_propagate_click_failures(monkeypatch):
@@ -1218,7 +1279,16 @@ def test_executor_records_vision_fallback_stats(tmp_path: Path):
     agent._task_id = "task-vision"
     agent._plan_file = str(tmp_path / "plan.json")
     agent._risk_stats = {"high_risk_window_shift_count": 0, "high_risk_window_shift_steps": []}
-    agent._vision_fallback_stats = {"count": 0, "steps": [], "templates": {}}
+    agent._vision_fallback_stats = {
+        "count": 0,
+        "success_count": 0,
+        "failed_count": 0,
+        "steps": [],
+        "failed_details": [],
+        "templates": {},
+        "templates_success": {},
+        "templates_failed": {},
+    }
     agent._check_safety = lambda _action: True
     agent._ensure_locator = lambda: None
     agent._capture_window_summary = lambda: {}
@@ -1243,7 +1313,11 @@ def test_executor_records_vision_fallback_stats(tmp_path: Path):
 
     assert result["success"] is True
     assert result["vision_fallback_stats"]["count"] == 1
+    assert result["vision_fallback_stats"]["success_count"] == 1
+    assert result["vision_fallback_stats"]["failed_count"] == 0
     assert result["vision_fallback_stats"]["templates"]["publish_button.png"] == 1
+    assert result["vision_fallback_stats"]["templates_success"]["publish_button.png"] == 1
+    assert result["vision_fallback_stats"]["failed_details"] == []
     assert result["results"][0]["used_vision_fallback"] is True
 
 
@@ -1253,8 +1327,13 @@ def test_finalize_plan_file_persists_vision_fallback_stats(tmp_path: Path):
     agent._plan_file = str(tmp_path / "plan.json")
     agent._vision_fallback_stats = {
         "count": 1,
-        "steps": [{"step": 1, "action": "publish_product", "template": "publish_button.png", "template_path": "x"}],
+        "success_count": 1,
+        "failed_count": 0,
+        "steps": [{"step": 1, "action": "publish_product", "template": "publish_button.png", "template_path": "x", "success": True}],
+        "failed_details": [],
         "templates": {"publish_button.png": 1},
+        "templates_success": {"publish_button.png": 1},
+        "templates_failed": {},
     }
     agent._risk_stats = {"high_risk_window_shift_count": 0, "high_risk_window_shift_steps": []}
 
@@ -1263,4 +1342,194 @@ def test_finalize_plan_file_persists_vision_fallback_stats(tmp_path: Path):
 
     payload = json.loads(Path(agent._plan_file).read_text(encoding="utf-8"))
     assert payload["vision_fallback_stats"]["count"] == 1
+    assert payload["vision_fallback_stats"]["success_count"] == 1
     assert payload["vision_fallback_stats"]["templates"]["publish_button.png"] == 1
+
+
+def test_execute_command_prints_vision_fallback_summary(monkeypatch, tmp_path: Path):
+    runner = CliRunner()
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(
+        json.dumps({"task_id": "task-vision-cli", "plan": [{"action": "find_window", "params": {}}]}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    class FakeExecutor:
+        def run(self, plan, task_id="", resume_step_index=0, **kwargs):
+            return {
+                "success": True,
+                "vision_fallback_stats": {
+                    "count": 2,
+                    "success_count": 1,
+                    "failed_count": 1,
+                    "steps": [],
+                    "failed_details": [
+                        {
+                            "step": 1,
+                            "action": "dismiss_popup",
+                            "template": "popup_close_button.png",
+                            "template_path": "resources/screenshots/templates/popup_close_button.png",
+                            "screenshot": "E:/tmp/fail-shot.png",
+                            "error": "vision fallback used but step still failed",
+                        }
+                    ],
+                    "templates": {"publish_button.png": 1, "popup_close_button.png": 1},
+                    "templates_success": {"publish_button.png": 1},
+                    "templates_failed": {"popup_close_button.png": 1},
+                },
+                "risk_stats": {"high_risk_window_shift_count": 0},
+                "recovery_error": "",
+            }
+
+    class FakeFactory:
+        def create_executor(self):
+            return FakeExecutor()
+
+    monkeypatch.setattr("agents.factory.AgentFactory", lambda: FakeFactory())
+    result = runner.invoke(cli, ["execute", "--config", str(plan_path)])
+
+    assert result.exit_code == 0
+    assert "视觉兜底: 2 次" in result.output
+    assert "成功 1 / 失败 1" in result.output
+    assert "publish_button.png 1次" in result.output
+    assert "失败兜底: step=1 action=dismiss_popup template=popup_close_button.png screenshot=E:/tmp/fail-shot.png" in result.output
+
+
+def test_batch_progress_persists_vision_fallback_stats(monkeypatch, tmp_path: Path):
+    runner = CliRunner()
+    batch_path = tmp_path / "products.json"
+    progress_path = tmp_path / "progress.json"
+    batch_path.write_text(
+        json.dumps([{"title": "商品A", "price": 10}], ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    class FakePlanner:
+        def run(self, **kwargs):
+            return {
+                "success": True,
+                "task_id": "task-vision-batch",
+                "product_data": kwargs["product_data"],
+                "plan": [{"action": "find_window", "params": {}, "phase": "window_ready"}],
+                "total_steps": 1,
+            }
+
+    class FakeExecutor:
+        def run(self, plan, task_id="", **kwargs):
+            return {
+                "success": True,
+                "risk_stats": {"high_risk_window_shift_count": 0},
+                "recovery_error": "",
+                "vision_fallback_stats": {
+                    "count": 1,
+                    "success_count": 1,
+                    "failed_count": 0,
+                    "steps": [],
+                    "failed_details": [],
+                    "templates": {"publish_button.png": 1},
+                    "templates_success": {"publish_button.png": 1},
+                    "templates_failed": {},
+                },
+            }
+
+    class FakeFactory:
+        def create_planner(self):
+            return FakePlanner()
+
+        def create_executor(self):
+            return FakeExecutor()
+
+    monkeypatch.setattr("agents.factory.AgentFactory", lambda: FakeFactory())
+    result = runner.invoke(cli, ["batch", "--file", str(batch_path), "--progress-file", str(progress_path)])
+
+    assert result.exit_code == 0
+    progress = json.loads(progress_path.read_text(encoding="utf-8"))
+    assert progress["items"][0]["vision_fallback_count"] == 1
+    assert progress["items"][0]["vision_fallback_success_count"] == 1
+    assert progress["items"][0]["vision_fallback_failed_count"] == 0
+    assert progress["items"][0]["vision_templates"] == {"publish_button.png": 1}
+    assert progress["items"][0]["vision_failed_details"] == []
+
+
+def test_executor_records_failed_vision_fallback_detail(monkeypatch, tmp_path: Path):
+    monkeypatch.chdir(tmp_path)
+    agent = ExecutorAgent()
+    agent._resume_step_index = 0
+    agent._task_id = "task-vision-fail"
+    agent._plan_file = str(tmp_path / "plan.json")
+    agent._risk_stats = {"high_risk_window_shift_count": 0, "high_risk_window_shift_steps": []}
+    agent._vision_fallback_stats = {
+        "count": 0,
+        "success_count": 0,
+        "failed_count": 0,
+        "steps": [],
+        "failed_details": [],
+        "templates": {},
+        "templates_success": {},
+        "templates_failed": {},
+    }
+    agent._check_safety = lambda _action: True
+    agent._ensure_locator = lambda: None
+    agent._capture_window_summary = lambda: {}
+    agent._diff_window_summary = lambda before, after: {}
+    agent._log_window_diff_risk = lambda *args, **kwargs: None
+    screenshot = tmp_path / "failed-shot.png"
+    screenshot.write_bytes(b"fake")
+    agent._take_screenshot = lambda _action: str(screenshot)
+    agent._react_observe = lambda action_name, screenshot_path, act_result: {"status": "error", "reason": "still blocked"}
+    agent.act = lambda _action, _params: {
+        "success": True,
+        "method": "vision",
+        "used_vision_fallback": True,
+        "vision_fallback": {
+            "success": True,
+            "template": "popup_close_button.png",
+            "template_path": "resources/screenshots/templates/popup_close_button.png",
+        },
+    }
+
+    result = agent.run_react_loop([{"action": "dismiss_popup", "params": {}}])
+
+    assert result["success"] is False
+    detail = result["vision_fallback_stats"]["failed_details"][0]
+    assert detail["template"] == "popup_close_button.png"
+    assert detail["original_screenshot"] == str(screenshot)
+    assert detail["screenshot"] != str(screenshot)
+    assert Path(detail["screenshot"]).exists()
+    assert "vision-fallback-failures" in detail["screenshot"]
+    assert detail["action"] == "dismiss_popup"
+    summary_path = tmp_path / "data" / "vision-fallback-failures" / "task-vision-fail" / "summary.json"
+    index_path = tmp_path / "data" / "vision-fallback-failures" / "index.json"
+    assert summary_path.exists()
+    assert index_path.exists()
+    summary_payload = json.loads(summary_path.read_text(encoding="utf-8"))
+    index_payload = json.loads(index_path.read_text(encoding="utf-8"))
+    assert summary_payload["task_id"] == "task-vision-fail"
+    assert summary_payload["count"] == 1
+    assert summary_payload["items"][0]["template"] == "popup_close_button.png"
+    assert index_payload["count"] == 1
+    assert index_payload["items"][0]["task_id"] == "task-vision-fail"
+
+
+def test_failed_vision_index_upserts_same_key():
+    agent = ExecutorAgent()
+    first = {
+        "task_id": "task-a",
+        "step": 3,
+        "action": "dismiss_popup",
+        "template": "popup_close_button.png",
+        "screenshot": "old.png",
+    }
+    second = {
+        "task_id": "task-a",
+        "step": 3,
+        "action": "dismiss_popup",
+        "template": "popup_close_button.png",
+        "screenshot": "new.png",
+    }
+
+    items = agent._upsert_failed_vision_detail([], first)
+    items = agent._upsert_failed_vision_detail(items, second)
+
+    assert len(items) == 1
+    assert items[0]["screenshot"] == "new.png"

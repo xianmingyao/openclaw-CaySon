@@ -483,3 +483,13 @@ openclaw cron update <job-id> --patch '{"delivery": {"mode": "none"}}'
 ### 教训
 1. WeChat 投递需要 `to` 目标格式（未知），announce 模式暂时不可用
 2. 有道云笔记编辑器结构复杂（多层iframe+contenteditable），agent-browser 无法正确写入 → 改为手动操作
+
+## graphify
+
+This project has a graphify knowledge graph at graphify-out/.
+
+Rules:
+- Before answering architecture or codebase questions, read graphify-out/GRAPH_REPORT.md for god nodes and community structure
+- If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
+- For cross-module "how does X relate to Y" questions, prefer `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` over grep — these traverse the graph's EXTRACTED + INFERRED edges instead of scanning files
+- After modifying code files in this session, run `graphify update .` to keep the graph current (AST-only, no API cost)

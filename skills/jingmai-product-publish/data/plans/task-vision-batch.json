@@ -1,0 +1,18 @@
+{
+  "task_id": "task-vision-batch",
+  "product_data": {
+    "title": "商品A",
+    "price": 10
+  },
+  "plan": [
+    {
+      "action": "find_window",
+      "params": {},
+      "phase": "window_ready"
+    }
+  ],
+  "total_steps": 1,
+  "phases": [
+    "window_ready"
+  ]
+}

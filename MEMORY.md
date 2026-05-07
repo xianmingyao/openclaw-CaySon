@@ -143,6 +143,11 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 
 ## Dream 整合记录（最近）
 
+### 2026-05-07 整合
+- 扫描文件：05-03~05-07（5个文件）
+- MEMORY.md：无新增（系统稳定）
+- 主要结论：continuous-ingest 稳定运行（每5分钟0文件），无新知识积累
+
 ### 2026-05-03 整合
 - 扫描文件：05-03.md（1个小文件）
 - MEMORY.md：无新增（05-01已全面整合）

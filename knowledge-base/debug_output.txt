@@ -1,0 +1,5 @@
+Total vis_nodes: 2646
+vis_nodes with Chinese: 1070
+
+Chinese bytes ARE in nodes_json
+Written first 2000 chars to debug_nodes_json.txt

@@ -1,20 +1,34 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-05-06 17:20:15
+Date: 2026-05-07 17:20:15
 --- GIT COMMITS ---
   (none today)
 --- FILES MODIFIED ---
-  17:15 | memory\.dreams\events.jsonl
-  17:15 | memory\.dreams\short-term-recall.json
-  17:07 | knowledge-base\.notion_sync_state.json
-  17:03 | knowledge-base\.sync_state.json
-  16:55 | memory\2026-05-06.md
-  09:51 | memory\2026-05-05.md
+  17:20 | knowledge-base\graphify-out\graph.json
+  17:20 | knowledge-base\graphify-out\graph.html
+  17:19 | skills\jingmai-product-publish\data\plan_2026-05-07_001_v2.json
+  17:19 | skills\jingmai-product-publish\logs\publish_20260507_171809.log
+  17:19 | skills\jingmai-product-publish\data\jingmai.db
+  17:19 | skills\jingmai-product-publish\logs\memory\short_term\a0c11ba8.json
+  17:19 | skills\jingmai-product-publish\resources\screenshots\cd458de5_navigate_to_1778145543.png
+  17:18 | skills\jingmai-product-publish\resources\screenshots\cd458de5_navigate_to_1778145522.png
+  17:18 | skills\jingmai-product-publish\logs\memory\short_term\7acf5567.json
+  17:18 | skills\jingmai-product-publish\resources\screenshots\cd458de5_activate_window_1778145500.png
+  17:18 | skills\jingmai-product-publish\logs\memory\short_term\433103b0.json
+  17:18 | skills\jingmai-product-publish\resources\screenshots\cd458de5_find_window_1778145495.png
+  17:18 | skills\jingmai-product-publish\logs\memory\short_term\5453591e.json
+  17:18 | skills\jingmai-product-publish\actions\__pycache__\navigation.cpython-312.pyc
+  17:18 | skills\jingmai-product-publish\actions\__pycache__\_uia_helpers.cpython-312.pyc
+  17:17 | skills\jingmai-product-publish\actions\navigation.py
+  17:17 | skills\jingmai-product-publish\actions\_uia_helpers.py
+  17:13 | knowledge-base\wiki\log.md
+  17:11 | skills\jingmai-product-publish\logs\memory\short_term\30f9bbfd.json
+  17:11 | skills\jingmai-product-publish\logs\publish_20260507_171115.log
 --- SESSIONS ---
-  Count: 157
-  - 00f064ce-75a7-491f-9684-dc0f07ed392f.jsonl [11:18]
-  - 00f064ce-75a7-491f-9684-dc0f07ed392f.trajectory.jsonl [11:18]
-  - 04c075b5-ff59-43a4-ba8b-9ed699a0e979.jsonl [10:35]
+  Count: 423
+  - 02819e34-c011-4003-9b3e-7bd9c26c5c4e.jsonl [11:00]
+  - 02819e34-c011-4003-9b3e-7bd9c26c5c4e.trajectory.jsonl [11:00]
+  - 032ff36f-4c37-4e34-9982-206dc5e21d11.jsonl [05:45]
 --- SKILLS ---
   (none today)
 --- STRUCTURED ---
-{"skillsUpdated":[],"dayOfWeek":"Wednesday","sessionCount":157,"modifiedFiles":["E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\memory\\2026-05-06.md","E:\\workspace\\memory\\2026-05-05.md"],"gitCommits":[],"date":"2026.05.06"}
+{"skillsUpdated":[],"dayOfWeek":"Thursday","sessionCount":423,"modifiedFiles":["E:\\workspace\\knowledge-base\\graphify-out\\graph.json","E:\\workspace\\knowledge-base\\graphify-out\\graph.html","E:\\workspace\\skills\\jingmai-product-publish\\data\\plan_2026-05-07_001_v2.json","E:\\workspace\\skills\\jingmai-product-publish\\logs\\publish_20260507_171809.log","E:\\workspace\\skills\\jingmai-product-publish\\data\\jingmai.db","E:\\workspace\\skills\\jingmai-product-publish\\logs\\memory\\short_term\\a0c11ba8.json","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cd458de5_navigate_to_1778145543.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cd458de5_navigate_to_1778145522.png","E:\\workspace\\skills\\jingmai-product-publish\\logs\\memory\\short_term\\7acf5567.json","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cd458de5_activate_window_1778145500.png","E:\\workspace\\skills\\jingmai-product-publish\\logs\\memory\\short_term\\433103b0.json","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cd458de5_find_window_1778145495.png","E:\\workspace\\skills\\jingmai-product-publish\\logs\\memory\\short_term\\5453591e.json","E:\\workspace\\skills\\jingmai-product-publish\\actions\\__pycache__\\navigation.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\actions\\__pycache__\\_uia_helpers.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\actions\\navigation.py","E:\\workspace\\skills\\jingmai-product-publish\\actions\\_uia_helpers.py","E:\\workspace\\knowledge-base\\wiki\\log.md","E:\\workspace\\skills\\jingmai-product-publish\\logs\\memory\\short_term\\30f9bbfd.json","E:\\workspace\\skills\\jingmai-product-publish\\logs\\publish_20260507_171115.log"],"gitCommits":[],"date":"2026.05.07"}

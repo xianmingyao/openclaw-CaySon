@@ -99,6 +99,118 @@
       "task_id": "task-2",
       "success": true,
       "start_from_phase": ""
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_templates": {}
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_templates": {}
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {}
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {}
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 1,
+      "title": "商品A",
+      "task_id": "task-1",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 2,
+      "title": "商品B",
+      "task_id": "task-2",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
     }
   ]
 }

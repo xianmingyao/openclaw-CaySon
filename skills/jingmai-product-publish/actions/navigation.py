@@ -1,7 +1,7 @@
 """
-京麦商品发布自动化 - 导航操作 Actions
-覆盖类目选择、翻页、保存草稿、发布、修改、返回等行为。
+Jingmai product publishing navigation actions.
 """
+
 import time
 from typing import Any, Dict
 
@@ -77,6 +77,10 @@ def _find_category_search_input(locator=None, log=None):
     return best
 
 
+def _has_category_page_markers(locator=None, log=None) -> bool:
+    return _page_contains_text("绫荤洰閫夋嫨鍙戝搧", locator=locator, log=log)
+
+
 def _click_image_fallback(template_name: str, locator=None, log=None, confidence: float = 0.86) -> Dict[str, Any]:
     template_path = resolve_template_path("templates", template_name)
     if not template_path:
@@ -104,25 +108,64 @@ def _click_image_fallback(template_name: str, locator=None, log=None, confidence
         return {"success": False, "message": str(exc), "template": template_name}
 
 
-def _select_search_result(search_text: str, locator=None, log=None) -> bool:
-    window = find_jingmai_uia_window(locator=locator, log=log)
-    keywords = _tokenize_text(search_text)
+def _category_next_region(locator=None) -> tuple[int, int, int, int] | None:
+    coords = CATEGORY_PAGE.get("next_button")
+    locator = _get_locator(locator, None)
+    if not coords or locator is None:
+        return None
+    try:
+        local_x, local_y = locator.adapt_coords(coords[0], coords[1])
+        screen_x, screen_y = locator.window_to_screen(local_x, local_y)
+        return (screen_x - 45, screen_y - 10, screen_x + 45, screen_y + 10)
+    except Exception:
+        return None
 
+
+def _is_category_next_enabled(locator=None, log=None) -> bool:
+    region = _category_next_region(locator=locator)
+    if not region:
+        return False
+
+    try:
+        from PIL import ImageGrab
+
+        shot = ImageGrab.grab(bbox=region)
+        pixels = list(shot.getdata())
+        if not pixels:
+            return False
+
+        avg_r = sum(pixel[0] for pixel in pixels) / len(pixels)
+        avg_g = sum(pixel[1] for pixel in pixels) / len(pixels)
+        avg_b = sum(pixel[2] for pixel in pixels) / len(pixels)
+        enabled = avg_r < 140 and avg_g < 170 and avg_b > 220
+        if log:
+            log.debug(
+                f"category next button avg rgb=({avg_r:.1f}, {avg_g:.1f}, {avg_b:.1f}), enabled={enabled}"
+            )
+        return enabled
+    except Exception as exc:
+        if log:
+            log.warning(f"next button state probe failed: {exc}")
+        return False
+
+
+def _select_search_result(search_text: str, search_input=None, locator=None, log=None) -> bool:
+    """
+    Select the category result after the search box has already been filled.
+
+    Root cause:
+    The previous implementation retyped Chinese text with pyautogui.typewrite(),
+    which is not reliable for Han characters here and wiped out the valid query.
+    """
+    window = find_jingmai_uia_window(locator=locator, log=log)
     if window:
         candidates = []
-        for candidate in iter_named_descendants(
-            window,
-            top_range=(200, 420),
-            max_name_length=120,
-            limit=240,
-        ):
-            score = score_text_match(candidate["name"], search_text, keywords)
-            if candidate["control_type"] in {"ListItem", "Text", "Hyperlink", "Button", "TreeItem"}:
+        for candidate in iter_named_descendants(window, top_range=(150, 420), max_name_length=120, limit=240):
+            score = score_text_match(candidate["name"], search_text, _tokenize_text(search_text))
+            if candidate["control_type"] in {"ListItem", "Text", "Button", "Hyperlink"}:
                 score += 2
-            rect = candidate["rect"]
-            if 260 <= rect.left <= 2200:
-                score += 1
             if score > 0:
+                rect = candidate["rect"]
                 candidates.append((score, rect.top, len(candidate["name"]), candidate))
 
         if candidates:
@@ -134,11 +177,24 @@ def _select_search_result(search_text: str, locator=None, log=None) -> bool:
     try:
         import pyautogui
 
+        if search_input:
+            rect = search_input["rect"]
+            suggestion_points = [
+                (rect.left + 140, rect.bottom + 18),
+                (rect.left + 240, rect.bottom + 18),
+                (rect.left + 140, rect.bottom + 42),
+            ]
+        else:
+            suggestion_points = [(600, 295)]
+
+        for point_x, point_y in suggestion_points:
+            pyautogui.click(point_x, point_y)
+            time.sleep(0.8)
+            if _is_category_next_enabled(locator=locator, log=log):
+                return True
+
         pyautogui.press("down")
-        time.sleep(0.4)
-        if "插座" in search_text:
-            pyautogui.press("down")
-            time.sleep(0.2)
+        time.sleep(0.2)
         pyautogui.press("enter")
         time.sleep(1.0)
         return True
@@ -163,10 +219,18 @@ def _click_named_button(keywords: list[str], locator=None, log=None) -> Dict[str
 
 
 def _click_category_next(locator=None, log=None) -> Dict[str, Any]:
-    locator = _get_locator(locator, log)
+    import pyautogui
+
     coords = CATEGORY_PAGE.get("next_button")
-    if coords and locator.click(coords[0], coords[1], delay=1.2):
-        return {"success": True, "method": "coordinate"}
+    if coords:
+        bx, by = coords
+        try:
+            pyautogui.click(bx, by)
+            time.sleep(1.2)
+            return {"success": True, "method": "pyautogui_click", "coords": coords}
+        except Exception as exc:
+            if log:
+                log.warning(f"pyautogui click failed: {exc}")
 
     named = _click_named_button(["下一步", "填写商品信息"], locator=locator, log=log)
     if named.get("success"):
@@ -208,13 +272,15 @@ def select_category(
 
     if search_text:
         search_input = _find_category_search_input(locator=locator, log=log)
+        if not search_input and not _has_category_page_markers(locator=locator, log=log):
+            return {"success": True, "steps": ["already_past_category"]}
         search_coords = (
             ((search_input["rect"].left + search_input["rect"].right) // 2, (search_input["rect"].top + search_input["rect"].bottom) // 2)
             if search_input
             else (640, 260)
         )
         if not locator.click(search_coords[0], search_coords[1], delay=0.3):
-            return {"success": False, "message": "点击类目搜索框失败", "steps": results}
+            return {"success": False, "message": "click category search input failed", "steps": results}
 
         from actions.form import fill_text
 
@@ -222,55 +288,56 @@ def select_category(
         if not fill_result["success"]:
             return {"success": False, "message": fill_result.get("message", "fill category search failed"), "steps": results}
         results.append("search")
-        time.sleep(0.8)
+        time.sleep(1.0)
 
-        try:
-            import pyautogui
-
-            pyautogui.press("enter")
-        except Exception:
-            locator.press_enter()
-        time.sleep(1.6)
-
-        if not _select_search_result(search_text, locator=locator, log=log):
-            return {"success": False, "message": f"未找到类目搜索结果: {search_text}", "steps": results}
+        if not _select_search_result(search_text, search_input=search_input, locator=locator, log=log):
+            return {"success": False, "message": f"category search result not found: {search_text}", "steps": results}
 
         results.append("search_select")
         time.sleep(1.0)
+        if not _is_category_next_enabled(locator=locator, log=log):
+            return {
+                "success": False,
+                "message": "category search result was not committed; next button is still disabled",
+                "steps": results,
+            }
 
     if level3_coords:
         if not locator.click(level3_coords[0], level3_coords[1], delay=0.5):
-            return {"success": False, "message": "点击三级类目失败", "steps": results}
+            return {"success": False, "message": "click third-level category failed", "steps": results}
         results.append("level3")
         time.sleep(0.8)
 
     if level4_coords:
         if not locator.click(level4_coords[0], level4_coords[1], delay=0.5):
-            return {"success": False, "message": "点击四级类目失败", "steps": results}
+            return {"success": False, "message": "click fourth-level category failed", "steps": results}
         results.append("level4")
         time.sleep(0.8)
     elif not level3_coords and not search_text:
         level3 = CATEGORY_PAGE.get("level3_third_col")
         level4 = CATEGORY_PAGE.get("level4")
         if level3 and not locator.click(level3[0], level3[1], delay=0.5):
-            return {"success": False, "message": "点击默认三级类目失败", "steps": results}
+            return {"success": False, "message": "click default third-level category failed", "steps": results}
         if level3:
             results.append("level3_default")
             time.sleep(0.8)
         if level4 and not locator.click(level4[0], level4[1], delay=0.5):
-            return {"success": False, "message": "点击默认四级类目失败", "steps": results}
+            return {"success": False, "message": "click default fourth-level category failed", "steps": results}
         if level4:
             results.append("level4_default")
             time.sleep(0.8)
 
     next_result = _click_category_next(locator=locator, log=log)
     if not next_result.get("success"):
-        return {"success": False, "message": "点击下一步失败", "steps": results}
+        return {"success": False, "message": "click next failed", "steps": results}
     results.append("next")
-    time.sleep(1.5)
+    time.sleep(2.0)
+
+    if _is_category_next_enabled(locator=locator, log=log):
+        return {"success": False, "message": "clicked next but category page did not advance", "steps": results}
 
     if _page_contains_text("类目选择发品", locator=locator, log=log):
-        return {"success": False, "message": "点击下一步后仍停留在类目页", "steps": results}
+        return {"success": False, "message": "still on category page after clicking next", "steps": results}
 
     return {"success": True, "steps": results}
 
@@ -330,7 +397,7 @@ def click_modify(locator=None, log=None) -> Dict[str, Any]:
         if locator.click(coords[0], coords[1], delay=1.0):
             return {"success": True, "method": "coordinate_fallback"}
 
-    return {"success": False, "message": "点击修改链接失败"}
+    return {"success": False, "message": "click modify link failed"}
 
 
 @ActionRegistry.register("go_back", "navigation", "返回上一页")

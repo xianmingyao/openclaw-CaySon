@@ -142,5 +142,41 @@
     "detected_at": "2026-04-23T09:06:00.657777",
     "processed": true,
     "processed_at": "2026-04-23T09:06:00.657777"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\claude-code-skills-7-moxin-2026-05-07.md": {
+    "hash": "689c03a215a65070e87cbf26e207b5a5",
+    "detected_at": "2026-05-07T10:11:16.808478",
+    "processed": true,
+    "processed_at": "2026-05-07T10:11:16.808478"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\cube-sandbox-xiaobaidebug-2026-05-07.md": {
+    "hash": "932b1a80d95d42e1168ab4edc3a0905b",
+    "detected_at": "2026-05-07T10:11:16.809485",
+    "processed": true,
+    "processed_at": "2026-05-07T10:11:16.809485"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github-projects-10-shandian-2026-05-07.md": {
+    "hash": "8fa84f35620e49d8959869fe5bd80735",
+    "detected_at": "2026-05-07T10:11:16.809485",
+    "processed": true,
+    "processed_at": "2026-05-07T10:11:16.809485"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\github-graphify-2026-05-07.md": {
+    "hash": "a896fd64df342d1954d847eaa4679329",
+    "detected_at": "2026-05-07T10:47:16.207542",
+    "processed": true,
+    "processed_at": "2026-05-07T10:47:16.207542"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\graphify-openclaw-usage-analysis-2026-05-07.md": {
+    "hash": "d449158d112efbe4f0005bb9cb21fe3a",
+    "detected_at": "2026-05-07T15:51:11.352620",
+    "processed": true,
+    "processed_at": "2026-05-07T15:51:11.352620"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\graphify-deep-analysis-2026-05-07.md": {
+    "hash": "3f304e14f5ccab15892082a81c9276ea",
+    "detected_at": "2026-05-07T15:56:18.480979",
+    "processed": true,
+    "processed_at": "2026-05-07T15:56:18.480979"
   }
 }

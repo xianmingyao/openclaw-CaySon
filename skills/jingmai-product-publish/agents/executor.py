@@ -66,8 +66,13 @@ class ExecutorAgent(BaseAgent):
         }
         self._vision_fallback_stats = {
             "count": 0,
+            "success_count": 0,
+            "failed_count": 0,
             "steps": [],
+            "failed_details": [],
             "templates": {},
+            "templates_success": {},
+            "templates_failed": {},
         }
 
         if self._db and self._task_id:
@@ -157,25 +162,153 @@ class ExecutorAgent(BaseAgent):
             }
         return None
 
-    def _record_vision_fallback(self, step_index: int, action_name: str, act_result: Optional[Dict[str, Any]]):
+    def _record_vision_fallback(
+        self,
+        step_index: int,
+        action_name: str,
+        act_result: Optional[Dict[str, Any]],
+        step_success: bool,
+    ):
         vision_meta = self._extract_vision_fallback(act_result or {})
         if not vision_meta:
             return
 
         template_name = str(vision_meta.get("template", "") or "")
         self._vision_fallback_stats["count"] += 1
+        if step_success:
+            self._vision_fallback_stats["success_count"] += 1
+        else:
+            self._vision_fallback_stats["failed_count"] += 1
         self._vision_fallback_stats["steps"].append(
             {
                 "step": step_index,
                 "action": action_name,
                 "template": template_name,
                 "template_path": vision_meta.get("template_path", ""),
+                "success": step_success,
+                "screenshot": str((act_result or {}).get("screenshot", "") or ""),
             }
         )
         if template_name:
             self._vision_fallback_stats["templates"][template_name] = (
                 self._vision_fallback_stats["templates"].get(template_name, 0) + 1
             )
+            bucket = "templates_success" if step_success else "templates_failed"
+            self._vision_fallback_stats[bucket][template_name] = (
+                self._vision_fallback_stats[bucket].get(template_name, 0) + 1
+            )
+        if not step_success:
+            original_screenshot = str((act_result or {}).get("screenshot", "") or "")
+            archived_screenshot = self._archive_failed_vision_screenshot(
+                step_index=step_index,
+                action_name=action_name,
+                template_name=template_name,
+                screenshot_path=original_screenshot,
+            )
+            detail = {
+                "task_id": self._task_id or "",
+                "step": step_index,
+                "action": action_name,
+                "template": template_name,
+                "template_path": vision_meta.get("template_path", ""),
+                "screenshot": archived_screenshot or original_screenshot,
+                "original_screenshot": original_screenshot,
+                "error": str((act_result or {}).get("error", "") or ""),
+            }
+            self._vision_fallback_stats["failed_details"].append(detail)
+            self._update_failed_vision_indexes(detail)
+
+    def _archive_failed_vision_screenshot(
+        self,
+        step_index: int,
+        action_name: str,
+        template_name: str,
+        screenshot_path: str,
+    ) -> str:
+        if not screenshot_path:
+            return ""
+
+        try:
+            import re
+            import shutil
+            from pathlib import Path
+
+            source = Path(screenshot_path)
+            if not source.exists():
+                return ""
+
+            task_slug = re.sub(r"[^A-Za-z0-9_.-]+", "_", self._task_id or "unknown-task").strip("_") or "unknown-task"
+            action_slug = re.sub(r"[^A-Za-z0-9_.-]+", "_", action_name or "action").strip("_") or "action"
+            template_slug = re.sub(r"[^A-Za-z0-9_.-]+", "_", template_name or "unknown-template").strip("_") or "unknown-template"
+
+            archive_dir = Path("data") / "vision-fallback-failures" / task_slug
+            archive_dir.mkdir(parents=True, exist_ok=True)
+            target = archive_dir / f"step-{step_index:02d}_{action_slug}_{template_slug}{source.suffix or '.png'}"
+            shutil.copyfile(source, target)
+            return str(target.resolve())
+        except Exception:
+            return ""
+
+    def _update_failed_vision_indexes(self, detail: Dict[str, Any]):
+        try:
+            import re
+            from pathlib import Path
+
+            task_slug = re.sub(r"[^A-Za-z0-9_.-]+", "_", self._task_id or "unknown-task").strip("_") or "unknown-task"
+            root_dir = Path("data") / "vision-fallback-failures"
+            task_dir = root_dir / task_slug
+            task_dir.mkdir(parents=True, exist_ok=True)
+
+            summary_path = task_dir / "summary.json"
+            index_path = root_dir / "index.json"
+
+            summary_payload = self._load_index_payload(summary_path, default={"task_id": self._task_id or "", "items": []})
+            summary_payload["task_id"] = self._task_id or ""
+            summary_payload["items"] = self._upsert_failed_vision_detail(summary_payload.get("items", []), detail)
+            summary_payload["count"] = len(summary_payload["items"])
+            summary_path.write_text(json.dumps(summary_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+            index_payload = self._load_index_payload(index_path, default={"items": []})
+            index_payload["items"] = self._upsert_failed_vision_detail(index_payload.get("items", []), detail)
+            index_payload["count"] = len(index_payload["items"])
+            index_path.write_text(json.dumps(index_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        except Exception:
+            return
+
+    def _load_index_payload(self, path, default: Dict[str, Any]) -> Dict[str, Any]:
+        try:
+            if path.exists():
+                return json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+        return dict(default)
+
+    def _upsert_failed_vision_detail(self, items: List[Dict[str, Any]], detail: Dict[str, Any]) -> List[Dict[str, Any]]:
+        key = (
+            str(detail.get("task_id", "")),
+            int(detail.get("step", 0) or 0),
+            str(detail.get("action", "")),
+            str(detail.get("template", "")),
+        )
+
+        normalized = []
+        replaced = False
+        for item in items:
+            item_key = (
+                str(item.get("task_id", "")),
+                int(item.get("step", 0) or 0),
+                str(item.get("action", "")),
+                str(item.get("template", "")),
+            )
+            if item_key == key:
+                normalized.append(dict(detail))
+                replaced = True
+            else:
+                normalized.append(item)
+
+        if not replaced:
+            normalized.append(dict(detail))
+        return normalized
 
     # ── ReAct 执行循环 ─────────────────────────────
 
@@ -268,6 +401,8 @@ class ExecutorAgent(BaseAgent):
             observation = None
             screenshot_path = None
             retry_count = 1
+            # 熔断器修复：只在所有重试都失败后才触发，避免中途打开熔断器
+            _step_ultimately_failed = False
 
             for retry in range(REACT_MAX_RETRIES):
                 window_before = self._capture_window_summary()
@@ -306,7 +441,10 @@ class ExecutorAgent(BaseAgent):
                     last_act_result["vision_verified"] = observation.get("status") != "unknown"
                     last_act_result["vision_analysis"] = observation
                     last_act_result["error"] = act_result.get("error", "Action execution failed")
-                    self._circuit_breaker.record_failure()
+                    # 熔断器修复：只在最后一次重试失败后才触发
+                    if retry == REACT_MAX_RETRIES - 1:
+                        self._circuit_breaker.record_failure()
+                        _step_ultimately_failed = True
                     self._log(
                         "warning",
                         f"Step {i+1} action failed "
@@ -332,7 +470,10 @@ class ExecutorAgent(BaseAgent):
                     last_act_result["vision_analysis"] = observation
                     last_act_result["success"] = False
                     last_act_result["error"] = f"视觉验证失败: {observation.get('reason', '')}"
-                    self._circuit_breaker.record_failure()
+                    # 熔断器修复：只在最后一次重试失败后才触发
+                    if retry == REACT_MAX_RETRIES - 1:
+                        self._circuit_breaker.record_failure()
+                        _step_ultimately_failed = True
                     self._log("warning",
                               f"步骤 {i+1} 视觉验证失败"
                               f"（重试 {retry+1}/{REACT_MAX_RETRIES}）: "
@@ -350,7 +491,7 @@ class ExecutorAgent(BaseAgent):
 
             # ── 记录步骤结果 ──
             retry_count = retry + 1
-            self._record_vision_fallback(i + 1, action_name, last_act_result)
+            self._record_vision_fallback(i + 1, action_name, last_act_result, step_success)
             step_result = {
                 "step": i + 1,
                 "action": action_name,
@@ -666,14 +807,21 @@ class ExecutorAgent(BaseAgent):
         Returns:
             dict: {"status": "ok"|"error"|"unknown", "reason": "..."}
         """
+        # 注意：以下提示词中提到的"余额已用完"等页面内嵌卡片不算错误
+        # 注意：以下提示词中提到的"余额已用完"等页面内嵌卡片不算错误
         prompt_map = {
-            "verify_result": "分析这张京麦客户端截图，检查是否有错误提示或异常状态。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}",
-            "publish_product": "分析这张截图，判断商品是否已成功发布。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}",
-            "save_draft": "分析这张截图，判断草稿是否已成功保存。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}",
+            "verify_result": "分析这张京麦客户端截图，检查是否有错误提示或异常状态。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，不影响商品发布功能。",
+            "publish_product": "分析这张截图，判断商品是否已成功发布。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，不影响商品发布功能。",
+            "save_draft": "分析这张截图，判断草稿是否已成功保存。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，不影响商品发布功能。",
+            "find_window": "分析这张京麦客户端截图，确认是否已找到京麦窗口。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，只要找到京麦窗口即可。",
+            "activate_window": "分析这张京麦客户端截图，确认京麦窗口是否已激活。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，只要窗口已激活即可。",
+            "navigate_to": "分析这张京麦客户端截图，确认是否已成功导航到商品发布流程。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。以下任一情况都应判定为成功：1. 已进入类目选择发品页，例如出现类目搜索、类目面包屑、类目列、'下一步，完善其他商品信息'等元素；2. 已进入后续商品信息页，例如出现'商品标题'、'品牌'、'价格'等输入区域。只有仍停留在首页、工作台、商品列表页，或明显不是发品流程时才返回 error。页面内的'余额已用完'广告卡片不是错误。",
+            "select_category": "分析这张京麦客户端截图，确认是否已成功选择商品类目。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。以下任一情况都应判定为成功：1. 类目页中已明确选中'插座'，且下一步可点击；2. 页面已经从类目页跳转到商品信息页，即使仍在骨架屏加载阶段，只要能看出进入了包含'商品标题'、'品牌'、'价格'等字段的发布流程也算成功。不要因为截图已经离开类目页就判失败；只有仍停留在类目搜索/选择状态且未确认选中时才返回 error。页面内的'余额已用完'广告卡片不是错误。",
+            "fill_product_info": "分析这张京麦客户端截图，确认商品信息是否已正确填写。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。必须检查：1.商品标题字段是否有内容 2.京东价格是否显示70 3.市场价是否显示70 4.不是空白表单。页面内的'余额已用完'广告卡片不是错误。",
         }
         prompt = prompt_map.get(
             action_name,
-            "分析这张截图，判断操作是否成功。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}"
+            "分析这张截图，判断操作是否成功。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，不影响商品发布功能。"
         )
 
         window_diff = action_result.get("window_diff", {}) or {}

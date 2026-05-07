@@ -1,0 +1,19 @@
+{
+  "id": "d12e23c1",
+  "type": "short_term",
+  "content": "步骤 8 publish_product: 失败（重试3次）",
+  "metadata": {
+    "step": 8,
+    "action": "publish_product",
+    "action_result_success": false,
+    "vision_status": "error",
+    "used_vision_fallback": false,
+    "vision_template": "",
+    "retry_count": 3,
+    "error": "视觉验证失败: 页面中商品模块显示新品数量、在售数量等均为0，表明商品未成功发布",
+    "screenshot": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\7a744409_publish_product_1778085447.png"
+  },
+  "importance": 0.7,
+  "created_at": "2026-05-07T00:37:31.409782",
+  "access_count": 0
+}

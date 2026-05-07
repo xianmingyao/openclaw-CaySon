@@ -263,6 +263,31 @@ def _print_execution_diagnostics(result: Dict[str, Any], prefix: str = ""):
     if recovery_error:
         click.echo(f"{prefix}恢复错误: {recovery_error}")
 
+    vision_stats = result.get("vision_fallback_stats") or {}
+    vision_count = int(vision_stats.get("count", 0) or 0)
+    if vision_count > 0:
+        template_hits = vision_stats.get("templates") or {}
+        success_count = int(vision_stats.get("success_count", 0) or 0)
+        failed_count = int(vision_stats.get("failed_count", 0) or 0)
+        summary = "，".join(
+            f"{template} {count}次"
+            for template, count in sorted(template_hits.items(), key=lambda item: (-item[1], item[0]))
+        )
+        if summary:
+            click.echo(f"{prefix}视觉兜底: {vision_count} 次（成功 {success_count} / 失败 {failed_count}，{summary}）")
+        else:
+            click.echo(f"{prefix}视觉兜底: {vision_count} 次（成功 {success_count} / 失败 {failed_count}）")
+
+    failed_details = vision_stats.get("failed_details") or []
+    for detail in failed_details:
+        template_name = detail.get("template", "") or "unknown-template"
+        screenshot = detail.get("screenshot", "") or "no-screenshot"
+        action = detail.get("action", "") or "unknown-action"
+        step = detail.get("step", "?")
+        click.echo(
+            f"{prefix}失败兜底: step={step} action={action} template={template_name} screenshot={screenshot}"
+        )
+
 
 def _default_plan_path(task_id: str) -> str:
     plan_dir = Path("data/plans")
@@ -502,6 +527,13 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
     fail_count = 0
     total_high_risk_count = 0
     products_with_recovery_error = 0
+    total_vision_fallback_count = 0
+    total_successful_vision_fallback_count = 0
+    total_failed_vision_fallback_count = 0
+    products_with_vision_fallback = 0
+    template_hit_totals: Dict[str, int] = {}
+    template_success_totals: Dict[str, int] = {}
+    template_failed_totals: Dict[str, int] = {}
     risky_titles: List[str] = []
     batch_plan_dir = Path(plan_out).resolve() if plan_out else None
     progress = _read_batch_progress(progress_file)
@@ -536,9 +568,28 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
 
             risk_count = int((exec_result.get("risk_stats") or {}).get("high_risk_window_shift_count", 0) or 0)
             recovery_error = exec_result.get("recovery_error", "")
+            vision_stats = exec_result.get("vision_fallback_stats") or {}
+            vision_count = int(vision_stats.get("count", 0) or 0)
+            successful_vision_count = int(vision_stats.get("success_count", 0) or 0)
+            failed_vision_count = int(vision_stats.get("failed_count", 0) or 0)
+            template_hits = vision_stats.get("templates") or {}
+            template_success_hits = vision_stats.get("templates_success") or {}
+            template_failed_hits = vision_stats.get("templates_failed") or {}
+            failed_vision_details = vision_stats.get("failed_details") or []
             total_high_risk_count += risk_count
             if recovery_error:
                 products_with_recovery_error += 1
+            total_vision_fallback_count += vision_count
+            total_successful_vision_fallback_count += successful_vision_count
+            total_failed_vision_fallback_count += failed_vision_count
+            if vision_count > 0:
+                products_with_vision_fallback += 1
+            for template_name, count in template_hits.items():
+                template_hit_totals[template_name] = template_hit_totals.get(template_name, 0) + int(count or 0)
+            for template_name, count in template_success_hits.items():
+                template_success_totals[template_name] = template_success_totals.get(template_name, 0) + int(count or 0)
+            for template_name, count in template_failed_hits.items():
+                template_failed_totals[template_name] = template_failed_totals.get(template_name, 0) + int(count or 0)
             if risk_count > 0 or recovery_error:
                 risk_reasons = []
                 if risk_count > 0:
@@ -559,6 +610,11 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
                         "task_id": task_id,
                         "success": True,
                         "start_from_phase": exec_result.get("start_from_phase", ""),
+                        "vision_fallback_count": vision_count,
+                        "vision_fallback_success_count": successful_vision_count,
+                        "vision_fallback_failed_count": failed_vision_count,
+                        "vision_templates": template_hits,
+                        "vision_failed_details": failed_vision_details,
                     }
                 )
                 _write_batch_progress(progress_file, progress)
@@ -581,6 +637,11 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
                         "error": exec_result.get("error", ""),
                         "failed_step": exec_result.get("failed_step", 0),
                         "start_from_phase": exec_result.get("start_from_phase", ""),
+                        "vision_fallback_count": vision_count,
+                        "vision_fallback_success_count": successful_vision_count,
+                        "vision_fallback_failed_count": failed_vision_count,
+                        "vision_templates": template_hits,
+                        "vision_failed_details": failed_vision_details,
                     }
                 )
                 _write_batch_progress(progress_file, progress)
@@ -610,10 +671,29 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
     click.echo(
         f"\n批量完成: {success_count} 成功, {fail_count} 失败, "
         f"{total_high_risk_count} 次高风险窗口漂移, "
-        f"{products_with_recovery_error} 个商品出现恢复错误"
+        f"{products_with_recovery_error} 个商品出现恢复错误, "
+        f"{products_with_vision_fallback} 个商品触发视觉兜底, "
+        f"{total_vision_fallback_count} 次视觉兜底"
+        f"（成功 {total_successful_vision_fallback_count} / 失败 {total_failed_vision_fallback_count}）"
     )
     if risky_titles:
         click.echo("高风险商品: " + "；".join(risky_titles))
+    if template_hit_totals:
+        template_summary = "；".join(
+            f"{name} {count}次"
+            for name, count in sorted(template_hit_totals.items(), key=lambda item: (-item[1], item[0]))
+        )
+        click.echo("视觉兜底模板统计: " + template_summary)
+    if template_success_totals or template_failed_totals:
+        success_summary = "；".join(
+            f"{name} {count}次"
+            for name, count in sorted(template_success_totals.items(), key=lambda item: (-item[1], item[0]))
+        ) or "无"
+        failed_summary = "；".join(
+            f"{name} {count}次"
+            for name, count in sorted(template_failed_totals.items(), key=lambda item: (-item[1], item[0]))
+        ) or "无"
+        click.echo(f"视觉兜底结果: 成功[{success_summary}]；失败[{failed_summary}]")
 
 
 @cli.command()

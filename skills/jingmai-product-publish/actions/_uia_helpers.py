@@ -96,12 +96,38 @@ def iter_named_descendants(
 
 
 def click_uia_element(elem, log=None) -> bool:
+    # 方法1: 尝试 UIA invoke()（标准点击，但 CEF 可能不响应）
     try:
         elem.invoke()
         return True
     except Exception:
         pass
 
+    # 方法2: 尝试 click_input()（pywinauto 直接发送输入事件，对 CEF 有效）
+    try:
+        elem.click_input()
+        return True
+    except Exception:
+        pass
+
+    # 方法3: 使用 PostMessage WM_LBUTTONDOWN/UP 发送到 WindowFromPoint 目标窗口
+    try:
+        import win32gui
+        import win32con
+
+        rect = elem.rectangle()
+        center_x = (rect.left + rect.right) // 2
+        center_y = (rect.top + rect.bottom) // 2
+        target_hwnd = win32gui.WindowFromPoint((center_x, center_y))
+
+        if target_hwnd:
+            win32gui.PostMessage(target_hwnd, win32con.WM_LBUTTONDOWN, 0, (center_y << 16) | center_x)
+            win32gui.PostMessage(target_hwnd, win32con.WM_LBUTTONUP, 0, (center_y << 16) | center_x)
+            return True
+    except Exception:
+        pass
+
+    # 方法4: 降级到 pyautogui（可能对 CEF 无效）
     try:
         rect = elem.rectangle()
         import pyautogui

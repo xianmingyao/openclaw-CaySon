@@ -1,0 +1,19 @@
+{
+  "id": "c886f310",
+  "type": "short_term",
+  "content": "步骤 1 find_window: 成功",
+  "metadata": {
+    "step": 1,
+    "action": "find_window",
+    "action_result_success": true,
+    "vision_status": "ok",
+    "used_vision_fallback": false,
+    "vision_template": "",
+    "retry_count": 1,
+    "error": "",
+    "screenshot": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\1ed1fdd3_find_window_1778158293.png"
+  },
+  "importance": 0.3,
+  "created_at": "2026-05-07T20:51:39.617233",
+  "access_count": 0
+}

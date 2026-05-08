@@ -15,6 +15,15 @@ from actions._uia_helpers import (
 from actions.registry import ActionRegistry
 from config.jingmai_coords import CATEGORY_PAGE, PRODUCT_INFO_PAGE
 
+# Session1 Helper 操作
+try:
+    from session1_ops import s1_click, s1_paste, s1_press, s1_hotkey, s1_wait
+
+    HAS_SESSION1 = True
+except ImportError:
+    HAS_SESSION1 = False
+    s1_click = s1_paste = s1_press = s1_hotkey = s1_wait = None
+
 
 def _get_locator(locator=None, log=None):
     if locator is None:
@@ -79,6 +88,28 @@ def _find_category_search_input(locator=None, log=None):
 
 def _has_category_page_markers(locator=None, log=None) -> bool:
     return _page_contains_text("绫荤洰閫夋嫨鍙戝搧", locator=locator, log=log)
+
+
+def _has_product_info_markers(locator=None, log=None) -> bool:
+    if _page_contains_text("鍟嗗搧鏍囬", locator=locator, log=log):
+        return True
+
+    window = find_jingmai_uia_window(locator=_get_locator(locator, log), log=log)
+    if not window:
+        return False
+
+    try:
+        for element in window.descendants():
+            try:
+                name = element.window_text() or ""
+                if "请输入商品标题" in name or "商品标题" in name:
+                    return True
+            except Exception:
+                continue
+    except Exception as exc:
+        if log:
+            log.warning(f"product info marker scan failed: {exc}")
+    return False
 
 
 def _click_image_fallback(template_name: str, locator=None, log=None, confidence: float = 0.86) -> Dict[str, Any]:
@@ -156,6 +187,8 @@ def _select_search_result(search_text: str, search_input=None, locator=None, log
     Root cause:
     The previous implementation retyped Chinese text with pyautogui.typewrite(),
     which is not reliable for Han characters here and wiped out the valid query.
+
+    优先使用 Session1 Helper 的 s1_click/s1_press。
     """
     window = find_jingmai_uia_window(locator=locator, log=log)
     if window:
@@ -175,8 +208,6 @@ def _select_search_result(search_text: str, search_input=None, locator=None, log
                 return True
 
     try:
-        import pyautogui
-
         if search_input:
             rect = search_input["rect"]
             suggestion_points = [
@@ -188,14 +219,27 @@ def _select_search_result(search_text: str, search_input=None, locator=None, log
             suggestion_points = [(600, 295)]
 
         for point_x, point_y in suggestion_points:
-            pyautogui.click(point_x, point_y)
-            time.sleep(0.8)
+            # 优先用 Session1 Helper
+            if HAS_SESSION1 and s1_click:
+                s1_click(point_x, point_y, delay=0.8)
+            else:
+                import pyautogui
+                pyautogui.click(point_x, point_y)
+                time.sleep(0.8)
+
             if _is_category_next_enabled(locator=locator, log=log):
                 return True
 
-        pyautogui.press("down")
-        time.sleep(0.2)
-        pyautogui.press("enter")
+        # 用键盘选择
+        if HAS_SESSION1 and s1_press:
+            s1_press("down")
+            time.sleep(0.2)
+            s1_press("enter")
+        else:
+            import pyautogui
+            pyautogui.press("down")
+            time.sleep(0.2)
+            pyautogui.press("enter")
         time.sleep(1.0)
         return True
     except Exception as exc:
@@ -212,6 +256,16 @@ def _click_named_button(keywords: list[str], locator=None, log=None) -> Dict[str
     for candidate in iter_named_descendants(window, control_types=["Button"], limit=120):
         name = candidate["name"]
         if any(keyword in name for keyword in keywords):
+            rect = candidate["rect"]
+            cx = (rect.left + rect.right) // 2
+            cy = (rect.top + rect.bottom) // 2
+
+            # 优先用 Session1 Helper 点击
+            if HAS_SESSION1 and s1_click:
+                if s1_click(cx, cy, delay=0.5):
+                    return {"success": True, "method": "session1", "button": name, "coords": (cx, cy)}
+
+            # Fallback: UIA
             if click_uia_element(candidate["element"], log=log):
                 return {"success": True, "method": "uia", "button": name}
 
@@ -219,12 +273,23 @@ def _click_named_button(keywords: list[str], locator=None, log=None) -> Dict[str
 
 
 def _click_category_next(locator=None, log=None) -> Dict[str, Any]:
-    import pyautogui
+    """
+    点击"下一步"按钮进入商品信息页。
 
+    优先使用 Session1 Helper，Session 0 环境下降级到 pyautogui。
+    """
     coords = CATEGORY_PAGE.get("next_button")
     if coords:
         bx, by = coords
+        # 优先用 Session1 Helper
+        if HAS_SESSION1 and s1_click:
+            if s1_click(bx, by, delay=1.2):
+                return {"success": True, "method": "session1_click", "coords": coords}
+
+        # Fallback: pyautogui
         try:
+            import pyautogui
+
             pyautogui.click(bx, by)
             time.sleep(1.2)
             return {"success": True, "method": "pyautogui_click", "coords": coords}
@@ -245,8 +310,15 @@ def _click_category_next(locator=None, log=None) -> Dict[str, Any]:
 
 def _click_product_button(coords: tuple[int, int] | None, keywords: list[str], template_name: str, locator=None, log=None):
     locator = _get_locator(locator, log)
-    if coords and locator.click(coords[0], coords[1], delay=1.5):
-        return {"success": True, "method": "coordinate"}
+
+    # 优先用 Session1 Helper 点击坐标
+    if coords:
+        if HAS_SESSION1 and s1_click:
+            if s1_click(coords[0], coords[1], delay=1.5):
+                return {"success": True, "method": "session1", "coords": coords}
+        # Fallback: locator.click
+        if locator.click(coords[0], coords[1], delay=1.5):
+            return {"success": True, "method": "coordinate"}
 
     named = _click_named_button(keywords, locator=locator, log=log)
     if named.get("success"):
@@ -269,6 +341,9 @@ def select_category(
 ) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
     results = []
+
+    if _has_product_info_markers(locator=locator, log=log) and not _has_category_page_markers(locator=locator, log=log):
+        return {"success": True, "steps": ["already_past_category"]}
 
     if search_text:
         search_input = _find_category_search_input(locator=locator, log=log)

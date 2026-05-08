@@ -292,6 +292,26 @@ ReAct（execute 命令，每步完整循环）
    - `error` → 步骤失败 → 进入递进重试
    - `unknown` → LLM 无法判断 → 信任动作原始结果（非阻断）
 
+### 新增：执行前视觉预检
+
+从 2026-05-08 起，`Executor` 不再只做“动作后截图验收”，而是改成两段式：
+
+1. **Precheck**
+   - 动作执行前先截图
+   - 用 `Ollama qwen3-vl` 判断当前页面是否适合执行这个步骤
+   - 如果当前落在错误标签、错误页面、登录页，直接阻断该次 action，不再盲点
+2. **Postcheck**
+   - 动作执行后再次截图
+   - 用步骤目标和成功线索做 Reflection 验证
+   - 只有达到当前步骤目标，才允许进入下一步
+
+这层的目的不是“多跑一次 LLM”，而是把：
+- 当前屏幕状态识别
+- 当前步骤是否该执行
+- 执行后是否达成目标
+
+显式拆开，避免 `fill_product_info` 这类复杂步骤在错误页面继续脚本化点击。
+
 ### 验证降级策略
 
 | 层级 | 条件 | 行为 |
@@ -312,6 +332,150 @@ ReAct（execute 命令，每步完整循环）
 [7/8] verify_result: OK [视觉验证通过]
 [8/8] publish_product: OK [视觉验证通过]
 ```
+
+## Hello-Agents 范式对齐补充
+
+参考 Hello-Agents 第四章，当前项目应明确对齐 3 个经典范式：
+
+- `Plan-and-Solve`
+  - 原理：先生成完整计划，再按计划执行
+  - 项目对应：
+    - `cli.py` 的 `plan` / `publish`
+    - `agents/planner.py`
+- `ReAct`
+  - 原理：`Thought / Action / Observation` 动态循环
+  - 项目对应：
+    - `agents/executor.py`
+    - `agents/base.py`
+  - 在本项目里表现为：`Act -> Screenshot -> Observe -> Reflect`
+- `Reflection`
+  - 原理：`执行 -> 反思 -> 优化`
+  - 项目对应：
+    - `agents/base.py::reflect`
+    - `agents/executor.py` 中的递进式重试
+
+结论：
+
+- 当前项目已经实现 `Plan-and-Solve`
+- 当前项目已经实现 `ReAct`
+- 当前项目已经实现 `Reflection`
+- 但 GUI 执行层过去存在“状态未确认就继续点击”的问题，这属于范式落地不彻底，不是范式缺失
+
+## GUI 状态锚点规范
+
+### 禁止盲点击
+
+- 不允许只靠固定滚动次数 + 固定坐标点击高风险区域
+- 不允许在未确认页面状态前直接点击 `SKU`、价格、发布按钮
+- 不允许把“鼠标能移动到该坐标”当成“页面已经准备好”
+
+### 先识别状态锚点，再点击
+
+处理 `SKU` / 价格区时，必须先确认可见锚点，再进入点击逻辑。
+
+优先锚点：
+
+- `市场价`
+- `京东价`
+- `SKU编码`
+- `销售属性`
+
+执行顺序：
+
+1. 先滚动到目标区域
+2. 截图或读取 UIA / 页面文本，确认锚点已出现
+3. 只有锚点出现后，才允许 `hover -> click/doubleClick`
+4. 写入后必须立即回读校验
+
+如果锚点未出现：
+
+- 继续滚动
+- 重新观察
+- 禁止继续点价格坐标
+
+### 鼠标动作约束
+
+- 普通定位动作必须优先使用：
+  - `move -> hover -> click`
+  - `move -> hover -> doubleClick`
+- 普通定位不能实现成按住左键拖拽
+- 若必须操作滚动条：
+  - 优先点击轨道
+  - 若必须拖动，日志中必须显式标注 `scrollbar drag`
+
+### 日志要求
+
+涉及高风险 GUI 动作时，日志至少记录：
+
+- 当前阶段名
+- 滚动次数与滚动量
+- 识别到的状态锚点
+- 实际点击坐标
+- 写入结果
+- 校验结果
+
+这样出现问题时，才能区分：
+
+- 是页面状态未到位
+- 还是坐标命中错误
+- 还是控件未获得焦点
+- 还是旧 helper / 旧进程仍在执行旧逻辑
+
+## Session1 Helper（关键修复）
+
+### 问题背景
+京麦客户端运行在 **Session 1**（用户桌面 session），而自动化脚本运行在 **Session 0**（Windows 服务上下文）。Session 0 发出的键盘事件无法传递到 Session 1 的京麦窗口。
+
+### 解决方案
+在 Session 1 中运行一个 Helper 辅助程序，接收来自脚本的命令，在正确的 session 中执行 Win32 操作。
+
+### 使用步骤
+
+**1. 启动 Helper（在你的电脑上双击运行）：**
+
+```
+双击文件: E:\workspace\skills\jingmai-product-publish\start_helper.bat
+```
+
+或命令行运行：
+```bash
+cd E:\workspace\skills\jingmai-product-publish
+python session1_helper.py
+```
+
+**2. 验证 Helper 是否运行：**
+
+```bash
+python -c "
+from pipe_client import PipeClient
+c = PipeClient()
+if c._connect():
+    print('✅ Helper 已连接')
+else:
+    print('❌ Helper 未运行，请先启动 start_helper.bat')
+"
+```
+
+**3. 使用方式（自动，无感）：**
+
+所有自动化操作（点击、粘贴、按键）会自动优先使用 Helper，不需要手动干预。
+
+### Helper 提供的操作
+
+| 操作 | 说明 |
+|------|------|
+| `click(x, y)` | 点击指定坐标 |
+| `paste(text)` | 剪贴板粘贴（最可靠的中文输入） |
+| `hotkey(*keys)` | 快捷键，如 Ctrl+V |
+| `press(key)` | 单键，如 Enter, Tab |
+| `wait(seconds)` | 等待 |
+| `find_jingmai()` | 查找京麦窗口 |
+
+### 降级行为
+
+如果 Helper 未运行，脚本会自动降级到 `pyautogui`（可能对 Java AWT 组件无效）。
+
+---
 
 ## 故障排查
 

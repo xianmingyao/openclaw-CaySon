@@ -41,7 +41,10 @@ class PlannerAgent(BaseAgent):
             plan = template_plan
             self._log("info", f"使用模板规划，共 {len(plan)} 步")
 
-        valid_plan = self._annotate_plan_phases(self._validate_plan(plan))
+        valid_plan = self._attach_react_contracts(
+            self._annotate_plan_phases(self._validate_plan(plan)),
+            src,
+        )
 
         if self._db:
             from models import PublishTask, TaskStep
@@ -349,6 +352,124 @@ publish_product - 发布商品
                 publish_seen = True
 
         return annotated
+
+    @staticmethod
+    def _attach_react_contracts(
+        plan: List[Dict[str, Any]],
+        product_data: Dict[str, Any],
+    ) -> List[Dict[str, Any]]:
+        """Attach explicit pre/post visual contracts for ReAct execution."""
+        title = str(product_data.get("title", "") or "").strip()
+        category = str(product_data.get("category", "") or "").strip()
+        jd_price = product_data.get("jd_price", product_data.get("price", ""))
+        price_text = str(jd_price).strip() if jd_price not in ("", None) else ""
+
+        def build_contract(action: str) -> Dict[str, Any]:
+            contracts: Dict[str, Dict[str, Any]] = {
+                "find_window": {
+                    "goal": "定位并确认京麦客户端窗口存在。",
+                    "precheck": {
+                        "expect_any": [],
+                        "reject_any": ["Windows 桌面崩溃", "远程连接错误"],
+                    },
+                    "postcheck": {
+                        "expect_any": ["京麦", "发布商品", "商智", "工作台"],
+                        "reject_any": ["扫码登录", "网络异常", "系统错误"],
+                    },
+                },
+                "activate_window": {
+                    "goal": "将京麦窗口切到前台，避免后续动作命中错误页面。",
+                    "precheck": {
+                        "expect_any": ["京麦", "发布商品", "工作台"],
+                        "reject_any": ["扫码登录", "系统错误"],
+                    },
+                    "postcheck": {
+                        "expect_any": ["京麦", "发布商品", "工作台"],
+                        "reject_any": ["扫码登录", "系统错误"],
+                    },
+                },
+                "navigate_to": {
+                    "goal": "进入发品流程，允许停在类目选择页或商品基本信息页。",
+                    "precheck": {
+                        "expect_any": ["京麦", "工作台", "发布商品", "商品管理"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                    "postcheck": {
+                        "expect_any": ["商品标题", "品牌", "价格", "类目", "下一步，完善其他商品信息"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                },
+                "select_category": {
+                    "goal": f"选择类目 {category or '目标类目'}，或确认已进入商品信息页。",
+                    "precheck": {
+                        "expect_any": ["类目", "商品标题", "品牌", "下一步，完善其他商品信息"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                    "postcheck": {
+                        "expect_any": ["商品标题", "品牌", "价格", "下一步，完善其他商品信息", category] if category else ["商品标题", "品牌", "价格", "下一步，完善其他商品信息"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                },
+                "fill_product_info": {
+                    "goal": "先确认当前屏幕仍在发品主流程，再填写基础信息与价格；如果视觉上已偏到商品描述/物流售后等标签，需要先回到商品基本信息并滚到价格区域。",
+                    "precheck": {
+                        "expect_any": ["商品基本信息", "商品标题", "品牌", "价格", "商品描述", "商品物流", "商品售后及其他"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误", "404"],
+                    },
+                    "postcheck": {
+                        "expect_any": [text for text in ["商品标题", "品牌", "市场价", "京东价", title[:18] if title else "", price_text] if text],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                },
+                "save_draft": {
+                    "goal": "保存当前商品为草稿。",
+                    "precheck": {
+                        "expect_any": ["保存草稿", "发布商品", "商品标题"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                    "postcheck": {
+                        "expect_any": ["草稿", "保存成功", "发布商品"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                },
+                "publish_product": {
+                    "goal": "提交发布动作。",
+                    "precheck": {
+                        "expect_any": ["发布商品", "保存草稿", "商品标题"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                    "postcheck": {
+                        "expect_any": ["提交成功", "发布成功", "商品列表", "草稿"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                },
+                "verify_result": {
+                    "goal": "检查当前页面是否存在错误提示，确认草稿或发布结果。",
+                    "precheck": {
+                        "expect_any": ["发布商品", "草稿", "商品标题", "商品列表"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误"],
+                    },
+                    "postcheck": {
+                        "expect_any": ["草稿", "发布成功", "商品列表", "发布商品"],
+                        "reject_any": ["错误", "异常", "扫码登录", "登录失效", "系统错误"],
+                    },
+                },
+            }
+            return contracts.get(
+                action,
+                {
+                    "goal": f"执行动作 {action} 并确认页面未偏离京麦发布上下文。",
+                    "precheck": {"expect_any": ["京麦", "发布商品"], "reject_any": ["扫码登录", "系统错误"]},
+                    "postcheck": {"expect_any": ["京麦", "发布商品"], "reject_any": ["扫码登录", "系统错误"]},
+                },
+            )
+
+        enriched: List[Dict[str, Any]] = []
+        for step in plan:
+            item = dict(step)
+            item.setdefault("react_contract", build_contract(item.get("action", "")))
+            enriched.append(item)
+        return enriched
 
     @staticmethod
     def _enforce_plan_order(plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:

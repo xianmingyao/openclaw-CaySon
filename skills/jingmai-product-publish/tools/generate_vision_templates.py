@@ -55,6 +55,24 @@ CROPS = [
         target="popup_close_button.png",
         note="Popup close icon in top-right overlay.",
     ),
+    CropSpec(
+        source="03_market_price.png",
+        box=(608, 632, 730, 674),
+        target="market_price_label.png",
+        note="Market price field label on product form.",
+    ),
+    CropSpec(
+        source="02_jd_price.png",
+        box=(1408, 632, 1528, 674),
+        target="jd_price_label.png",
+        note="JD price field label on product form.",
+    ),
+    CropSpec(
+        source="03_market_price.png",
+        box=(614, 389, 726, 427),
+        target="product_title_label.png",
+        note="Product title field label on product form.",
+    ),
 ]
 
 

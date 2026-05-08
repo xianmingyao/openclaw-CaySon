@@ -485,11 +485,22 @@ class JingmaiLocator:
 
     # ==================== 点击操作 ====================
 
+    def _release_mouse_buttons(self):
+        """移动前强制释放鼠标键，防止残留按下态导致 move 变拖拽。"""
+        if not WIN32_AVAILABLE:
+            return
+        try:
+            win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
+            win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0)
+        except Exception:
+            pass
+
     def _human_move_to(self, screen_x: int, screen_y: int):
         """仿人鼠标移动：三次贝塞尔曲线 + Ease Out 缓动 + 随机抖动
         参考 sightflow-desktop-agent 的 humanLikeMove()
         """
         import pyautogui
+        self._release_mouse_buttons()
         start_x, start_y = pyautogui.position()
         dx = screen_x - start_x
         dy = screen_y - start_y
@@ -534,15 +545,10 @@ class JingmaiLocator:
             time.sleep(step_delay)
 
     def _human_click(self, button: str = 'left'):
-        """仿人点击：按下 → 随机按压时长 → 抬起 → 随机后停顿
-        参考 sightflow-desktop-agent 的 humanLikeClick()
-        """
+        """仿人点击：短暂停顿后执行原子 click，避免残留按下态。"""
         import pyautogui
-        # 按下
-        pyautogui.mouseDown(button=button)
-        time.sleep(0.08 + random.random() * 0.06)  # 80-140ms 按压时长
-        # 抬起
-        pyautogui.mouseUp(button=button)
+        time.sleep(0.03 + random.random() * 0.04)
+        pyautogui.click(button=button)
         time.sleep(0.05 + random.random() * 0.1)   # 50-150ms 后停顿
 
     def click(self, x: int, y: int, delay: float = 0.5) -> bool:
@@ -577,7 +583,7 @@ class JingmaiLocator:
                 return False
 
     def double_click(self, x: int, y: int, delay: float = 0.5) -> bool:
-        """双击 - 单次前置激活 + 两次快速点击（40-100ms 间隔）"""
+        """双击 - 单次前置激活 + 原子 doubleClick，避免按下态遗留。"""
         x, y = self.adapt_coords(x, y)
         if not WIN32_AVAILABLE or not self.hwnd:
             return False
@@ -586,19 +592,9 @@ class JingmaiLocator:
             win32gui.SetForegroundWindow(self.hwnd)
             time.sleep(0.1)
             screen_x, screen_y = self.window_to_screen(x, y)
-            # 只做一次仿人移动
             self._human_move_to(screen_x, screen_y)
             time.sleep(0.05 + random.random() * 0.1)
-            # 第一次点击
-            pyautogui.mouseDown(button='left')
-            time.sleep(0.08 + random.random() * 0.04)
-            pyautogui.mouseUp(button='left')
-            # 双击间隔 40-100ms（人类双击特征）
-            time.sleep(0.04 + random.random() * 0.06)
-            # 第二次点击
-            pyautogui.mouseDown(button='left')
-            time.sleep(0.08 + random.random() * 0.04)
-            pyautogui.mouseUp(button='left')
+            pyautogui.doubleClick(screen_x, screen_y, interval=0.04 + random.random() * 0.06)
             time.sleep(delay)
             return True
         except Exception as e:

@@ -39,16 +39,20 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
         if not rows:
             return []
 
-        headers = [str(cell).strip() if cell is not None else "" for cell in rows[0]]
+        header_index = _detect_header_row_index(rows)
+        headers = [str(cell).strip() if cell is not None else "" for cell in rows[header_index]]
         mapped_headers = [_normalize_header(header) for header in headers]
         items: List[Dict[str, Any]] = []
-        for row in rows[1:]:
+        for row in rows[header_index + 1 :]:
             payload: Dict[str, Any] = {}
             for index, cell in enumerate(row):
                 key = mapped_headers[index] if index < len(mapped_headers) else ""
                 if not key or cell in (None, ""):
                     continue
                 payload[key] = cell
+            if "jd_price" in payload:
+                payload.setdefault("price", payload["jd_price"])
+                payload.setdefault("market_price", payload["jd_price"])
             if payload:
                 items.append(payload)
         return items
@@ -56,8 +60,31 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
     raise ValueError(f"不支持的批量文件格式: {path.suffix}")
 
 
+def _detect_header_row_index(rows: List[tuple]) -> int:
+    best_index = 0
+    best_score = -1
+    for index, row in enumerate(rows[:10]):
+        headers = [str(cell).strip() if cell is not None else "" for cell in row]
+        score = sum(1 for header in headers if _normalize_header(header))
+        if score > best_score:
+            best_index = index
+            best_score = score
+        if score >= 4:
+            return index
+    return best_index
+
+
 def _normalize_header(header: str) -> str:
-    mapping = {
+    raw = header.strip()
+    normalized = (
+        raw.lower()
+        .replace("（", "(")
+        .replace("）", ")")
+        .replace("：", ":")
+        .replace(" ", "")
+    )
+
+    exact_mapping = {
         "title": "title",
         "商品标题": "title",
         "名称": "title",
@@ -73,8 +100,46 @@ def _normalize_header(header: str) -> str:
         "商品编号": "product_id",
         "url": "url",
         "链接": "url",
+        "品牌": "brand",
+        "商品型号": "model",
+        "型号": "model",
+        "长(mm)": "length_mm",
+        "宽(mm)": "width_mm",
+        "高(mm)": "height_mm",
+        "重(kg)": "weight_kg",
+        "重(kg）": "weight_kg",
+        "单位": "unit",
+        "备注": "notes",
     }
-    return mapping.get(header.strip(), header.strip())
+    if raw in exact_mapping:
+        return exact_mapping[raw]
+    if normalized in exact_mapping:
+        return exact_mapping[normalized]
+
+    contains_mapping = [
+        ("商品名称", "title"),
+        ("开票内容", "title"),
+        ("申请业务", "business_line"),
+        ("商品类目", "category"),
+        ("品牌", "brand"),
+        ("商品型号", "model"),
+        ("长(mm", "length_mm"),
+        ("宽(mm", "width_mm"),
+        ("高(mm", "height_mm"),
+        ("重(kg", "weight_kg"),
+        ("单位", "unit"),
+        ("京东挂网价", "jd_price"),
+        ("下单金额", "jd_price"),
+        ("京东链接", "url"),
+        ("只能读取京东链接", "url"),
+        ("商品资质", "qualification_files"),
+        ("商品简述", "summary"),
+        ("备注", "notes"),
+    ]
+    for needle, mapped in contains_mapping:
+        if needle.lower().replace(" ", "") in normalized:
+            return mapped
+    return ""
 
 
 def _product_payload(product_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -239,12 +304,14 @@ def _build_progress_callback(prefix: str = ""):
         obs_status = ""
         if observation:
             vision = observation.get("status", "")
+            stage = observation.get("stage", "")
+            stage_prefix = f"{stage}:" if stage else ""
             if vision == "ok":
-                obs_status = " [视觉验证通过]"
+                obs_status = f" [{stage_prefix}视觉验证通过]".replace("[:", "[")
             elif vision == "error":
-                obs_status = " [视觉验证失败]"
+                obs_status = f" [{stage_prefix}视觉验证失败]".replace("[:", "[")
             elif vision == "unknown":
-                obs_status = " [动作结果兜底]"
+                obs_status = f" [{stage_prefix}动作结果兜底]".replace("[:", "[")
             else:
                 obs_status = f" [{observation.get('reason', '')[:30]}]"
         line = f"[{step_index}/{total_steps}] {action}: {status_icon}{retry_info}{obs_status}".rstrip()

@@ -58,6 +58,7 @@ class OllamaProvider(LLMProvider):
                 "model": self._resolve_model_name(),
                 "prompt": prompt,
                 "stream": False,
+                "format": "json",
                 "images": [image_data],
             }
 

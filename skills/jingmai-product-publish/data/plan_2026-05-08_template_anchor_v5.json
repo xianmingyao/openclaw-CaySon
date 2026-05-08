@@ -1,0 +1,136 @@
+{
+  "task_id": "490414eb",
+  "status": "failed",
+  "current_step": 5,
+  "total_steps": 8,
+  "plan": [
+    {
+      "action": "find_window",
+      "params": {},
+      "required": true,
+      "phase": "window_ready",
+      "status": "success"
+    },
+    {
+      "action": "activate_window",
+      "params": {},
+      "required": true,
+      "phase": "window_ready",
+      "status": "success"
+    },
+    {
+      "action": "navigate_to",
+      "params": {
+        "page": "publish"
+      },
+      "required": true,
+      "phase": "publish_page_ready",
+      "status": "success"
+    },
+    {
+      "action": "select_category",
+      "params": {
+        "search_text": "插座"
+      },
+      "required": true,
+      "phase": "category_ready",
+      "status": "success"
+    },
+    {
+      "action": "fill_product_info",
+      "params": {
+        "product": {
+          "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+          "brand": "公牛",
+          "model": "",
+          "sku": "",
+          "jd_price": 70,
+          "market_price": 70,
+          "length_mm": 250,
+          "width_mm": 76,
+          "height_mm": 29,
+          "weight_kg": 0.5,
+          "unit": "个",
+          "jd_url": "https://item.jd.com/16793098028.html",
+          "notes": "数量：2"
+        }
+      },
+      "required": true,
+      "phase": "product_info_ready",
+      "status": "failed",
+      "recovery_attempts": [
+        {
+          "reason": "force-relocate",
+          "success": true,
+          "error": "",
+          "at": 1778213493,
+          "window": {
+            "hwnd": 397104,
+            "title": "jd_465d1abd3ee76",
+            "rect": [
+              0,
+              0,
+              2560,
+              1392
+            ],
+            "width": 2560,
+            "height": 1392
+          }
+        }
+      ]
+    },
+    {
+      "action": "save_draft",
+      "params": {},
+      "required": true,
+      "phase": "draft_saved",
+      "status": "pending"
+    },
+    {
+      "action": "verify_result",
+      "params": {
+        "check_errors": true
+      },
+      "required": true,
+      "phase": "draft_verified",
+      "status": "pending"
+    },
+    {
+      "action": "publish_product",
+      "params": {},
+      "required": true,
+      "phase": "publish_submitted",
+      "status": "pending"
+    }
+  ],
+  "error": "Some product fields failed verification: market_price, jd_price",
+  "product_data": {
+    "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+    "brand": "公牛",
+    "model": "",
+    "sku": "",
+    "jd_price": 70,
+    "market_price": 70,
+    "length_mm": 250,
+    "width_mm": 76,
+    "height_mm": 29,
+    "weight_kg": 0.5,
+    "unit": "个",
+    "jd_url": "https://item.jd.com/16793098028.html",
+    "notes": "数量：2"
+  },
+  "risk_stats": {
+    "high_risk_window_shift_count": 0,
+    "high_risk_window_shift_steps": []
+  },
+  "vision_fallback_stats": {
+    "count": 0,
+    "success_count": 0,
+    "failed_count": 0,
+    "steps": [],
+    "failed_details": [],
+    "templates": {},
+    "templates_success": {},
+    "templates_failed": {}
+  }
+}

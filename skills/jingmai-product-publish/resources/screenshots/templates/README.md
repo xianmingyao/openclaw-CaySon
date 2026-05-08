@@ -9,6 +9,9 @@ Current policy:
 
 Current templates:
 - `category_next_button.png`
+- `market_price_label.png`
+- `jd_price_label.png`
+- `product_title_label.png`
 - `publish_button.png`
 - `save_draft_button.png`
 - `popup_close_button.png`
@@ -27,3 +30,10 @@ If a template becomes stale:
 3. Regenerate the template
 
 Do not add data-specific templates such as a single brand option unless there is a proven repeated failure and no reliable UIA path.
+
+Price-field exception:
+- `market_price_label.png`
+- `jd_price_label.png`
+- `product_title_label.png`
+
+These are layout labels, not data-specific values. They exist because the live price labels and page context are visually present but not reliably exposed in the UIA tree.

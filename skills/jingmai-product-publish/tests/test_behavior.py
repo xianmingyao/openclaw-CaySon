@@ -135,6 +135,66 @@ def test_load_batch_items_supports_xlsx(tmp_path: Path):
     assert items[1]["sku"] == "SKU-B"
 
 
+def test_load_batch_items_supports_hunan_template_xlsx(tmp_path: Path):
+    path = tmp_path / "hunan.xlsx"
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = "上架模板"
+    sheet.append([None, "产品上架明细表"])
+    sheet.append([None, "说明行"])
+    sheet.append([
+        "上架序号",
+        "申请业务（自营/慧采）",
+        "商品名称（对应京东开票内容）",
+        "品牌",
+        "商品型号",
+        "长（mm）",
+        "宽（mm）",
+        "高（mm）",
+        "重(KG）",
+        "单位  （对应进项发票单位规格）",
+        "京东挂网价（下单金额）",
+        "只能读取京东链接（无链接请通过其他方式新增商品）",
+        "商品资质（PDF格式）",
+        "商品简述（有特殊参数要求可以填）",
+        "备注（特殊要求）",
+    ])
+    sheet.append([
+        1,
+        "慧采",
+        "公牛插座B5440",
+        "公牛",
+        "无",
+        250,
+        76,
+        29,
+        0.5,
+        "个",
+        70,
+        "https://item.jd.com/16793098028.html",
+        None,
+        None,
+        "数量：2",
+    ])
+    workbook.save(path)
+
+    items = _load_batch_items(path)
+
+    assert len(items) == 1
+    assert items[0]["business_line"] == "慧采"
+    assert items[0]["title"] == "公牛插座B5440"
+    assert items[0]["brand"] == "公牛"
+    assert items[0]["model"] == "无"
+    assert items[0]["length_mm"] == 250
+    assert items[0]["weight_kg"] == 0.5
+    assert items[0]["unit"] == "个"
+    assert items[0]["jd_price"] == 70
+    assert items[0]["price"] == 70
+    assert items[0]["market_price"] == 70
+    assert items[0]["url"] == "https://item.jd.com/16793098028.html"
+    assert items[0]["notes"] == "数量：2"
+
+
 def test_read_json_file_supports_utf8_bom(tmp_path: Path):
     path = tmp_path / "product.json"
     path.write_text('{"product":{"title":"测试商品","price":99}}', encoding="utf-8-sig")
@@ -403,6 +463,8 @@ def test_navigate_to_fails_on_click_error():
 
 
 def test_select_category_fails_on_click_error():
+    import actions.navigation as navigation_module
+
     class FailingLocator:
         def click(self, *args, **kwargs):
             return False
@@ -410,6 +472,8 @@ def test_select_category_fails_on_click_error():
         def press_enter(self):
             return True
 
+    navigation_module._has_category_page_markers = lambda *args, **kwargs: True
+    navigation_module._find_category_search_input = lambda *args, **kwargs: {"rect": SimpleNamespace(left=10, top=10, right=20, bottom=20)}
     result = select_category(search_text="手机", locator=FailingLocator())
 
     assert result["success"] is False
@@ -431,6 +495,12 @@ def test_select_category_fails_when_search_result_not_found(monkeypatch):
             return True
 
     monkeypatch.setattr(form_module, "fill_text", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_has_category_page_markers", lambda *args, **kwargs: True)
+    monkeypatch.setattr(
+        navigation_module,
+        "_find_category_search_input",
+        lambda *args, **kwargs: {"rect": SimpleNamespace(left=10, top=10, right=110, bottom=40)},
+    )
     monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: False)
     monkeypatch.setitem(sys.modules, "pyautogui", type("FakePyAutoGUI", (), {"press": staticmethod(lambda *_: None)}))
 
@@ -467,6 +537,12 @@ def test_select_category_fails_when_next_button_stays_disabled(monkeypatch):
             return True
 
     monkeypatch.setattr(form_module, "fill_text", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_has_category_page_markers", lambda *args, **kwargs: True)
+    monkeypatch.setattr(
+        navigation_module,
+        "_find_category_search_input",
+        lambda *args, **kwargs: {"rect": SimpleNamespace(left=10, top=10, right=110, bottom=40)},
+    )
     monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: True)
     monkeypatch.setattr(navigation_module, "_is_category_next_enabled", lambda *args, **kwargs: False)
 
@@ -492,6 +568,12 @@ def test_select_category_fails_when_next_click_does_not_advance(monkeypatch):
         return True
 
     monkeypatch.setattr(form_module, "fill_text", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_has_category_page_markers", lambda *args, **kwargs: True)
+    monkeypatch.setattr(
+        navigation_module,
+        "_find_category_search_input",
+        lambda *args, **kwargs: {"rect": SimpleNamespace(left=10, top=10, right=110, bottom=40)},
+    )
     monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: True)
     monkeypatch.setattr(navigation_module, "_click_category_next", lambda *args, **kwargs: {"success": True})
     monkeypatch.setattr(navigation_module, "_is_category_next_enabled", fake_next_enabled)
@@ -532,6 +614,42 @@ def test_fill_product_info_fails_when_any_field_write_fails(monkeypatch):
         return {"success": text != "bad-price"}
 
     monkeypatch.setattr(form_module, "fill_text", fake_fill_text)
+    monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {
+            "field": "title",
+            "success": True,
+            "write_success": True,
+            "verify_success": True,
+            "expected": "ok",
+        },
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        form_module,
+        "_fill_sku_pricing_fields_v3",
+        lambda *args, **kwargs: [
+            {
+                "field": "purchase_price",
+                "success": False,
+                "write_success": False,
+                "verify_success": False,
+                "verify_error": "write failed",
+            }
+        ],
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_brand_field_v2",
+        lambda *args, **kwargs: {
+            "field": "brand",
+            "success": True,
+            "write_success": True,
+            "verify_success": True,
+            "value": "brand-a",
+        },
+    )
     monkeypatch.setattr(
         form_module,
         "_verify_text_field",
@@ -578,6 +696,31 @@ def test_fill_product_info_fails_when_readback_mismatches(monkeypatch):
         form_module,
         "fill_text",
         lambda text, **kwargs: {"success": True, "text": text},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {
+            "field": "title",
+            "success": False,
+            "write_success": True,
+            "verify_success": False,
+            "verify_error": "readback mismatch",
+            "expected": "ok",
+        },
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_fill_sku_pricing_fields_v3", lambda *args, **kwargs: [])
+    monkeypatch.setattr(
+        form_module,
+        "_fill_brand_field_v2",
+        lambda *args, **kwargs: {
+            "field": "brand",
+            "success": True,
+            "write_success": True,
+            "verify_success": True,
+            "value": "brand-a",
+        },
     )
     monkeypatch.setattr(
         form_module,
@@ -1187,6 +1330,30 @@ def test_fill_product_info_supports_attributes(monkeypatch):
         ),
     )
     monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {"field": "title", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_fill_sku_pricing_fields_v3", lambda *args, **kwargs: [])
+    monkeypatch.setattr(
+        form_module,
+        "_find_labeled_dropdown_center",
+        lambda label_keywords, locator=None, log=None, top_range=None: {
+            "孔型配置": (10, 10),
+            "额定电压": (11, 11),
+            "电缆长度": (12, 12),
+        }.get(label_keywords[0]),
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_brand_field_v2",
+        lambda *args, **kwargs: (
+            dropdown_calls.append(("brand-a", 0, 0, (), "brand-helper"))
+            or {"field": "brand", "success": True, "write_success": True, "verify_success": True, "value": "brand-a"}
+        ),
+    )
+    monkeypatch.setattr(
         "config.jingmai_coords.PRODUCT_INFO_PAGE",
         {
             "title_input": (1, 1),
@@ -1205,13 +1372,19 @@ def test_fill_product_info_supports_attributes(monkeypatch):
         {
             "title": "ok",
             "brand": "brand-a",
-            "attributes": {"protection_level": "IP65", "material": "尼龙"},
+            "attributes": {
+                "protection_level": "IP65",
+                "material": "尼龙",
+                "socket_config": "4位五孔+4位两孔",
+                "rated_voltage": "250V",
+                "cable_length": "5米",
+            },
         },
         locator=SimpleNamespace(),
     )
 
     assert result["success"] is True
-    assert [item[0] for item in dropdown_calls] == ["brand-a", "IP65", "尼龙"]
+    assert [item[0] for item in dropdown_calls] == ["brand-a", "IP65", "尼龙", "4位五孔+4位两孔", "250V", "5米"]
 
 
 def test_dismiss_popup_prefers_uia_button(monkeypatch):

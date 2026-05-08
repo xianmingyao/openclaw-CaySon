@@ -143,6 +143,11 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 
 ## Dream 整合记录（最近）
 
+### 2026-05-08 整合
+- 扫描文件：05-05~05-07（3个文件）
+- MEMORY.md：无新增（纯运维日志）
+- 主要结论：continuous-ingest 稳定运行（每5分钟0文件），raw 目录最新仍为 2026-04-23
+
 ### 2026-05-07 整合
 - 扫描文件：05-03~05-07（5个文件）
 - MEMORY.md：无新增（系统稳定）
@@ -192,6 +197,81 @@ YYYY.MM.DD(日报)
 2、事项 + 状态
 ...
 ```
+
+## 2026-05-08 新增知识
+
+### 不死鸟架构 - Hermes/OpenClaw 国产化方案
+- **定位**: 基于Hermes的国产AI Agent架构
+- **作者**: 抖音 @小爷开启🔛疯狂模式
+- **特点**: V4.8稳定版 + 高自由度版
+- **知识库**: `knowledge-base/wiki/概念/不死鸟架构-Hermes-OpenClaw国产化方案.md`
+
+### Hermes Agent 架构深度解析
+- **GitHub**: NousResearch/hermes-agent (4.7万星)
+- **核心**: 四层内存系统 + 封闭学习循环
+- **v0.8.0**: Live Model Switching + 11个消息平台
+- **对比OpenClaw**: Hermes重自进化+记忆，OpenClaw重Skill生态
+- **知识库**: `knowledge-base/wiki/概念/Hermes-Agent-自进化AI智能体架构深度解析.md`
+
+### Matt Pocock Skills - Claude Code 工程师技能包
+- **GitHub**: mattpocock/skills (⭐ 62k+)
+- **技能数**: 16个技能，覆盖4大类
+- **核心**: /triage, /spec, /test, /review, /debug, /doc
+- **理念**: 告别vibe coding，用工程思维驾驭AI编程
+- **知识库**: `knowledge-base/wiki/概念/Matt-Pocock-Skills-Claude-Code工程师技能包.md`
+
+### Awesome Agent Skills - 1000+技能精选
+- **GitHub**: VoltAgent/awesome-agent-skills (⭐ 20.7k)
+- **数量**: 1000+ Agent技能
+- **兼容**: Claude Code, Codex, Gemini CLI, Cursor
+- **知识库**: `knowledge-base/wiki/概念/Awesome-Agent-Skills-1000种Agent技能精选.md`
+
+### GitHub一周热点113期 - IT咖啡馆
+- **项目**: Warp/Hackingtool/Pixelle-Video/Awesome Codex Skills/Skills
+- **来源**: 抖音 @IT咖啡馆 (粉丝15.9万)
+- **知识库**: 
+  - `Warp-AI终端工具-智能体开发环境.md`
+  - `Hackingtool-一站式黑客工具箱.md`
+  - `Pixelle-Video-AI全自动短视频引擎.md`
+  - `Awesome-Codex-Skills-Codex技能生态精选.md`
+
+### GitHub本周十大热门 - Claude Skills 爆发
+- **核心**: AI项目占比10/10，Skills类包揽前三
+- **项目**: core、genericagent、ml intern、skills、cloud context
+- **来源**: 抖音 @stock master
+
+### 2026-05-08 抖音AI知识沉淀
+- **GitHub十大热门**: AI项目10/10，mattpocock/skills一周暴涨+30945 Stars(总50746)
+- **大力AI第12-13集**: Skills Manage多平台统一管理(1484收藏)、planning-with-files外部记忆
+- **阿甘探AI**: AI秒出CAD 3D建模(400收藏)
+- **今日新增**: 11个知识库文件 → ChromaDB+Milvus双写
+- **知识库汇总**: `2026-05-08-抖音AI知识库日报.md`
+
+### Skills生态全家桶
+| 项目 | Stars | 定位 |
+|------|-------|------|
+| mattpocock/skills | 50.7k | 工程师技能包 |
+| Warp | 48.5k | AI终端/智能体环境 |
+| andrej-karpathy-skills | 103.8k | LLM编码最佳实践 |
+| Skills Manage | - | 多平台统一管理 |
+
+### ⏳ 待深挖项目
+1. andrej-karpathy-skills - Karpathy的LLM编码实践
+2. free-claude-code - 免费Claude Code
+3. cua - Computer-Use Agent
+4. genericagent - 自我进化Agent框架
+5. core - 开源电脑操作Agent
+
+### Next AI Draw.io - AI 智能图表生成工具
+- **GitHub**: DayuanJiang/next-ai-draw-io (⭐ 28.6k)
+- **功能**: 自然语言生成图表、对话式编辑、MCP 接入
+- **官网**: https://next-ai-drawio.jiang.jp
+- **本地部署**: `E:\workspace\next-ai-draw-io` (http://localhost:6002)
+- **用途**: 架构图、流程图、数据流图、思维导图
+- **知识库**: `knowledge-base/wiki/概念/Next-AI-Drawio-智能图表生成工具.md`
+- **来源**: 抖音 @成也2077 推荐
+
+---
 
 ## Promoted From Short-Term Memory (2026-04-30)
 

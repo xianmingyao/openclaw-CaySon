@@ -1,0 +1,25 @@
+﻿[2026-05-08 15:58:03] [INFO] [Executor] 开始 ReAct 执行循环，8 个步骤
+[2026-05-08 15:58:03] [INFO] [Executor] 断点续跑: 跳过前 4 步，从步骤 5 开始
+[2026-05-08 15:58:03] [INFO] [Executor] 续跑预检恢复: 在重跑 fill_product_info 前先恢复窗口上下文
+[2026-05-08 15:58:03] [INFO] 查找京麦窗口...
+[2026-05-08 15:58:03] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-08 15:58:03] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-08 15:58:03] [INFO] [Executor] 窗口恢复成功(resume-preflight): hwnd=397104
+[2026-05-08 15:58:03] [INFO] [Executor] --- 步骤 5/8: fill_product_info ---
+[2026-05-08 15:58:03] [INFO] 查找京麦窗口...
+[2026-05-08 15:58:09] [INFO] [Executor] 步骤 5 precheck: status=error state=填写表单阶段 suggested=recover
+[2026-05-08 15:58:09] [WARNING] [Executor] 步骤 5 执行前视觉预检失败（重试 1/3）: 字段校验失败，商品信息中关键字段缺失或格式错误
+[2026-05-08 15:58:09] [INFO] 查找京麦窗口...
+[2026-05-08 15:58:09] [INFO] [Executor] 重试 [2/3]: 等待 3.2s 后重试
+[2026-05-08 15:58:13] [INFO] [Executor] 步骤 5 precheck: status=error state=????? suggested=stop
+[2026-05-08 15:58:13] [WARNING] [Executor] 步骤 5 执行前视觉预检失败（重试 2/3）: ???
+[2026-05-08 15:58:13] [INFO] 查找京麦窗口...
+[2026-05-08 15:58:13] [INFO] [Executor] 重试 [3/3]: 清除缓存，强制重定位窗口
+[2026-05-08 15:58:13] [INFO] 查找京麦窗口...
+[2026-05-08 15:58:13] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-08 15:58:13] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-08 15:58:13] [INFO] [Executor] 窗口恢复成功(force-relocate): hwnd=397104
+[2026-05-08 15:58:14] [INFO] [Executor] 步骤 5 precheck: status=error state=????? suggested=recover
+[2026-05-08 15:58:14] [WARNING] [Executor] 步骤 5 执行前视觉预检失败（重试 3/3）: ?? ??????? ?????? ????
+[2026-05-08 15:58:14] [DEBUG] [Executor] 计划文件已更新: 步骤 5/8
+[2026-05-08 15:58:14] [DEBUG] [Executor] 计划文件顶层状态已更新: failed

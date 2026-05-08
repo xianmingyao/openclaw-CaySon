@@ -363,6 +363,7 @@ class ExecutorAgent(BaseAgent):
             self.state.total_steps = len(plan)
             action_name = step.get("action", "")
             params = step.get("params", {})
+            react_contract = step.get("react_contract") or {}
             self.state.current_action = action_name
 
             self._log("info", f"--- 步骤 {i+1}/{len(plan)}: {action_name} ---")
@@ -405,6 +406,8 @@ class ExecutorAgent(BaseAgent):
             _step_ultimately_failed = False
 
             for retry in range(REACT_MAX_RETRIES):
+                precheck_screenshot = None
+                precheck_observation = None
                 window_before = self._capture_window_summary()
 
                 # 递进式重试策略（Reflection: 每次重试前做不同的事）
@@ -418,6 +421,54 @@ class ExecutorAgent(BaseAgent):
 
                 # 1. Act: 执行动作
                 try:
+                    precheck_screenshot = self._take_screenshot(f"precheck_{action_name}")
+                    precheck_observation = self._react_precheck(
+                        action_name=action_name,
+                        step=step,
+                        screenshot_path=precheck_screenshot,
+                        history=history,
+                    )
+                    precheck_status = (precheck_observation or {}).get("status", "unknown")
+                    precheck_state = (precheck_observation or {}).get("current_state", "")
+                    precheck_action = (precheck_observation or {}).get("suggested_action", "")
+                    strict_precheck_actions = {
+                        "navigate_to",
+                        "select_category",
+                        "fill_product_info",
+                        "save_draft",
+                        "publish_product",
+                        "verify_result",
+                    }
+                    if precheck_observation:
+                        self._log(
+                            "info",
+                            f"步骤 {i+1} precheck: status={precheck_status} "
+                            f"state={precheck_state or 'n/a'} suggested={precheck_action or 'n/a'}",
+                        )
+                    should_block_precheck = (
+                        precheck_status == "error"
+                        or (action_name in strict_precheck_actions and precheck_status != "ok")
+                    )
+                    if should_block_precheck:
+                        last_act_result = {
+                            "success": False,
+                            "error": f"视觉预检失败: {precheck_observation.get('reason', '')}",
+                            "precheck": precheck_observation,
+                            "screenshot": precheck_screenshot or "",
+                            "react_contract": react_contract,
+                        }
+                        observation = precheck_observation
+                        if retry == REACT_MAX_RETRIES - 1:
+                            self._circuit_breaker.record_failure()
+                            _step_ultimately_failed = True
+                        self._log(
+                            "warning",
+                            f"步骤 {i+1} 执行前视觉预检失败"
+                            f"（重试 {retry+1}/{REACT_MAX_RETRIES}）: "
+                            f"{precheck_observation.get('reason', '')}",
+                        )
+                        continue
+
                     act_result = self.act(action_name, params)
                 except Exception as e:
                     act_result = {"success": False, "error": str(e)}
@@ -436,7 +487,14 @@ class ExecutorAgent(BaseAgent):
                     act_result["screenshot"] = screenshot_path
 
                 # 3. Observe: LLM 视觉分析截图（ReAct Observation）
-                observation = self._react_observe(action_name, screenshot_path, act_result)
+                act_result["react_contract"] = react_contract
+                observation = self._react_observe(
+                    action_name,
+                    screenshot_path,
+                    act_result,
+                    step=step,
+                    history=history,
+                )
                 if not act_result.get("success", False):
                     last_act_result["vision_verified"] = observation.get("status") != "unknown"
                     last_act_result["vision_analysis"] = observation
@@ -583,43 +641,159 @@ class ExecutorAgent(BaseAgent):
             "recovery_error": self._last_recovery_error,
         }
 
-    def _react_observe(self, action_name: str, screenshot_path: Optional[str],
-                       act_result: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        """
-        ReAct Observation 阶段 — 截图 + LLM 视觉分析
 
-        参考 ReAct 范式的 Observation: 收集执行结果和环境反馈
-        参考 Reflection 范式的自我评估: LLM 扮演"评审员"角色
+    def _react_precheck(
+        self,
+        action_name: str,
+        step: Dict[str, Any],
+        screenshot_path: Optional[str],
+        history: List[Dict[str, Any]],
+    ) -> Optional[Dict[str, Any]]:
+        """Vision gate before action execution."""
+        if not self._llm or not screenshot_path:
+            return {"status": "unknown", "reason": "no-llm-or-screenshot", "stage": "precheck"}
 
-        Returns:
-            {"status": "ok"|"error"|"unknown", "reason": "..."}
-        """
-        # LLM 可用 + 有截图 → 视觉验证
+        contract = step.get("react_contract") or {}
+        precheck = contract.get("precheck") or {}
+        goal = contract.get("goal") or f"???? {action_name}"
+        expect_any = precheck.get("expect_any") or []
+        reject_any = precheck.get("reject_any") or []
+        recent_history = history[-3:] if history else []
+        prompt = (
+            "?????????????????????"
+            "???????????????????????????????"
+            "??? JSON: "
+            "{\"status\":\"ok\"|\"error\"|\"unknown\"," 
+            "\"reason\":\"??\","
+            "\"current_state\":\"????????\","
+            "\"suggested_action\":\"proceed\"|\"recover\"|\"stop\"}?"
+            f"????: {action_name}?"
+            f"????: {goal}?"
+            f"???????: {expect_any or ['?']}?"
+            f"???????????????: {reject_any or ['?']}?"
+            f"??????: {json.dumps(recent_history, ensure_ascii=False)}?"
+            "????????????????????????????????????"
+            "?????????????????????? error?"
+        )
+        result = self._vision_query(prompt, screenshot_path)
+        if result is not None:
+            result.setdefault("stage", "precheck")
+        return result
+
+    def _react_observe(
+        self,
+        action_name: str,
+        screenshot_path: Optional[str],
+        act_result: Dict[str, Any],
+        step: Optional[Dict[str, Any]] = None,
+        history: Optional[List[Dict[str, Any]]] = None,
+    ) -> Optional[Dict[str, Any]]:
+        """Screenshot-based postcheck after action execution."""
         if not act_result.get("success", False):
             error = act_result.get("error") or act_result.get("message") or "Unknown error"
-            return {"status": "error", "reason": f"Action returned failure: {error}"}
+            return {"status": "error", "reason": f"Action returned failure: {error}", "stage": "postcheck"}
 
         if self._llm and screenshot_path:
             try:
-                observation = self._vision_verify(action_name, screenshot_path, act_result)
+                observation = self._vision_verify(
+                    action_name,
+                    screenshot_path,
+                    act_result,
+                    step=step,
+                    history=history or [],
+                )
+                if observation:
+                    self._log(
+                        "info",
+                        f"步骤 {self.state.step_index} postcheck: status={observation.get('status', 'unknown')} "
+                        f"reason={observation.get('reason', '')[:120]}",
+                    )
                 if observation and observation.get("status") == "unknown":
-                    window_diff = act_result.get("window_diff", {}) or {}
-                    if window_diff.get("risk_level") == "high":
-                        risk_hint = window_diff.get("risk_hint", "检测到高风险窗口漂移")
+                    strict_postcheck_actions = {
+                        "navigate_to",
+                        "select_category",
+                        "fill_product_info",
+                        "save_draft",
+                        "publish_product",
+                        "verify_result",
+                    }
+                    if action_name in strict_postcheck_actions:
                         return {
                             "status": "error",
-                            "reason": f"{risk_hint}，且视觉校验无法确认当前页面，按失败处理",
+                            "reason": f"高风险步骤的视觉复核无法确认结果: {observation.get('reason', '')}",
+                            "stage": "postcheck",
                         }
+                    window_diff = act_result.get("window_diff", {}) or {}
+                    if window_diff.get("risk_level") == "high":
+                        risk_hint = window_diff.get("risk_hint", "??????????")
+                        return {
+                            "status": "error",
+                            "reason": f"{risk_hint}????????????????????",
+                            "stage": "postcheck",
+                        }
+                if observation is not None:
+                    observation.setdefault("stage", "postcheck")
                 return observation
             except Exception as exc:
-                self._log("warning", f"LLM 视觉验证异常: {exc}")
+                self._log("warning", f"LLM ??????: {exc}")
 
-        # LLM 不可用或无截图 → 信任 action_result
         if act_result.get("success"):
-            return {"status": "ok", "reason": "动作返回成功（无视觉验证）"}
-        else:
-            error = act_result.get("error") or act_result.get("message") or "未知错误"
-            return {"status": "error", "reason": f"动作返回失败: {error}"}
+            return {"status": "ok", "reason": "?????????????", "stage": "postcheck"}
+
+        error = act_result.get("error") or act_result.get("message") or "????"
+        return {"status": "error", "reason": f"??????: {error}", "stage": "postcheck"}
+
+    def _vision_query(self, prompt: str, screenshot_path: str) -> Optional[Dict[str, Any]]:
+        response = self._llm.invoke_multimodal(prompt, screenshot_path)
+        if not response:
+            return None
+
+        import re
+        try:
+            result = json.loads(response.strip())
+            return self._normalize_vision_gate_result(result)
+        except json.JSONDecodeError:
+            start = response.find("{")
+            end = response.rfind("}")
+            if start != -1 and end != -1 and end > start:
+                candidate = response[start : end + 1]
+                try:
+                    result = json.loads(candidate)
+                    return self._normalize_vision_gate_result(result)
+                except json.JSONDecodeError:
+                    pass
+            match = re.search(r"\{[^{}]*\}", response, re.DOTALL)
+            if match:
+                try:
+                    result = json.loads(match.group())
+                    return self._normalize_vision_gate_result(result)
+                except json.JSONDecodeError:
+                    pass
+            self._log("warning", f"LLM visual verification returned non-JSON: {response[:200]}")
+            return {"status": "unknown", "reason": f"LLM response not parseable: {response[:100]}"}
+
+    def _normalize_vision_gate_result(self, result: Dict[str, Any]) -> Dict[str, Any]:
+        if not isinstance(result, dict):
+            return {"status": "unknown", "reason": "vision result is not a dict"}
+
+        status = str(result.get("status", "unknown") or "unknown").lower()
+        reason = str(result.get("reason", "") or "")
+        current_state = str(result.get("current_state", "") or "")
+        suggested_action = str(result.get("suggested_action", "") or "")
+        joined = f"{reason}\n{current_state}\n{suggested_action}"
+
+        ad_markers = ("余额已用完", "请尽快充值", "京准通")
+        publish_markers = ("商品发布", "商品基本信息", "类目", "商品标题", "品牌", "价格")
+        if status == "error" and any(marker in joined for marker in ad_markers):
+            if any(marker in joined for marker in publish_markers):
+                result["status"] = "ok"
+                result["reason"] = "忽略京准通余额广告卡片，页面仍处于可继续的发品流程"
+                result["suggested_action"] = "proceed"
+            else:
+                result["status"] = "unknown"
+                result["reason"] = "检测到京准通余额广告卡片，但未确认是否影响当前发品流程"
+                result["suggested_action"] = "recover"
+        return result
 
     def _ensure_locator(self):
         """执行前验证 locator.hwnd 有效，无效则自动重定位。"""
@@ -799,8 +973,14 @@ class ExecutorAgent(BaseAgent):
             self._log("warning", f"截图失败: {exc}")
             return None
 
-    def _vision_verify(self, action_name: str, screenshot_path: str,
-                       action_result: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    def _vision_verify(
+        self,
+        action_name: str,
+        screenshot_path: str,
+        action_result: Dict[str, Any],
+        step: Optional[Dict[str, Any]] = None,
+        history: Optional[List[Dict[str, Any]]] = None,
+    ) -> Optional[Dict[str, Any]]:
         """
         调用 LLM 做视觉验证
 

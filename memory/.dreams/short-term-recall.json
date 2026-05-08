@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-07T12:50:26.655Z",
+  "updatedAt": "2026-05-08T13:40:12.090Z",
   "entries": {
     "memory:memory/2026-04-13.md:6:9": {
       "key": "memory:memory/2026-04-13.md:6:9",
@@ -391246,24 +391246,26 @@
       "endLine": 47,
       "source": "memory",
       "snippet": "<!-- consolidated to MEMORY.md on 2026-04-29 --> # 2026-04-24 日志 ## 定时任务记录 ### continuous-ingest（01:25 CST） - **状态**：✅ 完成 - **扫描结果**：0 个新增/修改文件 - **原因**：raw/ 目录无待处理文件，跳过 ingest ## Dream Log (03:13) - 🌙 Dream-nightly 执行 - 扫描：04-23 / 04-24（2个文件） - MEMORY.md 更新：新增 2026-04-24 Dream 整合记录 - 04-23.md / 04-24.md 已标记 consolidation - 主要发现：continuous-ingest 稳定运行、MAGMA Cron 已设置、Dream corpus 膨胀问题持续 --- ## Cron 执行历史 | 时间 | 任务 | 结果 | |------|------|------| | 01:25 | continuous-ingest | 0 文件，SKIP | | 06:45 | continuous-ingest | 0 文件，SKIP | | 08:35 | continuous-ingest | 0 文件，SKIP | | 09:50 | continuous-ingest | 0 文件，SKIP | | 12:03 | knowledge-pull | 飞书❌未配置Token / Notion✅0更新 | ## 备注 - 当前时间：2026-04-2",
-      "recallCount": 4,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.3048096415653605,
-      "maxScore": 0.8338201281459503,
+      "totalScore": 4.3048096415653605,
+      "maxScore": 1,
       "firstRecalledAt": "2026-04-28T21:06:11.006Z",
-      "lastRecalledAt": "2026-04-30T21:15:27.419Z",
+      "lastRecalledAt": "2026-05-08T01:05:38.468Z",
       "queryHashes": [
         "f069b7afdd29",
         "e8f34ec2c222",
         "afb162d0b801",
-        "203640c5e787"
+        "203640c5e787",
+        "c026a3215efa"
       ],
       "recallDays": [
         "2026-04-29",
         "2026-04-28",
         "2026-05-01",
-        "2026-04-30"
+        "2026-04-30",
+        "2026-05-08"
       ],
       "conceptTags": [
         "memory.md",
@@ -501790,19 +501792,21 @@
       "startLine": 34,
       "endLine": 60,
       "source": "memory",
-      "snippet": "## Dream 整合记录（03:00） - 扫描文件：04-28夜 / 04-29 / 04-30 / 05-01（4个文件） - MEMORY.md：+exec preflight修复 / +Feishu插件重复问题 / ~OpenClaw CVE升级确认 / -无 - 重大更新：exec preflight策略问题已修复（包装脚本），Feishu Token缺失持续导致SIGKILL ## Light Sleep <!-- openclaw:dreaming:light:start --> - Candidate: 00:50 continuous-ingest cron: **状态**: ✅ 正常; **扫描结果**: 0 个新/修改文件，无需 ingest - confidence: 0.00 - evidence: memory/2026-05-01.md:6-7 - recalls: 0 - status: staged - Candidate: 01:05 knowledge-pull cron (feishu pull) SIGKILL: **Session**: brisk-ot; **状态**: SIGKILL; **任务**: FEISHU PULL - 双向同步（飞书 → 本地）; **进度**: [1/3] 获取飞书文档列表... 找到 0 个文档 - confidence: 0.00 - evidence: memory/2026-05-01.md:10-13 - recalls: 0 - status: stag",
-      "recallCount": 1,
+      "snippet": "## Dream 整合记录（03:00） - 扫描文件：04-28夜 / 04-29 / 04-30 / 05-01（4个文件） - MEMORY.md：+exec preflight修复 / +Feishu插件重复问题 / ~OpenClaw CVE升级确认 / -无 - 重大更新：exec preflight策略问题已修复（包装脚本），Feishu Token缺失持续导致SIGKILL ## Light Sleep <!-- openclaw:dreaming:light:start --> - Candidate: 00:50 continuous-ingest cron: **状态**: ✅ 正常; **扫描结果**: 0 个新/修改文件，无需 ingest - confidence: 0.00 - evidence: memory/2026-05-01.md:6-7 - recalls: 0 - status: staged - Candidate: 01:05 knowledge-pull cron (feishu pull) SIGKILL: **Session**: brisk-ot; **状态**: SIGKILL; **任务**: FEISHU PULL - 双向同步（飞书 → 本地）; **进度**: [1/3] 获取飞书文档列表... 找到 0 个文档 - confidence: 0.00 - evidence: memory/2026-05-01.md:10-13 - recalls: 0",
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.7624763481001342,
-      "maxScore": 0.7624763481001342,
+      "totalScore": 1.7624763481001342,
+      "maxScore": 1,
       "firstRecalledAt": "2026-05-01T02:06:56.502Z",
-      "lastRecalledAt": "2026-05-01T02:06:56.502Z",
+      "lastRecalledAt": "2026-05-08T01:05:38.468Z",
       "queryHashes": [
-        "747f5146e355"
+        "747f5146e355",
+        "c026a3215efa"
       ],
       "recallDays": [
-        "2026-05-01"
+        "2026-05-01",
+        "2026-05-08"
       ],
       "conceptTags": [
         "04-28夜",
@@ -519134,21 +519138,26 @@
       "endLine": 40,
       "source": "memory",
       "snippet": "# 2026-05-06 日志 ## 16:55 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 17:45 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 19:05 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 20:21 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 20:25 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 21:20 - Cron: c",
-      "recallCount": 9,
+      "recallCount": 19,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 9,
+      "totalScore": 19,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-06T16:35:53.632Z",
-      "lastRecalledAt": "2026-05-07T12:50:26.655Z",
+      "lastRecalledAt": "2026-05-08T13:40:12.090Z",
       "queryHashes": [
         "97301284bcc9",
         "a1db42149529",
         "b560504fe3ee",
-        "420973576782"
+        "420973576782",
+        "567176364f11",
+        "1d37ec27655f",
+        "3ea000de47c1",
+        "f5a7cd3760a1"
       ],
       "recallDays": [
-        "2026-05-07"
+        "2026-05-07",
+        "2026-05-08"
       ],
       "conceptTags": [
         "continuous-ingest",
@@ -519200,20 +519209,24 @@
       "endLine": 67,
       "source": "memory",
       "snippet": "- 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 22:40 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 22:55 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 23:35 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 00:00 (05-07) - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 - 调试确认：raw 目录实际只有 24 个 .md/.txt/.pdf/.html 文件，全部已处理 ## 00:50 (",
-      "recallCount": 7,
+      "recallCount": 14,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 7,
+      "totalScore": 14,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-06T18:45:10.483Z",
-      "lastRecalledAt": "2026-05-07T12:50:26.655Z",
+      "lastRecalledAt": "2026-05-08T05:05:11.527Z",
       "queryHashes": [
         "b560504fe3ee",
         "420973576782",
-        "a1db42149529"
+        "a1db42149529",
+        "567176364f11",
+        "1d37ec27655f",
+        "3ea000de47c1"
       ],
       "recallDays": [
-        "2026-05-07"
+        "2026-05-07",
+        "2026-05-08"
       ],
       "conceptTags": [
         "knowledge-base",
@@ -519357,19 +519370,21 @@
       "endLine": 50,
       "source": "memory",
       "snippet": "# 2026-05-07 日志 ## 05:10 - Continuous Ingest - 执行 `continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：✅ 正常 ## 05:05 - Continuous Ingest - 执行 `continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：✅ 正常 ## 04:55 - Continuous Ingest - 执行 `continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：✅ 正常 ## 04:45 - Continuous Ingest - 执行 `continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：正常 ## 05:15 - Continuous Ingest - 执行 continuous_ingest.py - 结果：扫描 0 个文件，无新文件需要处理 - 状态：✅ 正常 ## 06:15 - Continuous Ingest - 执行 `continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：✅ 正常 ## 06:25 - Continuous Ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：扫描 0 个文件，没有新文件需要处理 - 状态：✅ 正常 ## 06:45 - Cron: continuous-ingest",
-      "recallCount": 3,
+      "recallCount": 4,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3,
+      "totalScore": 4,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-07T03:05:10.231Z",
-      "lastRecalledAt": "2026-05-07T12:50:26.655Z",
+      "lastRecalledAt": "2026-05-08T08:55:38.170Z",
       "queryHashes": [
         "a1db42149529",
-        "b560504fe3ee"
+        "b560504fe3ee",
+        "f5a7cd3760a1"
       ],
       "recallDays": [
-        "2026-05-07"
+        "2026-05-07",
+        "2026-05-08"
       ],
       "conceptTags": [
         "continuous-ingest.py",
@@ -519389,18 +519404,24 @@
       "endLine": 85,
       "source": "memory",
       "snippet": "## 08:15 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - raw 目录最新文件：2026-04-23，无新增 - 状态：✅ 正常 ## 08:40 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：✅ 正常 ## 09:10 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：✅ 正常 ## 09:15 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：✅ 正常 ## 09:45 - Cron: continuous-ingest - 执行 `python E:\\workspace\\knowledge-base\\continuous_ingest.py` - 结果：0个新/变更文件，无需处理 - 状态：✅ 正常 ## 10:55 - Cron: continuous-inge",
-      "recallCount": 2,
+      "recallCount": 12,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 12,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-07T07:55:29.709Z",
-      "lastRecalledAt": "2026-05-07T12:50:26.655Z",
+      "lastRecalledAt": "2026-05-08T13:40:12.090Z",
       "queryHashes": [
-        "b560504fe3ee"
+        "b560504fe3ee",
+        "567176364f11",
+        "1d37ec27655f",
+        "3ea000de47c1",
+        "f5a7cd3760a1",
+        "a1db42149529"
       ],
       "recallDays": [
-        "2026-05-07"
+        "2026-05-07",
+        "2026-05-08"
       ],
       "conceptTags": [
         "continuous-ingest",
@@ -519482,18 +519503,22 @@
       "endLine": 158,
       "source": "memory",
       "snippet": "## 15:30 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 15:40 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 15:45 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 15:50 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 1 new/changed file, compile.py triggered successfully - Status: ✅ normal",
-      "recallCount": 1,
+      "recallCount": 9,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 9,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-07T12:50:26.655Z",
-      "lastRecalledAt": "2026-05-07T12:50:26.655Z",
+      "lastRecalledAt": "2026-05-08T13:40:12.090Z",
       "queryHashes": [
-        "b560504fe3ee"
+        "b560504fe3ee",
+        "567176364f11",
+        "1d37ec27655f",
+        "3ea000de47c1"
       ],
       "recallDays": [
-        "2026-05-07"
+        "2026-05-07",
+        "2026-05-08"
       ],
       "conceptTags": [
         "continuous-ingest",
@@ -519513,18 +519538,22 @@
       "endLine": 121,
       "source": "memory",
       "snippet": "- Result: 0 new/changed files, nothing to process - Status: normal ## 11:10 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: normal ## 11:20 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 12:00 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 12:55 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/",
-      "recallCount": 1,
+      "recallCount": 9,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 9,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-07T12:50:26.655Z",
-      "lastRecalledAt": "2026-05-07T12:50:26.655Z",
+      "lastRecalledAt": "2026-05-08T13:40:12.090Z",
       "queryHashes": [
-        "b560504fe3ee"
+        "b560504fe3ee",
+        "567176364f11",
+        "1d37ec27655f",
+        "3ea000de47c1"
       ],
       "recallDays": [
-        "2026-05-07"
+        "2026-05-07",
+        "2026-05-08"
       ],
       "conceptTags": [
         "new/changed",
@@ -519535,6 +519564,134 @@
         "new",
         "changed",
         "nothing"
+      ]
+    },
+    "memory:memory/2026-05-07.md:149:192": {
+      "key": "memory:memory/2026-05-07.md:149:192",
+      "path": "memory/2026-05-07.md",
+      "startLine": 149,
+      "endLine": 192,
+      "source": "memory",
+      "snippet": "## 16:55 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 18:10 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 19:10 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 19:35 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 21:25 - C",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-07T15:40:08.755Z",
+      "lastRecalledAt": "2026-05-07T15:40:08.755Z",
+      "queryHashes": [
+        "567176364f11"
+      ],
+      "recallDays": [
+        "2026-05-07"
+      ],
+      "conceptTags": [
+        "continuous-ingest",
+        "knowledge-base",
+        "continuous-ingest.py",
+        "new/changed",
+        "cron",
+        "continuous",
+        "ingest",
+        "execute"
+      ]
+    },
+    "memory:memory/2026-05-07.md:149:193": {
+      "key": "memory:memory/2026-05-07.md:149:193",
+      "path": "memory/2026-05-07.md",
+      "startLine": 149,
+      "endLine": 193,
+      "source": "memory",
+      "snippet": "## 16:55 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 18:10 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 19:10 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 19:35 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 21:25 - C",
+      "recallCount": 8,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 8,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-07T15:55:08.182Z",
+      "lastRecalledAt": "2026-05-08T13:40:12.090Z",
+      "queryHashes": [
+        "1d37ec27655f",
+        "b560504fe3ee",
+        "3ea000de47c1",
+        "a1db42149529"
+      ],
+      "recallDays": [
+        "2026-05-07",
+        "2026-05-08"
+      ],
+      "conceptTags": [
+        "continuous-ingest",
+        "knowledge-base",
+        "continuous-ingest.py",
+        "new/changed",
+        "cron",
+        "continuous",
+        "ingest",
+        "execute"
+      ]
+    },
+    "memory:memory/2026-05-01.md:1:38": {
+      "key": "memory:memory/2026-05-01.md:1:38",
+      "path": "memory/2026-05-01.md",
+      "startLine": 1,
+      "endLine": 38,
+      "source": "memory",
+      "snippet": "# 2026-05-01 日志 <!-- consolidated to MEMORY.md on 2026-05-01 --> ## 00:50 continuous-ingest cron - **状态**: ✅ 正常 - **扫描结果**: 0 个新/修改文件，无需 ingest ## 01:05 knowledge-pull cron (feishu pull) SIGKILL - **Session**: brisk-ot - **状态**: SIGKILL - **任务**: FEISHU PULL - 双向同步（飞书 → 本地） - **进度**: [1/3] 获取飞书文档列表... 找到 0 个文档 - **原因**: 已知问题 - Feishu Access Token 未配置 - **影响**: 无 - 已知限制，不影响 Milvus 同步 ## 02:05 knowledge-pull cron (feishu pull) SIGKILL（第二次） - **Session**: amber-fo - **状态**: SIGKILL - **任务**: FEISHU PULL - 双向同步（飞书 → 本地） - **进度**: 同 01:05 - **原因**: 同一已知问题 - **备注**: 每小时重复一次，Token 配置前无法解决 ## 05:02 knowledge-pull cron - **状态**: ✅ 成功 - **Feishu**: 0 文档（Token 未配置） - **",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-08T01:05:38.468Z",
+      "lastRecalledAt": "2026-05-08T01:05:38.468Z",
+      "queryHashes": [
+        "c026a3215efa"
+      ],
+      "recallDays": [
+        "2026-05-08"
+      ],
+      "conceptTags": [
+        "memory.md",
+        "continuous-ingest",
+        "个新/修改文件",
+        "knowledge-pull",
+        "brisk-ot",
+        "1/3",
+        "amber-fo",
+        "日志"
+      ]
+    },
+    "memory:memory/2026-05-08.md:114:158": {
+      "key": "memory:memory/2026-05-08.md:114:158",
+      "path": "memory/2026-05-08.md",
+      "startLine": 114,
+      "endLine": 158,
+      "source": "memory",
+      "snippet": "- Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 15:10 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 15:30 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 15:50 - Cron: continuous-ingest - Execute: python E:\\workspace\\knowledge-base\\continuous_ingest.py - Result: 0 new/changed files, nothing to process - Status: ✅ normal ## 16:15 - Cron: continuous-ingest - Execute: p",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-08T13:40:12.090Z",
+      "lastRecalledAt": "2026-05-08T13:40:12.090Z",
+      "queryHashes": [
+        "1d37ec27655f"
+      ],
+      "recallDays": [
+        "2026-05-08"
+      ],
+      "conceptTags": [
+        "knowledge-base",
+        "continuous-ingest.py",
+        "new/changed",
+        "continuous-ingest",
+        "execute",
+        "python",
+        "knowledge",
+        "base"
       ]
     }
   }

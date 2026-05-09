@@ -209,7 +209,26 @@ YYYY.MM.DD(日报)
 ...
 ```
 
-## 2026-05-08 新增知识
+## 2026-05-09 新增知识
+
+### cheat-on-content - 短视频内容预测系统
+- **来源**: 小红书【他们都叫我蜗牛学长】+ GitHub
+- **项目**: XBuilderLAB/cheat-on-content (1.2k stars)
+- **核心**: 不是生成内容，而是预测+评估内容，让直觉可衡量
+- **精度**: 播放量预测±1%
+- **架构**: Hook机制(预测不可篡改) + score-curve.py(评分曲线)
+- **知识库**: `knowledge-base/wiki/概念/cheat-on-content-短视频内容预测系统.md`
+
+### GitHub本周热榜 - Agent从代码打到了终端和华尔街
+- **来源**: 抖音【星探AI的作品】第7集
+- **核心趋势**: Agent从"写代码"渗透到"终端运维"和"金融交易"
+- **重点项目**:
+  - Warp (⭐48.5k) - AI终端开发环境，Oz系统全自动维护开源项目
+  - Skills (⭐50.7k, 一周+30k) - Matt Pocock工程师技能包
+  - Scrapling - Python爬虫，比BS4快800倍
+  - ruflo - Claude Code多Agent跨机器协作
+- **知识库**: `knowledge-base/wiki/概念/GitHub本周热榜-Agent从代码打到了终端和华尔街.md`
+- **建议**: Warp + Skills 最值得跟进，两周爆8万star
 
 ### 不死鸟架构 - Hermes/OpenClaw 国产化方案
 - **定位**: 基于Hermes的国产AI Agent架构

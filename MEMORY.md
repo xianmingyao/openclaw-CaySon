@@ -228,7 +228,17 @@ YYYY.MM.DD(日报)
   - Scrapling - Python爬虫，比BS4快800倍
   - ruflo - Claude Code多Agent跨机器协作
 - **知识库**: `knowledge-base/wiki/概念/GitHub本周热榜-Agent从代码打到了终端和华尔街.md`
-- **建议**: Warp + Skills 最值得跟进，两周爆8万star
+
+### GitHub十大热门 - 2026年5月第1周
+- **来源**: 抖音【stock master】
+- **核心数据**: AI项目占比8/10，Claude Code生态三席霸榜前三
+- **重点项目**:
+  - Symphony (⭐22.7k) - OpenAI项目隔离运行框架，Elixir实现
+  - JCode (⭐5.1k) - Rust AI编码Agent，性能碾压245×
+  - Skills (⭐66.6k) - Matt Pocock工程技巧合集
+  - Warp (⭐48.5k) - Agentic开发环境
+  - Trading Agent - 多AI Agent量化交易
+- **知识库**: `knowledge-base/wiki/概念/GitHub本周十大热门-2026年5月第1周.md`
 
 ### 不死鸟架构 - Hermes/OpenClaw 国产化方案
 - **定位**: 基于Hermes的国产AI Agent架构

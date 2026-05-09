@@ -91,6 +91,17 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 | nano-banana-pro | 1.0.1 | 2026-04-02 | AI图片生成 |
 | memory-dream | 1.0.3 | 2026-04-07 | 记忆整合 |
 | huguanjin-libtv-skill | 1.0.4 | 2026-04-29 | LibTV AI视频/图片生成（文生图/视频/短剧/MV/分镜）|
+| Skills MCP Server | - | 2026-05-08 | 多平台 Skills 统一管理（已配置到 OpenClaw MCP）|
+
+## Matt Pocock Skills 本地化（2026-05-09）
+
+- **来源**：https://github.com/mattpocock/skills（⭐ 66.6k）
+- **克隆目录**：`E:\workspace\skills\mattpocock-skills`
+- **已集成**：
+  - `skills/caveman` - 极简交流模式（节省75% token）
+  - `skills/diagnose` - 调试诊断循环（6阶段纪律法）
+  - `skills/grill-me` - 面试式盘问（达成共识）
+- **核心价值**：工程实践技能包，告别vibe coding，用工程思维驾驭AI编程
 
 ## 踩坑记录（重要）
 
@@ -261,6 +272,7 @@ YYYY.MM.DD(日报)
 3. cua - Computer-Use Agent
 4. genericagent - 自我进化Agent框架
 5. core - 开源电脑操作Agent
+6. Pixelle-Video - AI全自动视频引擎（已安装 `E:\workspace\Pixelle-Video`）
 
 ### Next AI Draw.io - AI 智能图表生成工具
 - **GitHub**: DayuanJiang/next-ai-draw-io (⭐ 28.6k)

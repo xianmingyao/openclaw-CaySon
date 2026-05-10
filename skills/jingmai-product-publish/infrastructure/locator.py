@@ -57,6 +57,7 @@ WINDOW_EXCLUDE_KEYWORDS = [
     "jingmai-product-publish", "jingmai-agent",  # IDE 项目标题
 ]
 BROWSER_PROCESS_HINTS = {"chrome", "msedge", "360chrome", "360se", "iexplore", "jingmai", "jd"}
+JINGMAI_PROCESS_HINTS = {"jmworkstation", "jdm_dd_workbench"}
 
 
 class JingmaiLocator:
@@ -304,28 +305,49 @@ class JingmaiLocator:
         candidates = []
 
         def enum_handler(hwnd, results):
-            if win32gui.IsWindowVisible(hwnd):
-                title = win32gui.GetWindowText(hwnd)
-                if not self._is_matching_title(title):
-                    return
-                rect = win32gui.GetWindowRect(hwnd)
-                if not self._is_usable_rect(rect):
-                    return
-                left, top, right, bottom = rect
-                results.append((hwnd, rect, (right - left) * (bottom - top)))
+            title = win32gui.GetWindowText(hwnd)
+            if self._is_excluded_title(title):
+                return
+
+            rect = win32gui.GetWindowRect(hwnd)
+            if not self._is_usable_rect(rect):
+                return
+
+            process_name = self._get_process_name(hwnd)
+            title_match = self._is_matching_title(title)
+            process_match = process_name in JINGMAI_PROCESS_HINTS
+            if not (title_match or process_match):
+                return
+
+            left, top, right, bottom = rect
+            visible = bool(win32gui.IsWindowVisible(hwnd))
+            area = (right - left) * (bottom - top)
+            score = (
+                4 if title_match and visible else
+                3 if title_match else
+                2 if process_match and visible else
+                1
+            )
+            results.append((score, area, hwnd, rect, title, visible, process_name))
 
         win32gui.EnumWindows(enum_handler, candidates)
 
         if candidates:
-            hwnd, rect, _ = max(candidates, key=lambda item: item[2])
-            title = win32gui.GetWindowText(hwnd)
+            _, _, hwnd, rect, title, visible, process_name = max(
+                candidates,
+                key=lambda item: (item[0], item[1]),
+            )
             left, top, right, bottom = rect
             self.hwnd = hwnd
             self.window_rect = rect
+            self._log(
+                "info",
+                f"win32 命中窗口: title='{title}', process='{process_name}', visible={visible}, rect={rect}",
+            )
             return WindowInfo(
                 hwnd=hwnd, title=title, rect=rect,
                 width=right - left, height=bottom - top,
-                is_visible=True,
+                is_visible=visible,
             )
         return None
 

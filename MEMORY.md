@@ -152,7 +152,18 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
   - `scripts/sync_pull_all.py` → 替代 `sync_pull_feishu.py && sync_pull_notion.py`
   - `scripts/auto_git_commit.py` → 替代 `git add . && git commit...`
 
+### apify-ultimate-scraper 可疑代码风险（05-09 安全扫描）
+- **文件**：`run_actor.js:353` 存在潜在数据泄露代码
+- **来源**：edgeone-clawscan 每日安全扫描
+- **状态**：已通知宁兄，待评估是否卸载
+
 ## Dream 整合记录（最近）
+
+### 2026-05-10 整合（03:00）
+- 扫描文件：05-09 / 05-10（2个文件）
+- MEMORY.md：无新增（05-09知识已在上次全面整合）
+- 05-10：纯Cron运维日志（continuous-ingest 0文件，knowledge-pull Token未配）
+- 安全扫描发现：apify-ultimate-scraper 存在可疑代码（run_actor.js:353潜在数据泄露），已通知宁兄
 
 ### 2026-05-08 整合
 - 扫描文件：05-05~05-07（3个文件）

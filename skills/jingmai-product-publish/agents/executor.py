@@ -428,6 +428,11 @@ class ExecutorAgent(BaseAgent):
                         screenshot_path=precheck_screenshot,
                         history=history,
                     )
+                    precheck_observation = self._coerce_precheck_for_action(
+                        action_name=action_name,
+                        observation=precheck_observation,
+                        history=history,
+                    )
                     precheck_status = (precheck_observation or {}).get("status", "unknown")
                     precheck_state = (precheck_observation or {}).get("current_state", "")
                     precheck_action = (precheck_observation or {}).get("suggested_action", "")
@@ -672,6 +677,7 @@ class ExecutorAgent(BaseAgent):
             f"???????: {expect_any or ['?']}?"
             f"???????????????: {reject_any or ['?']}?"
             f"??????: {json.dumps(recent_history, ensure_ascii=False)}?"
+            f"???????: {self._build_precheck_action_hint(action_name)}?"
             "????????????????????????????????????"
             "?????????????????????? error?"
         )
@@ -679,6 +685,21 @@ class ExecutorAgent(BaseAgent):
         if result is not None:
             result.setdefault("stage", "precheck")
         return result
+
+    @staticmethod
+    def _build_precheck_action_hint(action_name: str) -> str:
+        hints = {
+            "publish_product": (
+                "如果截图里已经能看到‘提交发布’按钮，或同时看到商品标题/品牌/市场价/京东价等商品信息字段，"
+                "这仍然属于可执行 publish_product 的发布表单页，应该返回 status=ok 和 suggested_action=proceed。"
+                "只有当页面明显处于类目选择页、商品列表/草稿列表页、登录页、系统错误页时，才返回 error。"
+            ),
+            "verify_result": (
+                "如果截图里仍停留在发布表单，但没有出现错误、异常、登录失效，也可以视为可继续核验的状态，"
+                "不要因为仍看到‘提交发布’按钮就直接判错。"
+            ),
+        }
+        return hints.get(action_name, "仅根据当前截图判断是否可以安全继续当前步骤。")
 
     def _react_observe(
         self,
@@ -748,29 +769,75 @@ class ExecutorAgent(BaseAgent):
         if not response:
             return None
 
-        import re
-        try:
-            result = json.loads(response.strip())
+        result = self._parse_llm_json_relaxed(response)
+        if result is not None:
             return self._normalize_vision_gate_result(result)
-        except json.JSONDecodeError:
-            start = response.find("{")
-            end = response.rfind("}")
-            if start != -1 and end != -1 and end > start:
-                candidate = response[start : end + 1]
+
+        self._log("warning", f"LLM visual verification returned non-JSON: {response[:200]}")
+        return {"status": "unknown", "reason": f"LLM response not parseable: {response[:100]}"}
+
+    def _parse_llm_json_relaxed(self, response: str) -> Optional[Dict[str, Any]]:
+        import re
+
+        text = str(response or "").strip()
+        if not text:
+            return None
+
+        candidates = [text]
+
+        fence_match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.DOTALL | re.IGNORECASE)
+        if fence_match:
+            candidates.append(fence_match.group(1).strip())
+
+        start = text.find("{")
+        if start != -1:
+            candidates.append(text[start:].strip())
+            end = text.rfind("}")
+            if end != -1 and end > start:
+                candidates.append(text[start : end + 1].strip())
+
+        inline_match = re.search(r"\{[^{}]*\}", text, re.DOTALL)
+        if inline_match:
+            candidates.append(inline_match.group().strip())
+
+        seen = set()
+        for candidate in candidates:
+            candidate = candidate.strip()
+            if not candidate or candidate in seen:
+                continue
+            seen.add(candidate)
+            for variant in self._iter_json_repair_candidates(candidate):
                 try:
-                    result = json.loads(candidate)
-                    return self._normalize_vision_gate_result(result)
+                    parsed = json.loads(variant)
                 except json.JSONDecodeError:
-                    pass
-            match = re.search(r"\{[^{}]*\}", response, re.DOTALL)
-            if match:
-                try:
-                    result = json.loads(match.group())
-                    return self._normalize_vision_gate_result(result)
-                except json.JSONDecodeError:
-                    pass
-            self._log("warning", f"LLM visual verification returned non-JSON: {response[:200]}")
-            return {"status": "unknown", "reason": f"LLM response not parseable: {response[:100]}"}
+                    continue
+                if isinstance(parsed, dict):
+                    return parsed
+        return None
+
+    @staticmethod
+    def _iter_json_repair_candidates(candidate: str):
+        variants = []
+        stripped = candidate.strip()
+        if stripped:
+            variants.append(stripped)
+
+        if "```" in stripped:
+            stripped = stripped.split("```", 1)[0].strip()
+            if stripped:
+                variants.append(stripped)
+
+        if stripped.startswith("{"):
+            open_count = stripped.count("{")
+            close_count = stripped.count("}")
+            if open_count > close_count:
+                variants.append(stripped + ("}" * (open_count - close_count)))
+
+        seen = set()
+        for item in variants:
+            if item and item not in seen:
+                seen.add(item)
+                yield item
 
     def _normalize_vision_gate_result(self, result: Dict[str, Any]) -> Dict[str, Any]:
         if not isinstance(result, dict):
@@ -794,6 +861,73 @@ class ExecutorAgent(BaseAgent):
                 result["reason"] = "检测到京准通余额广告卡片，但未确认是否影响当前发品流程"
                 result["suggested_action"] = "recover"
         return result
+
+    def _coerce_precheck_for_action(
+        self,
+        action_name: str,
+        observation: Optional[Dict[str, Any]],
+        history: Optional[List[Dict[str, Any]]] = None,
+    ) -> Optional[Dict[str, Any]]:
+        if not isinstance(observation, dict):
+            return observation
+
+        if action_name not in {"fill_product_info", "publish_product"}:
+            return observation
+
+        status = str(observation.get("status", "unknown") or "unknown").lower()
+        if status != "error":
+            return observation
+
+        history = history or []
+        reason = str(observation.get("reason", "") or "")
+        current_state = str(observation.get("current_state", "") or "")
+        suggested_action = str(observation.get("suggested_action", "") or "")
+        joined = f"{reason}\n{current_state}\n{suggested_action}"
+
+        hard_stop_markers = ("扫码登录", "登录失效", "系统错误", "404", "网络异常")
+        if any(marker in joined for marker in hard_stop_markers):
+            return observation
+
+        publish_markers = ("商品发布", "商品基本信息", "商品标题", "品牌", "价格", "市场价", "京东价")
+        recoverable_markers = ("字段校验失败", "填写表单阶段", "fill_product_info", "必填", "请输入")
+        last_success_action = next(
+            (item.get("action", "") for item in reversed(history) if item.get("success")),
+            "",
+        )
+        is_publish_context = any(marker in joined for marker in publish_markers)
+        is_recoverable_fill_state = any(marker in joined for marker in recoverable_markers)
+        is_fill_product_info_state = "fill_product_info" in current_state.lower()
+        is_recent_fill_flow = last_success_action in {"select_category", "fill_product_info"}
+
+        if action_name == "fill_product_info" and (is_publish_context or is_fill_product_info_state or (is_recent_fill_flow and is_recoverable_fill_state)):
+            normalized = dict(observation)
+            normalized["status"] = "ok"
+            normalized["suggested_action"] = "proceed"
+            normalized["reason"] = "仍在发品表单页，允许 fill_product_info 继续执行以修复字段状态"
+            return normalized
+
+        if action_name == "publish_product":
+            publish_ready_markers = (
+                "发布商品",
+                "提交发布",
+                "商品标题",
+                "品牌",
+                "价格",
+                "市场价",
+                "京东价",
+                "商品基本信息",
+            )
+            wrong_context_markers = ("商品列表", "草稿", "类目", "登录", "扫码", "系统错误")
+            if any(marker in joined for marker in publish_ready_markers) and not any(
+                marker in joined for marker in wrong_context_markers
+            ):
+                normalized = dict(observation)
+                normalized["status"] = "ok"
+                normalized["suggested_action"] = "proceed"
+                normalized["reason"] = "仍在发品表单的提交发布阶段，允许 publish_product 继续执行。"
+                return normalized
+
+        return observation
 
     def _ensure_locator(self):
         """执行前验证 locator.hwnd 有效，无效则自动重定位。"""
@@ -989,6 +1123,58 @@ class ExecutorAgent(BaseAgent):
         """
         # 注意：以下提示词中提到的"余额已用完"等页面内嵌卡片不算错误
         # 注意：以下提示词中提到的"余额已用完"等页面内嵌卡片不算错误
+        contract = (step or {}).get("react_contract") or {}
+        postcheck = contract.get("postcheck") or {}
+        goal = contract.get("goal") or f"执行 {action_name}"
+        expect_any = [str(item) for item in (postcheck.get("expect_any") or []) if str(item).strip()]
+        reject_any = [str(item) for item in (postcheck.get("reject_any") or []) if str(item).strip()]
+        recent_history = (history or [])[-3:]
+        step_params = (step or {}).get("params") or {}
+        product = step_params.get("product") if isinstance(step_params, dict) else {}
+        required_visual_fields = step_params.get("required_visual_fields") if isinstance(step_params, dict) else {}
+        if not isinstance(product, dict):
+            product = {}
+        if not isinstance(required_visual_fields, dict):
+            required_visual_fields = {}
+        key_fields = []
+        for field in ("title", "brand", "model", "market_price", "purchase_price", "jd_price"):
+            value = product.get(field)
+            if value not in (None, ""):
+                key_fields.append(f"{field}={value}")
+        required_field_labels = []
+        for group_name, items in required_visual_fields.items():
+            if not isinstance(items, list):
+                continue
+            labels = [str(item.get("label", "")).strip() for item in items if isinstance(item, dict) and str(item.get("label", "")).strip()]
+            if labels:
+                required_field_labels.append(f"{group_name}:{labels}")
+
+        action_summary = {
+            "success": bool(action_result.get("success", False)),
+            "message": action_result.get("message", ""),
+            "error": action_result.get("error", ""),
+            "failed_fields": action_result.get("failed_fields", []),
+            "filled": action_result.get("filled", ""),
+            "total": action_result.get("total", ""),
+        }
+        prompt = ""
+        if contract:
+            prompt = (
+                "分析这张京麦发品截图，判断当前步骤执行后是否达到计划目标。"
+                "只返回 JSON: "
+                "{\"status\":\"ok\"|\"error\"|\"unknown\","
+                "\"reason\":\"原因\","
+                "\"current_state\":\"当前页面状态\","
+                "\"suggested_action\":\"proceed\"|\"recover\"|\"stop\"}。"
+                f"步骤动作: {action_name}。"
+                f"步骤目标: {goal}。"
+                f"成功线索: {expect_any or ['无']}。"
+                f"失败或偏差线索: {reject_any or ['无']}。"
+                f"关键商品字段: {key_fields or ['无']}。"
+                f"动作结果摘要: {json.dumps(action_summary, ensure_ascii=False)}。"
+                f"最近历史: {json.dumps(recent_history, ensure_ascii=False)}。"
+                "如果仍在正确流程但本步目标没达到，返回 error 并说明偏差；如果截图无法判断，返回 unknown。"
+            )
         prompt_map = {
             "verify_result": "分析这张京麦客户端截图，检查是否有错误提示或异常状态。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，不影响商品发布功能。",
             "publish_product": "分析这张截图，判断商品是否已成功发布。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，不影响商品发布功能。",
@@ -1004,6 +1190,24 @@ class ExecutorAgent(BaseAgent):
             "分析这张截图，判断操作是否成功。只返回 JSON: {\"status\": \"ok\"|\"error\"|\"unknown\", \"reason\": \"原因\"}。注意：页面内的'余额已用完'、'请尽快充值'等京准通广告提示卡片不是错误，不影响商品发布功能。"
         )
 
+        if contract:
+            prompt = (
+                "分析这张京麦发品截图，判断当前步骤执行后是否达到计划目标。"
+                "只返回 JSON: "
+                "{\"status\":\"ok\"|\"error\"|\"unknown\","
+                "\"reason\":\"原因\","
+                "\"current_state\":\"当前页面状态\","
+                "\"suggested_action\":\"proceed\"|\"recover\"|\"stop\"}。"
+                f"步骤动作: {action_name}。"
+                f"步骤目标: {goal}。"
+                f"成功线索: {expect_any or ['无']}。"
+                f"失败或偏差线索: {reject_any or ['无']}。"
+                f"关键商品字段: {key_fields or ['无']}。"
+                f"动作结果摘要: {json.dumps(action_summary, ensure_ascii=False)}。"
+                f"最近历史: {json.dumps(recent_history, ensure_ascii=False)}。"
+                "如果仍在正确流程但本步目标没达到，返回 error 并说明偏差；如果截图无法判断，返回 unknown。"
+            )
+
         window_diff = action_result.get("window_diff", {}) or {}
         if window_diff.get("risk_level") == "high":
             risk_hint = window_diff.get("risk_hint", "检测到窗口上下文高风险漂移")
@@ -1016,22 +1220,12 @@ class ExecutorAgent(BaseAgent):
         if not response:
             return None
 
-        # 解析 LLM 返回的 JSON
-        import json
-        import re
-        try:
-            # 尝试直接解析
-            return json.loads(response.strip())
-        except json.JSONDecodeError:
-            # 尝试提取 JSON
-            match = re.search(r'\{[^{}]*\}', response, re.DOTALL)
-            if match:
-                try:
-                    return json.loads(match.group())
-                except json.JSONDecodeError:
-                    pass
-            self._log("warning", f"LLM 视觉验证返回非 JSON: {response[:200]}")
-            return {"status": "unknown", "reason": f"LLM 返回无法解析: {response[:100]}"}
+        result = self._parse_llm_json_relaxed(response)
+        if result is not None:
+            return self._normalize_vision_gate_result(result)
+
+        self._log("warning", f"LLM 视觉验证返回非 JSON: {response[:200]}")
+        return {"status": "unknown", "reason": f"LLM 返回无法解析: {response[:100]}"}
 
     def _update_plan_file(self, plan: List[Dict[str, Any]], step_index: int,
                           success: bool, retries: int):

@@ -3,7 +3,9 @@
 """
 import json
 import re
+import time
 import uuid
+from pathlib import Path
 from typing import Any, Dict, List
 
 from actions import ActionRegistry
@@ -25,15 +27,25 @@ class PlannerAgent(BaseAgent):
         derived = self._derive_product_data_from_task(task_desc) if task_desc else {}
         merged = {**derived, **product_data}
         task_id = kwargs.get("task_id", str(uuid.uuid4())[:8])
-        return self.plan(task_id=task_id, product_data=merged, task_desc=task_desc)
+        screen_context = kwargs.get("screen_context")
+        if screen_context is None:
+            screen_context = self._capture_screen_context()
+        return self.plan(task_id=task_id, product_data=merged, task_desc=task_desc, screen_context=screen_context)
 
-    def plan(self, task_id: str, product_data: Dict[str, Any], task_desc: str = "") -> Dict[str, Any]:
+    def plan(
+        self,
+        task_id: str,
+        product_data: Dict[str, Any],
+        task_desc: str = "",
+        screen_context: Dict[str, Any] | None = None,
+    ) -> Dict[str, Any]:
         self.start()
         src = product_data.get("product", product_data)
         display_title = src.get("title") or task_desc or "未命名商品"
         self._log("info", f"规划任务 {task_id}: {display_title[:30]}")
 
-        plan = self._llm_plan(src, task_desc=task_desc)
+        screen_context = screen_context or {}
+        plan = self._llm_plan(src, task_desc=task_desc, screen_context=screen_context)
         template_plan = self._template_plan(src, task_desc=task_desc)
         if plan:
             self._log("info", f"LLM 规划成功，共 {len(plan)} 步")
@@ -75,11 +87,17 @@ class PlannerAgent(BaseAgent):
             "success": True,
             "task_id": task_id,
             "product_data": src,
+            "screen_context": screen_context,
             "plan": valid_plan,
             "total_steps": len(valid_plan),
         }
 
-    def _llm_plan(self, product_data: Dict[str, Any], task_desc: str = "") -> List[Dict[str, Any]]:
+    def _llm_plan(
+        self,
+        product_data: Dict[str, Any],
+        task_desc: str = "",
+        screen_context: Dict[str, Any] | None = None,
+    ) -> List[Dict[str, Any]]:
         if not self._llm:
             self._log("warning", "LLM 未注入，跳过 LLM 规划，使用模板降级")
             return []
@@ -100,6 +118,7 @@ activate_window - 激活京麦窗口
 navigate_to - 导航到发布商品页面
 select_category - 选择商品类目（参数用 search_text）
 fill_product_info - 批量填写商品信息（title, brand, model, sku, price 等）
+fill_product_description - 填写商品详情（普通图文/代码编辑，禁止高级编辑）
 fill_text - 单独填写文本字段（仅在 fill_product_info 不适用时使用）
 save_draft - 保存草稿
 verify_result - 验证结果
@@ -126,14 +145,18 @@ publish_product - 发布商品
     {{"action": "navigate_to"}},
     {{"action": "select_category", "params": {{"search_text": "插座"}}}},
     {{"action": "fill_product_info"}},
-    {{"action": "save_draft"}},
-    {{"action": "verify_result"}},
-    {{"action": "publish_product"}}
+    {{"action": "fill_product_description"}},
+    {{"action": "publish_product"}},
+    {{"action": "verify_result"}}
   ]
 }}"""
 
         try:
-            response = (self._llm.invoke(prompt) or "").strip()
+            screenshot_path = str((screen_context or {}).get("screenshot_path", "") or "").strip()
+            if screenshot_path:
+                response = (self._llm.invoke_multimodal(prompt, screenshot_path) or "").strip()
+            else:
+                response = (self._llm.invoke(prompt) or "").strip()
             if not response:
                 return []
             data = self._parse_llm_plan_response(response)
@@ -143,10 +166,59 @@ publish_product - 发布商品
             self._log("info", f"LLM 规划失败: {exc}")
             return []
 
+    def _capture_screen_context(self) -> Dict[str, Any]:
+        context: Dict[str, Any] = {
+            "status": "unknown",
+            "current_state": "",
+            "reason": "screen-context-unavailable",
+            "suggested_start_action": "",
+            "should_skip_actions": [],
+        }
+        if not self._llm:
+            return context
+
+        try:
+            from infrastructure.locator import JingmaiLocator
+
+            locator = JingmaiLocator(log=self.log)
+            window = locator.find_window()
+            if not window:
+                context["reason"] = "jingmai-window-not-found"
+                return context
+
+            locator.activate_window()
+            screenshot_dir = Path("resources") / "screenshots"
+            screenshot_dir.mkdir(parents=True, exist_ok=True)
+            screenshot_path = screenshot_dir / f"planner_context_{int(time.time() * 1000)}.png"
+            saved_path = locator.take_screenshot(str(screenshot_path))
+            if not saved_path:
+                context["reason"] = "planner-screenshot-failed"
+                return context
+
+            prompt = (
+                "分析这张京麦发布流程截图，判断当前屏幕所处阶段。"
+                "只返回 JSON: "
+                "{\"status\":\"ok\"|\"error\"|\"unknown\","
+                "\"current_state\":\"window_ready|publish_page_ready|category_ready|product_info_ready|draft_saved|publish_submitted|unknown\","
+                "\"reason\":\"原因\","
+                "\"suggested_start_action\":\"find_window|activate_window|navigate_to|select_category|fill_product_info|save_draft|publish_product|verify_result\","
+                "\"should_skip_actions\":[\"action1\",\"action2\"]}。"
+            )
+            raw = self._llm.invoke_multimodal(prompt, saved_path)
+            parsed = self._parse_llm_plan_response(raw or "")
+            if isinstance(parsed, dict):
+                for key in ("status", "current_state", "reason", "suggested_start_action", "should_skip_actions"):
+                    if key in parsed:
+                        context[key] = parsed[key]
+            context["screenshot_path"] = str(Path(saved_path).resolve())
+            context["window_title"] = getattr(window, "title", "")
+            return context
+        except Exception as exc:
+            context["reason"] = f"screen-context-error: {exc}"
+            return context
+
     def _template_plan(self, product_data: Dict[str, Any], task_desc: str = "") -> List[Dict[str, Any]]:
         product_info = product_data.get("product", product_data)
-        title = product_info.get("title", "") or task_desc
-        price = product_info.get("price", "")
         category = product_info.get("category", "") or ""
 
         plan: List[Dict[str, Any]] = [
@@ -158,30 +230,20 @@ publish_product - 发布商品
         if category:
             plan.append({"action": "select_category", "params": {"search_text": category}, "required": True})
 
-        if title:
-            from config.jingmai_coords import PRODUCT_INFO_PAGE
-
-            title_coords = PRODUCT_INFO_PAGE.get("title_input")
-            params = {"text": title}
-            if title_coords:
-                params.update({"x": title_coords[0], "y": title_coords[1]})
-            plan.append({"action": "fill_text", "params": params, "required": True})
-
-        plan.append({"action": "fill_product_info", "params": {"product": product_data}, "required": True})
-
-        if price not in ("", None):
-            from config.jingmai_coords import PRODUCT_INFO_PAGE
-
-            price_coords = PRODUCT_INFO_PAGE.get("market_price")
-            params = {"text": str(price)}
-            if price_coords:
-                params.update({"x": price_coords[0], "y": price_coords[1]})
-            plan.append({"action": "fill_text", "params": params, "required": True})
+        plan.append(
+            {
+                "action": "fill_product_info",
+                "params": {
+                    "product": product_data,
+                    "required_visual_fields": self._build_required_visual_fields(product_data),
+                },
+                "required": True,
+            }
+        )
+        plan.append({"action": "fill_product_description", "params": {"product": product_data}, "required": True})
 
         plan.extend(
             [
-                {"action": "save_draft", "params": {}, "required": False},
-                {"action": "verify_result", "params": {"check_errors": True}, "required": False},
                 {"action": "publish_product", "params": {}, "required": True},
                 {"action": "verify_result", "params": {"check_errors": True}, "required": True},
             ]
@@ -302,6 +364,11 @@ publish_product - 发布商品
                 else:
                     continue
             elif action == "fill_product_info":
+                params = {
+                    "product": product_data,
+                    "required_visual_fields": self._build_required_visual_fields(product_data),
+                }
+            elif action == "fill_product_description":
                 params = {"product": product_data}
             elif action == "verify_result":
                 params = {"check_errors": True}
@@ -314,7 +381,35 @@ publish_product - 发布商品
                 }
             )
 
-        return self._enforce_plan_order(normalized)
+        return self._canonicalize_publish_plan(self._enforce_plan_order(normalized))
+
+    @staticmethod
+    def _build_required_visual_fields(product_data: Dict[str, Any]) -> Dict[str, Any]:
+        product = product_data.get("product", product_data) if isinstance(product_data, dict) else {}
+        attributes = dict(product.get("attributes") or {})
+        return {
+            "basic_info": [
+                {"field": "brand", "label": "品牌", "value": product.get("brand", "") or product.get("品牌", "")},
+                {"field": "model", "label": "型号", "value": product.get("model", "")},
+                {"field": "socket_config", "label": "孔型配置", "value": attributes.get("socket_config", product.get("socket_config", ""))},
+                {"field": "rated_voltage", "label": "额定电压", "value": attributes.get("rated_voltage", product.get("rated_voltage", ""))},
+                {"field": "cable_length", "label": "电缆长度", "value": attributes.get("cable_length", product.get("cable_length", ""))},
+            ],
+            "sales_attributes": [
+                {"field": "current", "label": "电流", "value": attributes.get("current", product.get("current", ""))},
+                {"field": "sku_image", "label": "图片设置", "value": product.get("sku_image", "") or product.get("image", "")},
+            ],
+            "description": [
+                {"field": "detail_content", "label": "商品详情", "value": product.get("detail_content", "") or product.get("description", "")},
+            ],
+            "logistics": [
+                {"field": "sales_unit", "label": "销售单位", "value": product.get("sales_unit", "") or product.get("unit", "")},
+                {"field": "package_type", "label": "商品包装", "value": product.get("package_type", "")},
+                {"field": "special_delivery_mark", "label": "特殊发货时效标记", "value": product.get("special_delivery_mark", "")},
+                {"field": "packing_list", "label": "包装清单", "value": product.get("packing_list", "") or product.get("notes", "")},
+                {"field": "warranty_period", "label": "质保期", "value": product.get("warranty_period", "")},
+            ],
+        }
 
     @staticmethod
     def _annotate_plan_phases(plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -334,7 +429,7 @@ publish_product - 发布商品
                     phase = "publish_page_ready"
                 elif action == "select_category":
                     phase = "category_ready"
-                elif action in {"fill_text", "fill_product_info", "select_dropdown", "paste_and_search"}:
+                elif action in {"fill_text", "fill_product_info", "fill_product_description", "select_dropdown", "paste_and_search"}:
                     phase = "product_info_ready"
                 elif action == "save_draft":
                     phase = "draft_saved"
@@ -421,6 +516,17 @@ publish_product - 发布商品
                         "reject_any": ["扫码登录", "登录失效", "系统错误"],
                     },
                 },
+                "fill_product_description": {
+                    "goal": "鍦ㄥ晢瀹跺悗鍙板唴瀹岀粨鍟嗗搧璇︽儏锛岄伩鍏嶈繘鍏ラ珮绾х紪杈戝櫒锛屽宸茶鍏ラ珮绾х紪杈戝櫒鍒欏厛杩斿洖鍟嗗鍚庡彴銆?",
+                    "precheck": {
+                        "expect_any": ["鍟嗗搧鎻忚堪", "鍥炬枃缂栬緫", "浠ｇ爜缂栬緫", "楂樼骇缂栬緫", "杩斿洖鍟嗗鍚庡彴"],
+                        "reject_any": ["鎵爜鐧诲綍", "鐧诲綍澶辨晥", "绯荤粺閿欒"],
+                    },
+                    "postcheck": {
+                        "expect_any": ["鍟嗗搧鎻忚堪", "鍥炬枃缂栬緫", "浠ｇ爜缂栬緫", "鍟嗗搧鐗╂祦"],
+                        "reject_any": ["鎵爜鐧诲綍", "鐧诲綍澶辨晥", "绯荤粺閿欒", "杩斿洖鍟嗗鍚庡彴"],
+                    },
+                },
                 "save_draft": {
                     "goal": "保存当前商品为草稿。",
                     "precheck": {
@@ -483,3 +589,20 @@ publish_product - 发布商品
         navigate_step = reordered.pop(navigate_index)
         reordered.insert(select_index, navigate_step)
         return reordered
+
+    @staticmethod
+    def _canonicalize_publish_plan(plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Remove contradictory draft steps from the default publish flow."""
+        canonical = list(plan)
+
+        publish_index = next((i for i, step in enumerate(canonical) if step.get("action") == "publish_product"), -1)
+        if publish_index == -1:
+            return canonical
+
+        filtered_publish_flow: List[Dict[str, Any]] = []
+        for idx, step in enumerate(canonical):
+            action = step.get("action")
+            if idx < publish_index and action in {"save_draft", "verify_result"}:
+                continue
+            filtered_publish_flow.append(step)
+        return filtered_publish_flow

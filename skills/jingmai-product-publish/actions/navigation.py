@@ -112,6 +112,97 @@ def _has_product_info_markers(locator=None, log=None) -> bool:
     return False
 
 
+def _read_selected_category_texts(locator=None, log=None) -> list[str]:
+    window = find_jingmai_uia_window(locator=_get_locator(locator, log), log=log)
+    if not window:
+        return []
+
+    values = []
+    for candidate in iter_named_descendants(window, control_types=["Text"], top_range=(620, 720), left_range=(500, 1200), limit=80):
+        name = (candidate["name"] or "").strip()
+        if not name or name == "已选类目：":
+            continue
+        values.append(name)
+    return values
+
+
+def _collect_category_choice_candidates(search_text: str, locator=None, log=None) -> list[dict]:
+    window = find_jingmai_uia_window(locator=_get_locator(locator, log), log=log)
+    if not window:
+        return []
+
+    tokens = _tokenize_text(search_text)
+    candidates = []
+    for candidate in iter_named_descendants(
+        window,
+        control_types=["Text", "Button", "Hyperlink", "ListItem"],
+        top_range=(240, 420),
+        max_name_length=160,
+        limit=260,
+    ):
+        name = (candidate["name"] or "").strip()
+        if not name or name in {"近期使用类目：", "已选类目："}:
+            continue
+        score = score_text_match(name, search_text, tokens)
+        if search_text and search_text in name:
+            score += 10
+        if search_text and name.endswith(search_text):
+            score += 12
+        if ">" in name and search_text and search_text in name:
+            score += 15
+        if name == search_text:
+            score += 20
+        rect = candidate["rect"]
+        if rect.top <= 300:
+            score += 2
+        if score <= 0:
+            continue
+        candidates.append(
+            {
+                "score": score,
+                "name": name,
+                "element": candidate["element"],
+                "rect": rect,
+            }
+        )
+    return candidates
+
+
+def _select_leaf_category_candidate(search_text: str, locator=None, log=None) -> Dict[str, Any]:
+    candidates = _collect_category_choice_candidates(search_text, locator=locator, log=log)
+    if not candidates:
+        return {"success": False, "message": f"no category candidate matched: {search_text}"}
+
+    best = sorted(
+        candidates,
+        key=lambda item: (-item["score"], item["rect"].top, item["rect"].left, len(item["name"])),
+    )[0]
+    if click_uia_element(best["element"], log=log):
+        time.sleep(1.0)
+        return {"success": True, "name": best["name"], "score": best["score"]}
+
+    rect = best["rect"]
+    cx = (rect.left + rect.right) // 2
+    cy = (rect.top + rect.bottom) // 2
+    locator = _get_locator(locator, log)
+    if locator.click(cx, cy, delay=0.8):
+        time.sleep(1.0)
+        return {"success": True, "name": best["name"], "score": best["score"], "method": "coordinate"}
+    return {"success": False, "message": f"failed to click matched category candidate: {best['name']}"}
+
+
+def _build_category_disabled_reason(search_text: str, locator=None, log=None) -> str:
+    selected = _read_selected_category_texts(locator=locator, log=log)
+    selected_text = " > ".join(selected) if selected else "none"
+    candidates = _collect_category_choice_candidates(search_text, locator=locator, log=log)
+    top_names = [item["name"] for item in candidates[:5]]
+    return (
+        f"next button is still disabled after category selection; "
+        f"selected_category={selected_text}; "
+        f"top_matches={top_names}"
+    )
+
+
 def _click_image_fallback(template_name: str, locator=None, log=None, confidence: float = 0.86) -> Dict[str, Any]:
     template_path = resolve_template_path("templates", template_name)
     if not template_path:
@@ -371,11 +462,23 @@ def select_category(
         results.append("search_select")
         time.sleep(1.0)
         if not _is_category_next_enabled(locator=locator, log=log):
-            return {
-                "success": False,
-                "message": "category search result was not committed; next button is still disabled",
-                "steps": results,
-            }
+            leaf_result = _select_leaf_category_candidate(search_text, locator=locator, log=log)
+            if leaf_result.get("success"):
+                results.append("leaf_select")
+                time.sleep(1.0)
+            if not _is_category_next_enabled(locator=locator, log=log):
+                message = _build_category_disabled_reason(search_text, locator=locator, log=log)
+                if leaf_result.get("success"):
+                    message = (
+                        f"{message}; last_leaf_candidate={leaf_result.get('name')}"
+                    )
+                elif leaf_result.get("message"):
+                    message = f"{message}; leaf_select_error={leaf_result.get('message')}"
+                return {
+                    "success": False,
+                    "message": message,
+                    "steps": results,
+                }
 
     if level3_coords:
         if not locator.click(level3_coords[0], level3_coords[1], delay=0.5):

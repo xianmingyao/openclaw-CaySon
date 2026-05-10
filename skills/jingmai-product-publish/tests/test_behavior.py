@@ -65,6 +65,68 @@ def test_executor_think_is_rule_driven():
     assert fake_llm.called is False
 
 
+def test_executor_vision_verify_uses_dynamic_product_fields():
+    agent = ExecutorAgent()
+    calls = []
+
+    class FakeLLM:
+        def invoke_multimodal(self, prompt: str, image_path: str, **kwargs):
+            calls.append({"prompt": prompt, "image_path": image_path})
+            return '{"status":"ok","reason":"verified"}'
+
+    agent.set_llm(FakeLLM())
+    result = agent._vision_verify(
+        "fill_product_info",
+        "fake-shot.png",
+        {"success": True, "filled": 4, "total": 4},
+        step={
+            "params": {
+                "product": {
+                    "title": "湖南测试商品",
+                    "market_price": 88,
+                    "jd_price": 77,
+                    "brand": "公牛",
+                }
+            },
+            "react_contract": {
+                "goal": "填写商品信息",
+                "postcheck": {"expect_any": ["商品标题", "88", "77"], "reject_any": ["系统错误"]},
+            },
+        },
+        history=[{"action": "select_category", "success": True}],
+    )
+
+    assert result["status"] == "ok"
+    assert "market_price=88" in calls[0]["prompt"]
+    assert "jd_price=77" in calls[0]["prompt"]
+
+
+def test_executor_relaxed_json_parser_repairs_missing_closing_brace():
+    agent = ExecutorAgent()
+
+    parsed = agent._parse_llm_json_relaxed(
+        '{"status":"ok","reason":"找到京麦窗口","current_state":"发品页","suggested_action":"proceed"'
+    )
+
+    assert parsed is not None
+    assert parsed["status"] == "ok"
+    assert parsed["suggested_action"] == "proceed"
+
+
+def test_executor_vision_query_accepts_repaired_json():
+    agent = ExecutorAgent()
+
+    class FakeLLM:
+        def invoke_multimodal(self, prompt: str, image_path: str, **kwargs):
+            return '{"status":"ok","reason":"ok","current_state":"发品页","suggested_action":"proceed"'
+
+    agent.set_llm(FakeLLM())
+    result = agent._vision_query("test prompt", "fake.png")
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+
+
 def test_thinker_rejects_empty_response():
     agent = ThinkerAgent()
     agent.set_llm(_LLMReturning(""))
@@ -116,6 +178,39 @@ def test_planner_normalizes_llm_step_params():
     assert normalized[4]["params"]["text"] == "测试商品"
     assert normalized[5]["params"]["product"]["sku"] == "SKU001"
     assert normalized[6]["params"] == {"check_errors": True}
+
+
+def test_planner_uses_multimodal_screen_context_for_llm_plan():
+    agent = PlannerAgent()
+    calls = []
+
+    class FakeLLM:
+        def is_available(self):
+            return True
+
+        def invoke(self, prompt: str, **kwargs):
+            raise AssertionError("text invoke should not be used when screenshot exists")
+
+        def invoke_multimodal(self, prompt: str, image_path: str, **kwargs):
+            calls.append({"prompt": prompt, "image_path": image_path})
+            return '{"steps":[{"action":"find_window"},{"action":"fill_product_info"}]}'
+
+    agent.set_llm(FakeLLM())
+    result = agent.run(
+        product_data={"title": "测试商品", "category": "插座"},
+        screen_context={
+            "status": "ok",
+            "current_state": "product_info_ready",
+            "reason": "already on form",
+            "suggested_start_action": "fill_product_info",
+            "should_skip_actions": ["find_window", "activate_window"],
+            "screenshot_path": "fake-screen.png",
+        },
+    )
+
+    assert result["success"] is True
+    assert result["screen_context"]["current_state"] == "product_info_ready"
+    assert calls[0]["image_path"] == "fake-screen.png"
 
 
 def test_load_batch_items_supports_xlsx(tmp_path: Path):
@@ -349,9 +444,75 @@ def test_extract_plan_payload_supports_full_plan_and_steps_only():
     assert legacy_payload["total_steps"] == 1
 
 
+def test_build_plan_package_keeps_screen_context():
+    payload = _build_plan_package(
+        {
+            "task_id": "task-1",
+            "product_data": {"title": "商品A"},
+            "screen_context": {"current_state": "product_info_ready"},
+            "plan": [{"action": "fill_product_info", "params": {}}],
+            "total_steps": 1,
+        }
+    )
+
+    assert payload["screen_context"]["current_state"] == "product_info_ready"
+
+
 def test_locator_filters_invalid_minimized_window():
     assert JingmaiLocator._is_usable_rect((-32000, -32000, -31840, -31972)) is False
     assert JingmaiLocator._is_usable_rect((100, 100, 1400, 900)) is True
+
+
+def test_locator_win32_falls_back_to_jmworkstation_host_window(monkeypatch):
+    import infrastructure.locator as locator_module
+
+    monkeypatch.setattr(locator_module, "WIN32_AVAILABLE", True)
+
+    hwnds = [101, 102, 103]
+    titles = {
+        101: "jd_465d1abd3ee76",
+        102: "JMWorkStation",
+        103: "Other App",
+    }
+    rects = {
+        101: (-32000, -32000, -31840, -31972),
+        102: (0, 0, 2560, 1392),
+        103: (0, 0, 2560, 1392),
+    }
+    visible = {101: True, 102: False, 103: True}
+
+    class FakeWin32Gui:
+        @staticmethod
+        def GetWindowText(hwnd):
+            return titles[hwnd]
+
+        @staticmethod
+        def GetWindowRect(hwnd):
+            return rects[hwnd]
+
+        @staticmethod
+        def IsWindowVisible(hwnd):
+            return visible[hwnd]
+
+        @staticmethod
+        def EnumWindows(callback, results):
+            for hwnd in hwnds:
+                callback(hwnd, results)
+
+    monkeypatch.setattr(locator_module, "win32gui", FakeWin32Gui)
+    monkeypatch.setattr(
+        locator_module.JingmaiLocator,
+        "_get_process_name",
+        staticmethod(lambda hwnd: {101: "jmworkstation", 102: "jmworkstation", 103: "notepad"}[hwnd]),
+    )
+
+    locator = JingmaiLocator()
+    window = locator._find_window_win32()
+
+    assert window is not None
+    assert window.hwnd == 102
+    assert window.title == "JMWorkStation"
+    assert window.is_visible is False
 
 
 def test_locator_refreshes_live_window_rect_before_scaling(monkeypatch):
@@ -545,12 +706,60 @@ def test_select_category_fails_when_next_button_stays_disabled(monkeypatch):
     )
     monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: True)
     monkeypatch.setattr(navigation_module, "_is_category_next_enabled", lambda *args, **kwargs: False)
+    monkeypatch.setattr(
+        navigation_module,
+        "_select_leaf_category_candidate",
+        lambda *args, **kwargs: {"success": True, "name": "工业品 > 中低压配电 > 插座"},
+    )
+    monkeypatch.setattr(
+        navigation_module,
+        "_build_category_disabled_reason",
+        lambda *args, **kwargs: "next button is still disabled after category selection; selected_category=元器件; top_matches=['工业品 > 中低压配电 > 插座']",
+    )
 
     result = navigation_module.select_category(search_text="插座", locator=Locator())
 
     assert result["success"] is False
     assert "next button is still disabled" in result["message"]
-    assert result["steps"] == ["search", "search_select"]
+    assert "selected_category=元器件" in result["message"]
+    assert "last_leaf_candidate=工业品 > 中低压配电 > 插座" in result["message"]
+    assert result["steps"] == ["search", "search_select", "leaf_select"]
+
+
+def test_select_category_succeeds_after_leaf_candidate_selection(monkeypatch):
+    import actions.navigation as navigation_module
+    import actions.form as form_module
+
+    class Locator:
+        def click(self, x, y, delay=0):
+            return True
+
+    states = iter([False, True, False])
+
+    def fake_next_enabled(*args, **kwargs):
+        return next(states)
+
+    monkeypatch.setattr(form_module, "fill_text", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_has_category_page_markers", lambda *args, **kwargs: True)
+    monkeypatch.setattr(
+        navigation_module,
+        "_find_category_search_input",
+        lambda *args, **kwargs: {"rect": SimpleNamespace(left=10, top=10, right=110, bottom=40)},
+    )
+    monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: True)
+    monkeypatch.setattr(navigation_module, "_is_category_next_enabled", fake_next_enabled)
+    monkeypatch.setattr(
+        navigation_module,
+        "_select_leaf_category_candidate",
+        lambda *args, **kwargs: {"success": True, "name": "工业品 > 中低压配电 > 插座"},
+    )
+    monkeypatch.setattr(navigation_module, "_click_category_next", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_page_contains_text", lambda *args, **kwargs: False)
+
+    result = navigation_module.select_category(search_text="插座", locator=Locator())
+
+    assert result["success"] is True
+    assert result["steps"] == ["search", "search_select", "leaf_select", "next"]
 
 
 def test_select_category_fails_when_next_click_does_not_advance(monkeypatch):
@@ -1706,3 +1915,173 @@ def test_failed_vision_index_upserts_same_key():
 
     assert len(items) == 1
     assert items[0]["screenshot"] == "new.png"
+
+
+def test_price_area_ready_accepts_text_anchor_fallback():
+    import actions.form as form_module
+
+    assert (
+        form_module._price_area_ready(
+            {
+                "text_anchors": ["SKU编码", "市场价"],
+                "title_visible": False,
+                "market_visible": False,
+                "jd_visible": False,
+            }
+        )
+        is True
+    )
+
+
+def test_price_area_ready_accepts_sku_batch_panel_fallback():
+    import actions.form as form_module
+
+    assert (
+        form_module._price_area_ready(
+            {
+                "text_anchors": [],
+                "title_visible": False,
+                "market_visible": False,
+                "jd_visible": False,
+                "sku_batch_visible": True,
+            }
+        )
+        is True
+    )
+
+
+def test_executor_coerces_fill_product_info_precheck_when_still_on_form():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "error",
+            "reason": "字段校验失败，商品信息中关键字段缺失或格式错误",
+            "current_state": "填写表单阶段",
+            "suggested_action": "recover",
+        },
+        history=[{"action": "select_category", "success": True}],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+    assert "fill_product_info" in result["reason"]
+
+
+def test_executor_coerces_fill_product_info_precheck_when_state_is_action_name():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "error",
+            "reason": "vision uncertain",
+            "current_state": "fill_product_info",
+            "suggested_action": "stop",
+        },
+        history=[{"action": "activate_window", "success": True}],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+
+
+def test_executor_preserves_fill_product_info_precheck_for_hard_stop():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "error",
+            "reason": "系统错误，请稍后重试",
+            "current_state": "系统错误",
+            "suggested_action": "stop",
+        },
+        history=[{"action": "select_category", "success": True}],
+    )
+
+    assert result["status"] == "error"
+    assert result["suggested_action"] == "stop"
+
+
+def test_ensure_basic_info_page_skips_unsafe_click_on_category_page(monkeypatch):
+    import actions.form as form_module
+
+    markers = {
+        "商品标题": False,
+        "类目选择发品": True,
+        "下一步，完善其他商品信息": False,
+    }
+    monkeypatch.setattr(
+        form_module,
+        "_visible_text_contains",
+        lambda text, **kwargs: markers.get(text, False),
+    )
+    monkeypatch.setattr(form_module, "_find_named_control", lambda *args, **kwargs: None)
+
+    class FakeLocator:
+        def __init__(self):
+            self.click_calls = []
+
+        def click(self, *args, **kwargs):
+            self.click_calls.append((args, kwargs))
+            return True
+
+    locator = FakeLocator()
+    result = form_module._ensure_basic_info_page(locator=locator)
+
+    assert result is False
+    assert locator.click_calls == []
+
+
+def test_fill_sku_pricing_fields_v3_uses_dynamic_price_centers(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(form_module, "_ensure_basic_info_page", lambda **kwargs: True)
+    monkeypatch.setattr(form_module, "_scroll_to_sku_section", lambda **kwargs: None)
+    monkeypatch.setattr(form_module, "_reset_sku_horizontal_scrollbar", lambda: None)
+    monkeypatch.setattr(form_module, "_drag_sku_horizontal_scrollbar", lambda: None)
+    monkeypatch.setattr(
+        form_module,
+        "_ensure_price_area_visible",
+        lambda **kwargs: {"success": True, "state": {"title_visible": True, "market_visible": True, "jd_visible": True}},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_find_price_input_center",
+        lambda label, **kwargs: {"市场价": (1100, 610), "京东价": (1500, 615)}.get(label),
+    )
+
+    clicked = []
+    monkeypatch.setattr(
+        form_module,
+        "_hover_then_click",
+        lambda x, y, **kwargs: clicked.append((x, y)) or True,
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_write_active_text",
+        lambda value, clear=True: {"success": True, "method": "session1-paste"},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_verify_text_field",
+        lambda locator, field, x, y, expected, prefer_uia=True: {
+            "success": True,
+            "actual": str(expected),
+            "method": f"verify@{x},{y}",
+            "compare_mode": "numeric",
+        },
+    )
+    monkeypatch.setattr(form_module.time, "sleep", lambda *_args, **_kwargs: None)
+
+    result = form_module._fill_sku_pricing_fields_v3(
+        {"market_price": 70, "jd_price": 70},
+        locator=object(),
+    )
+
+    assert [item["field"] for item in result] == ["market_price", "jd_price"]
+    assert clicked == [(1100, 610), (1500, 615)]
+    assert result[0]["verification_method"] == "verify@1100,610"
+    assert result[1]["verification_method"] == "verify@1500,615"

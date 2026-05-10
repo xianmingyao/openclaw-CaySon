@@ -1,0 +1,19 @@
+{
+  "id": "95e7a941",
+  "type": "short_term",
+  "content": "步骤 4 select_category: 成功",
+  "metadata": {
+    "step": 4,
+    "action": "select_category",
+    "action_result_success": true,
+    "vision_status": "ok",
+    "used_vision_fallback": false,
+    "vision_template": "",
+    "retry_count": 1,
+    "error": "",
+    "screenshot": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\bc4419b7_select_category_1778436951.png"
+  },
+  "importance": 0.3,
+  "created_at": "2026-05-11T02:15:53.471726",
+  "access_count": 0
+}

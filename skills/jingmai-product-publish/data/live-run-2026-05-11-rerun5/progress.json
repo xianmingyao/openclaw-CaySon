@@ -1,0 +1,18 @@
+{
+  "completed_count": 1,
+  "failed_indices": [],
+  "items": [
+    {
+      "index": 1,
+      "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+      "task_id": "59785b0d",
+      "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    }
+  ]
+}

@@ -1390,6 +1390,7 @@ def _locate_template_in_window(
 
 
 def _collect_price_area_template_state(locator=None, log=None) -> Dict[str, Any]:
+    anchors = _collect_price_area_anchors(locator=locator, log=log)
     title_match = _locate_template_in_window(
         "product_title_label.png",
         locator=locator,
@@ -1411,10 +1412,24 @@ def _collect_price_area_template_state(locator=None, log=None) -> Dict[str, Any]
         cache_name="price_probe_京东价.png",
         confidences=(0.95, 0.92, 0.88, 0.84, 0.80),
     )
+    sku_batch_markers = [
+        "鎵归噺瀵煎叆",
+        "鎵归噺璁剧疆",
+        "榛樿鍏ㄩ儴SKU",
+        "SKU灞炴€?",
+    ]
+    visible_batch_markers = [
+        marker
+        for marker in sku_batch_markers
+        if _visible_text_contains(marker, locator=locator, log=log, top_range=(1120, 1380))
+    ]
     state = {
+        "text_anchors": anchors,
         "title_visible": bool(title_match),
         "market_visible": bool(market_match),
         "jd_visible": bool(jd_match),
+        "sku_batch_visible": len(visible_batch_markers) >= 2,
+        "sku_batch_markers": visible_batch_markers,
         "title_match": title_match,
         "market_match": market_match,
         "jd_match": jd_match,
@@ -1422,9 +1437,22 @@ def _collect_price_area_template_state(locator=None, log=None) -> Dict[str, Any]
     _debug_log(
         log,
         "[fill_product_info] price area state "
-        f"title={state['title_visible']} market={state['market_visible']} jd={state['jd_visible']}",
+        f"title={state['title_visible']} market={state['market_visible']} "
+        f"jd={state['jd_visible']} sku_batch={state['sku_batch_visible']}",
     )
     return state
+
+
+def _price_area_ready(state: Optional[Dict[str, Any]]) -> bool:
+    if not state:
+        return False
+
+    anchors = {str(item) for item in (state.get("text_anchors") or [])}
+    has_price_anchor = bool({"市场价", "京东价"} & anchors)
+    has_template_anchor = bool(state.get("market_visible") or state.get("jd_visible"))
+    has_title_context = bool(state.get("title_visible") or "SKU编码" in anchors or "销售属性" in anchors)
+    has_sku_batch_context = bool(state.get("sku_batch_visible"))
+    return has_price_anchor or (has_template_anchor and has_title_context) or has_sku_batch_context
 
 
 def _ensure_price_area_visible(locator=None, log=None, max_rounds: int = 3) -> Dict[str, Any]:
@@ -1438,7 +1466,7 @@ def _ensure_price_area_visible(locator=None, log=None, max_rounds: int = 3) -> D
         time.sleep(0.5)
 
         state = _collect_price_area_template_state(locator=locator, log=log)
-        if state["title_visible"] and (state["market_visible"] or state["jd_visible"]):
+        if _price_area_ready(state):
             return {"success": True, "round": round_index, "state": state}
 
         pyautogui.moveTo(1800, 1000)
@@ -1446,7 +1474,7 @@ def _ensure_price_area_visible(locator=None, log=None, max_rounds: int = 3) -> D
             pyautogui.scroll(-360)
             time.sleep(0.3)
             state = _collect_price_area_template_state(locator=locator, log=log)
-            if state["title_visible"] and (state["market_visible"] or state["jd_visible"]):
+            if _price_area_ready(state):
                 _debug_log(log, f"[fill_product_info] price area visible after round={round_index} step={step}")
                 return {"success": True, "round": round_index, "step": step, "state": state}
         last_state = state
@@ -1553,16 +1581,6 @@ def _ensure_basic_info_page(locator=None, log=None) -> bool:
     if _visible_text_contains("商品标题", locator=locator, log=log, top_range=(280, 520), left_range=(560, 1080)):
         return True
 
-    _debug_log(log, "[fill_product_info] basic info page missing, force click top tab")
-    if locator.click(410, 160, delay=0.6):
-        time.sleep(0.5)
-        locator.click(410, 160, delay=0.4)
-        time.sleep(0.8)
-    success = _visible_text_contains("商品标题", locator=locator, log=log, top_range=(280, 520), left_range=(560, 1080))
-    if success:
-        _debug_log(log, "[fill_product_info] switched to basic info page via top-tab coordinates")
-        return True
-
     target = _find_named_control("商品基本信息", ["Text", "Button", "Hyperlink"], locator=locator, log=log, top_range=(100, 220))
     if target:
         element, _, _ = target
@@ -1573,8 +1591,208 @@ def _ensure_basic_info_page(locator=None, log=None) -> bool:
                 _debug_log(log, "[fill_product_info] switched to basic info page via UIA fallback")
                 return True
 
+    success = False
+    if (
+        _visible_text_contains("类目选择发品", locator=locator, log=log, top_range=(120, 320), left_range=(480, 1200))
+        or _visible_text_contains("下一步，完善其他商品信息", locator=locator, log=log, top_range=(1180, 1380), left_range=(980, 1680))
+    ):
+        _debug_log(log, "[fill_product_info] category page detected, skip unsafe top-tab coordinate fallback")
+        return False
+
+    _debug_log(log, "[fill_product_info] basic info page missing, force click top tab")
+    if locator.click(410, 160, delay=0.6):
+        time.sleep(0.5)
+        locator.click(410, 160, delay=0.4)
+        time.sleep(0.8)
+    success = _visible_text_contains("商品标题", locator=locator, log=log, top_range=(280, 520), left_range=(560, 1080))
+    if success:
+        _debug_log(log, "[fill_product_info] switched to basic info page via top-tab coordinates")
+        return True
+
+    if not success and _return_from_advanced_detail_editor(locator=locator, log=log):
+        time.sleep(1.0)
+        success = _visible_text_contains("鍟嗗搧鏍囬", locator=locator, log=log, top_range=(280, 520), left_range=(560, 1080))
+        if success:
+            _debug_log(log, "[fill_product_info] returned from advanced detail editor to merchant backend")
+            return True
+
     _debug_log(log, f"[fill_product_info] basic info page restore success={success}")
     return success
+
+
+def _is_advanced_detail_editor(locator=None, log=None) -> bool:
+    locator = _get_locator(locator, log)
+    has_return = _visible_text_contains("杩斿洖鍟嗗鍚庡彴", locator=locator, log=log, top_range=(0, 120), left_range=(0, 260))
+    has_jdzp = _visible_text_contains("浜彴鏅哄簵", locator=locator, log=log, top_range=(0, 180), left_range=(0, 360))
+    has_detail = _visible_text_contains("璇︽儏", locator=locator, log=log, top_range=(0, 180), left_range=(120, 520))
+    has_high_editor = _visible_text_contains("楂樼骇缂栬緫", locator=locator, log=log, top_range=(180, 420), left_range=(760, 1240))
+    return bool(has_return and ((has_jdzp and has_detail) or has_high_editor))
+
+
+def _return_from_advanced_detail_editor(locator=None, log=None) -> bool:
+    locator = _get_locator(locator, log)
+    if not _is_advanced_detail_editor(locator=locator, log=log):
+        return False
+
+    target = _find_named_control("杩斿洖鍟嗗鍚庡彴", ["Button", "Hyperlink", "Text"], locator=locator, log=log, top_range=(0, 120), left_range=(0, 260))
+    if target:
+        element, _, _ = target
+        if click_uia_element(element, log=log):
+            return True
+
+    return locator.click(70, 24, delay=0.5)
+
+
+def _scroll_to_description_section(log=None):
+    import pyautogui
+
+    _scroll_publish_page_to_top()
+    pyautogui.moveTo(1780, 980)
+    for index in range(4):
+        pyautogui.scroll(-520)
+        _debug_log(log, f"[fill_product_description] scroll to description: step={index + 1} delta=-520")
+        time.sleep(0.08)
+
+
+def _select_description_mode(mode_label: str, locator=None, log=None) -> bool:
+    locator = _get_locator(locator, log)
+    target = _find_named_control(mode_label, ["Text", "Button", "RadioButton"], locator=locator, log=log, top_range=(300, 520), left_range=(820, 1180))
+    if target:
+        element, _, _ = target
+        if click_uia_element(element, log=log):
+            time.sleep(0.4)
+            return True
+    if mode_label == "浠ｇ爜缂栬緫":
+        return locator.click(1040, 316, delay=0.4)
+    if mode_label == "鍥炬枃缂栬緫":
+        return locator.click(918, 316, delay=0.4)
+    return False
+
+
+def _build_description_html(product: Dict[str, Any]) -> str:
+    detail_content = str(product.get("detail_content", "") or product.get("description", "") or "").strip()
+    if detail_content:
+        return detail_content
+
+    lines = []
+    title = str(product.get("title", "") or "").strip()
+    brand = str(product.get("brand", "") or product.get("鍝佺墝", "") or "").strip()
+    model = str(product.get("model", "") or "").strip()
+    unit = str(product.get("unit", "") or "").strip()
+    notes = str(product.get("notes", "") or "").strip()
+    size_parts = [str(product.get("length_mm", "") or "").strip(), str(product.get("width_mm", "") or "").strip(), str(product.get("height_mm", "") or "").strip()]
+    size_parts = [part for part in size_parts if part]
+    weight = str(product.get("weight_kg", "") or "").strip()
+
+    if title:
+        lines.append(f"<p>{title}</p>")
+    if brand:
+        lines.append(f"<p>鍝佺墝锛?{brand}</p>")
+    if model:
+        lines.append(f"<p>鍨嬪彿锛?{model}</p>")
+    if size_parts:
+        lines.append(f"<p>瑙勬牸锛?{' x '.join(size_parts)} mm</p>")
+    if weight:
+        lines.append(f"<p>閲嶉噺锛?{weight} kg</p>")
+    if unit:
+        lines.append(f"<p>閿€鍞崟浣嶏細{unit}</p>")
+    if notes:
+        lines.append(f"<p>璇存槑锛?{notes}</p>")
+    return "".join(lines)
+
+
+def _fill_description_code_editor(html: str, locator=None, log=None) -> Dict[str, Any]:
+    locator = _get_locator(locator, log)
+    _scroll_to_description_section(log=log)
+    _select_description_mode("浠ｇ爜缂栬緫", locator=locator, log=log)
+    time.sleep(0.4)
+
+    target = None
+    for element, name, rect in _find_edit_elements(locator=locator, log=log):
+        if rect.left < 820 or rect.top < 320 or rect.bottom < 420:
+            continue
+        target = (element, rect)
+        break
+
+    if target:
+        element, _ = target
+        try:
+            element.set_edit_text(html)
+            time.sleep(0.3)
+            verify = _verify_uia_edit_value("detail_content", html, element)
+            return {
+                "field": "detail_content",
+                "method": "uia-set-edit-text",
+                "write_success": True,
+                "verify_success": verify.get("success", False),
+                "success": verify.get("success", False),
+                "expected": html,
+                "actual": verify.get("actual", ""),
+                "verification_method": verify.get("method", ""),
+                "compare_mode": verify.get("compare_mode", ""),
+            }
+        except Exception:
+            pass
+
+    if locator.click(1260, 530, delay=0.4):
+        write_result = _write_active_text(html, clear=True)
+        verify = _verify_active_text("detail_content", html)
+        return {
+            "field": "detail_content",
+            "method": write_result.get("method", "active-write"),
+            "write_success": write_result.get("success", False),
+            "verify_success": verify.get("success", False),
+            "success": write_result.get("success", False) and verify.get("success", False),
+            "expected": html,
+            "actual": verify.get("actual", ""),
+            "verification_method": verify.get("method", ""),
+            "compare_mode": verify.get("compare_mode", ""),
+            **({"verify_error": verify.get("message", "detail content verify failed")} if not verify.get("success") else {}),
+        }
+
+    return {
+        "field": "detail_content",
+        "write_success": False,
+        "verify_success": False,
+        "success": False,
+        "verify_error": "detail editor not found",
+    }
+
+
+def _extract_description_images(product: Dict[str, Any]) -> list[str]:
+    candidates = []
+    for key in ("description_images", "detail_images", "images"):
+        value = product.get(key)
+        if isinstance(value, list):
+            candidates.extend(str(item).strip() for item in value if str(item).strip())
+        elif isinstance(value, str) and value.strip():
+            candidates.append(value.strip())
+    return candidates
+
+
+def _description_upload_prompt_visible(locator=None, log=None) -> bool:
+    locator = _get_locator(locator, log)
+    return bool(
+        _visible_text_contains("璇蜂笂浼犲浘鐗囨垨瑙嗛", locator=locator, log=log, top_range=(260, 1180), left_range=(760, 1880))
+        or _visible_text_contains("涓婁紶鍥剧墖", locator=locator, log=log, top_range=(260, 1180), left_range=(760, 1880))
+    )
+
+
+def _upload_description_image(image_path: str, locator=None, log=None) -> Dict[str, Any]:
+    locator = _get_locator(locator, log)
+    _scroll_to_description_section(log=log)
+    _select_description_mode("鍥炬枃缂栬緫", locator=locator, log=log)
+    target = _find_named_control("涓婁紶鍥剧墖", ["Button", "Hyperlink", "Text"], locator=locator, log=log, top_range=(260, 1180), left_range=(760, 1880))
+    if target:
+        element, _, _ = target
+        click_uia_element(element, log=log)
+        time.sleep(0.4)
+    else:
+        locator.click(1330, 816, delay=0.4)
+
+    result = upload_image(image_path, locator=locator, log=log)
+    result["field"] = "detail_image"
+    return result
 
 
 def _hover_then_click(x: int, y: int, *, clicks: int = 1, interval: float = 0.1, delay: float = 0.25) -> bool:
@@ -1792,19 +2010,24 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
 
     import pyautogui
 
-    fields = [
-        ("market_price", product.get("market_price"), (1278, 603)),
-        ("purchase_price", product.get("purchase_price"), (1388, 603)),
-        ("jd_price", product.get("jd_price"), (1518, 603)),
+    field_specs = [
+        ("market_price", "市场价", product.get("market_price"), (1278, 603)),
+        ("purchase_price", "", product.get("purchase_price"), (1388, 603)),
+        ("jd_price", "京东价", product.get("jd_price"), (1518, 603)),
     ]
 
-    for field, value, (x, y) in fields:
+    for field, label, value, fallback_center in field_specs:
         if value in (None, ""):
             continue
+        x, y = fallback_center
+        if label:
+            center = _find_price_input_center(label, locator=locator, log=log)
+            if center:
+                x, y = center
         _debug_log(log, f"[fill_product_info] click price field {field} at ({x}, {y}) with hover-then-double-click")
         _hover_then_click(x, y, clicks=2, interval=0.1, delay=0.2)
         write_result = _write_active_text(value, clear=True)
-        verify = _verify_active_text(field, value)
+        verify = _verify_text_field(locator, field, x, y, value)
         item = {
             "field": field,
             "method": write_result.get("method", "active-write"),
@@ -1876,7 +2099,7 @@ def _fill_sku_pricing_fields(product: Dict[str, Any], locator=None, log=None) ->
 
 
 @ActionRegistry.register("fill_product_info", "form", "批量填充商品信息")
-def fill_product_info(product: Dict[str, Any], locator=None, log=None) -> Dict[str, Any]:
+def fill_product_info(product: Dict[str, Any], locator=None, log=None, required_visual_fields=None, **_kwargs) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
     results = []
     title = product.get("title")
@@ -1948,6 +2171,46 @@ def fill_product_info(product: Dict[str, Any], locator=None, log=None) -> Dict[s
     else:
         payload["message"] = "All requested product fields were filled and verified"
     return payload
+
+
+@ActionRegistry.register("fill_product_description", "form", "填写商品详情")
+def fill_product_description(product: Dict[str, Any], locator=None, log=None, **_kwargs) -> Dict[str, Any]:
+    locator = _get_locator(locator, log)
+
+    if _return_from_advanced_detail_editor(locator=locator, log=log):
+        time.sleep(1.0)
+
+    _scroll_to_description_section(log=log)
+
+    if _is_advanced_detail_editor(locator=locator, log=log):
+        return {
+            "success": False,
+            "field": "detail_content",
+            "message": "advanced detail editor is still active after return attempt",
+        }
+
+    image_paths = _extract_description_images(product)
+    detail_content = str(product.get("detail_content", "") or product.get("description", "") or "").strip()
+
+    if image_paths:
+        upload_result = _upload_description_image(image_paths[0], locator=locator, log=log)
+        upload_result["success"] = bool(upload_result.get("success"))
+        if not upload_result["success"] and "message" not in upload_result:
+            upload_result["message"] = upload_result.get("verify_error", "detail image upload failed")
+        return upload_result
+
+    if detail_content:
+        result = _fill_description_code_editor(detail_content, locator=locator, log=log)
+        result["success"] = bool(result.get("success"))
+        if not result["success"] and "message" not in result:
+            result["message"] = result.get("verify_error", "detail content fill failed")
+        return result
+
+    return {
+        "success": False,
+        "field": "detail_content",
+        "message": "detail_content missing and no description_images available for backend detail editor",
+    }
 
 
 @ActionRegistry.register("click_element", "form", "点击指定元素")

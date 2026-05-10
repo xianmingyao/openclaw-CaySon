@@ -1,6 +1,8 @@
 {
   "completed_count": 2,
-  "failed_indices": [],
+  "failed_indices": [
+    1
+  ],
   "items": [
     {
       "index": 1,
@@ -205,6 +207,76 @@
       "title": "商品B",
       "task_id": "task-2",
       "success": true,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 1,
+      "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+      "task_id": "5cdc3d1e",
+      "success": false,
+      "error": "Action execution failed",
+      "failed_step": 1,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 1,
+      "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+      "task_id": "7732976a",
+      "success": false,
+      "error": "视觉预检失败: LLM返回的observation_reason中包含无法解析的内容（JSON格式错误）",
+      "failed_step": 2,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 1,
+      "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+      "task_id": "021bff08",
+      "success": false,
+      "error": "Some product fields failed verification: sku_product_name, price_area_anchor, brand",
+      "failed_step": 5,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 1,
+      "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+      "task_id": "f546274d",
+      "success": false,
+      "error": "Action execution failed",
+      "failed_step": 4,
+      "start_from_phase": "",
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    },
+    {
+      "index": 1,
+      "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+      "task_id": "de55c817",
+      "success": false,
+      "error": "视觉预检失败: 提交发布动作失败（publish_product）",
+      "failed_step": 8,
       "start_from_phase": "",
       "vision_fallback_count": 0,
       "vision_fallback_success_count": 0,

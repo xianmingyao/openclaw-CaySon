@@ -1,0 +1,311 @@
+{
+  "task_id": "59785b0d",
+  "status": "success",
+  "current_step": 7,
+  "total_steps": 7,
+  "plan": [
+    {
+      "action": "find_window",
+      "params": {},
+      "required": true,
+      "phase": "window_ready",
+      "react_contract": {
+        "goal": "定位并确认京麦客户端窗口存在。",
+        "precheck": {
+          "expect_any": [],
+          "reject_any": [
+            "Windows 桌面崩溃",
+            "远程连接错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "商智",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "网络异常",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "activate_window",
+      "params": {},
+      "required": true,
+      "phase": "window_ready",
+      "react_contract": {
+        "goal": "将京麦窗口切到前台，避免后续动作命中错误页面。",
+        "precheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "navigate_to",
+      "params": {
+        "page": "publish"
+      },
+      "required": true,
+      "phase": "publish_page_ready",
+      "react_contract": {
+        "goal": "进入发品流程，允许停在类目选择页或商品基本信息页。",
+        "precheck": {
+          "expect_any": [
+            "京麦",
+            "工作台",
+            "发布商品",
+            "商品管理"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品标题",
+            "品牌",
+            "价格",
+            "类目",
+            "下一步，完善其他商品信息"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "select_category",
+      "params": {
+        "search_text": "插座"
+      },
+      "required": true,
+      "phase": "category_ready",
+      "react_contract": {
+        "goal": "选择类目 目标类目，或确认已进入商品信息页。",
+        "precheck": {
+          "expect_any": [
+            "类目",
+            "商品标题",
+            "品牌",
+            "下一步，完善其他商品信息"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品标题",
+            "品牌",
+            "价格",
+            "下一步，完善其他商品信息"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "fill_product_info",
+      "params": {
+        "product": {
+          "business_line": "慧采",
+          "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+          "brand": "公牛",
+          "model": "无",
+          "length_mm": 250,
+          "width_mm": 76,
+          "height_mm": 29,
+          "weight_kg": 0.5,
+          "unit": "个",
+          "jd_price": 70,
+          "url": "https://item.jd.com/16793098028.html",
+          "notes": "数量：2",
+          "price": 70,
+          "market_price": 70
+        }
+      },
+      "required": true,
+      "phase": "product_info_ready",
+      "react_contract": {
+        "goal": "先确认当前屏幕仍在发品主流程，再填写基础信息与价格；如果视觉上已偏到商品描述/物流售后等标签，需要先回到商品基本信息并滚到价格区域。",
+        "precheck": {
+          "expect_any": [
+            "商品基本信息",
+            "商品标题",
+            "品牌",
+            "价格",
+            "商品描述",
+            "商品物流",
+            "商品售后及其他"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品标题",
+            "品牌",
+            "市场价",
+            "京东价",
+            "公牛（BULL） 插座/B5系列 带",
+            "70"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "publish_product",
+      "params": {},
+      "required": true,
+      "phase": "publish_submitted",
+      "react_contract": {
+        "goal": "提交发布动作。",
+        "precheck": {
+          "expect_any": [
+            "发布商品",
+            "保存草稿",
+            "商品标题"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "提交成功",
+            "发布成功",
+            "商品列表",
+            "草稿"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "verify_result",
+      "params": {
+        "check_errors": true
+      },
+      "required": true,
+      "phase": "publish_verified",
+      "react_contract": {
+        "goal": "检查当前页面是否存在错误提示，确认草稿或发布结果。",
+        "precheck": {
+          "expect_any": [
+            "发布商品",
+            "草稿",
+            "商品标题",
+            "商品列表"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "草稿",
+            "发布成功",
+            "商品列表",
+            "发布商品"
+          ],
+          "reject_any": [
+            "错误",
+            "异常",
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    }
+  ],
+  "product_data": {
+    "business_line": "慧采",
+    "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+    "brand": "公牛",
+    "model": "无",
+    "length_mm": 250,
+    "width_mm": 76,
+    "height_mm": 29,
+    "weight_kg": 0.5,
+    "unit": "个",
+    "jd_price": 70,
+    "url": "https://item.jd.com/16793098028.html",
+    "notes": "数量：2",
+    "price": 70,
+    "market_price": 70
+  },
+  "risk_stats": {
+    "high_risk_window_shift_count": 0,
+    "high_risk_window_shift_steps": []
+  },
+  "vision_fallback_stats": {
+    "count": 0,
+    "success_count": 0,
+    "failed_count": 0,
+    "steps": [],
+    "failed_details": [],
+    "templates": {},
+    "templates_success": {},
+    "templates_failed": {}
+  }
+}

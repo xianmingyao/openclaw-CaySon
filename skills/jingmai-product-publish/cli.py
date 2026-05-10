@@ -28,7 +28,8 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
     suffix = path.suffix.lower()
     if suffix == ".json":
         data = _read_json_file(path)
-        return data if isinstance(data, list) else [data]
+        items = data if isinstance(data, list) else [data]
+        return [_enrich_product_from_source(item) for item in items]
 
     if suffix in {".xlsx", ".xlsm"}:
         from openpyxl import load_workbook
@@ -54,10 +55,72 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
                 payload.setdefault("price", payload["jd_price"])
                 payload.setdefault("market_price", payload["jd_price"])
             if payload:
-                items.append(payload)
+                items.append(_enrich_product_from_source(payload))
         return items
 
     raise ValueError(f"不支持的批量文件格式: {path.suffix}")
+
+
+def _merge_missing_fields(target: Dict[str, Any], source: Dict[str, Any], fields: List[str]) -> None:
+    for field in fields:
+        if target.get(field) not in (None, "", []):
+            continue
+        value = source.get(field)
+        if value in (None, "", []):
+            continue
+        target[field] = value
+
+
+def _enrich_product_from_source(payload: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(payload, dict):
+        return payload
+
+    url = str(payload.get("source_url", payload.get("url", "")) or "").strip()
+    if not url:
+        return payload
+
+    needs_detail = any(
+        payload.get(field) in (None, "", [])
+        for field in ("description_images", "detail_content", "description")
+    )
+    if not needs_detail:
+        return payload
+
+    try:
+        from scraper import JDScraper
+
+        scraped = JDScraper().scrape(url)
+    except Exception:
+        return payload
+
+    if not scraped.get("success"):
+        return payload
+
+    enriched = dict(payload)
+    _merge_missing_fields(
+        enriched,
+        scraped,
+        [
+            "product_id",
+            "title",
+            "price",
+            "jd_price",
+            "market_price",
+            "brand",
+            "category",
+            "description",
+            "detail_content",
+            "description_images",
+            "images",
+        ],
+    )
+    if enriched.get("price") in (None, "") and scraped.get("price") not in (None, ""):
+        enriched["price"] = scraped.get("price")
+    if enriched.get("jd_price") in (None, "") and scraped.get("price") not in (None, ""):
+        enriched["jd_price"] = scraped.get("price")
+    if enriched.get("market_price") in (None, "") and enriched.get("jd_price") not in (None, ""):
+        enriched["market_price"] = enriched["jd_price"]
+    return enriched
 
 
 def _detect_header_row_index(rows: List[tuple]) -> int:
@@ -195,6 +258,7 @@ def _extract_plan_payload(plan_data: Any) -> Dict[str, Any]:
             "task_id": str(plan_data.get("task_id", "")),
             "steps": steps,
             "product_data": plan_data.get("product_data", {}),
+            "screen_context": plan_data.get("screen_context", {}),
             "total_steps": int(plan_data.get("total_steps", len(steps)) or len(steps)),
         }
 
@@ -206,6 +270,7 @@ def _build_plan_package(plan_result: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "task_id": plan_result["task_id"],
         "product_data": plan_result["product_data"],
+        "screen_context": plan_result.get("screen_context", {}),
         "plan": plan_steps,
         "total_steps": plan_result["total_steps"],
         "phases": _summarize_plan_phases(plan_steps),

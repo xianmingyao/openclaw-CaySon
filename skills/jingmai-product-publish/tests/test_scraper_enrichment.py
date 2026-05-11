@@ -55,6 +55,8 @@ def test_scraper_html_path_collects_detail_assets(monkeypatch, tmp_path):
 
     scraper = scraper_module.JDScraper(image_cache_dir=tmp_path)
     monkeypatch.setattr(scraper, "_load_cached_html", lambda product_id: "")
+    monkeypatch.setattr(scraper, "_scrape_via_playwright", lambda url, product_id: None)
+    monkeypatch.setattr(scraper, "_scrape_via_opencli", lambda url, product_id: None)
     result = scraper.scrape("https://item.jd.com/123.html")
 
     assert result["success"] is True
@@ -93,3 +95,31 @@ def test_cli_enrich_product_from_source_merges_scraped_detail(monkeypatch):
     assert enriched["description"] == "meta detail"
     assert enriched["detail_content"] == "<p>detail</p>"
     assert enriched["description_images"] == ["E:/tmp/detail_01.jpg"]
+
+
+def test_scraper_falls_back_to_opencli_after_playwright(monkeypatch):
+    import scraper as scraper_module
+
+    scraper = scraper_module.JDScraper()
+    monkeypatch.setattr(scraper, "_load_cached_html", lambda product_id: "")
+    monkeypatch.setattr(scraper, "_scrape_via_playwright", lambda url, product_id: None)
+    monkeypatch.setattr(
+        scraper,
+        "_scrape_via_opencli",
+        lambda url, product_id: {
+            "success": True,
+            "product_id": product_id,
+            "source": "opencli",
+            "title": "OpenCLI Socket",
+            "price": "70",
+            "url": url,
+        },
+    )
+    monkeypatch.setattr(scraper, "_scrape_via_api", lambda product_id: (_ for _ in ()).throw(AssertionError("api should not be called")))
+    monkeypatch.setattr(scraper, "_scrape_via_html", lambda url, product_id: (_ for _ in ()).throw(AssertionError("html should not be called")))
+
+    result = scraper.scrape("https://item.jd.com/16793098028.html")
+
+    assert result["success"] is True
+    assert result["source"] == "opencli"
+    assert result["product_id"] == "16793098028"

@@ -2,8 +2,16 @@
   "task_id": "task-2",
   "product_data": {
     "title": "商品B",
-    "price": 20
+    "price": 20,
+    "publish_mode": "batch",
+    "source_meta": {
+      "source_file": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\claude-agent-tmp\\pytest-of-Administrator\\pytest-51\\test_batch_resume_skips_comple0\\products.json",
+      "publish_mode": "batch",
+      "item_index": 2,
+      "total_items": 2
+    }
   },
+  "screen_context": {},
   "plan": [
     {
       "action": "find_window",

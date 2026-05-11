@@ -105,6 +105,28 @@ PRICE_RULES = {
     'gross_profit_rate': 0.05,  # 毛利5%
 }
 
+PRODUCT_INFO_PAGE.update(
+    {
+        "brand_select": (558, 389),
+        "model_input": (956, 389),
+        "sku_input": (1978, 391),
+        "socket_config": (566, 750),
+        "rated_voltage": (962, 750),
+        "cable_length": (1360, 750),
+    }
+)
+
+ELEMENTS["product_info"].update(
+    {
+        "brand_select": PRODUCT_INFO_PAGE["brand_select"],
+        "model_input": PRODUCT_INFO_PAGE["model_input"],
+        "sku_input": PRODUCT_INFO_PAGE["sku_input"],
+        "socket_config": PRODUCT_INFO_PAGE["socket_config"],
+        "rated_voltage": PRODUCT_INFO_PAGE["rated_voltage"],
+        "cable_length": PRODUCT_INFO_PAGE["cable_length"],
+    }
+)
+
 def calc_price(purchase_price):
     """根据采购价计算京东价"""
     jd_price = purchase_price / 0.95

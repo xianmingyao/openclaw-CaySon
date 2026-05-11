@@ -3,7 +3,9 @@
 """
 import inspect
 import json
+import re
 import sys
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -29,36 +31,73 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
     if suffix == ".json":
         data = _read_json_file(path)
         items = data if isinstance(data, list) else [data]
-        return [_enrich_product_from_source(item) for item in items]
+        return _annotate_publish_mode(
+            [_enrich_product_from_source(item) for item in items],
+            source_path=path,
+        )
 
     if suffix in {".xlsx", ".xlsm"}:
         from openpyxl import load_workbook
 
         workbook = load_workbook(path, read_only=True, data_only=True)
-        sheet = workbook.active
-        rows = list(sheet.iter_rows(values_only=True))
-        if not rows:
-            return []
-
-        header_index = _detect_header_row_index(rows)
-        headers = [str(cell).strip() if cell is not None else "" for cell in rows[header_index]]
-        mapped_headers = [_normalize_header(header) for header in headers]
         items: List[Dict[str, Any]] = []
-        for row in rows[header_index + 1 :]:
-            payload: Dict[str, Any] = {}
-            for index, cell in enumerate(row):
-                key = mapped_headers[index] if index < len(mapped_headers) else ""
-                if not key or cell in (None, ""):
-                    continue
-                payload[key] = cell
-            if "jd_price" in payload:
-                payload.setdefault("price", payload["jd_price"])
-                payload.setdefault("market_price", payload["jd_price"])
-            if payload:
-                items.append(_enrich_product_from_source(payload))
-        return items
+        for sheet in workbook.worksheets:
+            rows = list(sheet.iter_rows(values_only=True))
+            if not rows:
+                continue
+
+            header_index = _detect_header_row_index(rows)
+            headers = [str(cell).strip() if cell is not None else "" for cell in rows[header_index]]
+            mapped_headers = [_normalize_header(header) for header in headers]
+            if sum(1 for item in mapped_headers if item) < 4:
+                continue
+
+            for row_offset, row in enumerate(rows[header_index + 1 :], start=header_index + 2):
+                payload: Dict[str, Any] = {}
+                for index, cell in enumerate(row):
+                    key = mapped_headers[index] if index < len(mapped_headers) else ""
+                    if not key or cell in (None, ""):
+                        continue
+                    payload[key] = cell
+                if "jd_price" in payload:
+                    payload.setdefault("price", payload["jd_price"])
+                    payload.setdefault("market_price", payload["jd_price"])
+                if payload:
+                    payload["source_meta"] = {
+                        "source_file": str(path.resolve()),
+                        "sheet_name": sheet.title,
+                        "row_index": row_offset,
+                        "workflow_doc": _default_workflow_doc_path(),
+                    }
+                    items.append(_enrich_product_from_source(payload))
+        return _annotate_publish_mode(items, source_path=path)
 
     raise ValueError(f"不支持的批量文件格式: {path.suffix}")
+
+
+def _default_workflow_doc_path() -> str:
+    candidates = sorted(Path(".").glob("*.docx"))
+    for candidate in candidates:
+        if "上架流程" in candidate.stem:
+            return str(candidate.resolve())
+    return str(candidates[0].resolve()) if candidates else ""
+
+
+def _annotate_publish_mode(items: List[Dict[str, Any]], source_path: Path | None = None) -> List[Dict[str, Any]]:
+    mode = "batch" if len(items) > 1 else "single"
+    annotated: List[Dict[str, Any]] = []
+    for index, item in enumerate(items, start=1):
+        payload = dict(item or {})
+        source_meta = dict(payload.get("source_meta") or {})
+        if source_path is not None:
+            source_meta.setdefault("source_file", str(source_path.resolve()))
+        source_meta["publish_mode"] = mode
+        source_meta["item_index"] = index
+        source_meta["total_items"] = len(items)
+        payload["publish_mode"] = mode
+        payload["source_meta"] = source_meta
+        annotated.append(payload)
+    return annotated
 
 
 def _merge_missing_fields(target: Dict[str, Any], source: Dict[str, Any], fields: List[str]) -> None:
@@ -69,6 +108,91 @@ def _merge_missing_fields(target: Dict[str, Any], source: Dict[str, Any], fields
         if value in (None, "", []):
             continue
         target[field] = value
+
+
+def _extract_product_id_from_text(value: str) -> str:
+    text = str(value or "")
+    for pattern in (r"jd\.com/(\d+)\.html", r"skuId=(\d+)", r"\b(\d{8,})\b"):
+        match = re.search(pattern, text, re.I)
+        if match:
+            return match.group(1)
+    return ""
+
+
+def _is_weak_model(value: Any) -> bool:
+    text = str(value or "").strip()
+    lowered = text.lower()
+    if lowered in {"", "none", "n/a", "na", "null", "?", "？"}:
+        return True
+    if len(text) <= 2 and not any(ch.isdigit() or ("a" <= ch.lower() <= "z") for ch in text):
+        return True
+    return False
+
+
+@lru_cache(maxsize=1)
+def _load_local_product_presets() -> List[Dict[str, Any]]:
+    presets: List[Dict[str, Any]] = []
+    for path in sorted((Path("config")).glob("*.json")):
+        try:
+            payload = _read_json_file(path)
+        except Exception:
+            continue
+        if not isinstance(payload, dict):
+            continue
+        product = payload.get("product", payload)
+        if not isinstance(product, dict):
+            continue
+        presets.append({"path": str(path), "payload": payload, "product": product})
+    return presets
+
+
+def _matches_local_product_preset(payload: Dict[str, Any], preset_product: Dict[str, Any]) -> bool:
+    payload_ids = {
+        _extract_product_id_from_text(payload.get("product_id", "")),
+        _extract_product_id_from_text(payload.get("url", "")),
+        _extract_product_id_from_text(payload.get("jd_url", "")),
+    } - {""}
+    preset_ids = {
+        _extract_product_id_from_text(preset_product.get("product_id", "")),
+        _extract_product_id_from_text(preset_product.get("url", "")),
+        _extract_product_id_from_text(preset_product.get("jd_url", "")),
+    } - {""}
+    if payload_ids and preset_ids and payload_ids.intersection(preset_ids):
+        return True
+
+    payload_model = str(payload.get("model", "") or "").strip().lower()
+    preset_model = str(preset_product.get("model", "") or preset_product.get("sku_model", "") or "").strip().lower()
+    if payload_model and preset_model and payload_model == preset_model:
+        return True
+
+    title = str(payload.get("title", "") or "").lower()
+    if preset_model and title and preset_model in title:
+        return True
+    return False
+
+
+def _merge_local_product_preset(payload: Dict[str, Any]) -> Dict[str, Any]:
+    enriched = dict(payload)
+    merged_attributes = dict(enriched.get("attributes") or {})
+    for preset in _load_local_product_presets():
+        product = preset["product"]
+        if not _matches_local_product_preset(enriched, product):
+            continue
+        _merge_missing_fields(
+            enriched,
+            product,
+            ["brand", "unit", "product_id", "url", "jd_url", "notes", "packing_list", "sales_unit"],
+        )
+        if _is_weak_model(enriched.get("model")) and product.get("model"):
+            enriched["model"] = product.get("model")
+        for key, value in dict(product.get("attributes") or {}).items():
+            if merged_attributes.get(key) in (None, "") and value not in (None, ""):
+                merged_attributes[key] = value
+        if merged_attributes.get("current") in (None, "") and merged_attributes.get("rated_current") not in (None, ""):
+            merged_attributes["current"] = merged_attributes["rated_current"]
+        if merged_attributes:
+            enriched["attributes"] = merged_attributes
+    return enriched
 
 
 def _enrich_product_from_source(payload: Dict[str, Any]) -> Dict[str, Any]:
@@ -120,7 +244,7 @@ def _enrich_product_from_source(payload: Dict[str, Any]) -> Dict[str, Any]:
         enriched["jd_price"] = scraped.get("price")
     if enriched.get("market_price") in (None, "") and enriched.get("jd_price") not in (None, ""):
         enriched["market_price"] = enriched["jd_price"]
-    return enriched
+    return _merge_local_product_preset(enriched)
 
 
 def _detect_header_row_index(rows: List[tuple]) -> int:
@@ -214,9 +338,14 @@ def _build_product_model(product_data: Dict[str, Any], source: str = "manual"):
 
     src = _product_payload(product_data)
     images = product_data.get("images", src.get("images", [])) or []
+    detail_images = product_data.get("description_images", src.get("description_images", [])) or []
+    source_meta = product_data.get("source_meta", src.get("source_meta", {})) or {}
     category = src.get("category", "")
+    product_id = str(src.get("product_id", src.get("sku", "")) or "").strip()
+    if not product_id:
+        product_id = _extract_product_id_from_text(src.get("source_url", src.get("url", "")))
     return Product(
-        product_id=str(src.get("product_id", src.get("sku", ""))),
+        product_id=product_id,
         title=str(src.get("title", "")),
         source_url=str(src.get("source_url", src.get("url", ""))),
         category=str(category),
@@ -227,6 +356,8 @@ def _build_product_model(product_data: Dict[str, Any], source: str = "manual"):
         source=source,
         attributes=src.get("attributes", {}) or {},
         images=images,
+        detail_images=detail_images,
+        source_meta=source_meta,
         raw_data=product_data,
     )
 

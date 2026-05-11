@@ -5,6 +5,7 @@
 import os
 from pathlib import Path
 from typing import List, Optional
+from urllib.parse import quote_plus
 
 # 项目根目录
 BASE_DIR = Path(__file__).parent
@@ -52,6 +53,14 @@ class Settings:
 
     # 数据库
     MYSQL_URL: str = ""
+    MYSQL_HOST: str = ""
+    MYSQL_PORT: int = 3306
+    MYSQL_USER: str = ""
+    MYSQL_PASSWORD: str = ""
+    MYSQL_DATABASE: str = ""
+    MYSQL_CHARSET: str = "utf8mb4"
+    MYSQL_POOL_SIZE: int = 10
+    MYSQL_MAX_OVERFLOW: int = 20
     SQLITE_URL: str = f"sqlite:///{BASE_DIR / 'data' / 'jingmai.db'}"
 
     # LLM
@@ -120,6 +129,9 @@ class Settings:
             "MYSQL_USER": "MYSQL_USER",
             "MYSQL_PASSWORD": "MYSQL_PASSWORD",
             "MYSQL_DATABASE": "MYSQL_DATABASE",
+            "MYSQL_CHARSET": "MYSQL_CHARSET",
+            "MYSQL_POOL_SIZE": "MYSQL_POOL_SIZE",
+            "MYSQL_MAX_OVERFLOW": "MYSQL_MAX_OVERFLOW",
             # Milvus
             "MILVUS_HOST": "MILVUS_HOST",
             "MILVUS_PORT": "MILVUS_PORT",
@@ -164,6 +176,24 @@ class Settings:
         for key, val in kwargs.items():
             if hasattr(self, key):
                 setattr(self, key, val)
+
+        if not self.MYSQL_URL:
+            self.MYSQL_URL = self._build_mysql_url()
+
+    def _build_mysql_url(self) -> str:
+        host = str(self.MYSQL_HOST or "").strip()
+        user = str(self.MYSQL_USER or "").strip()
+        database = str(self.MYSQL_DATABASE or "").strip()
+        if not host or not user or not database:
+            return ""
+
+        port = int(self.MYSQL_PORT or 3306)
+        charset = str(self.MYSQL_CHARSET or "utf8mb4").strip() or "utf8mb4"
+        password = quote_plus(str(self.MYSQL_PASSWORD or ""))
+        return (
+            f"mysql+pymysql://{quote_plus(user)}:{password}"
+            f"@{host}:{port}/{database}?charset={charset}"
+        )
 
     def ensure_dirs(self):
         """确保必要目录存在"""

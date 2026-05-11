@@ -6,6 +6,9 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
+import subprocess
+import uuid
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 from urllib.parse import urljoin
@@ -29,6 +32,14 @@ class JDScraper:
         cached = self._build_product_from_html(cached_html, url, product_id, source="cache") if cached_html else None
         if cached:
             return cached
+
+        product = self._scrape_via_playwright(url, product_id)
+        if product:
+            return product
+
+        product = self._scrape_via_opencli(url, product_id)
+        if product:
+            return product
 
         product = self._scrape_via_api(product_id)
         if product:
@@ -60,6 +71,29 @@ class JDScraper:
             if match:
                 return match.group(1)
         return ""
+
+    def _scrape_via_playwright(self, url: str, product_id: str) -> Optional[Dict[str, Any]]:
+        try:
+            from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+            from playwright.sync_api import sync_playwright
+        except Exception:
+            return None
+
+        try:
+            with sync_playwright() as playwright:
+                browser = playwright.chromium.launch(headless=True)
+                page = browser.new_page(user_agent=self.USER_AGENT)
+                try:
+                    page.goto(url, wait_until="domcontentloaded", timeout=self.timeout * 1000)
+                    page.wait_for_load_state("networkidle", timeout=min(self.timeout * 1000, 15000))
+                except PlaywrightTimeoutError:
+                    pass
+                html = page.content()
+                browser.close()
+        except Exception:
+            return None
+
+        return self._build_product_from_html(html, url, product_id, source="playwright")
 
     def _scrape_via_api(self, product_id: str) -> Optional[Dict[str, Any]]:
         try:
@@ -145,6 +179,58 @@ class JDScraper:
         if local_detail_images:
             payload["description_images"] = local_detail_images
         return payload
+
+    def _scrape_via_opencli(self, url: str, product_id: str) -> Optional[Dict[str, Any]]:
+        session = f"jd-scrape-{product_id}-{uuid.uuid4().hex[:6]}"
+        for prefix in self._opencli_command_prefixes():
+            try:
+                opened = self._run_opencli(prefix, ["browser", "--session", session, "--window", "background", "open", url])
+                if opened is None:
+                    continue
+                self._run_opencli(prefix, ["browser", "--session", session, "wait", "selector", "body", "--timeout", "15000"])
+                html = self._run_opencli(prefix, ["browser", "--session", session, "get", "html"])
+                if html:
+                    product = self._build_product_from_html(html, url, product_id, source="opencli")
+                    if product:
+                        return product
+            except Exception:
+                continue
+            finally:
+                self._run_opencli(prefix, ["browser", "--session", session, "close"], check=False)
+        return None
+
+    def _opencli_command_prefixes(self) -> list[list[str]]:
+        prefixes: list[list[str]] = []
+        opencli_bin = shutil.which("opencli")
+        if opencli_bin:
+            prefixes.append([opencli_bin])
+
+        tsx_cmd = Path(r"E:\PY\opencli\node_modules\.bin\tsx.cmd")
+        tsx_bin = Path(r"E:\PY\opencli\node_modules\.bin\tsx")
+        main_ts = Path(r"E:\PY\opencli\src\main.ts")
+        if main_ts.exists():
+            if tsx_cmd.exists():
+                prefixes.append([str(tsx_cmd), str(main_ts)])
+            elif tsx_bin.exists():
+                prefixes.append([str(tsx_bin), str(main_ts)])
+        return prefixes
+
+    def _run_opencli(self, prefix: list[str], args: list[str], check: bool = True) -> Optional[str]:
+        try:
+            completed = subprocess.run(
+                [*prefix, *args],
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                timeout=max(self.timeout, 30),
+                check=False,
+            )
+        except Exception:
+            return None
+
+        if check and completed.returncode != 0:
+            return None
+        return (completed.stdout or "").strip()
 
     def _load_cached_html(self, product_id: str) -> str:
         candidates = [

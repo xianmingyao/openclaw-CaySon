@@ -279,7 +279,7 @@ def test_load_batch_items_supports_hunan_template_xlsx(tmp_path: Path):
     assert items[0]["business_line"] == "慧采"
     assert items[0]["title"] == "公牛插座B5440"
     assert items[0]["brand"] == "公牛"
-    assert items[0]["model"] == "无"
+    assert items[0]["model"] == "GN-B5440"
     assert items[0]["length_mm"] == 250
     assert items[0]["weight_kg"] == 0.5
     assert items[0]["unit"] == "个"
@@ -288,6 +288,10 @@ def test_load_batch_items_supports_hunan_template_xlsx(tmp_path: Path):
     assert items[0]["market_price"] == 70
     assert items[0]["url"] == "https://item.jd.com/16793098028.html"
     assert items[0]["notes"] == "数量：2"
+    assert items[0]["publish_mode"] == "single"
+    assert items[0]["source_meta"]["sheet_name"] == "上架模板"
+    assert items[0]["source_meta"]["row_index"] == 4
+    assert items[0]["source_meta"]["total_items"] == 1
 
 
 def test_read_json_file_supports_utf8_bom(tmp_path: Path):
@@ -309,6 +313,8 @@ def test_build_product_model_maps_new_fields():
             "price": 199.9,
             "url": "https://item.jd.com/123.html",
             "attributes": {"颜色": "黑色"},
+            "description_images": ["detail-a.jpg"],
+            "source_meta": {"publish_mode": "single", "sheet_name": "上架模板"},
         },
         "images": ["a.jpg", "b.jpg"],
     }
@@ -319,7 +325,26 @@ def test_build_product_model_maps_new_fields():
     assert product.source_url == "https://item.jd.com/123.html"
     assert product.category_path == "数码>手机"
     assert product.images == ["a.jpg", "b.jpg"]
+    assert product.detail_images == ["detail-a.jpg"]
+    assert product.source_meta["publish_mode"] == "single"
     assert product.attributes == {"颜色": "黑色"}
+
+
+def test_settings_builds_mysql_url_from_components(monkeypatch):
+    monkeypatch.delenv("MYSQL_URL", raising=False)
+    monkeypatch.setenv("MYSQL_HOST", "8.137.122.11")
+    monkeypatch.setenv("MYSQL_PORT", "3306")
+    monkeypatch.setenv("MYSQL_USER", "root")
+    monkeypatch.setenv("MYSQL_PASSWORD", "018a3b67aa9199bb")
+    monkeypatch.setenv("MYSQL_DATABASE", "jingmai_agent")
+    monkeypatch.setenv("MYSQL_CHARSET", "utf8mb4")
+
+    from settings import Settings
+
+    settings = Settings()
+
+    assert settings.MYSQL_URL.startswith("mysql+pymysql://root:018a3b67aa9199bb@8.137.122.11:3306/jingmai_agent")
+    assert settings.MYSQL_URL.endswith("?charset=utf8mb4")
 
 
 def test_db_tracks_task_and_step_results():
@@ -515,6 +540,52 @@ def test_locator_win32_falls_back_to_jmworkstation_host_window(monkeypatch):
     assert window.is_visible is False
 
 
+def test_locator_win32_prefers_non_blank_candidate(monkeypatch):
+    import infrastructure.locator as locator_module
+
+    monkeypatch.setattr(locator_module, "WIN32_AVAILABLE", True)
+
+    hwnds = [101, 102]
+    titles = {101: "jd_blank", 102: "JMWorkStation"}
+    rects = {101: (0, 0, 2560, 1392), 102: (10, 10, 2400, 1300)}
+
+    class FakeWin32Gui:
+        @staticmethod
+        def GetWindowText(hwnd):
+            return titles[hwnd]
+
+        @staticmethod
+        def GetWindowRect(hwnd):
+            return rects[hwnd]
+
+        @staticmethod
+        def IsWindowVisible(hwnd):
+            return True
+
+        @staticmethod
+        def EnumWindows(callback, results):
+            for hwnd in hwnds:
+                callback(hwnd, results)
+
+    monkeypatch.setattr(locator_module, "win32gui", FakeWin32Gui)
+    monkeypatch.setattr(
+        locator_module.JingmaiLocator,
+        "_get_process_name",
+        staticmethod(lambda hwnd: "jmworkstation"),
+    )
+    monkeypatch.setattr(
+        locator_module.JingmaiLocator,
+        "_window_surface_is_blank",
+        lambda self, hwnd=None: (hwnd or self.hwnd) == 101,
+    )
+
+    locator = JingmaiLocator()
+    window = locator._find_window_win32()
+
+    assert window is not None
+    assert window.hwnd == 102
+
+
 def test_locator_refreshes_live_window_rect_before_scaling(monkeypatch):
     import infrastructure.locator as locator_module
 
@@ -599,6 +670,47 @@ def test_activate_window_does_not_shrink_large_window(monkeypatch):
     assert locator.activate_window() is True
     assert calls["set_window_pos"] == 0
     assert locator.window_rect == (0, 0, 2560, 1392)
+
+
+def test_activate_window_recovers_blank_surface(monkeypatch):
+    import infrastructure.locator as locator_module
+
+    monkeypatch.setattr(locator_module, "WIN32_AVAILABLE", True)
+
+    class FakeWin32Gui:
+        @staticmethod
+        def ShowWindow(hwnd, flag):
+            return None
+
+        @staticmethod
+        def GetWindowRect(hwnd):
+            return (0, 0, 2560, 1392)
+
+        @staticmethod
+        def SetWindowPos(hwnd, insert_after, x, y, width, height, flags):
+            return None
+
+        @staticmethod
+        def SetForegroundWindow(hwnd):
+            return None
+
+    recovered = {"called": False}
+
+    monkeypatch.setattr(locator_module, "win32gui", FakeWin32Gui)
+    monkeypatch.setattr(locator_module.time, "sleep", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(locator_module.JingmaiLocator, "_window_surface_is_blank", lambda self, hwnd=None: True)
+
+    def fake_recover(self):
+        recovered["called"] = True
+        return True
+
+    monkeypatch.setattr(locator_module.JingmaiLocator, "_recover_blank_window", fake_recover)
+
+    locator = JingmaiLocator()
+    locator.hwnd = 123
+
+    assert locator.activate_window() is True
+    assert recovered["called"] is True
 
 
 def test_fill_text_fails_when_focus_click_fails():
@@ -724,6 +836,54 @@ def test_select_category_fails_when_next_button_stays_disabled(monkeypatch):
     assert "selected_category=元器件" in result["message"]
     assert "last_leaf_candidate=工业品 > 中低压配电 > 插座" in result["message"]
     assert result["steps"] == ["search", "search_select", "leaf_select"]
+
+
+def test_select_leaf_category_candidate_tries_multiple_deeper_matches(monkeypatch):
+    import actions.navigation as navigation_module
+
+    class Locator:
+        def click(self, x, y, delay=0):
+            return True
+
+    clicked = []
+    enabled_state = {"count": 0}
+
+    def fake_click_uia_element(element, log=None):
+        clicked.append(element["name"])
+        return True
+
+    def fake_next_enabled(*args, **kwargs):
+        enabled_state["count"] += 1
+        return enabled_state["count"] >= 2
+
+    monkeypatch.setattr(
+        navigation_module,
+        "_collect_category_choice_candidates",
+        lambda *args, **kwargs: [
+            {
+                "name": "工业品 > 插座",
+                "score": 100,
+                "element": {"name": "工业品 > 插座"},
+                "rect": SimpleNamespace(top=320, left=200, right=320, bottom=360),
+            },
+            {
+                "name": "工业品 > 中低压配电 > 插座",
+                "score": 95,
+                "element": {"name": "工业品 > 中低压配电 > 插座"},
+                "rect": SimpleNamespace(top=300, left=200, right=360, bottom=340),
+            },
+        ],
+    )
+    monkeypatch.setattr(navigation_module, "click_uia_element", fake_click_uia_element)
+    monkeypatch.setattr(navigation_module, "_is_category_next_enabled", fake_next_enabled)
+    monkeypatch.setattr(navigation_module, "_has_product_info_markers", lambda *args, **kwargs: False)
+
+    result = navigation_module._select_leaf_category_candidate("插座", locator=Locator())
+
+    assert result["success"] is True
+    assert result["name"] == "工业品 > 插座"
+    assert result["attempted_names"] == ["工业品 > 中低压配电 > 插座", "工业品 > 插座"]
+    assert clicked == ["工业品 > 中低压配电 > 插座", "工业品 > 插座"]
 
 
 def test_select_category_succeeds_after_leaf_candidate_selection(monkeypatch):
@@ -1574,6 +1734,9 @@ def test_fill_product_info_supports_attributes(monkeypatch):
             "brand_select": (7, 7),
             "protection_level": (8, 8),
             "material": (9, 9),
+            "socket_config": (10, 10),
+            "rated_voltage": (11, 11),
+            "cable_length": (12, 12),
         },
     )
 
@@ -2003,6 +2166,79 @@ def test_executor_preserves_fill_product_info_precheck_for_hard_stop():
 
     assert result["status"] == "error"
     assert result["suggested_action"] == "stop"
+
+
+def test_executor_coerces_find_window_precheck_for_browser_hosted_jingmai():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "find_window",
+        {
+            "status": "error",
+            "reason": "娴忚鍣ㄦ壙杞戒含楹︿富椤甸潰锛屽彲瑙佸伐浣滃彴涓庡晢瀹跺悗鍙?",
+            "current_state": "JMWorkStation browser host",
+            "suggested_action": "stop",
+        },
+        history=[],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+    assert "browser-hosted" in result["reason"]
+
+
+def test_executor_preserves_find_window_precheck_for_blank_window():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "activate_window",
+        {
+            "status": "error",
+            "reason": "鐧藉睆锛岀獥鍙ｆ湭鍔犺浇瀹屾垚",
+            "current_state": "jingmai host window",
+            "suggested_action": "recover",
+        },
+        history=[],
+    )
+
+    assert result["status"] == "error"
+    assert result["suggested_action"] == "recover"
+
+
+def test_executor_coerces_select_category_postcheck_when_product_info_visible():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_postcheck_for_action(
+        "select_category",
+        {
+            "status": "error",
+            "reason": "edit product page already shows title, brand, price and next button",
+            "current_state": "edit product",
+            "suggested_action": "recover",
+        },
+        history=[],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+
+
+def test_executor_coerces_fill_product_info_postcheck_when_form_is_populated():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_postcheck_for_action(
+        "fill_product_info",
+        {
+            "status": "error",
+            "reason": "title, brand, market price and jd price are visible and match target",
+            "current_state": "product basic info",
+            "suggested_action": "recover",
+        },
+        history=[],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
 
 
 def test_ensure_basic_info_page_skips_unsafe_click_on_category_page(monkeypatch):

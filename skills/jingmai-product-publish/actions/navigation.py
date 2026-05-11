@@ -41,6 +41,11 @@ def _tokenize_text(text: str) -> list[str]:
     return tokens[:6]
 
 
+def _category_depth(name: str) -> int:
+    text = str(name or "")
+    return text.count(">") + text.count("＞") + text.count("/")
+
+
 def _page_contains_text(expected_text: str, locator=None, log=None) -> bool:
     locator = _get_locator(locator, log)
     window = find_jingmai_uia_window(locator=locator, log=log)
@@ -173,22 +178,42 @@ def _select_leaf_category_candidate(search_text: str, locator=None, log=None) ->
     if not candidates:
         return {"success": False, "message": f"no category candidate matched: {search_text}"}
 
-    best = sorted(
+    ranked = sorted(
         candidates,
-        key=lambda item: (-item["score"], item["rect"].top, item["rect"].left, len(item["name"])),
-    )[0]
-    if click_uia_element(best["element"], log=log):
-        time.sleep(1.0)
-        return {"success": True, "name": best["name"], "score": best["score"]}
-
-    rect = best["rect"]
-    cx = (rect.left + rect.right) // 2
-    cy = (rect.top + rect.bottom) // 2
+        key=lambda item: (-_category_depth(item["name"]), -item["score"], item["rect"].top, item["rect"].left, len(item["name"])),
+    )
     locator = _get_locator(locator, log)
-    if locator.click(cx, cy, delay=0.8):
+    attempted_names = []
+    last_error = ""
+
+    for candidate in ranked[:5]:
+        attempted_names.append(candidate["name"])
+        clicked = click_uia_element(candidate["element"], log=log)
+        if not clicked:
+            rect = candidate["rect"]
+            cx = (rect.left + rect.right) // 2
+            cy = (rect.top + rect.bottom) // 2
+            clicked = locator.click(cx, cy, delay=0.8)
+        if not clicked:
+            last_error = f"failed to click matched category candidate: {candidate['name']}"
+            continue
+
         time.sleep(1.0)
-        return {"success": True, "name": best["name"], "score": best["score"], "method": "coordinate"}
-    return {"success": False, "message": f"failed to click matched category candidate: {best['name']}"}
+        if _is_category_next_enabled(locator=locator, log=log) or _has_product_info_markers(locator=locator, log=log):
+            return {
+                "success": True,
+                "name": candidate["name"],
+                "score": candidate["score"],
+                "attempted_names": attempted_names,
+            }
+
+    if attempted_names:
+        return {
+            "success": False,
+            "message": last_error or f"leaf candidates clicked but next button stayed disabled: {attempted_names}",
+            "attempted_names": attempted_names,
+        }
+    return {"success": False, "message": f"failed to click matched category candidate: {search_text}"}
 
 
 def _build_category_disabled_reason(search_text: str, locator=None, log=None) -> str:
@@ -472,8 +497,12 @@ def select_category(
                     message = (
                         f"{message}; last_leaf_candidate={leaf_result.get('name')}"
                     )
+                    if leaf_result.get("attempted_names"):
+                        message = f"{message}; attempted_leaf_candidates={leaf_result.get('attempted_names')}"
                 elif leaf_result.get("message"):
                     message = f"{message}; leaf_select_error={leaf_result.get('message')}"
+                    if leaf_result.get("attempted_names"):
+                        message = f"{message}; attempted_leaf_candidates={leaf_result.get('attempted_names')}"
                 return {
                     "success": False,
                     "message": message,

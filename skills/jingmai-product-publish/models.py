@@ -28,6 +28,8 @@ class Product(Base):
     source = Column(String(64), default="manual", comment="来源")
     attributes = Column(JSON, default=dict, comment="属性")
     images = Column(JSON, default=list, comment="图片列表")
+    detail_images = Column(JSON, default=list, comment="详情图本地路径")
+    source_meta = Column(JSON, default=dict, comment="导入来源与上架模式元数据")
     raw_data = Column(JSON, default=dict, comment="原始数据")
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)

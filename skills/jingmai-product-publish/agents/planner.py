@@ -396,7 +396,14 @@ publish_product - 发布商品
                 {"field": "cable_length", "label": "电缆长度", "value": attributes.get("cable_length", product.get("cable_length", ""))},
             ],
             "sales_attributes": [
-                {"field": "current", "label": "电流", "value": attributes.get("current", product.get("current", ""))},
+                {
+                    "field": "current",
+                    "label": "电流",
+                    "value": attributes.get("current")
+                    or attributes.get("rated_current")
+                    or product.get("current", "")
+                    or product.get("rated_current", ""),
+                },
                 {"field": "sku_image", "label": "图片设置", "value": product.get("sku_image", "") or product.get("image", "")},
             ],
             "description": [

@@ -33,15 +33,26 @@ class DatabaseManager:
         self._engine = None
         self._session_factory = None
         self._db_type = "none"
+        self._mysql_pool_size = 10
+        self._mysql_max_overflow = 20
 
         # 支持 settings 对象或独立参数
         if settings is not None:
             mysql_url = getattr(settings, "MYSQL_URL", "") or mysql_url
             sqlite_url = getattr(settings, "SQLITE_URL", "") or sqlite_url
+            self._mysql_pool_size = int(getattr(settings, "MYSQL_POOL_SIZE", 10) or 10)
+            self._mysql_max_overflow = int(getattr(settings, "MYSQL_MAX_OVERFLOW", 20) or 20)
 
         if mysql_url:
             try:
-                engine = create_engine(mysql_url, pool_pre_ping=True, pool_recycle=3600, echo=False)
+                engine = create_engine(
+                    mysql_url,
+                    pool_pre_ping=True,
+                    pool_recycle=3600,
+                    pool_size=self._mysql_pool_size,
+                    max_overflow=self._mysql_max_overflow,
+                    echo=False,
+                )
                 with engine.connect() as conn:
                     conn.execute(text("SELECT 1"))
                 self._engine = engine
@@ -102,6 +113,8 @@ class DatabaseManager:
                 "source",
                 "attributes",
                 "images",
+                "detail_images",
+                "source_meta",
                 "raw_data",
             ):
                 setattr(existing, field, getattr(product, field))
@@ -226,6 +239,8 @@ class DatabaseManager:
                 "category_path": self._column_sql("category_path"),
                 "attributes": self._column_sql("attributes"),
                 "images": self._column_sql("images"),
+                "detail_images": self._column_sql("detail_images"),
+                "source_meta": self._column_sql("source_meta"),
             },
             "task_steps": {
                 "result": self._column_sql("result"),
@@ -250,6 +265,8 @@ class DatabaseManager:
                 "category_path": "category_path VARCHAR(512) NOT NULL DEFAULT ''",
                 "attributes": "attributes JSON NULL",
                 "images": "images JSON NULL",
+                "detail_images": "detail_images JSON NULL",
+                "source_meta": "source_meta JSON NULL",
                 "result": "result JSON NULL",
             }
         else:
@@ -258,6 +275,8 @@ class DatabaseManager:
                 "category_path": "category_path VARCHAR(512) DEFAULT ''",
                 "attributes": "attributes JSON DEFAULT '{}'",
                 "images": "images JSON DEFAULT '[]'",
+                "detail_images": "detail_images JSON DEFAULT '[]'",
+                "source_meta": "source_meta JSON DEFAULT '{}'",
                 "result": "result JSON DEFAULT '{}'",
             }
         return mapping[column_name]

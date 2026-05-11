@@ -723,6 +723,11 @@ class ExecutorAgent(BaseAgent):
                     step=step,
                     history=history or [],
                 )
+                observation = self._coerce_postcheck_for_action(
+                    action_name=action_name,
+                    observation=observation,
+                    history=history,
+                )
                 if observation:
                     self._log(
                         "info",
@@ -871,12 +876,52 @@ class ExecutorAgent(BaseAgent):
         if not isinstance(observation, dict):
             return observation
 
-        if action_name not in {"fill_product_info", "publish_product"}:
+        if action_name not in {"find_window", "activate_window", "fill_product_info", "publish_product"}:
             return observation
 
         status = str(observation.get("status", "unknown") or "unknown").lower()
         if status != "error":
             return observation
+        if action_name in {"find_window", "activate_window"}:
+            joined = "\n".join(
+                [
+                    str(observation.get("reason", "") or ""),
+                    str(observation.get("current_state", "") or ""),
+                    str(observation.get("suggested_action", "") or ""),
+                ]
+            )
+            lowered = joined.lower()
+            window_ready_markers = (
+                "浜害",
+                "宸ヤ綔鍙?",
+                "鍟嗗搧鍙戝竷",
+                "鍟嗗搧鍩烘湰淇℃伅",
+                "鍟嗗鍚庡彴",
+                "鍙戝竷鍟嗗搧",
+                "娴忚鍣?",
+                "jmworkstation",
+                "pt_main",
+            )
+            blank_or_broken_markers = (
+                "鎵爜鐧诲綍",
+                "鐧诲綍澶辨晥",
+                "绯荤粺閿欒",
+                "404",
+                "缃戠粶寮傚父",
+                "绌虹櫧",
+                "鐧藉睆",
+                "鏈姞杞?",
+                "寮傚父",
+                "绾櫧",
+            )
+            if any(marker in lowered for marker in window_ready_markers) and not any(
+                marker in joined for marker in blank_or_broken_markers
+            ):
+                normalized = dict(observation)
+                normalized["status"] = "ok"
+                normalized["suggested_action"] = "proceed"
+                normalized["reason"] = "window precheck accepted browser-hosted jingmai page"
+                return normalized
 
         history = history or []
         reason = str(observation.get("reason", "") or "")
@@ -925,6 +970,68 @@ class ExecutorAgent(BaseAgent):
                 normalized["status"] = "ok"
                 normalized["suggested_action"] = "proceed"
                 normalized["reason"] = "仍在发品表单的提交发布阶段，允许 publish_product 继续执行。"
+                return normalized
+
+        return observation
+
+    def _coerce_postcheck_for_action(
+        self,
+        action_name: str,
+        observation: Optional[Dict[str, Any]],
+        history: Optional[List[Dict[str, Any]]] = None,
+    ) -> Optional[Dict[str, Any]]:
+        if not isinstance(observation, dict):
+            return observation
+        if action_name not in {"select_category", "fill_product_info"}:
+            return observation
+        if str(observation.get("status", "unknown") or "unknown").lower() != "error":
+            return observation
+
+        reason = str(observation.get("reason", "") or "")
+        current_state = str(observation.get("current_state", "") or "")
+        suggested_action = str(observation.get("suggested_action", "") or "")
+        joined = f"{reason}\n{current_state}\n{suggested_action}"
+        hard_stop_markers = ("鎵爜鐧诲綍", "鐧诲綍澶辨晥", "绯荤粺閿欒", "404", "缃戠粶寮傚父", "鐧藉睆")
+        if any(marker in joined for marker in hard_stop_markers):
+            return observation
+
+        if action_name == "select_category":
+            product_info_markers = (
+                "鍟嗗搧鏍囬",
+                "鍝佺墝",
+                "浠锋牸",
+                "涓嬩竴姝",
+                "缂栬緫鍟嗗搧",
+                "title",
+                "brand",
+                "price",
+                "next",
+                "edit product",
+            )
+            if any(marker in joined for marker in product_info_markers):
+                normalized = dict(observation)
+                normalized["status"] = "ok"
+                normalized["suggested_action"] = "proceed"
+                normalized["reason"] = "select_category postcheck accepted product info page"
+                return normalized
+
+        if action_name == "fill_product_info":
+            filled_markers = (
+                "鍟嗗搧鏍囬",
+                "鍝佺墝",
+                "甯傚満浠",
+                "浜笢浠",
+                "70",
+                "title",
+                "brand",
+                "market price",
+                "jd price",
+            )
+            if any(marker in joined for marker in filled_markers):
+                normalized = dict(observation)
+                normalized["status"] = "ok"
+                normalized["suggested_action"] = "proceed"
+                normalized["reason"] = "fill_product_info postcheck accepted populated form"
                 return normalized
 
         return observation

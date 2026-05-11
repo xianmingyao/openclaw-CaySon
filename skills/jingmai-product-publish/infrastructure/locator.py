@@ -168,7 +168,7 @@ class JingmaiLocator:
         if WIN32_AVAILABLE and self.hwnd:
             try:
                 rect = win32gui.GetWindowRect(self.hwnd)
-                if self._is_usable_rect(rect):
+                if self._is_usable_rect(rect) and not self._window_surface_is_blank(self.hwnd):
                     title = win32gui.GetWindowText(self.hwnd)
                     left, top, right, bottom = rect
                     self.window_rect = rect
@@ -229,6 +229,9 @@ class JingmaiLocator:
             if not self._is_matching_title(title):
                 if not (has_jingmai_hint and process_name in BROWSER_PROCESS_HINTS):
                     return None
+            if self._window_surface_is_blank(hwnd):
+                self._log('debug', f"skip blank foreground window: title='{title}', process='{process_name}'")
+                return None
 
             left, top, right, bottom = rect
             self.hwnd = hwnd
@@ -322,20 +325,21 @@ class JingmaiLocator:
             left, top, right, bottom = rect
             visible = bool(win32gui.IsWindowVisible(hwnd))
             area = (right - left) * (bottom - top)
+            blank = self._window_surface_is_blank(hwnd)
             score = (
                 4 if title_match and visible else
                 3 if title_match else
                 2 if process_match and visible else
                 1
             )
-            results.append((score, area, hwnd, rect, title, visible, process_name))
+            results.append((0 if blank else 1, score, area, hwnd, rect, title, visible, process_name))
 
         win32gui.EnumWindows(enum_handler, candidates)
 
         if candidates:
-            _, _, hwnd, rect, title, visible, process_name = max(
+            _, _, _, hwnd, rect, title, visible, process_name = max(
                 candidates,
-                key=lambda item: (item[0], item[1]),
+                key=lambda item: (item[0], item[1], item[2]),
             )
             left, top, right, bottom = rect
             self.hwnd = hwnd
@@ -388,11 +392,64 @@ class JingmaiLocator:
             if not self._is_usable_rect(self.window_rect):
                 self._log('error', f"窗口位置异常，疑似无效目标: {self.window_rect}")
                 return False
+            if self._window_surface_is_blank(self.hwnd):
+                self._log('warning', "window activated but surface is blank, trying recovery")
+                if not self._recover_blank_window():
+                    return False
+                self.window_rect = win32gui.GetWindowRect(self.hwnd)
             self._log('ok', f"窗口已激活: {self.window_rect}")
             return True
         except Exception as e:
             self._log('error', f"窗口激活失败: {e}")
             return False
+
+    def _window_surface_is_blank(self, hwnd: Optional[int] = None) -> bool:
+        hwnd = hwnd or self.hwnd
+        if not hwnd:
+            return False
+        try:
+            image = self._print_window_capture(hwnd)
+            if image is None:
+                return False
+            gray = image.convert("L").resize((64, 64))
+            pixels = list(gray.getdata())
+            if not pixels:
+                return False
+            min_px = min(pixels)
+            max_px = max(pixels)
+            avg_px = sum(pixels) / len(pixels)
+            return avg_px >= 245 and (max_px - min_px) <= 4
+        except Exception:
+            return False
+
+    def _recover_blank_window(self) -> bool:
+        if not self.hwnd or not WIN32_AVAILABLE:
+            return False
+        try:
+            win32gui.ShowWindow(self.hwnd, win32con.SW_RESTORE)
+            time.sleep(0.2)
+            win32gui.ShowWindow(self.hwnd, win32con.SW_MAXIMIZE)
+            time.sleep(0.2)
+            win32gui.BringWindowToTop(self.hwnd)
+            time.sleep(0.3)
+            if not self._window_surface_is_blank(self.hwnd):
+                return True
+        except Exception as exc:
+            self._log('debug', f"blank window restore attempt failed: {exc}")
+
+        alt = self._find_window_win32()
+        if not alt:
+            return False
+        self.hwnd = alt.hwnd
+        self.window_rect = alt.rect
+        try:
+            win32gui.ShowWindow(self.hwnd, win32con.SW_RESTORE)
+            time.sleep(0.2)
+            win32gui.BringWindowToTop(self.hwnd)
+            time.sleep(0.3)
+        except Exception:
+            pass
+        return not self._window_surface_is_blank(self.hwnd)
 
     @staticmethod
     def _is_matching_title(title: str) -> bool:

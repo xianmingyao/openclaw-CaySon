@@ -521,6 +521,7 @@ def _collect_attribute_values(product: Dict[str, Any]) -> Dict[str, Any]:
         "socket_config": ["socket_config", "孔型配置", "孔位配置", "插孔配置"],
         "rated_voltage": ["rated_voltage", "额定电压", "voltage"],
         "cable_length": ["cable_length", "电缆长度", "线长", "导线长度"],
+        "current": ["current", "rated_current", "电流", "额定电流"],
     }
     for field, field_aliases in aliases.items():
         for alias in field_aliases:
@@ -1137,6 +1138,7 @@ def _fill_model_field_v2(model: str, locator=None, log=None) -> Dict[str, Any]:
 
 def _fill_brand_field_v2(brand: str, locator=None, log=None) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
+    from config.jingmai_coords import PRODUCT_INFO_PAGE
     _scroll_publish_page_to_top()
     if _page_text_contains(brand, x=900, y=520):
         return {
@@ -1147,7 +1149,7 @@ def _fill_brand_field_v2(brand: str, locator=None, log=None) -> Dict[str, Any]:
             "verify_success": True,
             "success": True,
         }
-    if _visible_text_contains(brand, locator=locator, log=log, top_range=(500, 590), left_range=(620, 1040)):
+    if _visible_text_contains(brand, locator=locator, log=log, top_range=(320, 460), left_range=(480, 1040)):
         return {
             "field": "brand",
             "method": "uia-visible-text",
@@ -1198,6 +1200,219 @@ def _fill_brand_field_v2(brand: str, locator=None, log=None) -> Dict[str, Any]:
     if not success:
         payload["error"] = result.get("message", "brand verify failed")
     return payload
+
+
+def _dropdown_selection_confirmed(
+    expected_text: str,
+    *,
+    locator=None,
+    log=None,
+    top_range: tuple[int, int] | None = None,
+    left_range: tuple[int, int] | None = None,
+) -> bool:
+    if _visible_text_contains(
+        expected_text,
+        locator=locator,
+        log=log,
+        top_range=top_range,
+        left_range=left_range,
+    ):
+        return True
+    active = _verify_active_text("title", expected_text)
+    return bool(active.get("success"))
+
+
+def _fill_brand_field_v2(brand: str, locator=None, log=None) -> Dict[str, Any]:
+    from config.jingmai_coords import PRODUCT_INFO_PAGE
+
+    locator = _get_locator(locator, log)
+    _scroll_publish_page_to_top()
+    if _page_text_contains(brand, x=900, y=520):
+        return {
+            "field": "brand",
+            "method": "page-text",
+            "value": brand,
+            "write_success": True,
+            "verify_success": True,
+            "success": True,
+        }
+    if _dropdown_selection_confirmed(
+        brand,
+        locator=locator,
+        log=log,
+        top_range=(320, 460),
+        left_range=(480, 1040),
+    ):
+        return {
+            "field": "brand",
+            "method": "uia-visible-text",
+            "value": brand,
+            "write_success": True,
+            "verify_success": True,
+            "success": True,
+        }
+
+    center = PRODUCT_INFO_PAGE.get("brand_select")
+    target = _find_named_control("鍝佺墝", ["ComboBox"], locator=locator, log=log, top_range=(320, 460), left_range=(360, 760))
+    if target:
+        _, _, rect = target
+        center = ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
+    if not center:
+        return {
+            "field": "brand",
+            "method": "uia-combobox",
+            "value": brand,
+            "write_success": False,
+            "verify_success": False,
+            "success": False,
+            "error": "brand combobox not found",
+        }
+
+    result = _select_dropdown_option(
+        brand,
+        center[0],
+        center[1],
+        locator=locator,
+        log=log,
+        preferred_keywords=["鍝佺墝"],
+        top_range=(320, 760),
+        vision_template="brand_option.png",
+    )
+    success = result.get("success", False) and (
+        _dropdown_selection_confirmed(
+            brand,
+            locator=locator,
+            log=log,
+            top_range=(320, 460),
+            left_range=(480, 1120),
+        )
+        or result.get("method") in {"uia-local", "vision", "keyboard"}
+    )
+    payload = {
+        "field": "brand",
+        "method": result.get("method", "select_dropdown"),
+        "value": brand,
+        "write_success": result.get("success", False),
+        "verify_success": success,
+        "success": success,
+    }
+    if not success:
+        payload["error"] = result.get("message", "brand verify failed")
+    return payload
+
+
+def _fill_supported_attributes(product: Dict[str, Any], locator=None, log=None) -> list[Dict[str, Any]]:
+    from config.jingmai_coords import PRODUCT_INFO_PAGE
+
+    locator = _get_locator(locator, log)
+    attribute_values = _collect_attribute_values(product)
+    specs = [
+        {
+            "field": "protection_level",
+            "coords": PRODUCT_INFO_PAGE.get("protection_level"),
+            "value": attribute_values.get("protection_level"),
+            "preferred_keywords": ["IP"],
+            "vision_template": "protection_level_option.png",
+            "label_keywords": ["IP", "闃叉姢绛夌骇"],
+        },
+        {
+            "field": "material",
+            "coords": PRODUCT_INFO_PAGE.get("material"),
+            "value": attribute_values.get("material"),
+            "preferred_keywords": ["鏉愯川"],
+            "vision_template": "material_option.png",
+            "label_keywords": ["鏉愯川"],
+        },
+        {
+            "field": "socket_config",
+            "coords": PRODUCT_INFO_PAGE.get("socket_config"),
+            "value": attribute_values.get("socket_config"),
+            "preferred_keywords": ["瀛斿瀷", "鎻掑瓟"],
+            "vision_template": "",
+            "label_keywords": ["瀛斿瀷閰嶇疆", "瀛斾綅閰嶇疆", "鎻掑瓟閰嶇疆"],
+        },
+        {
+            "field": "rated_voltage",
+            "coords": PRODUCT_INFO_PAGE.get("rated_voltage"),
+            "value": attribute_values.get("rated_voltage"),
+            "preferred_keywords": ["棰濆畾", "鐢靛帇"],
+            "vision_template": "",
+            "label_keywords": ["棰濆畾鐢靛帇", "鐢靛帇"],
+        },
+        {
+            "field": "cable_length",
+            "coords": PRODUCT_INFO_PAGE.get("cable_length"),
+            "value": attribute_values.get("cable_length"),
+            "preferred_keywords": ["闀垮害", "绾块暱"],
+            "vision_template": "",
+            "label_keywords": ["鐢电紗闀垮害", "瀵肩嚎闀垮害", "绾块暱"],
+        },
+        {
+            "field": "current",
+            "coords": PRODUCT_INFO_PAGE.get("current"),
+            "value": attribute_values.get("current"),
+            "preferred_keywords": ["鐢垫祦", "棰濆畾"],
+            "vision_template": "",
+            "label_keywords": ["鐢垫祦", "棰濆畾鐢垫祦"],
+        },
+    ]
+
+    results = []
+    for spec in specs:
+        if spec["value"] in (None, ""):
+            continue
+        coords = spec["coords"] or _find_labeled_dropdown_center(
+            spec.get("label_keywords") or spec["preferred_keywords"],
+            locator=locator,
+            log=log,
+            top_range=(620, 920),
+        )
+        if not coords:
+            results.append(
+                {
+                    "field": spec["field"],
+                    "method": "dynamic-label-search",
+                    "value": str(spec["value"]),
+                    "write_success": False,
+                    "verify_success": False,
+                    "success": False,
+                    "error": f"{spec['field']} dropdown anchor not found",
+                }
+            )
+            continue
+        result = _select_dropdown_option(
+            str(spec["value"]),
+            coords[0],
+            coords[1],
+            locator=locator,
+            log=log,
+            preferred_keywords=spec["preferred_keywords"],
+            top_range=(max(240, coords[1] - 120), coords[1] + 260),
+            vision_template=spec["vision_template"],
+        )
+        success = result.get("success", False) and (
+            _dropdown_selection_confirmed(
+                str(spec["value"]),
+                locator=locator,
+                log=log,
+                top_range=(max(240, coords[1] - 80), coords[1] + 80),
+                left_range=(max(0, coords[0] - 420), coords[0] + 420),
+            )
+            or result.get("method") in {"uia-local", "vision", "keyboard"}
+        )
+        results.append(
+            {
+                "field": spec["field"],
+                "method": result.get("method", "select_dropdown"),
+                "value": str(spec["value"]),
+                "write_success": result.get("success", False),
+                "verify_success": success,
+                "success": success,
+                **({"error": result.get("message", f"{spec['field']} verify failed")} if not success else {}),
+            }
+        )
+        time.sleep(0.5)
+    return results
 
 
 def _fill_procurement_erp_field(product: Dict[str, Any], locator=None, log=None) -> Optional[Dict[str, Any]]:

@@ -51,15 +51,17 @@ class OllamaProvider(LLMProvider):
         try:
             import httpx
 
-            # 读取并 base64 编码图片
-            image_data = self._prepare_image(image_path)
+            image_paths = [image_path]
+            extra_image_paths = kwargs.get("extra_image_paths") or kwargs.get("image_paths") or []
+            image_paths.extend([path for path in extra_image_paths if path and path not in image_paths])
+            image_data = [self._prepare_image(path) for path in image_paths if path]
 
             payload = {
                 "model": self._resolve_model_name(),
                 "prompt": prompt,
                 "stream": False,
                 "format": "json",
-                "images": [image_data],
+                "images": image_data,
             }
 
             resp = httpx.post(

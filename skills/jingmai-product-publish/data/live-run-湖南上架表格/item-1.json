@@ -1,0 +1,619 @@
+{
+  "task_id": "5951d0be",
+  "status": "running",
+  "current_step": 3,
+  "total_steps": 7,
+  "plan": [
+    {
+      "action": "find_window",
+      "params": {},
+      "required": true,
+      "workflow_section": "首页→商品→发布商品",
+      "workflow_requirement": "京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。 京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。",
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_excerpt": "京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。 京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。",
+      "workflow_paragraphs": [
+        3,
+        3
+      ],
+      "phase": "window_ready",
+      "react_contract": {
+        "goal": "定位并确认京麦客户端窗口存在。",
+        "precheck": {
+          "expect_any": [],
+          "reject_any": [
+            "Windows 桌面崩溃",
+            "远程连接错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "商智",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "网络异常",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "activate_window",
+      "params": {},
+      "required": true,
+      "workflow_section": "首页→商品→发布商品",
+      "workflow_requirement": "京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。 京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。",
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_excerpt": "京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。 京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。",
+      "workflow_paragraphs": [
+        3,
+        3
+      ],
+      "phase": "window_ready",
+      "react_contract": {
+        "goal": "将京麦窗口切到前台，避免后续动作命中错误页面。",
+        "precheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "navigate_to",
+      "params": {
+        "page": "publish"
+      },
+      "required": true,
+      "workflow_section": "首页→商品→发布商品",
+      "workflow_requirement": "京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。 京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。",
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_excerpt": "京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。 京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。",
+      "workflow_paragraphs": [
+        3,
+        3
+      ],
+      "phase": "publish_page_ready",
+      "react_contract": {
+        "goal": "进入发品流程，允许停在类目选择页或商品基本信息页。",
+        "precheck": {
+          "expect_any": [
+            "京麦",
+            "工作台",
+            "发布商品",
+            "商品管理"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品标题",
+            "品牌",
+            "价格",
+            "类目",
+            "下一步，完善其他商品信息"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "success",
+      "retries": 1
+    },
+    {
+      "action": "fill_product_info",
+      "params": {
+        "doc_sections": [
+          "商品信息",
+          "商品基本信息",
+          "采销信息",
+          "价格",
+          "商品属性",
+          "物流售后及其他",
+          "商品物流",
+          "商品售后及其他"
+        ],
+        "product": {
+          "business_line": "慧采",
+          "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+          "brand": "公牛",
+          "model": "GN-B5440",
+          "length_mm": 250,
+          "width_mm": 76,
+          "height_mm": 29,
+          "weight_kg": 0.5,
+          "unit": "个",
+          "jd_price": 70,
+          "url": "https://item.jd.com/16793098028.html",
+          "notes": "数量：2",
+          "price": 70,
+          "market_price": 70,
+          "source_meta": {
+            "source_file": "E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx",
+            "sheet_name": "上架模板",
+            "row_index": 4,
+            "workflow_doc": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+            "publish_mode": "single",
+            "item_index": 1,
+            "total_items": 1
+          },
+          "product_id": "16793098028",
+          "description": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】",
+          "description_images": [
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_01.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_02.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_03.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_04.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_05.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_06.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_07.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_08.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_09.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_10.jpg"
+          ],
+          "images": [
+            "https://img10.360buyimg.com/n1/jfs/t1/422544/34/15310/134120/69ea653fF22120638/0083320320846e3a.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/289066/38/17547/47714/68b7a9e1F077999b9/bda2e6fb92bf15d6.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/325368/16/15219/28312/68b7a9e2F47f11792/e251ae892f6052d0.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/324086/30/10653/26667/68ac0765Fc6909372/78b47036058d1035.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/334200/11/8397/32345/68b7a9e3F6055c0f4/92d504e465b473c0.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/289923/39/14071/27147/68b7a9e4Fd27770d0/b84b3f12dc9ddba9.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/329224/25/8349/14481/68b7a9f5F2dacc59a/a2b5772ffd41b743.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/348364/12/847/18025/68be36adF649d07ae/37bd35eac821f52b.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/286864/34/19523/15494/68be36aeF3c44c415/86f735eaa4c0a0b9.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/338253/12/8302/18326/68be36aeF78f7476d/deb51985dda64a57.jpg"
+          ],
+          "jd_url": "https://item.jd.com/16793098028.html",
+          "attributes": {
+            "socket_config": "4位五孔+4位两孔",
+            "rated_voltage": "250V",
+            "cable_length": "5米",
+            "rated_current": "10A",
+            "max_power": "2500W",
+            "color": "白色",
+            "current": "10A"
+          },
+          "publish_mode": "single"
+        },
+        "required_visual_fields": {
+          "basic_info": [
+            {
+              "field": "brand",
+              "label": "品牌",
+              "value": "公牛"
+            },
+            {
+              "field": "model",
+              "label": "型号",
+              "value": "GN-B5440"
+            },
+            {
+              "field": "socket_config",
+              "label": "孔型配置",
+              "value": "4位五孔+4位两孔"
+            },
+            {
+              "field": "rated_voltage",
+              "label": "额定电压",
+              "value": "250V"
+            },
+            {
+              "field": "cable_length",
+              "label": "电缆长度",
+              "value": "5米"
+            }
+          ],
+          "sales_attributes": [
+            {
+              "field": "current",
+              "label": "电流",
+              "value": "10A"
+            },
+            {
+              "field": "sku_image",
+              "label": "图片设置",
+              "value": ""
+            }
+          ],
+          "description": [
+            {
+              "field": "detail_content",
+              "label": "商品详情",
+              "value": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】"
+            }
+          ],
+          "logistics": [
+            {
+              "field": "sales_unit",
+              "label": "销售单位",
+              "value": "个"
+            },
+            {
+              "field": "package_type",
+              "label": "商品包装",
+              "value": ""
+            },
+            {
+              "field": "special_delivery_mark",
+              "label": "特殊发货时效标记",
+              "value": ""
+            },
+            {
+              "field": "packing_list",
+              "label": "包装清单",
+              "value": "数量：2"
+            },
+            {
+              "field": "warranty_period",
+              "label": "质保期",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "required": true,
+      "workflow_section": "商品信息 / 物流售后及其他",
+      "workflow_requirement": "商品信息 商品基本信息 商品基本信息包含标品选择、商品标题、品牌、短标题、型号、货号、是否厂直商品等信息。编辑商品信息时，带星号的为必填项，未带星号的可根据需上柜商品参考链接填写或不填。商品基本信息的必填项为：商品标题、品牌、型号、是否厂直商品这四项。 先选择品牌：上架过程中所有需要选择品牌的信息都应与第一次选择的保持一致; 物流售后及其他 商品物流 商品物流处需填写准确的商品重量、包装长宽高、包装规格、包装清单，这个涉及到发货考核，如实际发货重量和体积偏差过大会产生违约单、漏发少发会产生客诉。此外，特殊发货时效标记我们后台基本上是普通品，如是定制品需要正确选择定制品。以下为参考： 商品售后及其他",
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_excerpt": "商品信息 商品基本信息 商品基本信息包含标品选择、商品标题、品牌、短标题、型号、货号、是否厂直商品等信息。编辑商品信息时，带星号的为必填项，未带星号的可根据需上柜商品参考链接填写或不填。商品基本信息的必填项为：商品标题、品牌、型号、是否厂直商品这四项。 先选择品牌：上架过程中所有需要选择品牌的信息都应与第一次选择的保持一致; 物流售后及其他 商品物流 商品物流处需填写准确的商品重量、包装长宽高、包装规格、包装清单，这个涉及到发货考核，如实际发货重量和体积偏差过大会产生违约单、漏发少发会产生客诉。此外，特殊发货时效标记我们后台基本上是普通品，如是定制品需要正确选择定制品。以下为参考： 商品售后及其他",
+      "workflow_paragraphs": [
+        7,
+        8,
+        9,
+        10,
+        35,
+        36,
+        37,
+        38
+      ],
+      "phase": "product_info_ready",
+      "react_contract": {
+        "goal": "先确认当前屏幕仍在发品主流程，再填写基础信息与价格；如果视觉上已偏到商品描述/物流售后等标签，需要先回到商品基本信息并滚到价格区域。",
+        "precheck": {
+          "expect_any": [
+            "商品基本信息",
+            "商品标题",
+            "品牌",
+            "价格",
+            "商品描述",
+            "商品物流",
+            "商品售后及其他"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品标题",
+            "品牌",
+            "市场价",
+            "京东价",
+            "公牛（BULL） 插座/B5系列 带",
+            "70"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "pending"
+    },
+    {
+      "action": "fill_product_description",
+      "params": {
+        "doc_sections": [
+          "商品规格描述",
+          "商品图片",
+          "商品描述"
+        ],
+        "product": {
+          "business_line": "慧采",
+          "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+          "brand": "公牛",
+          "model": "GN-B5440",
+          "length_mm": 250,
+          "width_mm": 76,
+          "height_mm": 29,
+          "weight_kg": 0.5,
+          "unit": "个",
+          "jd_price": 70,
+          "url": "https://item.jd.com/16793098028.html",
+          "notes": "数量：2",
+          "price": 70,
+          "market_price": 70,
+          "source_meta": {
+            "source_file": "E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx",
+            "sheet_name": "上架模板",
+            "row_index": 4,
+            "workflow_doc": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+            "publish_mode": "single",
+            "item_index": 1,
+            "total_items": 1
+          },
+          "product_id": "16793098028",
+          "description": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】",
+          "description_images": [
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_01.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_02.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_03.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_04.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_05.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_06.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_07.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_08.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_09.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_10.jpg"
+          ],
+          "images": [
+            "https://img10.360buyimg.com/n1/jfs/t1/422544/34/15310/134120/69ea653fF22120638/0083320320846e3a.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/289066/38/17547/47714/68b7a9e1F077999b9/bda2e6fb92bf15d6.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/325368/16/15219/28312/68b7a9e2F47f11792/e251ae892f6052d0.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/324086/30/10653/26667/68ac0765Fc6909372/78b47036058d1035.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/334200/11/8397/32345/68b7a9e3F6055c0f4/92d504e465b473c0.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/289923/39/14071/27147/68b7a9e4Fd27770d0/b84b3f12dc9ddba9.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/329224/25/8349/14481/68b7a9f5F2dacc59a/a2b5772ffd41b743.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/348364/12/847/18025/68be36adF649d07ae/37bd35eac821f52b.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/286864/34/19523/15494/68be36aeF3c44c415/86f735eaa4c0a0b9.jpg",
+            "https://img10.360buyimg.com/n1/jfs/t1/338253/12/8302/18326/68be36aeF78f7476d/deb51985dda64a57.jpg"
+          ],
+          "jd_url": "https://item.jd.com/16793098028.html",
+          "attributes": {
+            "socket_config": "4位五孔+4位两孔",
+            "rated_voltage": "250V",
+            "cable_length": "5米",
+            "rated_current": "10A",
+            "max_power": "2500W",
+            "color": "白色",
+            "current": "10A"
+          },
+          "publish_mode": "single"
+        }
+      },
+      "required": true,
+      "workflow_section": "规格描述",
+      "workflow_requirement": "商品规格描述 商品图片 商品图片即商品主图：要求至少上传3张不同角度展示商品、不限底色的图片，最多上传10张；图片宽高比例为1:1，且宽高均大于480px，推荐尺寸『1440*1440』，建议大小3M内，仅支持jpg、jpeg、png；拖拽可调整图片顺序。 此外还需要上传一张只有商品主体的透明图（无底色），要求图片尺寸至少为480px*480px，比例1:1，仅支持png格式。",
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_excerpt": "商品规格描述 商品图片 商品图片即商品主图：要求至少上传3张不同角度展示商品、不限底色的图片，最多上传10张；图片宽高比例为1:1，且宽高均大于480px，推荐尺寸『1440*1440』，建议大小3M内，仅支持jpg、jpeg、png；拖拽可调整图片顺序。 此外还需要上传一张只有商品主体的透明图（无底色），要求图片尺寸至少为480px*480px，比例1:1，仅支持png格式。",
+      "workflow_paragraphs": [
+        21,
+        22,
+        23,
+        24
+      ],
+      "phase": "product_info_ready",
+      "react_contract": {
+        "goal": "鍦ㄥ晢瀹跺悗鍙板唴瀹岀粨鍟嗗搧璇︽儏锛岄伩鍏嶈繘鍏ラ珮绾х紪杈戝櫒锛屽宸茶鍏ラ珮绾х紪杈戝櫒鍒欏厛杩斿洖鍟嗗鍚庡彴銆?",
+        "precheck": {
+          "expect_any": [
+            "鍟嗗搧鎻忚堪",
+            "鍥炬枃缂栬緫",
+            "浠ｇ爜缂栬緫",
+            "楂樼骇缂栬緫",
+            "杩斿洖鍟嗗鍚庡彴"
+          ],
+          "reject_any": [
+            "鎵爜鐧诲綍",
+            "鐧诲綍澶辨晥",
+            "绯荤粺閿欒"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "鍟嗗搧鎻忚堪",
+            "鍥炬枃缂栬緫",
+            "浠ｇ爜缂栬緫",
+            "鍟嗗搧鐗╂祦"
+          ],
+          "reject_any": [
+            "鎵爜鐧诲綍",
+            "鐧诲綍澶辨晥",
+            "绯荤粺閿欒",
+            "杩斿洖鍟嗗鍚庡彴"
+          ]
+        }
+      },
+      "status": "pending"
+    },
+    {
+      "action": "publish_product",
+      "params": {},
+      "required": true,
+      "workflow_section": "最后检查并发布商品",
+      "workflow_requirement": "最后再检查所有带星号的信息都填写完整之后点击发布商品—继续发布就进入采销审核阶段，整个上架流程就结束了。",
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_excerpt": "最后再检查所有带星号的信息都填写完整之后点击发布商品—继续发布就进入采销审核阶段，整个上架流程就结束了。",
+      "workflow_paragraphs": [
+        40
+      ],
+      "phase": "publish_submitted",
+      "react_contract": {
+        "goal": "提交发布动作。",
+        "precheck": {
+          "expect_any": [
+            "发布商品",
+            "保存草稿",
+            "商品标题"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "提交成功",
+            "发布成功",
+            "商品列表",
+            "草稿"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "pending"
+    },
+    {
+      "action": "verify_result",
+      "params": {
+        "check_errors": true
+      },
+      "required": true,
+      "workflow_section": "继续发布 / 进入采销审核",
+      "workflow_requirement": "最后再检查所有带星号的信息都填写完整之后点击发布商品—继续发布就进入采销审核阶段，整个上架流程就结束了。",
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_excerpt": "最后再检查所有带星号的信息都填写完整之后点击发布商品—继续发布就进入采销审核阶段，整个上架流程就结束了。",
+      "workflow_paragraphs": [
+        40
+      ],
+      "phase": "publish_verified",
+      "react_contract": {
+        "goal": "检查当前页面是否存在错误提示，确认草稿或发布结果。",
+        "precheck": {
+          "expect_any": [
+            "发布商品",
+            "草稿",
+            "商品标题",
+            "商品列表"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "草稿",
+            "发布成功",
+            "商品列表",
+            "发布商品"
+          ],
+          "reject_any": [
+            "错误",
+            "异常",
+            "扫码登录",
+            "登录失效",
+            "系统错误"
+          ]
+        }
+      },
+      "status": "pending"
+    }
+  ],
+  "product_data": {
+    "business_line": "慧采",
+    "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+    "brand": "公牛",
+    "model": "GN-B5440",
+    "length_mm": 250,
+    "width_mm": 76,
+    "height_mm": 29,
+    "weight_kg": 0.5,
+    "unit": "个",
+    "jd_price": 70,
+    "url": "https://item.jd.com/16793098028.html",
+    "notes": "数量：2",
+    "price": 70,
+    "market_price": 70,
+    "source_meta": {
+      "source_file": "E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx",
+      "sheet_name": "上架模板",
+      "row_index": 4,
+      "workflow_doc": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "publish_mode": "single",
+      "item_index": 1,
+      "total_items": 1
+    },
+    "product_id": "16793098028",
+    "description": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】",
+    "description_images": [
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_01.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_02.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_03.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_04.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_05.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_06.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_07.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_08.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_09.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail_10.jpg"
+    ],
+    "images": [
+      "https://img10.360buyimg.com/n1/jfs/t1/422544/34/15310/134120/69ea653fF22120638/0083320320846e3a.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/289066/38/17547/47714/68b7a9e1F077999b9/bda2e6fb92bf15d6.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/325368/16/15219/28312/68b7a9e2F47f11792/e251ae892f6052d0.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/324086/30/10653/26667/68ac0765Fc6909372/78b47036058d1035.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/334200/11/8397/32345/68b7a9e3F6055c0f4/92d504e465b473c0.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/289923/39/14071/27147/68b7a9e4Fd27770d0/b84b3f12dc9ddba9.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/329224/25/8349/14481/68b7a9f5F2dacc59a/a2b5772ffd41b743.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/348364/12/847/18025/68be36adF649d07ae/37bd35eac821f52b.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/286864/34/19523/15494/68be36aeF3c44c415/86f735eaa4c0a0b9.jpg",
+      "https://img10.360buyimg.com/n1/jfs/t1/338253/12/8302/18326/68be36aeF78f7476d/deb51985dda64a57.jpg"
+    ],
+    "jd_url": "https://item.jd.com/16793098028.html",
+    "attributes": {
+      "socket_config": "4位五孔+4位两孔",
+      "rated_voltage": "250V",
+      "cable_length": "5米",
+      "rated_current": "10A",
+      "max_power": "2500W",
+      "color": "白色",
+      "current": "10A"
+    },
+    "publish_mode": "single"
+  },
+  "risk_stats": {
+    "high_risk_window_shift_count": 0,
+    "high_risk_window_shift_steps": []
+  },
+  "vision_fallback_stats": {
+    "count": 0,
+    "success_count": 0,
+    "failed_count": 0,
+    "steps": [],
+    "failed_details": [],
+    "templates": {},
+    "templates_success": {},
+    "templates_failed": {}
+  }
+}

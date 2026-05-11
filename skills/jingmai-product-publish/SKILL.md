@@ -48,6 +48,7 @@ python cli.py status <task_id>
 uv run python cli.py publish --config product.json
 uv run python cli.py publish --data "{\"title\":\"测试商品\",\"price\":29.9}"
 uv run python cli.py publish --config product.json --plan-out data\last-plan.json
+uv run python cli.py publish --config product.json --workflow-policy doc_strict
 ```
 
 说明：
@@ -55,6 +56,7 @@ uv run python cli.py publish --config product.json --plan-out data\last-plan.jso
 - `publish` 是主入口
 - 先做 `plan`，再立刻进入 `execute`
 - `--plan-out` 会保存完整计划包，便于监控和恢复执行
+- `--workflow-policy doc_strict` 会强制解析 `京麦上架流程.docx` 正文并生成计划，不走自由 LLM 规划
 
 ### 只生成计划
 
@@ -62,6 +64,7 @@ uv run python cli.py publish --config product.json --plan-out data\last-plan.jso
 uv run python cli.py plan "发布一个手机壳商品" --config product.json
 uv run python cli.py plan --config product.json
 uv run python cli.py plan --config product.json --steps-only
+uv run python cli.py plan --config product.json --workflow-policy doc_strict
 python cli.py plan --config product.json
 ```
 
@@ -69,6 +72,7 @@ python cli.py plan --config product.json
 
 - 默认输出完整计划包
 - `--steps-only` 只输出步骤数组，兼容旧脚本
+- `--workflow-policy doc_strict` 会输出带 `workflow_source / workflow_section / workflow_requirement / workflow_excerpt / workflow_paragraphs` 的文档驱动计划
 
 完整计划包结构：
 
@@ -113,6 +117,24 @@ uv run python cli.py batch --file products.json --plan-out data\plans
 - `--stop-on-error` 遇错停止
 - `--plan-out` 会为每个商品保存计划包
 
+### live-run（默认跑湖南上架表格）
+
+```bash
+uv run python cli.py live-run
+uv run python cli.py live-run --file "湖南上架表格.xlsx"
+uv run python cli.py live-run --file "湖南上架表格.xlsx" --resume
+python cli.py live-run --file "湖南上架表格.xlsx"
+```
+
+说明：
+
+- `live-run` 默认使用 `doc_strict` 计划策略
+- 启动前会先截图分析当前京麦屏幕状态，再进入 `Plan-and-Solve`
+- 每步都执行 `precheck -> act -> postcheck/reflection`
+- 当 `precheck` / `action` / `postcheck` 检测到偏差时，会先走“偏差类型 -> 恢复 action -> 再验证”的恢复矩阵
+- 单步最多重试 3 次，仍失败则立即停止当前商品
+- 默认停在首个失败商品，避免被桌面环境反复拖死
+
 ### 商品抓取
 
 ```bash
@@ -127,6 +149,8 @@ python cli.py scrape --url https://item.jd.com/12345678.html
 - 默认会写入 Product 表
 - `--no-save` 只抓取，不写库
 - `--output` 可保存为本地 JSON
+- 抓取顺序为：缓存 HTML → `Playwright` → `OpenCLI browser` → JD API → HTML 解析
+- 详情图会下载到本地，并把本地路径写入数据库字段
 
 ### 思考分析
 
@@ -201,6 +225,33 @@ python cli.py memory stats
 - `ActionRegistry.execute()` 使用 `action_name` 作为动作名参数
 - 避免与业务动作中的 `name=` 参数冲突
 
+### 1.1 MySQL 连接策略
+
+- 现在支持从 `.env` 自动拼接 `MYSQL_URL`
+- 当存在以下变量时会自动启用 MySQL：
+  - `MYSQL_HOST`
+  - `MYSQL_PORT`
+  - `MYSQL_USER`
+  - `MYSQL_PASSWORD`
+  - `MYSQL_DATABASE`
+  - `MYSQL_CHARSET`
+  - `MYSQL_POOL_SIZE`
+  - `MYSQL_MAX_OVERFLOW`
+- 如果 MySQL 连接失败，仍会降级到本地 SQLite
+
+### 1.2 Excel 判型与来源元数据
+
+- `.xlsx/.xlsm` 现在会给每个商品写入：
+  - `publish_mode`: `single` / `batch`
+  - `source_meta.source_file`
+  - `source_meta.sheet_name`
+  - `source_meta.row_index`
+  - `source_meta.item_index`
+  - `source_meta.total_items`
+  - `source_meta.workflow_doc`
+- `湖南上架表格.xlsx` 当前会被判定为 `single`
+- 若同一表中解析出多条有效商品行，则自动切为 `batch`
+
 ### 2. 执行成功判定
 
 - 动作执行失败是硬失败前提
@@ -240,6 +291,32 @@ python cli.py memory stats
 ```bash
 set JINGMAI_DEBUG_SCREENSHOTS=1
 ```
+
+### 4.1 文档驱动计划模板
+
+从本轮修复开始，`Planner` 支持 `workflow_policy=doc_strict`：
+
+- 跳过自由 LLM 规划
+- 先解析 `京麦上架流程.docx` 正文段落，再从真实段落生成步骤
+- 默认步骤顺序为：
+  1. `find_window`
+  2. `activate_window`
+  3. `navigate_to`
+  4. `select_category`
+  5. `fill_product_info`
+  6. `fill_product_description`
+  7. `publish_product`
+  8. `verify_result`
+
+每个步骤额外携带：
+
+- `workflow_source`
+- `workflow_section`
+- `workflow_requirement`
+- `workflow_excerpt`
+- `workflow_paragraphs`
+
+用于后续排障时明确“当前动作在文档流程中的位置”，而不是只看 action 名。
 
 ### 5. 短期记忆元数据
 
@@ -311,6 +388,19 @@ ReAct（execute 命令，每步完整循环）
 - 执行后是否达成目标
 
 显式拆开，避免 `fill_product_info` 这类复杂步骤在错误页面继续脚本化点击。
+
+### 新增：live-run 包装入口
+
+`live-run` 不是新的执行器，而是对现有执行模型的强约束包装：
+
+1. 先读取 Excel
+2. 自动判断 `single / batch`
+3. 强制使用 `doc_strict` 计划
+4. 调 `Planner._capture_screen_context()` 做截图分析
+5. 执行 `Plan-and-Solve -> ReAct -> Reflection`
+6. 每商品失败即停
+
+这样做的目的是把“真实上架运行”与普通 `batch` 区分开，减少误把半成品策略用到桌面 live 流程里。
 
 ### 验证降级策略
 
@@ -476,6 +566,100 @@ else:
 如果 Helper 未运行，脚本会自动降级到 `pyautogui`（可能对 Java AWT 组件无效）。
 
 ---
+
+## 当前完成度评估与缺口清单
+
+评估日期：`2026-05-11`
+
+当前针对“读取 Excel → 区分单品/批量 → 抓取京东商品 → 图片本地化 → MySQL 持久化 → 按京麦流程执行上架 → 截图视觉校验 → 失败最多重试 3 次”的整体能力，评估分数为：
+
+- **78 / 100**
+
+### 分项评分
+
+- Excel 读取与单品/批量识别：`18/20`
+- JD 抓取与图片本地化：`16/20`
+- MySQL 持久化：`14/15`
+- 文档驱动规划：`10/15`
+- Ollama 视觉执行闭环：`14/20`
+- 真实可上线实战稳定性：`6/10`
+
+### 已完成的关键能力
+
+- 已支持读取 `.xlsx` / `.xlsm` 并区分 `single` / `batch`
+- 已为商品写入 `publish_mode` 与 `source_meta`
+- 已支持 `Playwright -> OpenCLI -> API -> HTML` 的京东抓取链路
+- 已支持下载详情图到本地，并将本地路径写入数据库字段 `detail_images`
+- 已支持通过 `MYSQL_HOST / MYSQL_PORT / MYSQL_USER / MYSQL_PASSWORD / MYSQL_DATABASE` 自动拼接 MySQL 连接
+- 已具备 `Plan-and-Solve -> ReAct -> Reflection` 的执行主循环
+- 已提供 `live-run` 命令，默认可直接跑 `湖南上架表格.xlsx`
+
+### 当前扣分最多的半完成项
+
+- **文档驱动规划已升级到 docx 正文解析驱动**
+  - 当前做法是先读取 `京麦上架流程.docx` 的正文段落
+  - 再从真实段落中提取操作路径、类目步骤、商品信息段、规格描述段、最终发布段
+  - 目前已经不是单纯的固定中文模板，但仍未做到“执行时逐条反查文档合规性”
+
+- **Ollama 视觉能力当前本质上仍是截图级别**
+  - 已支持截图视觉预检与执行后复核
+  - 但“图像视频辅助识别”中的视频帧分析、录屏分析链路尚未真正实现
+
+- **`live-run` 目前是现有执行器的包装入口**
+  - 优点是能复用现有的计划、断点续跑、视觉校验、重试逻辑
+  - 缺点是它还不是一个为桌面实操专门抽象出来的独立运行器
+  - 因此鲁棒性上仍继承原 `batch/publish/executor` 的限制
+
+- **执行器已具备第一版偏差恢复矩阵，但仍可继续细化**
+  - 当前已经支持把 `precheck / action / postcheck / window shift` 失败归类
+  - 当前已经支持按偏差类型执行恢复动作，例如 `recover_locator / force_relocate / navigate_to / select_category / wait`
+  - 当前已经支持恢复后再次执行视觉预检确认状态是否回正
+  - 当前已经支持按页面态细分恢复策略，例如 `登录页 / 商品列表页 / 类目页 / 商品信息页 / 规格描述页 / 发布确认页`
+  - 但恢复动作仍未覆盖所有京麦页面分支、弹窗分支、异常状态分支
+
+### 尚未完成，或没有证据证明已完成
+
+- **没有真实端到端实跑闭环证据**
+  - 代码中已有 `live-run`
+  - 但这不等于已经在真实京麦桌面环境中稳定完成了 `湖南上架表格.xlsx` 的完整上架
+
+- **没有文档级别的步骤合规校验**
+  - 当前步骤会带 `workflow_section`
+  - 当前步骤会带 `workflow_requirement`
+  - 当前步骤会带 `workflow_source`
+  - 当前步骤会带 `workflow_excerpt`
+  - 当前步骤会带 `workflow_paragraphs`
+  - 但执行时不会反查“当前执行结果是否符合 docx 的具体条款”
+
+- **偏差恢复矩阵已实现到页面级，但异常分支覆盖仍不完整**
+  - 当前已经形成“偏差类型 -> 页面态 -> 恢复 action -> 再验证”的明确恢复矩阵
+  - 但还没有覆盖所有京麦页面分支、弹窗分支、异常状态分支
+
+- **批量场景与单品场景还没有完全分治**
+  - 当前只是打上 `publish_mode`
+  - 还没有形成“批量专用计划模板 / 批量失败回滚 / 批量草稿策略”等独立流程
+
+- **数据库持久化还不够细**
+  - 当前已保存商品、任务、步骤、图片路径、来源元数据
+  - 但还缺少抓取来源优先级、图片下载状态、重试轨迹、最终发布回执等细粒度落库
+
+- **OpenCLI 兜底尚未抽象成 provider 层**
+  - 当前能调用 `E:\PY\opencli` 进行浏览器兜底抓取
+  - 但实现仍偏向命令拼接调用，尚未沉淀成统一 provider abstraction
+
+### 当前最关键的后续开发优先级
+
+1. 把 `京麦上架流程.docx` 从“路径引用 + 模板映射”升级成“真正解析文档并驱动 planner”
+2. 跑一次真实 `湖南上架表格.xlsx` 的端到端桌面验证，拿到成功/失败证据
+3. 把批量模式和单品模式拆成不同的业务计划模板
+4. 细化数据库落库，补齐抓取轨迹、图片状态、发布回执
+5. 继续补页面级异常恢复库，覆盖更多弹窗、审核页、异常页和边缘分支
+
+### 使用预期边界
+
+- 这个 skill **已经具备开发态可运行能力**
+- 这个 skill **还不能宣称已达到稳定生产可无人值守上架**
+- 在未完成上述缺口前，所有 `live-run` 结果都应视为“受环境、登录态、窗口状态、视觉模型状态影响的桌面自动化实验结果”
 
 ## 故障排查
 

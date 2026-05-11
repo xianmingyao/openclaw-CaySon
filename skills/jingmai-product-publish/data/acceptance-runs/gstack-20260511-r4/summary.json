@@ -1,0 +1,23 @@
+{
+  "run_id": "acceptance-20260511-225717-9234b0",
+  "batch_file": "E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx",
+  "workflow_policy": "doc_strict",
+  "video_observer_enabled": true,
+  "db_preflight": {
+    "db_type": "mysql",
+    "mysql_pool_size": 10,
+    "mysql_max_overflow": 20,
+    "mysql_connect_timeout": 8,
+    "mysql_read_timeout": 15,
+    "mysql_write_timeout": 15,
+    "mysql_init_retries": 3,
+    "mysql_retry_delay_sec": 1.5,
+    "reachable": true,
+    "error": "",
+    "started_at": "2026-05-11T22:57:17.906894",
+    "create_tables": "ok",
+    "final_db_type": "mysql"
+  },
+  "db_preflight_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\gstack-20260511-r4\\db-preflight.json",
+  "error": "[Errno 22] Invalid argument"
+}

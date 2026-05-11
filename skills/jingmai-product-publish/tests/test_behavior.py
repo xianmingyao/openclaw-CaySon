@@ -1,4 +1,4 @@
-import json
+﻿import json
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -20,13 +20,14 @@ from cli import (
     _load_batch_items,
     _read_json_file,
     _resolve_phase_step_index,
+    _run_publish_flow,
     cli,
 )
 from db import DatabaseManager
 from llm.manager import LLMManager
 from memory.long_term import LongTermMemory
 from models import Product, PublishTask, TaskStep
-from actions.form import fill_text
+from actions.form import _focus_publish_scroll_anchor, _prepare_upload_image, fill_text
 from actions import ActionRegistry
 from actions._uia_helpers import resolve_template_path
 from actions.navigation import publish_product, save_draft, select_category
@@ -125,6 +126,29 @@ def test_executor_vision_query_accepts_repaired_json():
 
     assert result["status"] == "ok"
     assert result["suggested_action"] == "proceed"
+
+
+def test_executor_vision_query_passes_extra_video_frames():
+    agent = ExecutorAgent()
+    calls = []
+    agent._step_artifacts = {
+        1: {
+            "precheck_screenshot": "fake.png",
+            "precheck_video_contact_sheet": "contact.png",
+            "precheck_video_frames": ["frame-1.png", "frame-2.png"],
+        }
+    }
+
+    class FakeLLM:
+        def invoke_multimodal(self, prompt: str, image_path: str, **kwargs):
+            calls.append(kwargs.get("extra_image_paths", []))
+            return '{"status":"ok","reason":"ok","current_state":"发品页","suggested_action":"proceed"}'
+
+    agent.set_llm(FakeLLM())
+    result = agent._vision_query("test prompt", "fake.png")
+
+    assert result["status"] == "ok"
+    assert calls[0] == ["contact.png", "frame-1.png", "frame-2.png"]
 
 
 def test_thinker_rejects_empty_response():
@@ -289,6 +313,7 @@ def test_load_batch_items_supports_hunan_template_xlsx(tmp_path: Path):
     assert items[0]["url"] == "https://item.jd.com/16793098028.html"
     assert items[0]["notes"] == "数量：2"
     assert items[0]["publish_mode"] == "single"
+    assert items[0]["source_meta"]["publish_mode_reason"] == "single_row_standard_listing"
     assert items[0]["source_meta"]["sheet_name"] == "上架模板"
     assert items[0]["source_meta"]["row_index"] == 4
     assert items[0]["source_meta"]["total_items"] == 1
@@ -330,6 +355,71 @@ def test_build_product_model_maps_new_fields():
     assert product.attributes == {"颜色": "黑色"}
 
 
+def test_load_batch_items_marks_batch_when_template_has_sku_signals(tmp_path: Path):
+    path = tmp_path / "batch-signals.xlsx"
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.append(["商品标题", "价格", "SKU", "链接", "销售属性", "规格1"])
+    sheet.append(["测试商品A", 88.5, "SKU-A", "https://item.jd.com/123.html", "红色", "大号"])
+    workbook.save(path)
+
+    items = _load_batch_items(path)
+
+    assert len(items) == 1
+    assert items[0]["publish_mode"] == "batch"
+    assert "template_signals" in items[0]["source_meta"]["publish_mode_reason"]
+
+
+def test_run_publish_flow_persists_product_before_execute(monkeypatch, tmp_path: Path):
+    persisted_calls = []
+
+    class FakePlanner:
+        def run(self, **kwargs):
+            return {
+                "success": True,
+                "task_id": "task-persist",
+                "product_data": kwargs["product_data"],
+                "screen_context": {},
+                "plan": [{"action": "find_window", "params": {}, "phase": "window_ready"}],
+                "total_steps": 1,
+                "workflow_policy": kwargs.get("workflow_policy", "default"),
+            }
+
+    class FakeExecutor:
+        def run(self, **kwargs):
+            return {"success": True, "risk_stats": {}, "vision_fallback_stats": {}, "recovery_error": ""}
+
+    class FakeFactory:
+        def create_planner(self):
+            return FakePlanner()
+
+        def create_executor(self):
+            return FakeExecutor()
+
+    monkeypatch.setattr("agents.factory.AgentFactory", lambda: FakeFactory())
+    monkeypatch.setattr(
+        "cli._persist_product_snapshot",
+        lambda product_data, source, task_id="": persisted_calls.append(
+            {"product_data": product_data, "source": source, "task_id": task_id}
+        ) or {"product_id": "JD-1"},
+    )
+
+    result = _run_publish_flow(
+        {"title": "测试商品", "product_id": "JD-1"},
+        plan_out=str(tmp_path / "plan.json"),
+        workflow_policy="doc_strict",
+    )
+
+    assert result["success"] is True
+    assert persisted_calls == [
+        {
+            "product_data": {"title": "测试商品", "product_id": "JD-1"},
+            "source": "publish:doc_strict",
+            "task_id": "task-persist",
+        }
+    ]
+
+
 def test_settings_builds_mysql_url_from_components(monkeypatch):
     monkeypatch.delenv("MYSQL_URL", raising=False)
     monkeypatch.setenv("MYSQL_HOST", "8.137.122.11")
@@ -345,6 +435,60 @@ def test_settings_builds_mysql_url_from_components(monkeypatch):
 
     assert settings.MYSQL_URL.startswith("mysql+pymysql://root:018a3b67aa9199bb@8.137.122.11:3306/jingmai_agent")
     assert settings.MYSQL_URL.endswith("?charset=utf8mb4")
+
+
+def test_settings_loads_mysql_timeout_controls(monkeypatch):
+    monkeypatch.setenv("MYSQL_CONNECT_TIMEOUT", "9")
+    monkeypatch.setenv("MYSQL_READ_TIMEOUT", "21")
+    monkeypatch.setenv("MYSQL_WRITE_TIMEOUT", "22")
+    monkeypatch.setenv("MYSQL_INIT_RETRIES", "4")
+    monkeypatch.setenv("MYSQL_RETRY_DELAY_SEC", "2.5")
+
+    from settings import Settings
+
+    settings = Settings()
+
+    assert settings.MYSQL_CONNECT_TIMEOUT == 9
+    assert settings.MYSQL_READ_TIMEOUT == 21
+    assert settings.MYSQL_WRITE_TIMEOUT == 22
+    assert settings.MYSQL_INIT_RETRIES == 4
+    assert settings.MYSQL_RETRY_DELAY_SEC == 2.5
+
+
+def test_db_mysql_retry_falls_back_to_sqlite(monkeypatch):
+    attempts = {"count": 0}
+
+    def fake_create_engine(url, **kwargs):
+        class _FailingEngine:
+            def connect(self):
+                attempts["count"] += 1
+                raise RuntimeError("mysql unavailable")
+
+        if str(url).startswith("sqlite://"):
+            class _SQLiteEngine:
+                pass
+
+            return _SQLiteEngine()
+        return _FailingEngine()
+
+    monkeypatch.setattr("db.create_engine", fake_create_engine)
+    monkeypatch.setattr("db.time.sleep", lambda *_args, **_kwargs: None)
+
+    settings = SimpleNamespace(
+        MYSQL_URL="mysql+pymysql://root:pwd@127.0.0.1:3306/db",
+        SQLITE_URL="sqlite:///:memory:",
+        MYSQL_POOL_SIZE=10,
+        MYSQL_MAX_OVERFLOW=20,
+        MYSQL_CONNECT_TIMEOUT=3,
+        MYSQL_READ_TIMEOUT=4,
+        MYSQL_WRITE_TIMEOUT=5,
+        MYSQL_INIT_RETRIES=3,
+        MYSQL_RETRY_DELAY_SEC=0.01,
+    )
+    db = DatabaseManager(settings=settings)
+
+    assert attempts["count"] == 3
+    assert db.db_type == "sqlite"
 
 
 def test_db_tracks_task_and_step_results():
@@ -586,6 +730,99 @@ def test_locator_win32_prefers_non_blank_candidate(monkeypatch):
     assert window.hwnd == 102
 
 
+def test_locator_win32_excludes_dd_workbench_host_window(monkeypatch):
+    import infrastructure.locator as locator_module
+
+    monkeypatch.setattr(locator_module, "WIN32_AVAILABLE", True)
+
+    hwnds = [101, 102]
+    titles = {
+        101: "jd_465d1abd3ee76-咚咚融合工作台",
+        102: "JMWorkStation",
+    }
+    rects = {
+        101: (0, 0, 2560, 1392),
+        102: (20, 20, 2400, 1300),
+    }
+
+    class FakeWin32Gui:
+        @staticmethod
+        def GetWindowText(hwnd):
+            return titles[hwnd]
+
+        @staticmethod
+        def GetWindowRect(hwnd):
+            return rects[hwnd]
+
+        @staticmethod
+        def IsWindowVisible(hwnd):
+            return True
+
+        @staticmethod
+        def EnumWindows(callback, results):
+            for hwnd in hwnds:
+                callback(hwnd, results)
+
+    monkeypatch.setattr(locator_module, "win32gui", FakeWin32Gui)
+    monkeypatch.setattr(
+        locator_module.JingmaiLocator,
+        "_get_process_name",
+        staticmethod(lambda hwnd: {101: "jdm_dd_workbench", 102: "jmworkstation"}[hwnd]),
+    )
+    monkeypatch.setattr(
+        locator_module.JingmaiLocator,
+        "_window_surface_is_blank",
+        lambda self, hwnd=None: False,
+    )
+
+    locator = JingmaiLocator()
+    window = locator._find_window_win32()
+
+    assert window is not None
+    assert window.hwnd == 102
+    assert window.title == "JMWorkStation"
+
+
+def test_locator_foreground_excludes_dd_workbench_host_window(monkeypatch):
+    import infrastructure.locator as locator_module
+
+    monkeypatch.setattr(locator_module, "WIN32_AVAILABLE", True)
+
+    class FakeUser32:
+        @staticmethod
+        def GetForegroundWindow():
+            return 101
+
+        @staticmethod
+        def GetWindowRect(hwnd, rect_ptr):
+            rect_ptr.contents.left = 0
+            rect_ptr.contents.top = 0
+            rect_ptr.contents.right = 2560
+            rect_ptr.contents.bottom = 1392
+            return 1
+
+        @staticmethod
+        def GetWindowTextLengthW(hwnd):
+            return len("jd_465d1abd3ee76-咚咚融合工作台")
+
+        @staticmethod
+        def GetWindowTextW(hwnd, buf, length):
+            buf.value = "jd_465d1abd3ee76-咚咚融合工作台"
+            return len(buf.value)
+
+    monkeypatch.setattr(locator_module.ctypes, "windll", SimpleNamespace(user32=FakeUser32()))
+    monkeypatch.setattr(
+        locator_module.JingmaiLocator,
+        "_get_process_name",
+        staticmethod(lambda hwnd: "jdm_dd_workbench"),
+    )
+
+    locator = JingmaiLocator()
+    window = locator._find_window_foreground()
+
+    assert window is None
+
+
 def test_locator_refreshes_live_window_rect_before_scaling(monkeypatch):
     import infrastructure.locator as locator_module
 
@@ -801,6 +1038,44 @@ def test_select_category_skips_when_already_past_category_page(monkeypatch):
     assert result["steps"] == ["already_past_category"]
 
 
+def test_select_category_retries_with_leaf_variant(monkeypatch):
+    import actions.navigation as navigation_module
+    import actions.form as form_module
+
+    class Locator:
+        def click(self, x, y, delay=0):
+            return True
+
+    typed_values = []
+
+    def fake_fill_text(value, **kwargs):
+        typed_values.append(value)
+        return {"success": True}
+
+    def fake_select_search_result(value, **kwargs):
+        return value == "转换器"
+
+    monkeypatch.setattr(form_module, "fill_text", fake_fill_text)
+    monkeypatch.setattr(navigation_module, "_has_category_page_markers", lambda *args, **kwargs: True)
+    monkeypatch.setattr(
+        navigation_module,
+        "_find_category_search_input",
+        lambda *args, **kwargs: {"rect": SimpleNamespace(left=10, top=10, right=110, bottom=40)},
+    )
+    monkeypatch.setattr(navigation_module, "_select_search_result", fake_select_search_result)
+    next_states = iter([True, False])
+    monkeypatch.setattr(navigation_module, "_is_category_next_enabled", lambda *args, **kwargs: next(next_states))
+    monkeypatch.setattr(navigation_module, "_click_category_next", lambda *args, **kwargs: {"success": True})
+    monkeypatch.setattr(navigation_module, "_page_contains_text", lambda *args, **kwargs: False)
+    monkeypatch.setattr(navigation_module, "_has_product_info_markers", lambda *args, **kwargs: False)
+
+    result = navigation_module.select_category(search_text="电脑、办公 > 外设产品 > 插座/转换器", locator=Locator())
+
+    assert result["success"] is True
+    assert typed_values == ["电脑、办公 > 外设产品 > 插座/转换器", "转换器"]
+    assert result["steps"] == ["search", "search_select", "next"]
+
+
 def test_select_category_fails_when_next_button_stays_disabled(monkeypatch):
     import actions.navigation as navigation_module
     import actions.form as form_module
@@ -915,6 +1190,7 @@ def test_select_category_succeeds_after_leaf_candidate_selection(monkeypatch):
     )
     monkeypatch.setattr(navigation_module, "_click_category_next", lambda *args, **kwargs: {"success": True})
     monkeypatch.setattr(navigation_module, "_page_contains_text", lambda *args, **kwargs: False)
+    monkeypatch.setattr(navigation_module, "_has_product_info_markers", lambda *args, **kwargs: False)
 
     result = navigation_module.select_category(search_text="插座", locator=Locator())
 
@@ -946,6 +1222,7 @@ def test_select_category_fails_when_next_click_does_not_advance(monkeypatch):
     monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: True)
     monkeypatch.setattr(navigation_module, "_click_category_next", lambda *args, **kwargs: {"success": True})
     monkeypatch.setattr(navigation_module, "_is_category_next_enabled", fake_next_enabled)
+    monkeypatch.setattr(navigation_module, "_has_product_info_markers", lambda *args, **kwargs: False)
 
     result = navigation_module.select_category(search_text="插座", locator=Locator())
 
@@ -1759,6 +2036,182 @@ def test_fill_product_info_supports_attributes(monkeypatch):
     assert [item[0] for item in dropdown_calls] == ["brand-a", "IP65", "尼龙", "4位五孔+4位两孔", "250V", "5米"]
 
 
+def test_fill_product_info_supports_attributes_summary(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {"field": "title", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_fill_sku_pricing_fields_v3", lambda *args, **kwargs: [])
+    monkeypatch.setattr(
+        form_module,
+        "_fill_brand_field_v2",
+        lambda *args, **kwargs: {"field": "brand", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_supported_attributes",
+        lambda *args, **kwargs: [
+            {"field": "protection_level", "success": True, "write_success": True, "verify_success": True},
+            {"field": "material", "success": True, "write_success": True, "verify_success": True},
+            {"field": "socket_config", "success": True, "write_success": True, "verify_success": True},
+            {"field": "rated_voltage", "success": True, "write_success": True, "verify_success": True},
+            {"field": "cable_length", "success": True, "write_success": True, "verify_success": True},
+        ],
+    )
+
+    result = form_module.fill_product_info(
+        {
+            "title": "ok",
+            "brand": "brand-a",
+            "attributes": {
+                "protection_level": "IP65",
+                "material": "nylon",
+                "socket_config": "4-way",
+                "rated_voltage": "250V",
+                "cable_length": "5m",
+            },
+        },
+        locator=SimpleNamespace(),
+    )
+
+    assert result["success"] is True
+    assert result["sections"]["basic_info"]["success"] >= 2
+    assert result["sections"]["attributes"]["success"] == 5
+    assert result["failed_sections"] == []
+    assert "brand" in result["successful_fields"]
+
+
+def test_fill_product_info_reports_section_level_failures(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {"field": "title", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        form_module,
+        "_fill_model_field_v2",
+        lambda *args, **kwargs: {
+            "field": "model",
+            "success": False,
+            "write_success": True,
+            "verify_success": False,
+            "verify_error": "model mismatch",
+        },
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_sku_pricing_fields_v3",
+        lambda *args, **kwargs: [{"field": "jd_price", "success": True, "write_success": True, "verify_success": True}],
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_brand_field_v2",
+        lambda *args, **kwargs: {"field": "brand", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_supported_attributes",
+        lambda *args, **kwargs: [{"field": "socket_config", "success": True, "write_success": True, "verify_success": True}],
+    )
+
+    result = form_module.fill_product_info(
+        {
+            "title": "ok",
+            "model": "bad-model",
+            "brand": "brand-a",
+            "jd_price": 88,
+            "attributes": {"socket_config": "4-way"},
+        },
+        locator=SimpleNamespace(),
+    )
+
+    assert result["success"] is False
+    assert result["failed_fields"] == ["model"]
+    assert result["failed_sections"] == ["basic_info"]
+    assert result["write_failed_fields"] == []
+    assert result["verify_failed_fields"] == ["model"]
+    assert result["sections"]["basic_info"]["failed"] == 1
+    assert "sections: basic_info" in result["message"]
+
+
+def test_infer_required_product_values_derives_missing_required_fields():
+    import actions.form as form_module
+
+    result = form_module._infer_required_product_values(
+        {
+            "title": "公牛插座 GN-605",
+            "price": 99,
+            "unit": "个",
+            "notes": "质保1年",
+        },
+        required_visual_fields={
+            "logistics": [
+                {"field": "sales_unit", "label": "销售单位", "value": ""},
+                {"field": "packing_list", "label": "包装清单", "value": ""},
+                {"field": "warranty_period", "label": "质保期", "value": ""},
+            ]
+        },
+    )
+
+    product = result["product"]
+    assert product["jd_price"] == 99
+    assert product["market_price"] == 99
+    assert product["purchase_price"] == 94.05
+    assert product["sales_unit"] == "个"
+    assert product["packing_list"] == "质保1年"
+    assert product["warranty_period"] == "1年"
+    assert result["unresolved_required_fields"] == []
+
+
+def test_fill_product_info_uses_required_visual_logistics_fields(monkeypatch):
+    import actions.form as form_module
+
+    logistics_calls = []
+    monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {"field": "title", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_fill_sku_pricing_fields_v3", lambda *args, **kwargs: [])
+    monkeypatch.setattr(form_module, "_fill_brand_field_v2", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_fill_supported_attributes", lambda *args, **kwargs: [])
+    monkeypatch.setattr(
+        form_module,
+        "_fill_required_logistics_fields",
+        lambda product, required_visual_fields=None, locator=None, log=None: (
+            logistics_calls.append((product, required_visual_fields))
+            or [{"field": "sales_unit", "success": True, "write_success": True, "verify_success": True}]
+        ),
+    )
+
+    required_visual_fields = {
+        "logistics": [
+            {"field": "sales_unit", "label": "销售单位", "value": ""},
+            {"field": "packing_list", "label": "包装清单", "value": ""},
+        ]
+    }
+    result = form_module.fill_product_info(
+        {"title": "公牛插座", "unit": "个", "notes": "主体x1"},
+        locator=SimpleNamespace(),
+        required_visual_fields=required_visual_fields,
+    )
+
+    assert result["success"] is True
+    assert result["inferred_values"]["sales_unit"] == "个"
+    assert result["inferred_values"]["packing_list"] == "主体x1"
+    assert result["sections"]["logistics"]["success"] == 1
+    assert logistics_calls[0][0]["sales_unit"] == "个"
+    assert logistics_calls[0][0]["packing_list"] == "主体x1"
+
+
 def test_dismiss_popup_prefers_uia_button(monkeypatch):
     import actions.popup as popup_module
 
@@ -2056,6 +2509,163 @@ def test_executor_records_failed_vision_fallback_detail(monkeypatch, tmp_path: P
     assert index_payload["items"][0]["task_id"] == "task-vision-fail"
 
 
+def test_executor_doc_strict_precheck_blocks_wrong_page():
+    agent = ExecutorAgent()
+    step = {
+        "action": "fill_product_info",
+        "doc_strict": True,
+        "doc_strict_guard": {
+            "recovery_hint": "navigate_to",
+            "precheck": {
+                "allowed_page_states": ["product_info_page"],
+                "required_markers": ["商品标题", "品牌"],
+                "reject_markers": ["系统错误"],
+            },
+        },
+    }
+
+    observation = {
+        "status": "ok",
+        "reason": "当前页面为商品列表页，尚未进入发布表单",
+        "current_state": "商品列表",
+        "suggested_action": "proceed",
+    }
+
+    guarded = agent._coerce_precheck_for_action(
+        action_name="fill_product_info",
+        observation=observation,
+        step=step,
+        history=[],
+    )
+
+    assert guarded["status"] == "error"
+    assert guarded["page_state"] == "product_list_page"
+    assert guarded["suggested_action"] == "navigate_to"
+    assert "doc-strict precheck page mismatch" in guarded["reason"]
+
+
+def test_recovery_state_uses_opencli_probe_when_visual_precheck_blocks():
+    agent = ExecutorAgent()
+    agent.state.step_index = 3
+    agent._last_opencli_probe = {
+        "observation": {
+            "status": "ok",
+            "reason": "商品标题 品牌 价格",
+            "current_state": "商品标题 品牌 价格",
+            "suggested_action": "proceed",
+            "page_state": "product_info_page",
+        },
+        "raw_output": '{"title":"发布商品"}',
+    }
+    agent._capture_visual_artifacts = lambda *args, **kwargs: {"primary_path": "fake.png"}
+    agent._react_precheck = lambda **kwargs: {
+        "status": "error",
+        "reason": "视觉误判",
+        "current_state": "unknown",
+        "suggested_action": "recover",
+    }
+
+    result = agent._verify_recovery_state(
+        action_name="navigate_to",
+        step={"action": "navigate_to", "doc_strict": True, "doc_strict_guard": {}},
+        history=[{"action": "activate_window", "success": True}],
+        retry_index=0,
+    )
+
+    assert result["success"] is True
+    assert result["verified"] is True
+    assert result["used_opencli_probe"] is True
+    assert result["observation"]["recovery_source"] == "opencli_state_probe"
+
+
+def test_update_plan_file_persists_precheck_and_postcheck_screenshots(tmp_path: Path):
+    agent = ExecutorAgent()
+    agent._task_id = "task-artifacts"
+    agent._plan_file = str(tmp_path / "plan.json")
+    agent._step_artifacts = {
+        1: {
+            "precheck_screenshot": "E:/tmp/precheck.png",
+            "action_screenshot": "E:/tmp/action.png",
+            "postcheck_screenshot": "E:/tmp/postcheck.png",
+        }
+    }
+
+    agent._update_plan_file(
+        [{"action": "navigate_to", "params": {}, "required": True}],
+        0,
+        success=False,
+        retries=3,
+    )
+
+    payload = json.loads(Path(agent._plan_file).read_text(encoding="utf-8"))
+    step = payload["plan"][0]
+    assert step["precheck_screenshot"] == "E:/tmp/precheck.png"
+    assert step["action_screenshot"] == "E:/tmp/action.png"
+    assert step["postcheck_screenshot"] == "E:/tmp/postcheck.png"
+
+
+def test_prepare_upload_image_upscales_small_detail_image(tmp_path: Path):
+    from PIL import Image
+
+    source = tmp_path / "detail_01.jpg"
+    Image.new("RGB", (350, 350), color=(240, 240, 240)).save(source, format="JPEG", quality=85)
+
+    result = _prepare_upload_image(str(source))
+
+    assert result["success"] is True
+    assert result["upload_mode"] == "image"
+    assert result["width"] >= 750
+    assert result["width"] <= 1500
+    assert result["height"] < 1500
+    assert result["size_bytes"] <= 3 * 1024 * 1024
+    assert Path(result["prepared_path"]).exists()
+
+
+def test_focus_publish_scroll_anchor_prefers_vision(monkeypatch):
+    import actions.form as form_module
+    import actions.navigation as navigation_module
+
+    attempts = []
+
+    def fake_vision_click_text_center(target_text: str, **kwargs):
+        attempts.append(target_text)
+        return {"success": target_text == "商品标题"}
+
+    monkeypatch.setattr(navigation_module, "vision_click_text_center", fake_vision_click_text_center)
+
+    assert _focus_publish_scroll_anchor(["品牌", "商品标题"], locator=SimpleNamespace(), log=None) is True
+    assert attempts == ["品牌", "商品标题"]
+
+
+def test_scroll_publish_page_to_top_uses_anchor_before_fallback(monkeypatch):
+    import actions.form as form_module
+
+    calls = []
+
+    class DummyPyAutoGUI:
+        @staticmethod
+        def moveTo(x, y, duration=0):
+            calls.append(("moveTo", x, y))
+
+        @staticmethod
+        def scroll(delta):
+            calls.append(("scroll", delta))
+
+    monkeypatch.setitem(sys.modules, "pyautogui", DummyPyAutoGUI)
+    monkeypatch.setattr(
+        form_module,
+        "_focus_publish_scroll_anchor",
+        lambda target_texts, **kwargs: calls.append(("anchor", tuple(target_texts))) or True,
+    )
+
+    form_module._scroll_publish_page_to_top(locator=SimpleNamespace(), log=None)
+
+    assert calls[0][0] == "anchor"
+    assert "商品标题" in calls[0][1]
+    assert any(item[0] == "moveTo" for item in calls)
+    assert sum(1 for item in calls if item[0] == "scroll") == 12
+
+
 def test_failed_vision_index_upserts_same_key():
     agent = ExecutorAgent()
     first = {
@@ -2150,6 +2760,24 @@ def test_executor_coerces_fill_product_info_precheck_when_state_is_action_name()
     assert result["suggested_action"] == "proceed"
 
 
+def test_executor_coerces_navigate_to_precheck_when_already_on_product_form():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "navigate_to",
+        {
+            "status": "error",
+            "reason": "当前处于商品基本信息填写阶段，页面显示正常且完整",
+            "current_state": "商品基本信息页",
+            "suggested_action": "navigate_to",
+        },
+        history=[{"action": "activate_window", "success": True}],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+
+
 def test_executor_preserves_fill_product_info_precheck_for_hard_stop():
     agent = ExecutorAgent()
 
@@ -2203,6 +2831,30 @@ def test_executor_preserves_find_window_precheck_for_blank_window():
 
     assert result["status"] == "error"
     assert result["suggested_action"] == "recover"
+
+
+def test_executor_coerces_find_window_precheck_when_locator_confirms_window():
+    class Locator:
+        def find_window(self):
+            return SimpleNamespace(title="jd_465d1abd3ee76")
+
+    agent = ExecutorAgent()
+    agent._locator = Locator()
+
+    result = agent._coerce_precheck_for_action(
+        "find_window",
+        {
+            "status": "error",
+            "reason": "visual model called current screen partial render",
+            "current_state": "host window",
+            "suggested_action": "recover",
+        },
+        history=[],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+    assert "locator title" in result["reason"]
 
 
 def test_executor_coerces_select_category_postcheck_when_product_info_visible():
@@ -2271,6 +2923,32 @@ def test_ensure_basic_info_page_skips_unsafe_click_on_category_page(monkeypatch)
     assert locator.click_calls == []
 
 
+def test_ensure_basic_info_page_accepts_sku_pricing_context(monkeypatch):
+    import actions.form as form_module
+
+    markers = {
+        "商品标题": False,
+        "商品名称": False,
+        "SKU": True,
+        "销售属性": False,
+        "市场价": False,
+        "京东价": False,
+    }
+    monkeypatch.setattr(
+        form_module,
+        "_visible_text_contains",
+        lambda text, **kwargs: markers.get(text, False),
+    )
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+    monkeypatch.setattr(form_module, "_find_named_control", lambda *args, **kwargs: None)
+
+    class FakeLocator:
+        def click(self, *args, **kwargs):
+            raise AssertionError("should not click when sku context already confirms page")
+
+    assert form_module._ensure_basic_info_page(locator=FakeLocator()) is True
+
+
 def test_fill_sku_pricing_fields_v3_uses_dynamic_price_centers(monkeypatch):
     import actions.form as form_module
 
@@ -2317,7 +2995,47 @@ def test_fill_sku_pricing_fields_v3_uses_dynamic_price_centers(monkeypatch):
         locator=object(),
     )
 
-    assert [item["field"] for item in result] == ["market_price", "jd_price"]
-    assert clicked == [(1100, 610), (1500, 615)]
+    assert [item["field"] for item in result] == ["market_price", "purchase_price", "jd_price"]
+    assert clicked == [(1100, 610), (1388, 603), (1500, 615)]
     assert result[0]["verification_method"] == "verify@1100,610"
-    assert result[1]["verification_method"] == "verify@1500,615"
+    assert result[1]["verification_method"] == "verify@1388,603"
+    assert result[2]["verification_method"] == "verify@1500,615"
+
+
+def test_fill_sku_pricing_fields_v3_derives_purchase_price_from_jd_price(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(form_module, "_ensure_basic_info_page", lambda **kwargs: True)
+    monkeypatch.setattr(form_module, "_scroll_to_sku_section", lambda **kwargs: None)
+    monkeypatch.setattr(form_module, "_reset_sku_horizontal_scrollbar", lambda: None)
+    monkeypatch.setattr(form_module, "_drag_sku_horizontal_scrollbar", lambda: None)
+    monkeypatch.setattr(
+        form_module,
+        "_ensure_price_area_visible",
+        lambda **kwargs: {"success": True, "state": {"title_visible": False, "market_visible": True, "jd_visible": True}},
+    )
+    monkeypatch.setattr(form_module, "_find_price_input_center", lambda label, **kwargs: None)
+    monkeypatch.setattr(form_module, "_hover_then_click", lambda *args, **kwargs: True)
+
+    writes = []
+    monkeypatch.setattr(
+        form_module,
+        "_write_active_text",
+        lambda value, clear=True: writes.append(f"{value}") or {"success": True, "method": "session1-paste"},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_verify_text_field",
+        lambda locator, field, x, y, expected, prefer_uia=True: {
+            "success": True,
+            "actual": str(expected),
+            "method": "verify",
+            "compare_mode": "numeric",
+        },
+    )
+    monkeypatch.setattr(form_module.time, "sleep", lambda *_args, **_kwargs: None)
+
+    result = form_module._fill_sku_pricing_fields_v3({"jd_price": 100}, locator=object())
+
+    assert [item["field"] for item in result] == ["purchase_price", "jd_price"]
+    assert writes == ["95.00", "100"]

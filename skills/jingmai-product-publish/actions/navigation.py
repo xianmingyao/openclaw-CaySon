@@ -2,7 +2,11 @@
 Jingmai product publishing navigation actions.
 """
 
+import json
+import re
+import tempfile
 import time
+from pathlib import Path
 from typing import Any, Dict
 
 from actions._uia_helpers import (
@@ -14,6 +18,7 @@ from actions._uia_helpers import (
 )
 from actions.registry import ActionRegistry
 from config.jingmai_coords import CATEGORY_PAGE, PRODUCT_INFO_PAGE
+from llm.manager import LLMManager
 
 # Session1 Helper 操作
 try:
@@ -39,6 +44,24 @@ def _tokenize_text(text: str) -> list[str]:
     if text and text not in tokens:
         tokens.insert(0, str(text).strip())
     return tokens[:6]
+
+
+def _category_search_variants(text: str) -> list[str]:
+    raw = str(text or "").strip()
+    if not raw:
+        return []
+
+    variants = [raw]
+    fragments = [frag.strip() for frag in re.split(r"\s*>\s*|\s*/\s*", raw) if frag.strip()]
+    if fragments:
+        leaf = fragments[-1]
+        if leaf not in variants:
+            variants.append(leaf)
+        if len(fragments) >= 2:
+            parent_leaf = f"{fragments[-2]} > {fragments[-1]}"
+            if parent_leaf not in variants:
+                variants.append(parent_leaf)
+    return variants
 
 
 def _category_depth(name: str) -> int:
@@ -131,6 +154,15 @@ def _read_selected_category_texts(locator=None, log=None) -> list[str]:
     return values
 
 
+def _selected_category_matches(search_text: str, locator=None, log=None) -> bool:
+    selected = " > ".join(_read_selected_category_texts(locator=locator, log=log))
+    if not selected:
+        return False
+
+    variants = _category_search_variants(search_text)
+    return any(variant and variant in selected for variant in variants)
+
+
 def _collect_category_choice_candidates(search_text: str, locator=None, log=None) -> list[dict]:
     window = find_jingmai_uia_window(locator=_get_locator(locator, log), log=log)
     if not window:
@@ -176,6 +208,22 @@ def _collect_category_choice_candidates(search_text: str, locator=None, log=None
 def _select_leaf_category_candidate(search_text: str, locator=None, log=None) -> Dict[str, Any]:
     candidates = _collect_category_choice_candidates(search_text, locator=locator, log=log)
     if not candidates:
+        vision_result = vision_click_text_center(
+            target_text=search_text,
+            page_hint="京麦类目选择页，点击最匹配的叶子类目项",
+            locator=locator,
+            log=log,
+        )
+        if vision_result.get("success"):
+            time.sleep(1.0)
+            if _is_category_next_enabled(locator=locator, log=log) or _has_product_info_markers(locator=locator, log=log):
+                return {
+                    "success": True,
+                    "name": search_text,
+                    "score": 0,
+                    "attempted_names": [],
+                    "method": "ollama_vision_move_click",
+                }
         return {"success": False, "message": f"no category candidate matched: {search_text}"}
 
     ranked = sorted(
@@ -194,6 +242,14 @@ def _select_leaf_category_candidate(search_text: str, locator=None, log=None) ->
             cx = (rect.left + rect.right) // 2
             cy = (rect.top + rect.bottom) // 2
             clicked = locator.click(cx, cy, delay=0.8)
+        if not clicked:
+            vision_result = vision_click_text_center(
+                target_text=candidate["name"],
+                page_hint="京麦类目选择页，点击最匹配的叶子类目项",
+                locator=locator,
+                log=log,
+            )
+            clicked = bool(vision_result.get("success"))
         if not clicked:
             last_error = f"failed to click matched category candidate: {candidate['name']}"
             continue
@@ -253,6 +309,178 @@ def _click_image_fallback(template_name: str, locator=None, log=None, confidence
         if log:
             log.warning(f"vision fallback failed: {exc}")
         return {"success": False, "message": str(exc), "template": template_name}
+
+
+def _parse_vision_click_json(raw_text: str) -> dict | None:
+    text = (raw_text or "").strip()
+    if not text:
+        return None
+    try:
+        return json.loads(text)
+    except Exception:
+        pass
+
+    match = re.search(r"\{.*\}", text, flags=re.DOTALL)
+    if not match:
+        return None
+    try:
+        return json.loads(match.group(0))
+    except Exception:
+        return None
+
+
+def _safe_temp_vision_path() -> str:
+    base_dir = Path(tempfile.gettempdir()) / "jingmai-product-publish"
+    base_dir.mkdir(parents=True, exist_ok=True)
+    return str(base_dir / f"vision_click_{int(time.time() * 1000)}.png")
+
+
+def _build_vision_click_diagnostics(locator, screenshot: str, llm_x: int, llm_y: int) -> Dict[str, Any]:
+    actual_width = actual_height = None
+    scale_x = scale_y = None
+    try:
+        from PIL import Image
+        from settings import get_settings
+
+        settings = get_settings()
+        with Image.open(screenshot) as img:
+            actual_width, actual_height = img.size
+        scale_x = round(int(settings.SCREENSHOT_MAX_WIDTH) / actual_width, 4) if actual_width else None
+        scale_y = round(int(settings.SCREENSHOT_MAX_HEIGHT) / actual_height, 4) if actual_height else None
+    except Exception:
+        actual_width = actual_height = None
+
+    mapped_x, mapped_y = locator.llm_to_screen(llm_x, llm_y, image_path=screenshot)
+    return {
+        "actual_vision_size": [actual_width, actual_height] if actual_width and actual_height else None,
+        "scale_x": scale_x,
+        "scale_y": scale_y,
+        "mapped_x": mapped_x,
+        "mapped_y": mapped_y,
+    }
+
+
+@ActionRegistry.register("vision_click_text_center", "navigation", "使用 Ollama 视觉定位文本中心并执行 move + click")
+def vision_click_text_center(
+    target_text: str,
+    page_hint: str = "",
+    screenshot_path: str = "",
+    locator=None,
+    log=None,
+    **_kwargs,
+) -> Dict[str, Any]:
+    locator = _get_locator(locator, log)
+    target_text = str(target_text or "").strip()
+    if not target_text:
+        return {"success": False, "message": "target_text is required"}
+
+    screenshot = screenshot_path or _safe_temp_vision_path()
+    if not screenshot_path:
+        take_screenshot = getattr(locator, "take_screenshot", None)
+        if not callable(take_screenshot):
+            return {"success": False, "message": "vision screenshot capture is unavailable", "target_text": target_text}
+        screenshot = take_screenshot(screenshot, for_vision=True)
+    if not screenshot:
+        return {"success": False, "message": "vision screenshot capture failed", "target_text": target_text}
+
+    prompt = (
+        "你是桌面自动化视觉定位器。"
+        "请在截图中定位目标文本或最匹配的类目项/输入框，并只返回严格 JSON。"
+        "禁止返回 markdown。"
+        "JSON 字段必须包含: "
+        '{"status":"ok|error","target_text":"","center_x":0,"center_y":0,"bbox":[x1,y1,x2,y2],"reason":""}. '
+        "坐标必须基于当前图片像素坐标系。"
+        "如果找不到，返回 status=error。"
+        f"页面提示: {page_hint or '京麦发品页'}。"
+        f"目标文本: {target_text}。"
+    )
+
+    try:
+        llm = LLMManager()
+        response = llm.invoke_multimodal(prompt, screenshot)
+    except Exception as exc:
+        return {
+            "success": False,
+            "message": f"ollama vision click failed: {exc}",
+            "target_text": target_text,
+            "screenshot": screenshot,
+        }
+
+    payload = _parse_vision_click_json(response)
+    if not payload:
+        return {
+            "success": False,
+            "message": "ollama vision response is not valid json",
+            "target_text": target_text,
+            "raw_response": response,
+            "screenshot": screenshot,
+        }
+
+    if str(payload.get("status", "")).lower() != "ok":
+        return {
+            "success": False,
+            "message": payload.get("reason") or "target not found",
+            "target_text": target_text,
+            "vision_result": payload,
+            "screenshot": screenshot,
+        }
+
+    try:
+        llm_x = int(payload["center_x"])
+        llm_y = int(payload["center_y"])
+    except Exception:
+        return {
+            "success": False,
+            "message": "ollama vision response missing center_x/center_y",
+            "target_text": target_text,
+            "vision_result": payload,
+            "screenshot": screenshot,
+        }
+
+    diagnostics = _build_vision_click_diagnostics(locator, screenshot, llm_x, llm_y)
+    local_x = diagnostics["mapped_x"]
+    local_y = diagnostics["mapped_y"]
+    if log:
+        log.debug(
+            "[vision-click] "
+            f"target={target_text} actual_vision_size={diagnostics.get('actual_vision_size')} "
+            f"scale_x={diagnostics.get('scale_x')} scale_y={diagnostics.get('scale_y')} "
+            f"mapped_x={local_x} mapped_y={local_y}"
+        )
+    clicked = locator.click(local_x, local_y, delay=0.6)
+    return {
+        "success": bool(clicked),
+        "method": "ollama_vision_move_click",
+        "target_text": target_text,
+        "page_hint": page_hint,
+        "screenshot": screenshot,
+        "llm_coords": {"x": llm_x, "y": llm_y},
+        "mapped_coords": {"x": local_x, "y": local_y},
+        **diagnostics,
+        "vision_result": payload,
+        "drag": False,
+    }
+
+
+def _focus_category_search_input(search_text: str, search_input=None, locator=None, log=None) -> Dict[str, Any]:
+    locator = _get_locator(locator, log)
+    if search_input:
+        rect = search_input["rect"]
+        center_x = (rect.left + rect.right) // 2
+        center_y = (rect.top + rect.bottom) // 2
+        clicked = locator.click(center_x, center_y, delay=0.3)
+        return {
+            "success": bool(clicked),
+            "method": "uia_center_click" if clicked else "uia_center_click_failed",
+            "coords": (center_x, center_y),
+        }
+
+    return vision_click_text_center(
+        target_text="类目搜索框",
+        page_hint=f"京麦类目选择页顶部搜索输入框，点击可输入“{search_text}”的搜索框，不要点击候选类目",
+        locator=locator,
+        log=log,
+    )
 
 
 def _category_next_region(locator=None) -> tuple[int, int, int, int] | None:
@@ -324,6 +552,19 @@ def _select_search_result(search_text: str, search_input=None, locator=None, log
                 return True
 
     try:
+        vision_result = vision_click_text_center(
+            target_text=search_text,
+            page_hint="京麦类目选择页搜索结果候选区，点击最匹配搜索词的候选结果，不要点击搜索框",
+            locator=locator,
+            log=log,
+        )
+        if vision_result.get("success"):
+            time.sleep(0.8)
+            if _is_category_next_enabled(locator=locator, log=log):
+                return True
+            if _has_product_info_markers(locator=locator, log=log):
+                return True
+
         if search_input:
             rect = search_input["rect"]
             suggestion_points = [
@@ -367,6 +608,20 @@ def _select_search_result(search_text: str, search_input=None, locator=None, log
 def _click_named_button(keywords: list[str], locator=None, log=None) -> Dict[str, Any]:
     window = find_jingmai_uia_window(locator=locator, log=log)
     if not window:
+        primary_keyword = next((keyword for keyword in keywords if keyword), "")
+        vision_result = vision_click_text_center(
+            target_text=primary_keyword or "按钮",
+            page_hint=f"京麦页面按钮区域，点击按钮文本最匹配以下关键词之一的按钮: {keywords}",
+            locator=locator,
+            log=log,
+        )
+        if vision_result.get("success"):
+            return {
+                "success": True,
+                "method": "ollama_vision_move_click",
+                "button": primary_keyword or "按钮",
+                "vision_fallback": vision_result,
+            }
         return {"success": False, "message": "uia window not found"}
 
     for candidate in iter_named_descendants(window, control_types=["Button"], limit=120):
@@ -385,6 +640,21 @@ def _click_named_button(keywords: list[str], locator=None, log=None) -> Dict[str
             if click_uia_element(candidate["element"], log=log):
                 return {"success": True, "method": "uia", "button": name}
 
+            vision_result = vision_click_text_center(
+                target_text=name,
+                page_hint=f"京麦页面按钮区域，点击文本为“{name}”的按钮",
+                locator=locator,
+                log=log,
+            )
+            if vision_result.get("success"):
+                return {
+                    "success": True,
+                    "method": "ollama_vision_move_click",
+                    "button": name,
+                    "coords": (cx, cy),
+                    "vision_fallback": vision_result,
+                }
+
     return {"success": False, "message": f"button not found: {keywords}"}
 
 
@@ -394,38 +664,38 @@ def _click_category_next(locator=None, log=None) -> Dict[str, Any]:
 
     优先使用 Session1 Helper，Session 0 环境下降级到 pyautogui。
     """
-    coords = CATEGORY_PAGE.get("next_button")
-    if coords:
-        bx, by = coords
-        # 优先用 Session1 Helper
-        if HAS_SESSION1 and s1_click:
-            if s1_click(bx, by, delay=1.2):
-                return {"success": True, "method": "session1_click", "coords": coords}
-
-        # Fallback: pyautogui
-        try:
-            import pyautogui
-
-            pyautogui.click(bx, by)
-            time.sleep(1.2)
-            return {"success": True, "method": "pyautogui_click", "coords": coords}
-        except Exception as exc:
-            if log:
-                log.warning(f"pyautogui click failed: {exc}")
-
     named = _click_named_button(["下一步", "填写商品信息"], locator=locator, log=log)
     if named.get("success"):
         return named
 
-    vision = _click_image_fallback("category_next_button.png", locator=locator, log=log)
-    if vision.get("success"):
-        return {"success": True, "method": "vision", "vision_fallback": vision}
+    vision_click = vision_click_text_center(
+        target_text="下一步",
+        page_hint="京麦类目选择页底部下一步按钮，按钮文本通常为“下一步，完善其他商品信息”",
+        locator=locator,
+        log=log,
+    )
+    if vision_click.get("success"):
+        return {"success": True, "method": "ollama_vision_move_click", "vision_fallback": vision_click}
+
+    coords = CATEGORY_PAGE.get("next_button")
+    if coords:
+        bx, by = coords
+        if HAS_SESSION1 and s1_click:
+            if s1_click(bx, by, delay=1.2):
+                return {"success": True, "method": "session1_click", "coords": coords}
+        if _get_locator(locator, log).click(bx, by, delay=1.2):
+            return {"success": True, "method": "coordinate_click", "coords": coords}
+
+    image_fallback = _click_image_fallback("category_next_button.png", locator=locator, log=log)
+    if image_fallback.get("success"):
+        return {"success": True, "method": "vision", "vision_fallback": image_fallback}
 
     return {"success": False, "message": "next button not found"}
 
 
 def _click_product_button(coords: tuple[int, int] | None, keywords: list[str], template_name: str, locator=None, log=None):
     locator = _get_locator(locator, log)
+    lightweight_locator = not hasattr(locator, "take_screenshot") and not hasattr(locator, "get_uia_window")
 
     # 优先用 Session1 Helper 点击坐标
     if coords:
@@ -435,6 +705,8 @@ def _click_product_button(coords: tuple[int, int] | None, keywords: list[str], t
         # Fallback: locator.click
         if locator.click(coords[0], coords[1], delay=1.5):
             return {"success": True, "method": "coordinate"}
+        if lightweight_locator:
+            return {"success": False, "message": f"coordinate click failed: {keywords}", "coords": coords}
 
     named = _click_named_button(keywords, locator=locator, log=log)
     if named.get("success"):
@@ -461,38 +733,70 @@ def select_category(
     if _has_product_info_markers(locator=locator, log=log) and not _has_category_page_markers(locator=locator, log=log):
         return {"success": True, "steps": ["already_past_category"]}
 
-    if search_text:
+    if search_text and _selected_category_matches(search_text, locator=locator, log=log):
+        if _has_product_info_markers(locator=locator, log=log):
+            return {"success": True, "steps": ["already_past_category"]}
+        if _is_category_next_enabled(locator=locator, log=log):
+            results.append("selected_category_reused")
+
+    if search_text and not results:
         search_input = _find_category_search_input(locator=locator, log=log)
         if not search_input and not _has_category_page_markers(locator=locator, log=log):
             return {"success": True, "steps": ["already_past_category"]}
         search_coords = (
             ((search_input["rect"].left + search_input["rect"].right) // 2, (search_input["rect"].top + search_input["rect"].bottom) // 2)
             if search_input
-            else (640, 260)
+            else None
         )
-        if not locator.click(search_coords[0], search_coords[1], delay=0.3):
-            return {"success": False, "message": "click category search input failed", "steps": results}
 
         from actions.form import fill_text
 
-        fill_result = fill_text(search_text, x=search_coords[0], y=search_coords[1], locator=locator, log=log)
-        if not fill_result["success"]:
-            return {"success": False, "message": fill_result.get("message", "fill category search failed"), "steps": results}
-        results.append("search")
-        time.sleep(1.0)
+        selected_variant = ""
+        search_variants = _category_search_variants(search_text)
+        for variant_index, search_variant in enumerate(search_variants):
+            focus_result = _focus_category_search_input(
+                search_variant,
+                search_input=search_input,
+                locator=locator,
+                log=log,
+            )
+            if not focus_result.get("success"):
+                return {"success": False, "message": "click category search input failed", "steps": results}
 
-        if not _select_search_result(search_text, search_input=search_input, locator=locator, log=log):
-            return {"success": False, "message": f"category search result not found: {search_text}", "steps": results}
+            fill_result = fill_text(
+                search_variant,
+                x=search_coords[0] if search_coords else None,
+                y=search_coords[1] if search_coords else None,
+                locator=locator,
+                log=log,
+            )
+            if not fill_result["success"]:
+                return {"success": False, "message": fill_result.get("message", "fill category search failed"), "steps": results}
+            if "search" not in results:
+                results.append("search")
+            time.sleep(1.0)
 
-        results.append("search_select")
-        time.sleep(1.0)
+            if _select_search_result(search_variant, search_input=search_input, locator=locator, log=log):
+                if "search_select" not in results:
+                    results.append("search_select")
+                selected_variant = search_variant
+                time.sleep(1.0)
+                break
+
+            if variant_index == len(search_variants) - 1:
+                return {
+                    "success": False,
+                    "message": f"category search result not found: {search_text}; tried={search_variants}",
+                    "steps": results,
+                }
+
         if not _is_category_next_enabled(locator=locator, log=log):
-            leaf_result = _select_leaf_category_candidate(search_text, locator=locator, log=log)
+            leaf_result = _select_leaf_category_candidate(selected_variant or search_text, locator=locator, log=log)
             if leaf_result.get("success"):
                 results.append("leaf_select")
                 time.sleep(1.0)
             if not _is_category_next_enabled(locator=locator, log=log):
-                message = _build_category_disabled_reason(search_text, locator=locator, log=log)
+                message = _build_category_disabled_reason(selected_variant or search_text, locator=locator, log=log)
                 if leaf_result.get("success"):
                     message = (
                         f"{message}; last_leaf_candidate={leaf_result.get('name')}"
@@ -508,6 +812,9 @@ def select_category(
                     "message": message,
                     "steps": results,
                 }
+
+        if _has_product_info_markers(locator=locator, log=log):
+            return {"success": True, "steps": results + ["product_info_ready"]}
 
     if level3_coords:
         if not locator.click(level3_coords[0], level3_coords[1], delay=0.5):
@@ -538,7 +845,22 @@ def select_category(
     if not next_result.get("success"):
         return {"success": False, "message": "click next failed", "steps": results}
     results.append("next")
-    time.sleep(2.0)
+    time.sleep(1.2)
+
+    for _ in range(4):
+        if _has_product_info_markers(locator=locator, log=log):
+            return {"success": True, "steps": results}
+        if not _has_category_page_markers(locator=locator, log=log) and not _is_category_next_enabled(locator=locator, log=log):
+            return {"success": True, "steps": results}
+        time.sleep(0.8)
+
+    if search_text and _selected_category_matches(search_text, locator=locator, log=log) and _is_category_next_enabled(locator=locator, log=log):
+        second_next = _click_category_next(locator=locator, log=log)
+        if second_next.get("success"):
+            results.append("next_retry")
+            time.sleep(1.5)
+            if _has_product_info_markers(locator=locator, log=log):
+                return {"success": True, "steps": results}
 
     if _is_category_next_enabled(locator=locator, log=log):
         return {"success": False, "message": "clicked next but category page did not advance", "steps": results}

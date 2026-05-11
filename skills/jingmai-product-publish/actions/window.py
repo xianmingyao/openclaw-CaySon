@@ -126,3 +126,30 @@ def set_focus(locator=None, log=None) -> Dict[str, Any]:
     # fallback: activate_window
     success = locator.activate_window()
     return {"success": success}
+
+
+@ActionRegistry.register("refresh_page", "window", "刷新当前京麦页面")
+def refresh_page(mode: str = "soft", locator=None, log=None) -> Dict[str, Any]:
+    """Refresh the current Jingmai page with keyboard shortcuts."""
+    if locator is None:
+        from infrastructure.locator import JingmaiLocator
+        locator = JingmaiLocator(log=log)
+
+    try:
+        locator.activate_window()
+    except Exception:
+        pass
+
+    try:
+        import pyautogui
+
+        if str(mode or "").lower() == "hard":
+            pyautogui.hotkey("ctrl", "f5")
+            method = "ctrl+f5"
+        else:
+            pyautogui.press("f5")
+            method = "f5"
+        time.sleep(1.5)
+        return {"success": True, "mode": mode, "method": method}
+    except Exception as exc:
+        return {"success": False, "mode": mode, "message": str(exc)}

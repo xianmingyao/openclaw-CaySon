@@ -1,19 +1,20 @@
-"""
-京麦商品发布自动化 - 数据库管理器
-MySQL 优先，SQLite 兜底。
+﻿"""
+Jingmai product publishing database manager.
+MySQL first, SQLite fallback.
 """
 from contextlib import contextmanager
 from datetime import datetime
+import time
 from typing import Any, Dict, List, Optional
 
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import Session, sessionmaker
 
-from models import Base, Product, PublishTask, TaskStep
+from models import AcceptanceRun, Base, Product, PublishTask, TaskStep
 
 
 def _to_dict(obj) -> Optional[Dict[str, Any]]:
-    """将 ORM 对象转成字典，避免 detached instance 问题。"""
+    """Convert an ORM object into a plain dict."""
     if obj is None:
         return None
 
@@ -27,7 +28,7 @@ def _to_dict(obj) -> Optional[Dict[str, Any]]:
 
 
 class DatabaseManager:
-    """数据库管理器。"""
+    """Database manager with MySQL preflight and SQLite fallback."""
 
     def __init__(self, settings=None, mysql_url: str = "", sqlite_url: str = ""):
         self._engine = None
@@ -35,34 +36,31 @@ class DatabaseManager:
         self._db_type = "none"
         self._mysql_pool_size = 10
         self._mysql_max_overflow = 20
+        self._mysql_connect_timeout = 8
+        self._mysql_read_timeout = 15
+        self._mysql_write_timeout = 15
+        self._mysql_init_retries = 3
+        self._mysql_retry_delay_sec = 1.5
 
-        # 支持 settings 对象或独立参数
         if settings is not None:
             mysql_url = getattr(settings, "MYSQL_URL", "") or mysql_url
             sqlite_url = getattr(settings, "SQLITE_URL", "") or sqlite_url
             self._mysql_pool_size = int(getattr(settings, "MYSQL_POOL_SIZE", 10) or 10)
             self._mysql_max_overflow = int(getattr(settings, "MYSQL_MAX_OVERFLOW", 20) or 20)
+            self._mysql_connect_timeout = int(getattr(settings, "MYSQL_CONNECT_TIMEOUT", 8) or 8)
+            self._mysql_read_timeout = int(getattr(settings, "MYSQL_READ_TIMEOUT", 15) or 15)
+            self._mysql_write_timeout = int(getattr(settings, "MYSQL_WRITE_TIMEOUT", 15) or 15)
+            self._mysql_init_retries = int(getattr(settings, "MYSQL_INIT_RETRIES", 3) or 3)
+            self._mysql_retry_delay_sec = float(getattr(settings, "MYSQL_RETRY_DELAY_SEC", 1.5) or 1.5)
 
         if mysql_url:
-            try:
-                engine = create_engine(
-                    mysql_url,
-                    pool_pre_ping=True,
-                    pool_recycle=3600,
-                    pool_size=self._mysql_pool_size,
-                    max_overflow=self._mysql_max_overflow,
-                    echo=False,
-                )
-                with engine.connect() as conn:
-                    conn.execute(text("SELECT 1"))
+            engine = self._connect_mysql_with_retry(mysql_url)
+            if engine is not None:
                 self._engine = engine
                 self._db_type = "mysql"
-            except Exception as exc:
-                print(f"[DB] MySQL 连接失败: {exc}，降级到 SQLite")
 
         if self._engine is None and sqlite_url:
-            engine = create_engine(sqlite_url, echo=False)
-            self._engine = engine
+            self._engine = create_engine(sqlite_url, echo=False)
             self._db_type = "sqlite"
 
         if self._engine is not None:
@@ -71,6 +69,67 @@ class DatabaseManager:
     @property
     def db_type(self) -> str:
         return self._db_type
+
+    def probe(self) -> Dict[str, Any]:
+        details = {
+            "db_type": self._db_type,
+            "mysql_pool_size": self._mysql_pool_size,
+            "mysql_max_overflow": self._mysql_max_overflow,
+            "mysql_connect_timeout": self._mysql_connect_timeout,
+            "mysql_read_timeout": self._mysql_read_timeout,
+            "mysql_write_timeout": self._mysql_write_timeout,
+            "mysql_init_retries": self._mysql_init_retries,
+            "mysql_retry_delay_sec": self._mysql_retry_delay_sec,
+            "reachable": False,
+            "error": "",
+        }
+        if self._engine is None:
+            details["error"] = "engine-not-initialized"
+            return details
+
+        try:
+            with self._engine.connect() as conn:
+                conn.execute(text("SELECT 1"))
+            details["reachable"] = True
+        except Exception as exc:
+            details["error"] = str(exc)
+        return details
+
+    def _connect_mysql_with_retry(self, mysql_url: str):
+        attempts = max(1, int(self._mysql_init_retries or 1))
+        last_error = ""
+        for attempt in range(1, attempts + 1):
+            try:
+                engine = create_engine(
+                    mysql_url,
+                    pool_pre_ping=True,
+                    pool_recycle=3600,
+                    pool_size=self._mysql_pool_size,
+                    max_overflow=self._mysql_max_overflow,
+                    connect_args={
+                        "connect_timeout": self._mysql_connect_timeout,
+                        "read_timeout": self._mysql_read_timeout,
+                        "write_timeout": self._mysql_write_timeout,
+                    },
+                    echo=False,
+                )
+                with engine.connect() as conn:
+                    conn.execute(text("SELECT 1"))
+                if attempt > 1:
+                    print(f"[DB] MySQL connected on retry {attempt}/{attempts}")
+                return engine
+            except Exception as exc:
+                last_error = str(exc)
+                if attempt < attempts:
+                    delay = max(0.2, float(self._mysql_retry_delay_sec or 1.5)) * attempt
+                    print(
+                        f"[DB] MySQL connect failed: attempt={attempt}/{attempts}, "
+                        f"retry_in={delay:.1f}s, error={last_error}"
+                    )
+                    time.sleep(delay)
+                else:
+                    print(f"[DB] MySQL 连接失败: {last_error}，降级到 SQLite")
+        return None
 
     def create_tables(self) -> None:
         if self._engine is not None:
@@ -93,7 +152,7 @@ class DatabaseManager:
             sess.close()
 
     def save_product(self, product: Product) -> Product:
-        """按 product_id upsert 商品。"""
+        """Upsert a product by product_id."""
         with self.session() as sess:
             existing = sess.query(Product).filter(Product.product_id == product.product_id).first()
             if existing is None:
@@ -227,8 +286,73 @@ class DatabaseManager:
     def list_steps(self, task_id: str) -> List[Dict[str, Any]]:
         return self.get_steps(task_id)
 
+    def create_acceptance_run(self, run: AcceptanceRun) -> AcceptanceRun:
+        with self.session() as sess:
+            sess.add(run)
+            sess.flush()
+            sess.refresh(run)
+            return run
+
+    def get_acceptance_run(self, run_id: str) -> Optional[Dict[str, Any]]:
+        with self.session() as sess:
+            obj = sess.query(AcceptanceRun).filter(AcceptanceRun.run_id == run_id).first()
+            return _to_dict(obj)
+
+    def list_acceptance_runs(self, limit: int = 20) -> List[Dict[str, Any]]:
+        with self.session() as sess:
+            rows = (
+                sess.query(AcceptanceRun)
+                .order_by(AcceptanceRun.created_at.desc())
+                .limit(limit)
+                .all()
+            )
+            return [_to_dict(row) for row in rows]
+
+    def update_acceptance_run(
+        self,
+        run_id: str,
+        *,
+        status: str = "",
+        success_count: Optional[int] = None,
+        fail_count: Optional[int] = None,
+        total_items: Optional[int] = None,
+        summary: Optional[dict] = None,
+        error: str = "",
+        summary_file: str = "",
+        progress_file: str = "",
+        plan_dir: str = "",
+    ) -> None:
+        with self.session() as sess:
+            run = sess.query(AcceptanceRun).filter(AcceptanceRun.run_id == run_id).first()
+            if run is None:
+                return
+
+            if status:
+                run.status = status
+            if success_count is not None:
+                run.success_count = int(success_count)
+            if fail_count is not None:
+                run.fail_count = int(fail_count)
+            if total_items is not None:
+                run.total_items = int(total_items)
+            if summary is not None:
+                run.summary = summary
+            if error:
+                run.error_message = error
+            if summary_file:
+                run.summary_file = summary_file
+            if progress_file:
+                run.progress_file = progress_file
+            if plan_dir:
+                run.plan_dir = plan_dir
+            if run.status in {"running", "in_progress"} and run.started_at is None:
+                run.started_at = datetime.now()
+            if run.status in {"success", "failed"}:
+                run.finished_at = datetime.now()
+            sess.flush()
+
     def _sync_schema(self) -> None:
-        """为已有库补齐新版本缺失列。"""
+        """Backfill missing columns for existing databases."""
         if self._engine is None:
             return
 

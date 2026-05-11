@@ -76,11 +76,11 @@ class ThinkerAgent(BaseAgent):
 {json.dumps(context or {}, ensure_ascii=False, indent=2)}
 
 返回格式:
-{{"page_status": "...", "visible_elements": [], "next_action": "...", "action_params": {{}}}}"""
+{{"page_status": "...", "visible_elements": [], "next_action": "...", "action_params": {{"target_text": "", "center_x": 0, "center_y": 0, "bbox": [0,0,0,0], "drag": false}}}}"""
 
         try:
             raw = self._llm.invoke_multimodal(prompt, resolved_screenshot)
-            response = self._validate_response(raw)
+            response = self._enrich_visual_response(self._validate_response(raw), resolved_screenshot)
             self._remember(f"截图分析: {response[:200]}", importance=0.7)
             return {"success": True, "response": response}
         except Exception as exc:
@@ -97,9 +97,12 @@ class ThinkerAgent(BaseAgent):
 2. 最明显的未完成区域
 3. 下一步最应该做什么"""
             try:
-                response = self._validate_response(
-                    self._llm.invoke_multimodal(fallback_prompt, resolved_screenshot),
-                    allow_plain_text=True,
+                response = self._enrich_visual_response(
+                    self._validate_response(
+                        self._llm.invoke_multimodal(fallback_prompt, resolved_screenshot),
+                        allow_plain_text=True,
+                    ),
+                    resolved_screenshot,
                 )
                 self._remember(f"截图分析: {response[:200]}", importance=0.7)
                 return {"success": True, "response": response}
@@ -151,6 +154,70 @@ class ThinkerAgent(BaseAgent):
                 return str(chosen)
 
         raise FileNotFoundError(f"截图文件不存在: {raw}")
+
+    def _enrich_visual_response(self, response: str, screenshot_path: str) -> str:
+        text = (response or "").strip()
+        if not text:
+            return text
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError:
+            return text
+        if not isinstance(payload, dict):
+            return text
+
+        payload.update(self._build_visual_diagnostics(payload, screenshot_path))
+        return json.dumps(payload, ensure_ascii=False, indent=2)
+
+    def _build_visual_diagnostics(self, payload: Dict[str, Any], screenshot_path: str) -> Dict[str, Any]:
+        actual_width = actual_height = None
+        ref_width = ref_height = None
+        scale_x = scale_y = None
+        mapped_x = mapped_y = None
+
+        try:
+            from PIL import Image
+
+            with Image.open(screenshot_path) as img:
+                actual_width, actual_height = img.size
+        except Exception:
+            actual_width = actual_height = None
+
+        try:
+            from settings import get_settings
+
+            settings = get_settings()
+            ref_width = int(settings.SCREENSHOT_MAX_WIDTH)
+            ref_height = int(settings.SCREENSHOT_MAX_HEIGHT)
+        except Exception:
+            ref_width, ref_height = 2560, 1392
+
+        if actual_width and actual_height:
+            scale_x = round(ref_width / actual_width, 4)
+            scale_y = round(ref_height / actual_height, 4)
+
+        action_params = payload.get("action_params") if isinstance(payload.get("action_params"), dict) else {}
+        llm_x = action_params.get("center_x")
+        llm_y = action_params.get("center_y")
+        if isinstance(llm_x, (int, float)) and isinstance(llm_y, (int, float)):
+            try:
+                from infrastructure.locator import JingmaiLocator
+
+                locator = JingmaiLocator(log=self.log)
+                locator.find_window()
+                mapped_x, mapped_y = locator.llm_to_screen(int(llm_x), int(llm_y), image_path=screenshot_path)
+            except Exception:
+                if actual_width and actual_height:
+                    mapped_x = int(llm_x * ref_width / actual_width)
+                    mapped_y = int(llm_y * ref_height / actual_height)
+
+        return {
+            "actual_vision_size": [actual_width, actual_height] if actual_width and actual_height else None,
+            "scale_x": scale_x,
+            "scale_y": scale_y,
+            "mapped_x": mapped_x,
+            "mapped_y": mapped_y,
+        }
 
     @staticmethod
     def _validate_response(response: Any, allow_plain_text: bool = False) -> str:

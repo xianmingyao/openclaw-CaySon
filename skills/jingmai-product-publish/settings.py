@@ -61,6 +61,11 @@ class Settings:
     MYSQL_CHARSET: str = "utf8mb4"
     MYSQL_POOL_SIZE: int = 10
     MYSQL_MAX_OVERFLOW: int = 20
+    MYSQL_CONNECT_TIMEOUT: int = 8
+    MYSQL_READ_TIMEOUT: int = 15
+    MYSQL_WRITE_TIMEOUT: int = 15
+    MYSQL_INIT_RETRIES: int = 3
+    MYSQL_RETRY_DELAY_SEC: float = 1.5
     SQLITE_URL: str = f"sqlite:///{BASE_DIR / 'data' / 'jingmai.db'}"
 
     # LLM
@@ -99,6 +104,10 @@ class Settings:
     SCREENSHOT_MAX_HEIGHT: int = 1392      # 截图原始高度
     SCREENSHOT_PLAN_MAX_WIDTH: int = 1024  # LLM 识别图宽度
     SCREENSHOT_PLAN_MAX_HEIGHT: int = 550  # LLM 识别图高度
+    VIDEO_OBSERVER_ENABLED: bool = False
+    VIDEO_OBSERVER_FRAME_COUNT: int = 4
+    VIDEO_OBSERVER_INTERVAL_MS: int = 350
+    VIDEO_OBSERVER_DIR: str = str(BASE_DIR / "resources" / "screenshots" / "video-observer")
 
     # 坐标配置分辨率（坐标文件中的参考分辨率）
     COORDS_SCREEN_WIDTH: int = 2560
@@ -132,6 +141,11 @@ class Settings:
             "MYSQL_CHARSET": "MYSQL_CHARSET",
             "MYSQL_POOL_SIZE": "MYSQL_POOL_SIZE",
             "MYSQL_MAX_OVERFLOW": "MYSQL_MAX_OVERFLOW",
+            "MYSQL_CONNECT_TIMEOUT": "MYSQL_CONNECT_TIMEOUT",
+            "MYSQL_READ_TIMEOUT": "MYSQL_READ_TIMEOUT",
+            "MYSQL_WRITE_TIMEOUT": "MYSQL_WRITE_TIMEOUT",
+            "MYSQL_INIT_RETRIES": "MYSQL_INIT_RETRIES",
+            "MYSQL_RETRY_DELAY_SEC": "MYSQL_RETRY_DELAY_SEC",
             # Milvus
             "MILVUS_HOST": "MILVUS_HOST",
             "MILVUS_PORT": "MILVUS_PORT",
@@ -150,6 +164,10 @@ class Settings:
             "SCREENSHOT_MAX_HEIGHT": "SCREENSHOT_MAX_HEIGHT",
             "SCREENSHOT_PLAN_MAX_WIDTH": "SCREENSHOT_PLAN_MAX_WIDTH",
             "SCREENSHOT_PLAN_MAX_HEIGHT": "SCREENSHOT_PLAN_MAX_HEIGHT",
+            "VIDEO_OBSERVER_ENABLED": "VIDEO_OBSERVER_ENABLED",
+            "VIDEO_OBSERVER_FRAME_COUNT": "VIDEO_OBSERVER_FRAME_COUNT",
+            "VIDEO_OBSERVER_INTERVAL_MS": "VIDEO_OBSERVER_INTERVAL_MS",
+            "VIDEO_OBSERVER_DIR": "VIDEO_OBSERVER_DIR",
             # 坐标参考分辨率
             "COORDS_SCREEN_WIDTH": "COORDS_SCREEN_WIDTH",
             "COORDS_SCREEN_HEIGHT": "COORDS_SCREEN_HEIGHT",
@@ -159,7 +177,9 @@ class Settings:
             if env_val:
                 # 自动类型转换
                 default_val = getattr(self.__class__, attr, None)
-                if isinstance(default_val, int):
+                if isinstance(default_val, bool):
+                    setattr(self, attr, str(env_val).strip().lower() in {"1", "true", "yes", "on"})
+                elif isinstance(default_val, int):
                     try:
                         setattr(self, attr, int(env_val))
                     except ValueError:
@@ -201,6 +221,7 @@ class Settings:
             self.LOG_DIR,
             self.MEMORY_BASE_DIR,
             self.SCREENSHOT_DIR,
+            self.VIDEO_OBSERVER_DIR,
             str(BASE_DIR / "data"),
         ]
         for d in dirs:

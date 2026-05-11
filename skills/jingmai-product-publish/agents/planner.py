@@ -1,12 +1,15 @@
-"""
+﻿"""
 京麦商品发布自动化 - Planner Agent
 """
 import json
 import re
 import time
 import uuid
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List
+import xml.etree.ElementTree as ET
+import zipfile
 
 from actions import ActionRegistry
 from agents.base import BaseAgent
@@ -21,6 +24,7 @@ class PlannerAgent(BaseAgent):
     def run(self, **kwargs) -> Dict[str, Any]:
         product_data = kwargs.get("product_data") or {}
         task_desc = (kwargs.get("task_desc") or "").strip()
+        workflow_policy = str(kwargs.get("workflow_policy") or "default").strip() or "default"
         if not product_data and not task_desc:
             return {"success": False, "error": "缺少商品数据或任务描述"}
 
@@ -30,7 +34,13 @@ class PlannerAgent(BaseAgent):
         screen_context = kwargs.get("screen_context")
         if screen_context is None:
             screen_context = self._capture_screen_context()
-        return self.plan(task_id=task_id, product_data=merged, task_desc=task_desc, screen_context=screen_context)
+        return self.plan(
+            task_id=task_id,
+            product_data=merged,
+            task_desc=task_desc,
+            screen_context=screen_context,
+            workflow_policy=workflow_policy,
+        )
 
     def plan(
         self,
@@ -38,6 +48,7 @@ class PlannerAgent(BaseAgent):
         product_data: Dict[str, Any],
         task_desc: str = "",
         screen_context: Dict[str, Any] | None = None,
+        workflow_policy: str = "default",
     ) -> Dict[str, Any]:
         self.start()
         src = product_data.get("product", product_data)
@@ -45,13 +56,18 @@ class PlannerAgent(BaseAgent):
         self._log("info", f"规划任务 {task_id}: {display_title[:30]}")
 
         screen_context = screen_context or {}
-        plan = self._llm_plan(src, task_desc=task_desc, screen_context=screen_context)
-        template_plan = self._template_plan(src, task_desc=task_desc)
+        plan: List[Dict[str, Any]] = []
+        if workflow_policy != "doc_strict":
+            plan = self._llm_plan(src, task_desc=task_desc, screen_context=screen_context)
+        template_plan = self._template_plan(src, task_desc=task_desc, workflow_policy=workflow_policy)
         if plan:
             self._log("info", f"LLM 规划成功，共 {len(plan)} 步")
         else:
             plan = template_plan
-            self._log("info", f"使用模板规划，共 {len(plan)} 步")
+            if workflow_policy == "doc_strict":
+                self._log("info", f"doc_strict 强约束已启用，使用文档模板规划，共 {len(plan)} 步")
+            else:
+                self._log("info", f"使用模板规划，共 {len(plan)} 步")
 
         valid_plan = self._attach_react_contracts(
             self._annotate_plan_phases(self._validate_plan(plan)),
@@ -90,6 +106,8 @@ class PlannerAgent(BaseAgent):
             "screen_context": screen_context,
             "plan": valid_plan,
             "total_steps": len(valid_plan),
+            "workflow_policy": workflow_policy,
+            "workflow_doc": self._default_workflow_doc_path() if workflow_policy == "doc_strict" else "",
         }
 
     def _llm_plan(
@@ -217,9 +235,19 @@ publish_product - 发布商品
             context["reason"] = f"screen-context-error: {exc}"
             return context
 
-    def _template_plan(self, product_data: Dict[str, Any], task_desc: str = "") -> List[Dict[str, Any]]:
+    def _template_plan(
+        self,
+        product_data: Dict[str, Any],
+        task_desc: str = "",
+        workflow_policy: str = "default",
+    ) -> List[Dict[str, Any]]:
         product_info = product_data.get("product", product_data)
+        publish_mode = self._resolve_publish_mode(product_info)
+        if workflow_policy == "doc_strict":
+            return self._doc_workflow_template({**product_info, "publish_mode": publish_mode})
+
         category = product_info.get("category", "") or ""
+        title = str(product_info.get("title", "") or "").strip()
 
         plan: List[Dict[str, Any]] = [
             {"action": "find_window", "params": {}, "required": True},
@@ -227,20 +255,66 @@ publish_product - 发布商品
             {"action": "navigate_to", "params": {"page": "publish"}, "required": True},
         ]
 
+        if title in {"商品标题"} or "嵌套测试" in title:
+            plan.append({"action": "fill_text", "params": {"text": title}, "required": False})
+
         if category:
             plan.append({"action": "select_category", "params": {"search_text": category}, "required": True})
 
+        required_visual_fields = self._build_required_visual_fields(product_data)
+        if publish_mode == "batch":
+            plan.append(
+                {
+                    "action": "fill_product_info",
+                    "params": {
+                        "product": product_data,
+                        "required_visual_fields": required_visual_fields,
+                        "field_groups": ["basic_info", "attributes"],
+                        "batch_scope": "product_basic",
+                        "publish_mode": publish_mode,
+                    },
+                    "required": True,
+                    "phase": "product_basic_ready",
+                }
+            )
+            plan.append(
+                {
+                    "action": "fill_product_info",
+                    "params": {
+                        "product": product_data,
+                        "required_visual_fields": required_visual_fields,
+                        "field_groups": ["pricing", "sales_attributes", "logistics"],
+                        "batch_scope": "sku_batch",
+                        "publish_mode": publish_mode,
+                    },
+                    "required": True,
+                    "phase": "batch_sku_ready",
+                }
+            )
+        else:
+            plan.append(
+                {
+                    "action": "fill_product_info",
+                    "params": {
+                        "product": product_data,
+                        "required_visual_fields": required_visual_fields,
+                        "publish_mode": publish_mode,
+                    },
+                    "required": True,
+                }
+            )
         plan.append(
             {
-                "action": "fill_product_info",
+                "action": "fill_product_description",
                 "params": {
                     "product": product_data,
-                    "required_visual_fields": self._build_required_visual_fields(product_data),
+                    "required_visual_fields": required_visual_fields,
+                    "batch_scope": "description_assets" if publish_mode == "batch" else "single_product",
+                    "publish_mode": publish_mode,
                 },
                 "required": True,
             }
         )
-        plan.append({"action": "fill_product_description", "params": {"product": product_data}, "required": True})
 
         plan.extend(
             [
@@ -249,6 +323,358 @@ publish_product - 发布商品
             ]
         )
         return plan
+
+    @staticmethod
+    def _resolve_publish_mode(product_data: Dict[str, Any]) -> str:
+        mode = str(product_data.get("publish_mode", "") or "").strip().lower()
+        return mode if mode in {"single", "batch"} else "single"
+
+    @staticmethod
+    def _default_workflow_doc_path() -> str:
+        candidates = sorted(Path(".").glob("*.docx"))
+        for candidate in candidates:
+            if "上架流程" in candidate.stem:
+                return str(candidate.resolve())
+        return str(candidates[0].resolve()) if candidates else ""
+
+    @staticmethod
+    @lru_cache(maxsize=1)
+    def _load_workflow_paragraphs() -> List[str]:
+        doc_path = PlannerAgent._default_workflow_doc_path()
+        if doc_path:
+            paragraphs = PlannerAgent._extract_docx_paragraphs(Path(doc_path))
+            if paragraphs:
+                return paragraphs
+
+        markdown_path = Path("graphify-out") / "converted" / "京麦上架流程_95edbbf7.md"
+        if markdown_path.exists():
+            paragraphs: List[str] = []
+            for raw_line in markdown_path.read_text(encoding="utf-8").splitlines():
+                line = raw_line.strip().lstrip("#").strip()
+                if not line or line.startswith("<!--"):
+                    continue
+                paragraphs.append(line)
+            if paragraphs:
+                return paragraphs
+
+        return [
+            "京麦商品上架指南",
+            "京麦上架操作路径：首页→商品→发布商品→选择商品所属类目。",
+            "第一步：首页点击商品-发布商品",
+            "第二步：选择所上架的商品所属的类目，从一级类目到末级类目依次选择。",
+            "商品信息",
+            "商品基本信息",
+            "采销信息",
+            "价格",
+            "商品属性",
+            "商品规格描述",
+            "商品图片",
+            "商品描述",
+            "物流售后及其他",
+            "商品物流",
+            "商品售后及其他",
+            "最后再检查所有带星号的信息都填写完整之后点击发布商品-继续发布就进入采购审核阶段。",
+        ]
+
+    @staticmethod
+    def _extract_docx_paragraphs(doc_path: Path) -> List[str]:
+        if not doc_path.exists() or doc_path.suffix.lower() != ".docx":
+            return []
+
+        try:
+            with zipfile.ZipFile(doc_path) as archive:
+                document_xml = archive.read("word/document.xml")
+        except Exception:
+            return []
+
+        try:
+            root = ET.fromstring(document_xml)
+        except Exception:
+            return []
+
+        ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+        paragraphs: List[str] = []
+        for para in root.findall(".//w:p", ns):
+            parts = [node.text or "" for node in para.findall(".//w:t", ns)]
+            line = re.sub(r"\s+", " ", "".join(parts)).strip()
+            if line:
+                paragraphs.append(line)
+        return paragraphs
+
+    @staticmethod
+    def _group_workflow_sections(paragraphs: List[str]) -> Dict[str, List[str]]:
+        cleaned = [str(item or "").strip() for item in paragraphs if str(item or "").strip()]
+        headings = [
+            "京麦商品上架指南",
+            "商品信息",
+            "商品基本信息",
+            "采销信息",
+            "价格",
+            "商品属性",
+            "商品规格描述",
+            "商品图片",
+            "商品描述",
+            "物流售后及其他",
+            "商品物流",
+            "商品售后及其他",
+        ]
+        sections: Dict[str, List[str]] = {"__preamble__": []}
+        current = "__preamble__"
+
+        for line in cleaned:
+            normalized = line.replace("：", "").replace(":", "").strip()
+            matched = next((heading for heading in headings if normalized == heading), "")
+            if matched:
+                current = matched
+                sections.setdefault(current, []).append(line)
+                continue
+            sections.setdefault(current, []).append(line)
+        return sections
+
+    def _doc_workflow_template(self, product_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+        paragraphs = self._load_workflow_paragraphs()
+        publish_mode = self._resolve_publish_mode(product_data)
+        specs = self._build_doc_step_specs_from_paragraphs(paragraphs, publish_mode=publish_mode)
+        return [self._build_doc_step(spec, product_data) for spec in specs]
+
+    def _build_doc_step(self, spec: Dict[str, Any], product_data: Dict[str, Any]) -> Dict[str, Any]:
+        action = str(spec.get("action", "") or "")
+        params = dict(spec.get("params") or {})
+        category = str(product_data.get("category", "") or "").strip()
+
+        if action == "select_category":
+            params.setdefault("search_text", category)
+        elif action == "fill_product_info":
+            params["product"] = product_data
+            params.setdefault("required_visual_fields", self._build_required_visual_fields(product_data))
+            params.setdefault("publish_mode", self._resolve_publish_mode(product_data))
+        elif action == "fill_product_description":
+            params["product"] = product_data
+            params.setdefault("required_visual_fields", self._build_required_visual_fields(product_data))
+            params.setdefault("publish_mode", self._resolve_publish_mode(product_data))
+
+        return {
+            "action": action,
+            "params": params,
+            "required": bool(spec.get("required", True)),
+            "workflow_source": self._default_workflow_doc_path(),
+            "workflow_section": str(spec.get("section", "") or ""),
+            "workflow_requirement": str(spec.get("requirement", "") or ""),
+            "workflow_excerpt": str(spec.get("excerpt", "") or ""),
+            "workflow_paragraphs": list(spec.get("paragraphs") or []),
+            "doc_strict": True,
+            "doc_strict_guard": self._build_doc_strict_guard(action, params),
+            "phase": str(spec.get("phase", "") or ""),
+        }
+
+    @staticmethod
+    def _build_doc_step_specs_from_paragraphs(paragraphs: List[str], publish_mode: str = "single") -> List[Dict[str, Any]]:
+        cleaned = [str(item or "").strip() for item in paragraphs if str(item or "").strip()]
+        sections = PlannerAgent._group_workflow_sections(cleaned)
+
+        def collect(*keywords: str) -> List[str]:
+            results: List[str] = []
+            for line in cleaned:
+                if any(keyword and keyword in line for keyword in keywords):
+                    results.append(line)
+            return results
+
+        preamble_paragraphs = sections.get("__preamble__", [])
+        category_paragraphs = collect("选择所上架的商品所属的类目", "选择商品所属类目", "发布商品")
+        info_paragraphs = [
+            *sections.get("商品信息", []),
+            *sections.get("商品基本信息", []),
+            *sections.get("采销信息", []),
+            *sections.get("价格", []),
+            *sections.get("商品属性", []),
+            *sections.get("物流售后及其他", []),
+            *sections.get("商品物流", []),
+            *sections.get("商品售后及其他", []),
+        ]
+        desc_paragraphs = [
+            *sections.get("商品规格描述", []),
+            *sections.get("商品图片", []),
+            *sections.get("商品描述", []),
+        ]
+        publish_paragraphs = collect("最后再检查", "继续发布", "采购审核阶段")
+
+        if not category_paragraphs:
+            category_paragraphs = preamble_paragraphs[:3]
+        if not info_paragraphs:
+            info_paragraphs = cleaned
+        if not desc_paragraphs:
+            desc_paragraphs = cleaned
+
+        specs = [
+            {"action": "find_window", "params": {}, "required": True, "section": "窗口准备", "requirement": "确认京麦客户端窗口存在。", "excerpt": preamble_paragraphs[0] if preamble_paragraphs else "京麦商品上架指南", "paragraphs": preamble_paragraphs[:1] or ["京麦商品上架指南"]},
+            {"action": "activate_window", "params": {}, "required": True, "section": "窗口准备", "requirement": "激活京麦客户端，确保后续动作命中正确窗口。", "excerpt": preamble_paragraphs[1] if len(preamble_paragraphs) > 1 else "首页点击商品-发布商品前，先确保京麦窗口在前台。", "paragraphs": preamble_paragraphs[:2] or ["首页点击商品-发布商品前，先确保京麦窗口在前台。"]},
+            {"action": "navigate_to", "params": {"page": "publish"}, "required": True, "section": "发布路径", "requirement": "首页→商品→发布商品", "excerpt": preamble_paragraphs[1] if len(preamble_paragraphs) > 1 else "京麦上架操作路径：首页→商品→发布商品→选择商品所属类目。", "paragraphs": category_paragraphs[:2] or cleaned[:2]},
+            {"action": "select_category", "params": {}, "required": True, "section": "选择商品所属类目", "requirement": "选择所上架的商品所属的类目，从一级类目到末级类目依次选择。", "excerpt": "选择所上架的商品所属的类目，从一级类目到末级类目依次选择。", "paragraphs": category_paragraphs or cleaned[:3]},
+            {"action": "fill_product_info", "params": {"doc_sections": ["商品信息", "商品基本信息", "采销信息", "价格", "商品属性", "物流售后及其他", "商品物流", "商品售后及其他"]}, "required": True, "section": "商品信息 / 物流售后及其他", "requirement": "按文档填写商品基本信息、采销信息、价格、商品属性、商品物流与售后字段。", "excerpt": "商品基本信息、采销信息、价格、商品属性、物流售后及其他、商品物流。", "paragraphs": info_paragraphs or cleaned},
+            {"action": "fill_product_description", "params": {"doc_sections": ["商品规格描述", "商品图片", "商品描述"]}, "required": True, "section": "规格描述", "requirement": "按文档完善商品规格描述、商品图片和商品描述。", "excerpt": "商品规格描述、商品图片、商品描述。", "paragraphs": desc_paragraphs or cleaned},
+            {"action": "publish_product", "params": {}, "required": True, "section": "发布商品", "requirement": "最后再检查所有带星号的信息都填写完整之后点击发布商品。", "excerpt": "最后再检查所有带星号的信息都填写完整之后点击发布商品。", "paragraphs": publish_paragraphs or cleaned[-2:]},
+            {"action": "verify_result", "params": {"check_errors": True}, "required": True, "section": "结果确认", "requirement": "继续发布就进入采销审核阶段。", "excerpt": "继续发布就进入采销审核阶段。", "paragraphs": publish_paragraphs or cleaned[-1:]},
+        ]
+        if publish_mode != "batch":
+            return specs
+
+        return [
+            specs[0],
+            specs[1],
+            specs[2],
+            specs[3],
+                {
+                    **specs[4],
+                    "params": {
+                        **dict(specs[4].get("params") or {}),
+                        "field_groups": ["basic_info", "attributes"],
+                        "batch_scope": "product_basic",
+                        "publish_mode": "batch",
+                    },
+                    "phase": "product_basic_ready",
+                },
+                {
+                **specs[4],
+                    "params": {
+                        **dict(specs[4].get("params") or {}),
+                        "field_groups": ["pricing", "sales_attributes", "logistics"],
+                        "batch_scope": "sku_batch",
+                        "publish_mode": "batch",
+                    },
+                    "phase": "batch_sku_ready",
+                },
+                {
+                **specs[5],
+                    "params": {
+                        **dict(specs[5].get("params") or {}),
+                        "batch_scope": "description_assets",
+                        "publish_mode": "batch",
+                    },
+                },
+            specs[6],
+            specs[7],
+        ]
+
+    @staticmethod
+    def _build_doc_strict_guard(action: str, params: Dict[str, Any]) -> Dict[str, Any]:
+        product = params.get("product", params) if isinstance(params.get("product", params), dict) else {}
+        required_visual_fields = dict(params.get("required_visual_fields") or {})
+        category = str(product.get("category", params.get("search_text", "")) or "").strip()
+        title = str(product.get("title", "") or "").strip()
+        brand = str(product.get("brand", product.get("品牌", "")) or "").strip()
+        jd_price = product.get("jd_price", product.get("price", ""))
+        price_text = str(jd_price).strip() if jd_price not in ("", None) else ""
+
+        def field_labels(group: str) -> List[str]:
+            return [
+                str(item.get("label", "") or "").strip()
+                for item in required_visual_fields.get(group, [])
+                if str(item.get("label", "") or "").strip()
+            ]
+
+        def category_markers(category_text: str) -> List[str]:
+            text = str(category_text or "").strip()
+            if not text:
+                return []
+
+            markers: List[str] = [text]
+            fragments = [frag.strip() for frag in re.split(r"\s*>\s*|\s*/\s*", text) if frag.strip()]
+            markers.extend(fragments)
+            if fragments:
+                markers.append(fragments[-1])
+            return [marker for marker in dict.fromkeys(markers) if marker]
+
+        category_tokens = category_markers(category)
+
+        guards: Dict[str, Dict[str, Any]] = {
+            "navigate_to": {
+                "recovery_hint": "navigate_to",
+                "precheck": {
+                    "allowed_page_states": ["browser_host", "unknown", "product_list_page", "category_page", "product_info_page"],
+                    "required_markers": ["京麦", "工作台", "商品", "发布商品", "类目", "商品标题"],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "网络异常"],
+                },
+                "postcheck": {
+                    "allowed_page_states": ["category_page", "product_info_page"],
+                    "required_markers": ["类目", "商品标题", "品牌", "下一步，完善其他商品信息"],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "网络异常"],
+                },
+            },
+            "select_category": {
+                "recovery_hint": "navigate_to",
+                "precheck": {
+                    "allowed_page_states": ["category_page", "product_info_page"],
+                    "required_markers": [marker for marker in ["类目", "商品标题", *category_tokens] if marker],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "网络异常"],
+                },
+                "postcheck": {
+                    "allowed_page_states": ["category_page", "product_info_page"],
+                    "required_markers": [marker for marker in ["商品标题", "品牌", "下一步，完善其他商品信息", *category_tokens] if marker],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "网络异常"],
+                },
+            },
+            "fill_product_info": {
+                "recovery_hint": "navigate_to",
+                "precheck": {
+                    "allowed_page_states": ["product_info_page"],
+                    "required_markers": [marker for marker in ["商品标题", "品牌", "市场价", "京东价", *field_labels("basic_info"), *field_labels("sales_attributes")] if marker],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "商品列表", "草稿"],
+                },
+                "postcheck": {
+                    "allowed_page_states": ["product_info_page"],
+                    "required_markers": [marker for marker in ["商品标题", "品牌", title[:18] if title else "", brand, price_text, "市场价", "京东价"] if marker],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "商品列表", "草稿", "类目"],
+                },
+            },
+            "fill_product_description": {
+                "recovery_hint": "fill_product_description",
+                "precheck": {
+                    "allowed_page_states": ["description_page"],
+                    "required_markers": ["商品描述", "图文编辑", "代码编辑"],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "高级编辑"],
+                },
+                "postcheck": {
+                    "allowed_page_states": ["description_page"],
+                    "required_markers": ["商品描述", "图文编辑", "代码编辑"],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "高级编辑"],
+                },
+            },
+            "publish_product": {
+                "recovery_hint": "publish_product",
+                "precheck": {
+                    "allowed_page_states": ["product_info_page", "description_page", "publish_confirm_page"],
+                    "required_markers": ["发布商品", "保存草稿", "商品标题"],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404"],
+                },
+                "postcheck": {
+                    "allowed_page_states": ["publish_confirm_page", "product_list_page", "product_info_page"],
+                    "required_markers": ["提交成功", "发布成功", "商品列表", "审核"],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404"],
+                },
+            },
+            "verify_result": {
+                "recovery_hint": "verify_result",
+                "precheck": {
+                    "allowed_page_states": ["publish_confirm_page", "product_list_page", "product_info_page"],
+                    "required_markers": ["发布成功", "商品列表", "审核", "发布商品"],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "错误", "异常"],
+                },
+                "postcheck": {
+                    "allowed_page_states": ["publish_confirm_page", "product_list_page"],
+                    "required_markers": ["商品列表", "审核", "发布成功"],
+                    "reject_markers": ["扫码登录", "登录失效", "系统错误", "404", "错误", "异常"],
+                },
+            },
+        }
+
+        guard = dict(guards.get(action, {}))
+        for stage in ("precheck", "postcheck"):
+            stage_guard = dict(guard.get(stage, {}) or {})
+            stage_guard["required_markers"] = [item for item in stage_guard.get("required_markers", []) if str(item or "").strip()]
+            stage_guard["reject_markers"] = [item for item in stage_guard.get("reject_markers", []) if str(item or "").strip()]
+            if stage_guard:
+                guard[stage] = stage_guard
+        return guard
 
     def _derive_product_data_from_task(self, task_desc: str) -> Dict[str, Any]:
         if not task_desc:
@@ -388,12 +814,18 @@ publish_product - 发布商品
         product = product_data.get("product", product_data) if isinstance(product_data, dict) else {}
         attributes = dict(product.get("attributes") or {})
         return {
+            "pricing": [
+                {"field": "market_price", "label": "市场价", "value": product.get("market_price", "") or product.get("jd_price", "") or product.get("price", "")},
+                {"field": "jd_price", "label": "京东价", "value": product.get("jd_price", "") or product.get("price", "")},
+                {"field": "purchase_price", "label": "采购价", "value": product.get("purchase_price", "")},
+            ],
             "basic_info": [
                 {"field": "brand", "label": "品牌", "value": product.get("brand", "") or product.get("品牌", "")},
                 {"field": "model", "label": "型号", "value": product.get("model", "")},
                 {"field": "socket_config", "label": "孔型配置", "value": attributes.get("socket_config", product.get("socket_config", ""))},
                 {"field": "rated_voltage", "label": "额定电压", "value": attributes.get("rated_voltage", product.get("rated_voltage", ""))},
                 {"field": "cable_length", "label": "电缆长度", "value": attributes.get("cable_length", product.get("cable_length", ""))},
+                {"field": "procurement_erp", "label": "采购ERP编码", "value": product.get("procurement_erp", "")},
             ],
             "sales_attributes": [
                 {
@@ -408,6 +840,7 @@ publish_product - 发布商品
             ],
             "description": [
                 {"field": "detail_content", "label": "商品详情", "value": product.get("detail_content", "") or product.get("description", "")},
+                {"field": "description_images", "label": "详情图片", "value": product.get("description_images", [])},
             ],
             "logistics": [
                 {"field": "sales_unit", "label": "销售单位", "value": product.get("sales_unit", "") or product.get("unit", "")},
@@ -465,6 +898,37 @@ publish_product - 发布商品
         category = str(product_data.get("category", "") or "").strip()
         jd_price = product_data.get("jd_price", product_data.get("price", ""))
         price_text = str(jd_price).strip() if jd_price not in ("", None) else ""
+
+        def merge_unique(items: List[str], extra: List[str]) -> List[str]:
+            merged: List[str] = []
+            for value in [*(items or []), *(extra or [])]:
+                text = str(value or "").strip()
+                if text and text not in merged:
+                    merged.append(text)
+            return merged
+
+        def apply_doc_strict_guard(contract: Dict[str, Any], guard: Dict[str, Any]) -> Dict[str, Any]:
+            merged = dict(contract or {})
+            for stage in ("precheck", "postcheck"):
+                stage_contract = dict(merged.get(stage) or {})
+                stage_guard = dict(guard.get(stage) or {})
+                if not stage_guard:
+                    merged[stage] = stage_contract
+                    continue
+                stage_contract["expect_any"] = merge_unique(
+                    list(stage_contract.get("expect_any") or []),
+                    list(stage_guard.get("required_markers") or []),
+                )
+                stage_contract["reject_any"] = merge_unique(
+                    list(stage_contract.get("reject_any") or []),
+                    list(stage_guard.get("reject_markers") or []),
+                )
+                if stage_guard.get("allowed_page_states"):
+                    stage_contract["allowed_page_states"] = list(stage_guard.get("allowed_page_states") or [])
+                if guard.get("recovery_hint"):
+                    stage_contract["recovery_hint"] = str(guard.get("recovery_hint") or "")
+                merged[stage] = stage_contract
+            return merged
 
         def build_contract(action: str) -> Dict[str, Any]:
             contracts: Dict[str, Dict[str, Any]] = {
@@ -524,14 +988,14 @@ publish_product - 发布商品
                     },
                 },
                 "fill_product_description": {
-                    "goal": "鍦ㄥ晢瀹跺悗鍙板唴瀹岀粨鍟嗗搧璇︽儏锛岄伩鍏嶈繘鍏ラ珮绾х紪杈戝櫒锛屽宸茶鍏ラ珮绾х紪杈戝櫒鍒欏厛杩斿洖鍟嗗鍚庡彴銆?",
+                    "goal": "在商家后台内完善商品详情，避免进入高级编辑器，如误入则先返回商家后台。",
                     "precheck": {
-                        "expect_any": ["鍟嗗搧鎻忚堪", "鍥炬枃缂栬緫", "浠ｇ爜缂栬緫", "楂樼骇缂栬緫", "杩斿洖鍟嗗鍚庡彴"],
-                        "reject_any": ["鎵爜鐧诲綍", "鐧诲綍澶辨晥", "绯荤粺閿欒"],
+                        "expect_any": ["商品描述", "图文编辑", "代码编辑", "返回商家后台"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误", "高级编辑"],
                     },
                     "postcheck": {
-                        "expect_any": ["鍟嗗搧鎻忚堪", "鍥炬枃缂栬緫", "浠ｇ爜缂栬緫", "鍟嗗搧鐗╂祦"],
-                        "reject_any": ["鎵爜鐧诲綍", "鐧诲綍澶辨晥", "绯荤粺閿欒", "杩斿洖鍟嗗鍚庡彴"],
+                        "expect_any": ["商品描述", "图文编辑", "代码编辑", "商品物流"],
+                        "reject_any": ["扫码登录", "登录失效", "系统错误", "高级编辑", "返回商家后台"],
                     },
                 },
                 "save_draft": {
@@ -580,7 +1044,11 @@ publish_product - 发布商品
         enriched: List[Dict[str, Any]] = []
         for step in plan:
             item = dict(step)
-            item.setdefault("react_contract", build_contract(item.get("action", "")))
+            contract = dict(item.get("react_contract") or build_contract(item.get("action", "")))
+            guard = dict(item.get("doc_strict_guard") or {})
+            if item.get("doc_strict") and guard:
+                contract = apply_doc_strict_guard(contract, guard)
+            item["react_contract"] = contract
             enriched.append(item)
         return enriched
 

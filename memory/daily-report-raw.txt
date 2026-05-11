@@ -1,34 +1,36 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-05-08 17:20:23
+Date: 2026-05-11 17:20:23
 --- GIT COMMITS ---
-  (none today)
+  c38ceb4c 11
+  d10cc8d9 11
+  9d44aa0e 瀹氭椂鑷姩鎻愪氦 - 2026-05-11 07:50:26
 --- FILES MODIFIED ---
-  17:19 | downloads\jd_b5440\product_05.jpg
-  17:19 | downloads\jd_b5440\product_03.jpg
-  17:19 | downloads\jd_b5440\product_02.jpg
-  17:19 | downloads\jd_b5440\product_01.jpg
-  17:19 | scripts\jd_opencli_img.py
-  17:18 | .git\FETCH_HEAD
-  17:17 | memory\2026-05-08.md
-  17:07 | jd_logged_in.png
-  17:04 | knowledge-base\.notion_sync_state.json
-  17:04 | knowledge-base\.sync_state.json
-  17:03 | downloads\jd_b5440\product_10.jpg
-  17:03 | downloads\jd_b5440\product_09.jpg
-  17:03 | downloads\jd_b5440\product_08.jpg
-  17:03 | downloads\jd_b5440\product_07.jpg
-  17:03 | downloads\jd_b5440\product_06.jpg
-  17:03 | downloads\jd_b5440\product_04.png
-  17:03 | downloads\jd_b5440\product_03.png
-  17:03 | downloads\jd_b5440\product_02.png
-  17:03 | downloads\jd_b5440\product_01.png
-  17:03 | scripts\jd_img_fix.py
+  17:19 | skills\jingmai-product-publish\resources\screenshots\cache\price_probe_京东价.png
+  17:19 | skills\jingmai-product-publish\resources\screenshots\cache\price_probe_市场价.png
+  17:19 | skills\jingmai-product-publish\resources\screenshots\cache\price_state_title.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_contact_sheet.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_frame_4.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_frame_3.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_frame_2.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_frame_1.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\ddc690d8_precheck_fill_product_info_1778491033.png
+  17:17 | skills\jingmai-product-publish\data\acceptance-runs\acceptance-20260511-171552-f8d958\item-1.json
+  17:17 | skills\jingmai-product-publish\logs\memory\short_term\0d37e128.json
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_contact_sheet.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_frame_4.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_frame_3.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_frame_2.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_frame_1.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\ddc690d8_postcheck_select_category_1778491030.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\precheck_contact_sheet.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\precheck_frame_4.png
+  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\precheck_frame_3.png
 --- SESSIONS ---
-  Count: 262
-  - 008c853b-3a22-47a4-a8a1-8793ae202748.jsonl [11:04]
-  - 008c853b-3a22-47a4-a8a1-8793ae202748.trajectory.jsonl [11:04]
-  - 00b074bb-e308-44e6-96ee-9bae87cd9a66.jsonl [13:26]
+  Count: 251
+  - 008a1664-1bb9-42e0-82d5-b4d31977afa4.jsonl [12:20]
+  - 008a1664-1bb9-42e0-82d5-b4d31977afa4.trajectory.jsonl [12:20]
+  - 00f65fee-5d89-4c1d-93c4-92a9a201826a.jsonl [12:15]
 --- SKILLS ---
   + jingmai-product-publish
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-product-publish"],"dayOfWeek":"Friday","sessionCount":262,"modifiedFiles":["E:\\workspace\\downloads\\jd_b5440\\product_05.jpg","E:\\workspace\\downloads\\jd_b5440\\product_03.jpg","E:\\workspace\\downloads\\jd_b5440\\product_02.jpg","E:\\workspace\\downloads\\jd_b5440\\product_01.jpg","E:\\workspace\\scripts\\jd_opencli_img.py","E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\memory\\2026-05-08.md","E:\\workspace\\jd_logged_in.png","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\downloads\\jd_b5440\\product_10.jpg","E:\\workspace\\downloads\\jd_b5440\\product_09.jpg","E:\\workspace\\downloads\\jd_b5440\\product_08.jpg","E:\\workspace\\downloads\\jd_b5440\\product_07.jpg","E:\\workspace\\downloads\\jd_b5440\\product_06.jpg","E:\\workspace\\downloads\\jd_b5440\\product_04.png","E:\\workspace\\downloads\\jd_b5440\\product_03.png","E:\\workspace\\downloads\\jd_b5440\\product_02.png","E:\\workspace\\downloads\\jd_b5440\\product_01.png","E:\\workspace\\scripts\\jd_img_fix.py"],"gitCommits":[],"date":"2026.05.08"}
+{"skillsUpdated":["jingmai-product-publish"],"dayOfWeek":"Monday","sessionCount":251,"modifiedFiles":["E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cache\\price_probe_京东价.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cache\\price_probe_市场价.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cache\\price_state_title.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_contact_sheet.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_frame_4.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_frame_3.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_frame_2.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_frame_1.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\ddc690d8_precheck_fill_product_info_1778491033.png","E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260511-171552-f8d958\\item-1.json","E:\\workspace\\skills\\jingmai-product-publish\\logs\\memory\\short_term\\0d37e128.json","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_contact_sheet.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_frame_4.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_frame_3.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_frame_2.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_frame_1.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\ddc690d8_postcheck_select_category_1778491030.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\precheck_contact_sheet.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\precheck_frame_4.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\precheck_frame_3.png"],"gitCommits":["c38ceb4c 11","d10cc8d9 11","9d44aa0e 瀹氭椂鑷姩鎻愪氦 - 2026-05-11 07:50:26"],"date":"2026.05.11"}

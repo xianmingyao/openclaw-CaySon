@@ -81,3 +81,30 @@ class TaskStep(Base):
 
     def __repr__(self):
         return f"<TaskStep {self.task_id}:{self.step_index} {self.action_name} [{self.status}]>"
+
+
+class AcceptanceRun(Base):
+    """真实验收运行记录。"""
+
+    __tablename__ = "acceptance_runs"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    run_id = Column(String(64), unique=True, nullable=False, comment="验收运行编号")
+    batch_file = Column(String(1024), default="", comment="验收表路径")
+    workflow_policy = Column(String(64), default="doc_strict", comment="流程策略")
+    status = Column(String(32), default="pending", comment="状态")
+    total_items = Column(Integer, default=0, comment="商品总数")
+    success_count = Column(Integer, default=0, comment="成功数")
+    fail_count = Column(Integer, default=0, comment="失败数")
+    plan_dir = Column(String(1024), default="", comment="计划目录")
+    progress_file = Column(String(1024), default="", comment="进度文件路径")
+    summary_file = Column(String(1024), default="", comment="验收总结路径")
+    summary = Column(JSON, default=dict, comment="验收总结")
+    error_message = Column(Text, default="", comment="错误信息")
+    started_at = Column(DateTime, nullable=True)
+    finished_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+
+    def __repr__(self):
+        return f"<AcceptanceRun {self.run_id} [{self.status}]>"

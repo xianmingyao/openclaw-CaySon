@@ -5,8 +5,9 @@
     "price": 10,
     "publish_mode": "single",
     "source_meta": {
-      "source_file": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\claude-agent-tmp\\pytest-of-Administrator\\pytest-51\\test_batch_progress_persists_v0\\products.json",
+      "source_file": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\claude-agent-tmp\\pytest-of-Administrator\\pytest-116\\test_batch_progress_persists_v0\\products.json",
       "publish_mode": "single",
+      "publish_mode_reason": "default_single:1",
       "item_index": 1,
       "total_items": 1
     }
@@ -22,5 +23,8 @@
   "total_steps": 1,
   "phases": [
     "window_ready"
-  ]
+  ],
+  "workflow_policy": "default",
+  "workflow_doc": "",
+  "publish_mode": ""
 }

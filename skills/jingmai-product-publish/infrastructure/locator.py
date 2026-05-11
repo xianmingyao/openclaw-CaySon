@@ -58,6 +58,7 @@ WINDOW_EXCLUDE_KEYWORDS = [
 ]
 BROWSER_PROCESS_HINTS = {"chrome", "msedge", "360chrome", "360se", "iexplore", "jingmai", "jd"}
 JINGMAI_PROCESS_HINTS = {"jmworkstation", "jdm_dd_workbench"}
+WINDOW_EXCLUDE_PROCESS_HINTS = {"jdm_dd_workbench"}
 
 
 class JingmaiLocator:
@@ -140,22 +141,43 @@ class JingmaiLocator:
             self._log('debug', f"刷新窗口位置失败: {e}")
             return self.window_rect
 
-    def llm_to_screen(self, llm_x: int, llm_y: int) -> Tuple[int, int]:
+    def llm_to_screen(
+        self,
+        llm_x: int,
+        llm_y: int,
+        image_path: Optional[str] = None,
+        image_size: Optional[Tuple[int, int]] = None,
+    ) -> Tuple[int, int]:
         """
         LLM 识别图坐标 → 实际屏幕坐标。
 
-        LLM 返回的坐标基于识别图（1120x560），
-        需要先映射到参考分辨率（2560x1392），
-        再通过 adapt_coords 映射到实际窗口。
-
-        scale_to_ref_x = ref_width / plan_width  = 2560/1120 = 2.286
-        scale_to_ref_y = ref_height / plan_height = 1392/560  = 2.486
+        `SCREENSHOT_PLAN_MAX_WIDTH/HEIGHT` 是缩略图上限，不是实际识别图尺寸。
+        `take_screenshot(..., for_vision=True)` 使用 thumbnail 保持宽高比，
+        所以换算时必须优先使用真实识别图尺寸。
         """
         self._ensure_scale_config()
-        # 识别图 → 参考分辨率
-        ref_x = int(llm_x * self._ref_width / self._plan_width)
-        ref_y = int(llm_y * self._ref_height / self._plan_height)
-        # 参考分辨率 → 实际窗口
+        actual_plan_width = self._plan_width
+        actual_plan_height = self._plan_height
+
+        if image_size:
+            actual_plan_width, actual_plan_height = image_size
+        elif image_path:
+            try:
+                from PIL import Image
+
+                with Image.open(image_path) as img:
+                    actual_plan_width, actual_plan_height = img.size
+            except Exception as exc:
+                self._log('debug', f"llm_to_screen failed to read image size from {image_path}: {exc}")
+
+        actual_plan_width = max(int(actual_plan_width or 1), 1)
+        actual_plan_height = max(int(actual_plan_height or 1), 1)
+        ref_x = int(llm_x * self._ref_width / actual_plan_width)
+        ref_y = int(llm_y * self._ref_height / actual_plan_height)
+        self._log(
+            'debug',
+            f"LLM coords ({llm_x},{llm_y}) -> ref ({ref_x},{ref_y}) using plan={actual_plan_width}x{actual_plan_height}",
+        )
         return self.adapt_coords(ref_x, ref_y)
 
     # ==================== 窗口操作 ====================
@@ -225,6 +247,9 @@ class JingmaiLocator:
                 return None
 
             process_name = self._get_process_name(hwnd)
+            if self._is_excluded_process(process_name):
+                self._log('debug', f"skip excluded foreground process: title='{title}', process='{process_name}'")
+                return None
             has_jingmai_hint = self._has_any_jingmai_window()
             if not self._is_matching_title(title):
                 if not (has_jingmai_hint and process_name in BROWSER_PROCESS_HINTS):
@@ -317,6 +342,8 @@ class JingmaiLocator:
                 return
 
             process_name = self._get_process_name(hwnd)
+            if self._is_excluded_process(process_name):
+                return
             title_match = self._is_matching_title(title)
             process_match = process_name in JINGMAI_PROCESS_HINTS
             if not (title_match or process_match):
@@ -466,7 +493,15 @@ class JingmaiLocator:
         if not title:
             return False
         title_lower = title.lower()
+        if any(ex in title_lower for ex in ("咚咚", "融合工作台")):
+            return True
         return any(ex in title_lower for ex in WINDOW_EXCLUDE_KEYWORDS)
+
+    @staticmethod
+    def _is_excluded_process(process_name: str) -> bool:
+        if not process_name:
+            return False
+        return process_name.lower() in WINDOW_EXCLUDE_PROCESS_HINTS
 
     @staticmethod
     def _is_usable_rect(rect: Tuple[int, int, int, int]) -> bool:

@@ -5,6 +5,8 @@ import inspect
 import json
 import re
 import sys
+import uuid
+from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -41,6 +43,15 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
 
         workbook = load_workbook(path, read_only=True, data_only=True)
         items: List[Dict[str, Any]] = []
+        workbook_meta: Dict[str, Any] = {
+            "source_file": str(path.resolve()),
+            "sheet_count": 0,
+            "data_row_count": 0,
+            "sheet_names": [],
+            "recognized_headers": [],
+            "raw_headers": [],
+            "template_signals": [],
+        }
         for sheet in workbook.worksheets:
             rows = list(sheet.iter_rows(values_only=True))
             if not rows:
@@ -51,6 +62,11 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
             mapped_headers = [_normalize_header(header) for header in headers]
             if sum(1 for item in mapped_headers if item) < 4:
                 continue
+            workbook_meta["sheet_count"] += 1
+            workbook_meta["sheet_names"].append(sheet.title)
+            workbook_meta["raw_headers"].extend([header for header in headers if header])
+            workbook_meta["recognized_headers"].extend([header for header in mapped_headers if header])
+            workbook_meta["template_signals"].extend(_detect_template_signals(headers))
 
             for row_offset, row in enumerate(rows[header_index + 1 :], start=header_index + 2):
                 payload: Dict[str, Any] = {}
@@ -63,14 +79,21 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
                     payload.setdefault("price", payload["jd_price"])
                     payload.setdefault("market_price", payload["jd_price"])
                 if payload:
+                    workbook_meta["data_row_count"] += 1
                     payload["source_meta"] = {
                         "source_file": str(path.resolve()),
                         "sheet_name": sheet.title,
                         "row_index": row_offset,
                         "workflow_doc": _default_workflow_doc_path(),
+                        "template_features": {
+                            "sheet_name": sheet.title,
+                            "recognized_headers": [header for header in mapped_headers if header],
+                            "raw_headers": [header for header in headers if header],
+                            "signals": _detect_template_signals(headers),
+                        },
                     }
                     items.append(_enrich_product_from_source(payload))
-        return _annotate_publish_mode(items, source_path=path)
+        return _annotate_publish_mode(items, source_path=path, workbook_meta=workbook_meta)
 
     raise ValueError(f"不支持的批量文件格式: {path.suffix}")
 
@@ -83,8 +106,61 @@ def _default_workflow_doc_path() -> str:
     return str(candidates[0].resolve()) if candidates else ""
 
 
-def _annotate_publish_mode(items: List[Dict[str, Any]], source_path: Path | None = None) -> List[Dict[str, Any]]:
-    mode = "batch" if len(items) > 1 else "single"
+def _detect_template_signals(headers: List[str]) -> List[str]:
+    signals: List[str] = []
+    normalized_headers = [str(header or "").strip().lower() for header in headers if str(header or "").strip()]
+    batch_keywords = [
+        "批量",
+        "sku",
+        "商家编码",
+        "子商品",
+        "子sku",
+        "规格1",
+        "规格2",
+        "规格值",
+        "多规格",
+        "销售属性",
+    ]
+    for header in normalized_headers:
+        for keyword in batch_keywords:
+            if keyword.lower() in header and keyword not in signals:
+                signals.append(keyword)
+    return signals
+
+
+def _infer_publish_mode(
+    items: List[Dict[str, Any]],
+    *,
+    workbook_meta: Dict[str, Any] | None = None,
+) -> Tuple[str, str]:
+    total_items = len(items)
+    workbook_meta = workbook_meta or {}
+    if total_items > 1:
+        return "batch", f"multiple_rows:{total_items}"
+
+    data_row_count = int(workbook_meta.get("data_row_count", total_items) or total_items)
+    sheet_count = int(workbook_meta.get("sheet_count", 0) or 0)
+    signals = [str(item) for item in (workbook_meta.get("template_signals") or []) if str(item).strip()]
+    recognized_headers = [str(item) for item in (workbook_meta.get("recognized_headers") or []) if str(item).strip()]
+    if data_row_count > 1:
+        return "batch", f"data_rows:{data_row_count}"
+    if sheet_count > 1 and total_items > 0:
+        return "batch", f"multi_sheet:{sheet_count}"
+    if any(signal for signal in signals if signal in {"批量", "sku", "子sku", "多规格", "销售属性"}):
+        return "batch", f"template_signals:{','.join(signals)}"
+    if {"title", "url"}.issubset(set(recognized_headers)) and any(
+        header in {"unit", "jd_price", "price", "brand"} for header in recognized_headers
+    ):
+        return "single", "single_row_standard_listing"
+    return "single", f"default_single:{total_items}"
+
+
+def _annotate_publish_mode(
+    items: List[Dict[str, Any]],
+    source_path: Path | None = None,
+    workbook_meta: Dict[str, Any] | None = None,
+) -> List[Dict[str, Any]]:
+    mode, reason = _infer_publish_mode(items, workbook_meta=workbook_meta)
     annotated: List[Dict[str, Any]] = []
     for index, item in enumerate(items, start=1):
         payload = dict(item or {})
@@ -92,8 +168,19 @@ def _annotate_publish_mode(items: List[Dict[str, Any]], source_path: Path | None
         if source_path is not None:
             source_meta.setdefault("source_file", str(source_path.resolve()))
         source_meta["publish_mode"] = mode
+        source_meta["publish_mode_reason"] = reason
         source_meta["item_index"] = index
         source_meta["total_items"] = len(items)
+        if workbook_meta:
+            source_meta.setdefault(
+                "template_features",
+                {
+                    "sheet_count": int(workbook_meta.get("sheet_count", 0) or 0),
+                    "data_row_count": int(workbook_meta.get("data_row_count", len(items)) or len(items)),
+                    "signals": list(workbook_meta.get("template_signals") or []),
+                    "recognized_headers": list(workbook_meta.get("recognized_headers") or []),
+                },
+            )
         payload["publish_mode"] = mode
         payload["source_meta"] = source_meta
         annotated.append(payload)
@@ -171,6 +258,45 @@ def _matches_local_product_preset(payload: Dict[str, Any], preset_product: Dict[
     return False
 
 
+def _extract_title_variant_signals(value: Any) -> Dict[str, str]:
+    text = str(value or "")
+    signals: Dict[str, str] = {}
+
+    cable_length_match = re.search(r"总控\s*(\d+(?:\.\d+)?)\s*米", text, re.I)
+    if cable_length_match is None:
+        cable_length_match = re.search(r"(\d+(?:\.\d+)?)\s*米", text, re.I)
+    if cable_length_match is not None:
+        signals["cable_length_m"] = cable_length_match.group(1)
+
+    socket_positions_match = re.search(r"【\s*(\d+)\s*位\s*】", text)
+    if socket_positions_match is None:
+        socket_positions_match = re.search(r"(\d+)\s*位", text)
+    if socket_positions_match is not None:
+        signals["socket_positions"] = socket_positions_match.group(1)
+
+    return signals
+
+
+def _titles_conflict_for_variant_merge(payload: Dict[str, Any], preset_product: Dict[str, Any]) -> bool:
+    payload_title = str(payload.get("title", "") or "").strip()
+    preset_title = str(preset_product.get("title", "") or "").strip()
+    if not payload_title or not preset_title:
+        return False
+    if payload_title == preset_title:
+        return False
+
+    payload_signals = _extract_title_variant_signals(payload_title)
+    preset_signals = _extract_title_variant_signals(preset_title)
+    if not payload_signals or not preset_signals:
+        return False
+
+    for key, payload_value in payload_signals.items():
+        preset_value = preset_signals.get(key)
+        if preset_value and payload_value != preset_value:
+            return True
+    return False
+
+
 def _merge_local_product_preset(payload: Dict[str, Any]) -> Dict[str, Any]:
     enriched = dict(payload)
     merged_attributes = dict(enriched.get("attributes") or {})
@@ -178,10 +304,18 @@ def _merge_local_product_preset(payload: Dict[str, Any]) -> Dict[str, Any]:
         product = preset["product"]
         if not _matches_local_product_preset(enriched, product):
             continue
+        title_conflict = _titles_conflict_for_variant_merge(enriched, product)
         _merge_missing_fields(
             enriched,
             product,
-            ["brand", "unit", "product_id", "url", "jd_url", "notes", "packing_list", "sales_unit"],
+            ["brand", "unit", "product_id", "url", "jd_url"],
+        )
+        if title_conflict:
+            continue
+        _merge_missing_fields(
+            enriched,
+            product,
+            ["notes", "packing_list", "sales_unit"],
         )
         if _is_weak_model(enriched.get("model")) and product.get("model"):
             enriched["model"] = product.get("model")
@@ -368,6 +502,39 @@ def _build_db(settings):
     return DatabaseManager(mysql_url=settings.MYSQL_URL, sqlite_url=settings.SQLITE_URL)
 
 
+def _build_factory(settings_overrides: Dict[str, Any] | None = None):
+    from agents.factory import AgentFactory
+
+    if not settings_overrides:
+        return AgentFactory()
+
+    from settings import Settings
+
+    settings = Settings(**settings_overrides)
+    settings.ensure_dirs()
+    return AgentFactory(settings=settings)
+
+
+def _persist_product_snapshot(product_data: Dict[str, Any], *, source: str, task_id: str = "") -> Dict[str, Any]:
+    from settings import get_settings
+
+    product_model = _build_product_model(product_data, source=source)
+    source_meta = dict(product_model.source_meta or {})
+    if task_id:
+        source_meta["task_id"] = task_id
+    product_model.source_meta = source_meta
+
+    settings = get_settings()
+    db = _build_db(settings)
+    db.create_tables()
+    saved = db.save_product(product_model)
+    return {
+        "product_id": getattr(saved, "product_id", ""),
+        "title": getattr(saved, "title", ""),
+        "source": getattr(saved, "source", source),
+    }
+
+
 def _extract_plan_payload(plan_data: Any) -> Dict[str, Any]:
     """兼容完整计划包与旧版 steps-only 计划文件。"""
     if isinstance(plan_data, list):
@@ -405,6 +572,9 @@ def _build_plan_package(plan_result: Dict[str, Any]) -> Dict[str, Any]:
         "plan": plan_steps,
         "total_steps": plan_result["total_steps"],
         "phases": _summarize_plan_phases(plan_steps),
+        "workflow_policy": plan_result.get("workflow_policy", "default"),
+        "workflow_doc": plan_result.get("workflow_doc", ""),
+        "publish_mode": plan_result.get("publish_mode", ""),
     }
 
 
@@ -558,6 +728,148 @@ def _default_plan_path(task_id: str) -> str:
     return str((plan_dir / f"{task_id}.json").resolve())
 
 
+def _build_acceptance_run_paths(batch_file: str, plan_out: str = "", progress_file: str = "") -> Dict[str, str]:
+    batch_path = Path(batch_file).resolve()
+    run_id = f"acceptance-{datetime.now().strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:6]}"
+    base_dir = Path(plan_out).resolve() if plan_out else (Path("data") / "acceptance-runs" / run_id).resolve()
+    base_dir.mkdir(parents=True, exist_ok=True)
+    progress_path = (Path(progress_file).resolve() if progress_file else (base_dir / "progress.json").resolve())
+    summary_path = (base_dir / "summary.json").resolve()
+    return {
+        "run_id": run_id,
+        "batch_file": str(batch_path),
+        "plan_dir": str(base_dir),
+        "progress_file": str(progress_path),
+        "summary_file": str(summary_path),
+    }
+
+
+def _record_acceptance_run_start(paths: Dict[str, str], workflow_policy: str, total_items: int):
+    from models import AcceptanceRun
+    from settings import get_settings
+
+    db = _build_db(get_settings())
+    db.create_tables()
+    db.create_acceptance_run(
+        AcceptanceRun(
+            run_id=paths["run_id"],
+            batch_file=paths["batch_file"],
+            workflow_policy=workflow_policy,
+            status="running",
+            total_items=total_items,
+            plan_dir=paths["plan_dir"],
+            progress_file=paths["progress_file"],
+            summary_file=paths["summary_file"],
+        )
+    )
+    return db
+
+
+def _run_db_preflight(settings) -> Dict[str, Any]:
+    started_at = datetime.now().isoformat()
+    db = _build_db(settings)
+    probe = db.probe() if hasattr(db, "probe") else {"db_type": getattr(db, "db_type", "unknown")}
+    probe["started_at"] = started_at
+    try:
+        db.create_tables()
+        probe["create_tables"] = "ok"
+    except Exception as exc:
+        probe["create_tables"] = "error"
+        probe["error"] = str(exc)
+    probe["final_db_type"] = getattr(db, "db_type", probe.get("db_type", "unknown"))
+    return probe
+
+
+def _write_db_preflight(paths: Dict[str, str], payload: Dict[str, Any]) -> str:
+    target = Path(paths["plan_dir"]) / "db-preflight.json"
+    target.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return str(target.resolve())
+
+
+def _write_acceptance_summary(summary_file: str, payload: Dict[str, Any]) -> str:
+    path = Path(summary_file)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return str(path.resolve())
+
+
+def _collect_step_screenshots(results: List[Dict[str, Any]]) -> List[str]:
+    screenshots: List[str] = []
+    for item in results or []:
+        candidate = str(item.get("screenshot", "") or "").strip()
+        if candidate and candidate not in screenshots:
+            screenshots.append(candidate)
+    return screenshots
+
+
+def _build_result_page_judgement(exec_result: Dict[str, Any]) -> Dict[str, Any]:
+    results = list(exec_result.get("results", []) or [])
+    for item in reversed(results):
+        observation = item.get("observation")
+        if isinstance(observation, dict) and observation:
+            return {
+                "status": str(observation.get("status", "") or ""),
+                "reason": str(observation.get("reason", "") or ""),
+                "stage": str(observation.get("stage", "") or ""),
+                "action": str(item.get("action", "") or ""),
+                "step": int(item.get("step", 0) or 0),
+            }
+    return {
+        "status": "unknown",
+        "reason": str(exec_result.get("error", "") or ""),
+        "stage": "",
+        "action": "",
+        "step": int(exec_result.get("failed_step", 0) or 0),
+    }
+
+
+def _build_execution_evidence(exec_result: Dict[str, Any], product_data: Dict[str, Any]) -> Dict[str, Any]:
+    db_task = None
+    db_steps: List[Dict[str, Any]] = []
+    db_product = None
+    try:
+        from settings import get_settings
+
+        db = _build_db(get_settings())
+        task_id = str(exec_result.get("task_id", "") or "")
+        product_id = str((exec_result.get("product_snapshot") or {}).get("product_id", "") or "")
+        if task_id:
+            db_task = db.get_task(task_id)
+            db_steps = db.get_steps(task_id)
+        if product_id:
+            db_product = db.get_product(product_id)
+    except Exception as exc:
+        db_task = {"error": f"db-evidence-unavailable: {exc}"}
+
+    return {
+        "task_id": str(exec_result.get("task_id", "") or ""),
+        "success": bool(exec_result.get("success", False)),
+        "failed_step": int(exec_result.get("failed_step", 0) or 0),
+        "error": str(exec_result.get("error", "") or ""),
+        "publish_mode": str(exec_result.get("publish_mode", product_data.get("publish_mode", "")) or ""),
+        "workflow_policy": str((exec_result.get("plan") or {}).get("workflow_policy", "") or ""),
+        "product_snapshot": exec_result.get("product_snapshot") or {},
+        "plan_file": str(exec_result.get("plan_file", "") or ""),
+        "result_page_judgement": _build_result_page_judgement(exec_result),
+        "screenshots": _collect_step_screenshots(list(exec_result.get("results", []) or [])),
+        "risk_stats": dict(exec_result.get("risk_stats") or {}),
+        "vision_fallback_stats": dict(exec_result.get("vision_fallback_stats") or {}),
+        "db_task": db_task,
+        "db_steps": db_steps,
+        "db_product": db_product,
+    }
+
+
+def _write_item_evidence(base_dir: str, index: int, exec_result: Dict[str, Any], product_data: Dict[str, Any]) -> str:
+    evidence_dir = Path(base_dir) / "evidence"
+    evidence_dir.mkdir(parents=True, exist_ok=True)
+    task_slug = str(exec_result.get("task_id", "") or f"item-{index}")
+    path = evidence_dir / f"{index:03d}-{task_slug}.json"
+    payload = _build_execution_evidence(exec_result, product_data)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return str(path.resolve())
+
+
 def _resolve_plan_output_path(plan_out: str, task_id: str, treat_as_dir: bool = False) -> str:
     if not plan_out:
         return _default_plan_path(task_id)
@@ -591,12 +903,12 @@ def _run_publish_flow(
     plan_out: str = "",
     progress_prefix: str = "",
     start_from_phase: str = "",
+    workflow_policy: str = "default",
+    settings_overrides: Dict[str, Any] | None = None,
 ) -> Dict[str, Any]:
-    from agents.factory import AgentFactory
-
-    factory = AgentFactory()
+    factory = _build_factory(settings_overrides)
     planner = factory.create_planner()
-    plan_result = planner.run(product_data=product_data)
+    plan_result = planner.run(product_data=product_data, workflow_policy=workflow_policy)
     if not plan_result.get("success"):
         return {"success": False, "stage": "plan", "error": plan_result.get("error", "规划失败")}
 
@@ -606,6 +918,16 @@ def _run_publish_flow(
     plan_path.parent.mkdir(parents=True, exist_ok=True)
     plan_path.write_text(json.dumps(plan_package, ensure_ascii=False, indent=2), encoding="utf-8")
     plan_file = str(plan_path.resolve())
+
+    try:
+        persisted = _persist_product_snapshot(
+            plan_result["product_data"],
+            source=f"publish:{workflow_policy}",
+            task_id=plan_result["task_id"],
+        )
+        click.echo(f"{progress_prefix}商品已落库: {persisted.get('product_id', 'N/A')}")
+    except Exception as exc:
+        return {"success": False, "stage": "persist", "error": f"商品落库失败: {exc}"}
 
     click.echo(f"{progress_prefix}Plan-and-Solve 完成，共 {plan_result['total_steps']} 步")
 
@@ -628,6 +950,9 @@ def _run_publish_flow(
     exec_result["task_id"] = plan_result["task_id"]
     exec_result["plan"] = plan_package
     exec_result["start_from_phase"] = resolved_phase
+    exec_result["plan_file"] = plan_file
+    exec_result["product_snapshot"] = persisted
+    exec_result["publish_mode"] = plan_result.get("publish_mode", product_data.get("publish_mode", ""))
     return exec_result
 
 
@@ -642,7 +967,8 @@ def cli():
 @click.option("--data", "-d", help="商品数据 JSON 字符串")
 @click.option("--plan-out", default="", help="可选：保存完整计划包 JSON，供监控/恢复执行")
 @click.option("--start-from-phase", default="", help="混合执行：从指定业务 phase 开始，如 category_ready / product_info_ready / publish_submitted")
-def publish(config_file, data, plan_out, start_from_phase):
+@click.option("--workflow-policy", type=click.Choice(["default", "doc_strict"]), default="default", help="计划策略")
+def publish(config_file, data, plan_out, start_from_phase, workflow_policy):
     """发布商品（默认主入口：Plan-and-Solve → ReAct → Reflection）"""
     product_data = _load_product_data(config_file, data)
     result = _run_publish_flow(
@@ -650,6 +976,7 @@ def publish(config_file, data, plan_out, start_from_phase):
         plan_out=plan_out,
         progress_prefix="  ",
         start_from_phase=start_from_phase,
+        workflow_policy=workflow_policy,
     )
 
     if result["success"]:
@@ -669,13 +996,14 @@ def publish(config_file, data, plan_out, start_from_phase):
 @click.option("--config", "-c", "config_file", help="商品数据 JSON 文件路径")
 @click.option("--data", "-d", help="商品数据 JSON 字符串")
 @click.option("--steps-only", is_flag=True, help="仅输出步骤数组，兼容旧版脚本")
-def plan(task_desc, config_file, data, steps_only):
+@click.option("--workflow-policy", type=click.Choice(["default", "doc_strict"]), default="default", help="计划策略")
+def plan(task_desc, config_file, data, steps_only, workflow_policy):
     """仅生成执行计划，不执行。"""
     from agents.factory import AgentFactory
 
     product_data = _load_product_data(config_file, data) if (config_file or data) else {}
     planner = AgentFactory().create_planner()
-    result = planner.run(product_data=product_data, task_desc=task_desc)
+    result = planner.run(product_data=product_data, task_desc=task_desc, workflow_policy=workflow_policy)
     if result.get("success"):
         payload = result["plan"] if steps_only else _build_plan_package(result)
         click.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -763,41 +1091,19 @@ def think(question, screenshot, question_arg):
     sys.exit(1)
 
 
-@cli.command()
-@click.option("--file", "-f", "batch_file", help="批量商品 JSON/XLSX 文件")
-@click.option("--dir", "-d", "dir_path", help="包含多个商品 JSON 的目录")
-@click.option("--stop-on-error", is_flag=True, help="遇到错误时停止")
-@click.option("--plan-out", default="", help="可选：保存计划包的目录，每个商品自动生成 {task_id}.json")
-@click.option("--resume", is_flag=True, help="从 progress-file 继续批量上架")
-@click.option("--progress-file", default="data/batch-progress.json", help="批量进度文件路径")
-@click.option("--start-from-phase", default="", help="批量模式下每个商品从指定 phase 开始")
-def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, start_from_phase):
-    """批量发布商品。"""
-    if batch_file:
-        items = _load_batch_items(Path(batch_file))
-    elif dir_path:
-        items = []
-        for json_file in sorted(Path(dir_path).glob("*.json")):
-            try:
-                items.extend(_load_batch_items(json_file))
-            except Exception:
-                continue
-    else:
-        click.echo("错误: 需要 --file 或 --dir", err=True)
-        sys.exit(1)
-
+def _run_batch_publish_items(
+    items: List[Dict[str, Any]],
+    *,
+    stop_on_error: bool,
+    plan_out: str,
+    resume: bool,
+    progress_file: str,
+    start_from_phase: str,
+    workflow_policy: str,
+    settings_overrides: Dict[str, Any] | None = None,
+) -> Dict[str, Any]:
     success_count = 0
     fail_count = 0
-    total_high_risk_count = 0
-    products_with_recovery_error = 0
-    total_vision_fallback_count = 0
-    total_successful_vision_fallback_count = 0
-    total_failed_vision_fallback_count = 0
-    products_with_vision_fallback = 0
-    template_hit_totals: Dict[str, int] = {}
-    template_success_totals: Dict[str, int] = {}
-    template_failed_totals: Dict[str, int] = {}
-    risky_titles: List[str] = []
     batch_plan_dir = Path(plan_out).resolve() if plan_out else None
     progress = _read_batch_progress(progress_file)
     start_index = int(progress.get("completed_count", 0) or 0) if resume else 0
@@ -808,7 +1114,9 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
     for index, product_data in enumerate(items, start=1):
         if index <= start_index:
             continue
-        title = (_product_payload(product_data).get("title") or "?")[:30]
+        payload = _product_payload(product_data)
+        title = (payload.get("title") or "?")[:30]
+        item_publish_mode = str(product_data.get("publish_mode", (product_data.get("source_meta") or {}).get("publish_mode", "single")) or "single")
         click.echo(f"\n[{index}/{len(items)}] 处理: {title}")
         try:
             item_plan_out = ""
@@ -820,6 +1128,8 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
                 plan_out=item_plan_out,
                 progress_prefix="  ",
                 start_from_phase=start_from_phase,
+                workflow_policy=workflow_policy,
+                settings_overrides=settings_overrides,
             )
             task_id = exec_result.get("task_id", "")
             if batch_plan_dir is not None and task_id:
@@ -829,37 +1139,14 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
                     Path(final_path).write_text(interim_path.read_text(encoding="utf-8"), encoding="utf-8")
                     interim_path.unlink()
 
-            risk_count = int((exec_result.get("risk_stats") or {}).get("high_risk_window_shift_count", 0) or 0)
-            recovery_error = exec_result.get("recovery_error", "")
             vision_stats = exec_result.get("vision_fallback_stats") or {}
             vision_count = int(vision_stats.get("count", 0) or 0)
             successful_vision_count = int(vision_stats.get("success_count", 0) or 0)
             failed_vision_count = int(vision_stats.get("failed_count", 0) or 0)
             template_hits = vision_stats.get("templates") or {}
-            template_success_hits = vision_stats.get("templates_success") or {}
-            template_failed_hits = vision_stats.get("templates_failed") or {}
             failed_vision_details = vision_stats.get("failed_details") or []
-            total_high_risk_count += risk_count
-            if recovery_error:
-                products_with_recovery_error += 1
-            total_vision_fallback_count += vision_count
-            total_successful_vision_fallback_count += successful_vision_count
-            total_failed_vision_fallback_count += failed_vision_count
-            if vision_count > 0:
-                products_with_vision_fallback += 1
-            for template_name, count in template_hits.items():
-                template_hit_totals[template_name] = template_hit_totals.get(template_name, 0) + int(count or 0)
-            for template_name, count in template_success_hits.items():
-                template_success_totals[template_name] = template_success_totals.get(template_name, 0) + int(count or 0)
-            for template_name, count in template_failed_hits.items():
-                template_failed_totals[template_name] = template_failed_totals.get(template_name, 0) + int(count or 0)
-            if risk_count > 0 or recovery_error:
-                risk_reasons = []
-                if risk_count > 0:
-                    risk_reasons.append(f"{risk_count}次高风险漂移")
-                if recovery_error:
-                    risk_reasons.append("有恢复错误")
-                risky_titles.append(f"{title}（{'，'.join(risk_reasons)}）")
+            evidence_file = _write_item_evidence(str(batch_plan_dir or Path(progress_file).parent), index, exec_result, product_data)
+            result_judgement = _build_result_page_judgement(exec_result)
 
             if exec_result.get("success"):
                 _print_execution_diagnostics(exec_result, prefix="  ")
@@ -872,7 +1159,13 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
                         "title": title,
                         "task_id": task_id,
                         "success": True,
+                        "publish_mode": item_publish_mode,
                         "start_from_phase": exec_result.get("start_from_phase", ""),
+                        "workflow_policy": workflow_policy,
+                        "plan_file": str(exec_result.get("plan_file", "") or ""),
+                        "evidence_file": evidence_file,
+                        "result_page_judgement": result_judgement,
+                        "product_snapshot": exec_result.get("product_snapshot") or {},
                         "vision_fallback_count": vision_count,
                         "vision_fallback_success_count": successful_vision_count,
                         "vision_fallback_failed_count": failed_vision_count,
@@ -897,9 +1190,15 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
                         "title": title,
                         "task_id": task_id,
                         "success": False,
+                        "publish_mode": item_publish_mode,
                         "error": exec_result.get("error", ""),
                         "failed_step": exec_result.get("failed_step", 0),
                         "start_from_phase": exec_result.get("start_from_phase", ""),
+                        "workflow_policy": workflow_policy,
+                        "plan_file": str(exec_result.get("plan_file", "") or ""),
+                        "evidence_file": evidence_file,
+                        "result_page_judgement": result_judgement,
+                        "product_snapshot": exec_result.get("product_snapshot") or {},
                         "vision_fallback_count": vision_count,
                         "vision_fallback_success_count": successful_vision_count,
                         "vision_fallback_failed_count": failed_vision_count,
@@ -922,41 +1221,206 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
                     "title": title,
                     "task_id": "",
                     "success": False,
+                    "publish_mode": item_publish_mode,
                     "error": str(exc),
                     "failed_step": 0,
                     "start_from_phase": _normalize_phase_name(start_from_phase) if start_from_phase else "",
+                    "workflow_policy": workflow_policy,
                 }
             )
             _write_batch_progress(progress_file, progress)
             if stop_on_error:
                 break
 
-    click.echo(
-        f"\n批量完成: {success_count} 成功, {fail_count} 失败, "
-        f"{total_high_risk_count} 次高风险窗口漂移, "
-        f"{products_with_recovery_error} 个商品出现恢复错误, "
-        f"{products_with_vision_fallback} 个商品触发视觉兜底, "
-        f"{total_vision_fallback_count} 次视觉兜底"
-        f"（成功 {total_successful_vision_fallback_count} / 失败 {total_failed_vision_fallback_count}）"
+    click.echo(f"\n批量完成: {success_count} 成功, {fail_count} 失败")
+    return {
+        "success_count": success_count,
+        "fail_count": fail_count,
+        "total_items": len(items),
+        "completed_count": int(progress.get("completed_count", 0) or 0),
+        "failed_indices": list(progress.get("failed_indices", []) or []),
+        "items": list(progress.get("items", []) or []),
+        "progress_file": progress_file,
+        "workflow_policy": workflow_policy,
+    }
+
+
+@cli.command()
+@click.option("--file", "-f", "batch_file", help="批量商品 JSON/XLSX 文件")
+@click.option("--dir", "-d", "dir_path", help="包含多个商品 JSON 的目录")
+@click.option("--stop-on-error", is_flag=True, help="遇到错误时停止")
+@click.option("--plan-out", default="", help="可选：保存计划包的目录，每个商品自动生成 {task_id}.json")
+@click.option("--resume", is_flag=True, help="从 progress-file 继续批量上架")
+@click.option("--progress-file", default="data/batch-progress.json", help="批量进度文件路径")
+@click.option("--start-from-phase", default="", help="批量模式下每个商品从指定 phase 开始")
+def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, start_from_phase):
+    """批量发布商品。"""
+    if batch_file:
+        items = _load_batch_items(Path(batch_file))
+    elif dir_path:
+        items = []
+        for json_file in sorted(Path(dir_path).glob("*.json")):
+            try:
+                items.extend(_load_batch_items(json_file))
+            except Exception:
+                continue
+    else:
+        click.echo("错误: 需要 --file 或 --dir", err=True)
+        sys.exit(1)
+
+    summary = _run_batch_publish_items(
+        items,
+        stop_on_error=stop_on_error,
+        plan_out=plan_out,
+        resume=resume,
+        progress_file=progress_file,
+        start_from_phase=start_from_phase,
+        workflow_policy="default",
     )
-    if risky_titles:
-        click.echo("高风险商品: " + "；".join(risky_titles))
-    if template_hit_totals:
-        template_summary = "；".join(
-            f"{name} {count}次"
-            for name, count in sorted(template_hit_totals.items(), key=lambda item: (-item[1], item[0]))
+    if summary["fail_count"] > 0 and stop_on_error:
+        sys.exit(1)
+
+
+@cli.command("live-run")
+@click.option("--file", "batch_file", default="湖南上架表格.xlsx", help="默认使用湖南上架表格.xlsx")
+@click.option("--plan-out", default="", help="计划输出目录，默认写入 data/live-run-YYYY-MM-DD")
+@click.option("--progress-file", default="", help="进度文件路径，默认写入计划目录下 progress.json")
+@click.option("--resume", is_flag=True, help="从进度文件续跑")
+@click.option("--start-from-phase", default="", help="从指定 phase 开始执行")
+@click.option("--video-observer/--no-video-observer", default=False, help="启用多帧截图观察器")
+def live_run(batch_file, plan_out, progress_file, resume, start_from_phase, video_observer):
+    """按文档驱动模板执行 live-run，默认停在首个失败商品。"""
+    batch_path = Path(batch_file)
+    if not batch_path.exists():
+        click.echo(f"错误: 文件不存在 {batch_file}", err=True)
+        sys.exit(1)
+
+    items = _load_batch_items(batch_path)
+    if not items:
+        click.echo("错误: 未解析到可上架商品", err=True)
+        sys.exit(1)
+
+    default_dir = Path("data") / f"live-run-{Path(batch_file).stem}"
+    plan_dir = str((Path(plan_out) if plan_out else default_dir).resolve())
+    progress_path = str((Path(progress_file) if progress_file else Path(plan_dir) / "progress.json").resolve())
+    click.echo(
+        f"live-run: file={batch_path.name} mode={items[0].get('publish_mode', 'single')} "
+        f"items={len(items)} workflow=doc_strict"
+    )
+
+    summary = _run_batch_publish_items(
+        items,
+        stop_on_error=True,
+        plan_out=plan_dir,
+        resume=resume,
+        progress_file=progress_path,
+        start_from_phase=start_from_phase,
+        workflow_policy="doc_strict",
+        settings_overrides={"VIDEO_OBSERVER_ENABLED": video_observer},
+    )
+    if summary["fail_count"] > 0:
+        sys.exit(1)
+
+
+@cli.command("acceptance-run")
+@click.option("--file", "batch_file", default="湖南上架表格.xlsx", help="验收表文件，默认湖南上架表格.xlsx")
+@click.option("--plan-out", default="", help="验收计划目录，默认 data/acceptance-runs/<run_id>")
+@click.option("--progress-file", default="", help="验收进度文件路径")
+@click.option("--resume", is_flag=True, help="从 progress 文件继续验收")
+@click.option("--start-from-phase", default="", help="从指定业务 phase 开始执行")
+@click.option("--video-observer/--no-video-observer", default=True, help="启用多帧截图观察器")
+def acceptance_run(batch_file, plan_out, progress_file, resume, start_from_phase, video_observer):
+    """真实验收：湖南上架表格.xlsx -> 京麦发布，并将结果落库。"""
+    batch_path = Path(batch_file)
+    if not batch_path.exists():
+        click.echo(f"错误: 文件不存在 {batch_file}", err=True)
+        sys.exit(1)
+
+    items = _load_batch_items(batch_path)
+    if not items:
+        click.echo("错误: 未解析到可上架商品", err=True)
+        sys.exit(1)
+
+    workflow_policy = "doc_strict"
+    paths = _build_acceptance_run_paths(batch_file, plan_out=plan_out, progress_file=progress_file)
+    db = _record_acceptance_run_start(paths, workflow_policy, total_items=len(items))
+    from settings import get_settings
+
+    db_preflight = _run_db_preflight(get_settings())
+    db_preflight_file = _write_db_preflight(paths, db_preflight)
+    click.echo(
+        f"acceptance-run: run_id={paths['run_id']} file={batch_path.name} "
+        f"items={len(items)} workflow={workflow_policy} video_observer={video_observer}"
+    )
+    click.echo(
+        f"DB preflight: type={db_preflight.get('final_db_type')} reachable={db_preflight.get('reachable')} "
+        f"create_tables={db_preflight.get('create_tables')} report={db_preflight_file}"
+    )
+
+    try:
+        summary = _run_batch_publish_items(
+            items,
+            stop_on_error=True,
+            plan_out=paths["plan_dir"],
+            resume=resume,
+            progress_file=paths["progress_file"],
+            start_from_phase=start_from_phase,
+            workflow_policy=workflow_policy,
+            settings_overrides={"VIDEO_OBSERVER_ENABLED": video_observer},
         )
-        click.echo("视觉兜底模板统计: " + template_summary)
-    if template_success_totals or template_failed_totals:
-        success_summary = "；".join(
-            f"{name} {count}次"
-            for name, count in sorted(template_success_totals.items(), key=lambda item: (-item[1], item[0]))
-        ) or "无"
-        failed_summary = "；".join(
-            f"{name} {count}次"
-            for name, count in sorted(template_failed_totals.items(), key=lambda item: (-item[1], item[0]))
-        ) or "无"
-        click.echo(f"视觉兜底结果: 成功[{success_summary}]；失败[{failed_summary}]")
+        summary_payload = {
+            "run_id": paths["run_id"],
+            "batch_file": paths["batch_file"],
+            "workflow_policy": workflow_policy,
+            "video_observer_enabled": video_observer,
+            "plan_dir": paths["plan_dir"],
+            "progress_file": paths["progress_file"],
+            "summary_file": paths["summary_file"],
+            "db_preflight": db_preflight,
+            "db_preflight_file": db_preflight_file,
+            "summary": summary,
+            "progress": _read_batch_progress(paths["progress_file"]),
+        }
+        _write_acceptance_summary(paths["summary_file"], summary_payload)
+        final_status = "success" if summary["fail_count"] == 0 else "failed"
+        db.update_acceptance_run(
+            paths["run_id"],
+            status=final_status,
+            success_count=summary["success_count"],
+            fail_count=summary["fail_count"],
+            total_items=summary["total_items"],
+            summary=summary_payload,
+            summary_file=paths["summary_file"],
+            progress_file=paths["progress_file"],
+            plan_dir=paths["plan_dir"],
+        )
+        click.echo(f"验收结果已落库: run_id={paths['run_id']} status={final_status}")
+        click.echo(f"验收总结: {paths['summary_file']}")
+        if summary["fail_count"] > 0:
+            sys.exit(1)
+    except Exception as exc:
+        error_payload = {
+            "run_id": paths["run_id"],
+            "batch_file": paths["batch_file"],
+            "workflow_policy": workflow_policy,
+            "video_observer_enabled": video_observer,
+            "db_preflight": db_preflight,
+            "db_preflight_file": db_preflight_file,
+            "error": str(exc),
+        }
+        _write_acceptance_summary(paths["summary_file"], error_payload)
+        db.update_acceptance_run(
+            paths["run_id"],
+            status="failed",
+            fail_count=1,
+            total_items=len(items),
+            summary=error_payload,
+            error=str(exc),
+            summary_file=paths["summary_file"],
+            progress_file=paths["progress_file"],
+            plan_dir=paths["plan_dir"],
+        )
+        raise
 
 
 @cli.command()

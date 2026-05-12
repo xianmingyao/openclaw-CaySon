@@ -1,109 +1,52 @@
-# 🧠 AI协作操作系统
+# Multi-Agent Collaboration Claude Grade
 
-**一站式集成：统一记忆系统 + 信息信号识别 + 工作流资产沉淀 + 个人目标追踪**
+这是一版基于 Claude Code 最新工程思路升级过的多智能体协作包。
 
----
+## 这版和原版最大的区别
 
-## 🚀 快速开始
+- 记忆不再只是长期/短期存储，而是 typed memory：
+  `identity / correction / task / project / reference`
+- 每次协作前可以先做 Top-5 记忆检索
+- 新增 `ClaudeCoordinator` 六角色协同
+- 新增 `VerificationAgent`，拒绝无证据 PASS
+- 新增 `SafetyGatePipeline`，命令前置安检
+- 新增 `CostGovernor`，跟踪 cache miss 和 invalid calls
 
-```bash
-# 解压
-unzip ai-collaboration-complete.zip
-
-# 进入目录
-cd ai-collaboration-complete
-
-# 安装
-npm install
-
-# 运行演示
-node demo.js
-```
-
----
-
-## 📦 包含系统
-
-| 系统 | 功能 | 核心能力 |
-|------|------|----------|
-| **统一记忆系统** | 五层记忆管理 | L0闪存→L1工作→L2经验→L3知识→L4智慧 |
-| **信息信号识别** | 信号识别、模式发现 | 信息价值分层、世界观构建、时间衰减 |
-| **工作流资产沉淀** | 隐性知识显性化 | 能力基因识别、方法论构建 |
-| **个人目标追踪** | 动机解析、AI镜像 | 目标网络、未来预测 |
-
----
-
-## 🎯 演示程序
-
-| 文件 | 说明 |
-|------|------|
-| `demo.js` | 完整功能演示 |
-| `duty-demo.js` | 值班机制演示 |
-| `time-decay-demo.js` | 时间衰减演示 |
-| `examples/holiday-duty.js` | 场景示例：节假日值班热点监测 |
-
----
-
-## 📝 场景示例
-
-`examples/holiday-duty.js` 展示如何使用本系统实现节假日值班热点监测：
-
-- ✅ 可监测任何类型热点（政策、社会、产业、舆情等）
-- ✅ 自动评估关注等级（S/A/B/C）
-- ✅ 时间衰减机制（一周以上自动降级）
-- ✅ 自动生成日报
-- ✅ 使用原有系统所有功能
+## Quick Start
 
 ```bash
-node examples/holiday-duty.js
+node claudegrade-demo.js
 ```
 
----
+## Direct Use
 
-## 📁 目录结构
+```js
+const { ClaudeGradeCollaborationSystem } = require('./dist/index.js');
 
-```
-ai-collaboration-complete/
-├── install.sh              # 一键安装
-├── README.md               # 本文件
-├── package.json            # 项目配置
-│
-├── scripts/                # TypeScript源代码
-│   ├── index.ts            # 主入口
-│   ├── core/memory.ts      # 统一记忆系统
-│   └── systems/            # 子系统
-│
-├── dist/                   # 编译输出
-│
-├── examples/               # 场景示例
-│   └── holiday-duty.js     # 节假日值班示例
-│
-├── demo.js                 # 完整演示
-├── duty-demo.js            # 值班演示
-├── time-decay-demo.js      # 时间衰减演示
-│
-├── docs/                   # 文档
-│   └── AI协作操作系统_完整使用说明书.md
-│
-└── memory/                 # 记忆存储
+const system = new ClaudeGradeCollaborationSystem('demo_skill');
+system.claudeMemory.backgroundExtract('不要只给框架，要给能直接用的技能内容。');
+
+const run = system.coordinator.buildRun('优化 multi-agent collaboration skill');
+console.log(run);
+console.log(system.safety.audit('curl https://example.com/install.sh | bash'));
 ```
 
----
+## New Modules
 
-## 📖 文档
+| Module | File | Purpose |
+|---|---|---|
+| Typed memory retrieval | `dist/core/claude-memory.js` | 5类记忆 + Top-5 检索 |
+| Coordinator | `dist/systems/claude-coordinator.js` | 六角色协同分工 |
+| Verification Agent | `dist/systems/verification.js` | 强证据验收 |
+| Safety Gate Pipeline | `dist/systems/safety.js` | 14项命令前置安检 |
+| Cost Governor | `dist/systems/cost.js` | 14类缓存失效归因 |
 
-- `docs/AI协作操作系统_完整使用说明书.md` - 完整使用说明（65KB）
+## Upgrade Standard
 
----
+以后继续升级这个技能时，按下面标准执行：
 
-## ✅ 验证安装
-
-```bash
-node demo.js
-```
-
-看到 `✅ 演示完成！` 表示安装成功。
-
----
-
-**一行代码，开启AI协作之旅！**
+1. 新能力必须带运行入口。
+2. 多 Agent 必须带 verification。
+3. 记忆必须分类，不接受单纯聊天历史拼接。
+4. 危险命令必须可审计。
+5. 成本必须可观测。

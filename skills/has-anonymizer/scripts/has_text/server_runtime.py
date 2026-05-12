@@ -29,6 +29,10 @@ _PARALLEL_FLAG_RE = re.compile(r"(?:^|\s)(?:-np|--parallel)(?:=|\s+)(-?\d+)(?=\s
 _CONTEXT_FLAG_RE = re.compile(r"(?:^|\s)(?:-c|--ctx-size)(?:=|\s+)(\d+)(?=\s|$)")
 
 
+def _verbose_enabled() -> bool:
+    return os.environ.get("HAS_TEXT_VERBOSE") == "1"
+
+
 @dataclass(frozen=True)
 class RunningServer:
     """Observed state for a local listener bound to the target port."""
@@ -194,9 +198,9 @@ def _target_slots(required_slots: int) -> int:
     return min(required_slots, MAX_AUTO_PARALLEL_SLOTS)
 
 
-def _target_context_tokens(required_slots: int) -> int:
-    """Keep each local auto-managed slot at the full 8K context budget."""
-    return DEFAULT_CONTEXT_PER_SLOT * _target_slots(required_slots)
+def _target_context_tokens(required_slots: int, context_per_slot: int = DEFAULT_CONTEXT_PER_SLOT) -> int:
+    """Keep each local auto-managed slot at the requested context budget."""
+    return context_per_slot * _target_slots(required_slots)
 
 
 def _supports_required_slots(observed_slots: Optional[int], required_slots: int) -> bool:
@@ -210,12 +214,13 @@ def _supports_required_slots(observed_slots: Optional[int], required_slots: int)
 def _supports_required_context(
     observed_slots: Optional[int],
     observed_context_tokens: Optional[int],
+    context_per_slot: int = DEFAULT_CONTEXT_PER_SLOT,
 ) -> bool:
     if observed_slots is None or observed_context_tokens is None:
         return False
     if observed_slots <= 0:
         return False
-    return observed_context_tokens >= observed_slots * DEFAULT_CONTEXT_PER_SLOT
+    return observed_context_tokens >= observed_slots * context_per_slot
 
 
 def _find_free_port(host: str) -> int:
@@ -286,11 +291,12 @@ def _start_server(
                 f"llama-server exited before becoming ready. Check {log_path} for details."
             )
         if _healthcheck(server_url):
-            print(
-                f"Started HaS llama-server at {server_url} with {required_slots} slot(s) "
-                f"and context {context_tokens}.",
-                file=sys.stderr,
-            )
+            if _verbose_enabled():
+                print(
+                    f"Started HaS llama-server at {server_url} with {required_slots} slot(s) "
+                    f"and context {context_tokens}.",
+                    file=sys.stderr,
+                )
             return ServerLease(
                 server_url=server_url,
                 started_pid=process.pid,
@@ -316,6 +322,7 @@ def acquire_server(
     *,
     required_slots: int = 1,
     model_path: Optional[str] = None,
+    context_per_slot: int = DEFAULT_CONTEXT_PER_SLOT,
 ) -> ServerLease:
     """Reuse or start a local HaS llama-server for the requested workload."""
     if required_slots < 1:
@@ -329,7 +336,7 @@ def acquire_server(
         )
 
     target_slots = _target_slots(required_slots)
-    target_context_tokens = _target_context_tokens(required_slots)
+    target_context_tokens = _target_context_tokens(required_slots, context_per_slot)
     target_url = _with_port(server_url, _parse_port(server_url))
     observed = inspect_local_server(target_url, model_path=model_path)
     if (
@@ -337,12 +344,13 @@ def acquire_server(
         and observed.healthy
         and observed.matches_has_model
         and _supports_required_slots(observed.parallel_slots, target_slots)
-        and _supports_required_context(observed.parallel_slots, observed.context_tokens)
+        and _supports_required_context(observed.parallel_slots, observed.context_tokens, context_per_slot)
     ):
-        print(
-            f"Reusing HaS llama-server at {target_url}.",
-            file=sys.stderr,
-        )
+        if _verbose_enabled():
+            print(
+                f"Reusing HaS llama-server at {target_url}.",
+                file=sys.stderr,
+            )
         return ServerLease(server_url=target_url)
 
     start_url = target_url

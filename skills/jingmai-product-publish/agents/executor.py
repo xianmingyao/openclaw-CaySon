@@ -728,6 +728,7 @@ class ExecutorAgent(BaseAgent):
         contract = step.get("react_contract") or {}
         precheck = contract.get("precheck") or {}
         goal = contract.get("goal") or f"???? {action_name}"
+        workflow_context = contract.get("workflow_context") or {}
         expect_any = precheck.get("expect_any") or []
         reject_any = precheck.get("reject_any") or []
         recent_history = history[-3:] if history else []
@@ -741,6 +742,7 @@ class ExecutorAgent(BaseAgent):
             "\"suggested_action\":\"proceed\"|\"recover\"|\"stop\"}?"
             f"????: {action_name}?"
             f"????: {goal}?"
+            f"???????: {json.dumps(workflow_context, ensure_ascii=False) if workflow_context else '{}'}?"
             f"???????: {expect_any or ['?']}?"
             f"???????????????: {reject_any or ['?']}?"
             f"??????: {json.dumps(recent_history, ensure_ascii=False)}?"
@@ -940,6 +942,12 @@ class ExecutorAgent(BaseAgent):
         }
         if verification.get("observation") is not None:
             summary["verification"] = verification["observation"]
+        if self._last_opencli_probe:
+            summary["opencli_probe"] = {
+                "page_state": str((self._last_opencli_probe.get("observation") or {}).get("page_state", "") or ""),
+                "reason": str((self._last_opencli_probe.get("observation") or {}).get("reason", "") or ""),
+                "raw_output": str(self._last_opencli_probe.get("raw_output", "") or "")[:400],
+            }
         self._record_recovery_attempt(
             step_index,
             reason=f"{failure_stage}:{deviation['type']}",
@@ -1004,6 +1012,15 @@ class ExecutorAgent(BaseAgent):
         page_state = deviation.get("page_state", "unknown")
         if deviation_type == "hard_stop":
             return []
+
+        doc_recovery = self._build_doc_strict_recovery_actions(
+            action_name=action_name,
+            step=step,
+            retry_index=retry_index,
+            deviation=deviation,
+        )
+        if doc_recovery:
+            return doc_recovery
 
         stronger_reset = retry_index >= 1
         category = self._extract_recovery_category(step)
@@ -1080,6 +1097,44 @@ class ExecutorAgent(BaseAgent):
 
         return [wait_action, window_action, {"type": "refresh_page", "mode": "soft"}, {"type": "opencli_state_probe", "reason": deviation_type or "generic"}]
 
+    def _build_doc_strict_recovery_actions(
+        self,
+        action_name: str,
+        step: Dict[str, Any],
+        retry_index: int,
+        deviation: Dict[str, str],
+    ) -> List[Dict[str, Any]]:
+        if not isinstance(step, dict) or not step.get("doc_strict"):
+            return []
+        deviation_type = str(deviation.get("type", "") or "")
+        if deviation_type not in {"wrong_page_publish_flow", "form_section_mismatch", "precheck_blocked", "postcheck_validation_error"}:
+            return []
+
+        guard = dict(step.get("doc_strict_guard") or {})
+        sequence = [item for item in list(guard.get("recovery_sequence") or []) if isinstance(item, dict)]
+        if not sequence:
+            return []
+
+        category = self._extract_recovery_category(step)
+        params = dict((step or {}).get("params") or {})
+        stronger_reset = retry_index >= 1
+        actions: List[Dict[str, Any]] = []
+        for item in sequence:
+            action = dict(item)
+            action_type = str(action.get("type", "") or "")
+            if not action_type:
+                continue
+            if stronger_reset and action_type == "recover_locator":
+                action["type"] = "force_relocate"
+            if action_type == "select_category" and category and not action.get("search_text"):
+                action["search_text"] = category
+            if action_type in {"fill_product_info", "fill_product_description"}:
+                for key in ("product", "required_visual_fields", "field_groups", "publish_mode", "doc_sections", "batch_scope"):
+                    if key in params and key not in action:
+                        action[key] = params.get(key)
+            actions.append(action)
+        return actions
+
     def _run_recovery_action(self, action: Dict[str, Any], step_index: int) -> Dict[str, Any]:
         action_type = str(action.get("type", "") or "")
         try:
@@ -1100,7 +1155,17 @@ class ExecutorAgent(BaseAgent):
             if action_type == "opencli_state_probe":
                 probe = self._run_opencli_state_probe(reason=str(action.get("reason", "") or "recovery"))
                 self._last_opencli_probe = dict((probe or {}).get("result") or {})
-                return {"type": action_type, **probe}
+                probe_result = dict((probe or {}).get("result") or {})
+                probe_observation = probe_result.get("observation")
+                probe_has_signal = bool(
+                    isinstance(probe_observation, dict)
+                    or str(probe_result.get("raw_output", "") or "").strip()
+                )
+                normalized_probe = dict(probe or {})
+                normalized_probe["success"] = bool((probe or {}).get("success")) or probe_has_signal
+                if normalized_probe["success"] and not probe.get("success"):
+                    normalized_probe["error"] = ""
+                return {"type": action_type, **normalized_probe}
 
             params = dict(action)
             params.pop("type", None)
@@ -1211,7 +1276,15 @@ class ExecutorAgent(BaseAgent):
 
     def _vision_query(self, prompt: str, screenshot_path: str) -> Optional[Dict[str, Any]]:
         extra_paths = self._extra_visual_paths_from_primary(screenshot_path)
-        response = self._llm.invoke_multimodal(prompt, screenshot_path, extra_image_paths=extra_paths)
+        try:
+            response = self._llm.invoke_multimodal(prompt, screenshot_path, extra_image_paths=extra_paths)
+        except Exception as exc:
+            self._log("warning", f"LLM visual verification unavailable: {exc}")
+            return {
+                "status": "unknown",
+                "reason": f"llm-visual-unavailable: {str(exc)[:160]}",
+                "suggested_action": "recover",
+            }
         if not response:
             return None
 
@@ -1327,11 +1400,35 @@ class ExecutorAgent(BaseAgent):
         if not isinstance(normalized, dict):
             return None
         if self._should_block_precheck(action_name, normalized):
-            return None
+            page_state = str(
+                normalized.get("page_state")
+                or self._detect_page_state(normalized, action_name=action_name)
+                or ""
+            ).strip()
+            if not self._probe_page_state_accepts_action(action_name, page_state):
+                return None
+            normalized = dict(normalized)
+            normalized["status"] = "ok"
+            normalized["suggested_action"] = "proceed"
+            normalized["reason"] = (
+                f"opencli probe accepted current page state for {action_name}: "
+                f"{page_state or 'unknown'}"
+            )
+            normalized["page_state"] = page_state
         normalized.setdefault("recovery_source", "opencli_state_probe")
         if probe.get("raw_output") and not normalized.get("opencli_raw_output"):
             normalized["opencli_raw_output"] = str(probe.get("raw_output", "") or "")[:400]
         return normalized
+
+    @staticmethod
+    def _probe_page_state_accepts_action(action_name: str, page_state: str) -> bool:
+        acceptable = {
+            "navigate_to": {"category_page", "product_info_page", "description_page", "publish_confirm_page"},
+            "select_category": {"category_page", "product_info_page", "description_page"},
+            "fill_product_info": {"product_info_page", "description_page", "publish_confirm_page"},
+            "publish_product": {"product_info_page", "description_page", "publish_confirm_page"},
+        }
+        return page_state in acceptable.get(action_name, set())
 
     def _coerce_precheck_for_action(
         self,
@@ -1472,6 +1569,25 @@ class ExecutorAgent(BaseAgent):
             normalized["suggested_action"] = "proceed"
             normalized["reason"] = "仍在发品表单页，允许 fill_product_info 继续执行以修复字段状态"
             return normalized
+
+        if action_name == "fill_product_info" and self._locator is not None:
+            try:
+                from actions.form import _collect_fill_page_state
+
+                local_fill_state = _collect_fill_page_state(locator=self._locator, log=self._logger)
+            except Exception:
+                local_fill_state = {}
+            if (
+                isinstance(local_fill_state, dict)
+                and local_fill_state.get("basic_tab")
+                and not local_fill_state.get("category_page")
+            ):
+                normalized = dict(observation)
+                normalized["status"] = "ok"
+                normalized["suggested_action"] = "proceed"
+                normalized["page_state"] = "product_info_page"
+                normalized["reason"] = "local fill-page probe accepted basic info context for fill_product_info"
+                return normalized
 
         if action_name == "publish_product":
             publish_ready_markers = (
@@ -1681,6 +1797,24 @@ class ExecutorAgent(BaseAgent):
             if state_text and state_text not in expanded:
                 expanded.append(state_text)
 
+        if stage == "precheck":
+            if action_name == "navigate_to":
+                for state in ("category_page", "product_info_page", "description_page", "publish_confirm_page"):
+                    if state not in expanded:
+                        expanded.append(state)
+            if action_name == "select_category":
+                for state in ("category_page", "product_info_page", "description_page"):
+                    if state not in expanded:
+                        expanded.append(state)
+            if action_name == "fill_product_info":
+                for state in ("product_info_page", "description_page", "publish_confirm_page"):
+                    if state not in expanded:
+                        expanded.append(state)
+            if action_name == "publish_product":
+                for state in ("product_info_page", "description_page", "publish_confirm_page"):
+                    if state not in expanded:
+                        expanded.append(state)
+
         if stage == "postcheck":
             if action_name == "navigate_to":
                 for state in ("category_page", "product_info_page", "description_page", "publish_confirm_page"):
@@ -1706,6 +1840,19 @@ class ExecutorAgent(BaseAgent):
         if page_state not in set(allowed_page_states or []):
             return False
         return (action_name, stage, page_state) in {
+            ("navigate_to", "precheck", "category_page"),
+            ("navigate_to", "precheck", "product_info_page"),
+            ("navigate_to", "precheck", "description_page"),
+            ("navigate_to", "precheck", "publish_confirm_page"),
+            ("select_category", "precheck", "category_page"),
+            ("select_category", "precheck", "product_info_page"),
+            ("select_category", "precheck", "description_page"),
+            ("fill_product_info", "precheck", "product_info_page"),
+            ("fill_product_info", "precheck", "description_page"),
+            ("fill_product_info", "precheck", "publish_confirm_page"),
+            ("publish_product", "precheck", "product_info_page"),
+            ("publish_product", "precheck", "description_page"),
+            ("publish_product", "precheck", "publish_confirm_page"),
             ("navigate_to", "postcheck", "category_page"),
             ("navigate_to", "postcheck", "product_info_page"),
             ("navigate_to", "postcheck", "description_page"),
@@ -1971,6 +2118,7 @@ class ExecutorAgent(BaseAgent):
         contract = (step or {}).get("react_contract") or {}
         postcheck = contract.get("postcheck") or {}
         goal = contract.get("goal") or f"执行 {action_name}"
+        workflow_context = contract.get("workflow_context") or {}
         expect_any = [str(item) for item in (postcheck.get("expect_any") or []) if str(item).strip()]
         reject_any = [str(item) for item in (postcheck.get("reject_any") or []) if str(item).strip()]
         recent_history = (history or [])[-3:]
@@ -2013,6 +2161,7 @@ class ExecutorAgent(BaseAgent):
                 "\"suggested_action\":\"proceed\"|\"recover\"|\"stop\"}。"
                 f"步骤动作: {action_name}。"
                 f"步骤目标: {goal}。"
+                f"文档上下文: {json.dumps(workflow_context, ensure_ascii=False) if workflow_context else '{}'}。"
                 f"成功线索: {expect_any or ['无']}。"
                 f"失败或偏差线索: {reject_any or ['无']}。"
                 f"关键商品字段: {key_fields or ['无']}。"
@@ -2045,6 +2194,7 @@ class ExecutorAgent(BaseAgent):
                 "\"suggested_action\":\"proceed\"|\"recover\"|\"stop\"}。"
                 f"步骤动作: {action_name}。"
                 f"步骤目标: {goal}。"
+                f"文档上下文: {json.dumps(workflow_context, ensure_ascii=False) if workflow_context else '{}'}。"
                 f"成功线索: {expect_any or ['无']}。"
                 f"失败或偏差线索: {reject_any or ['无']}。"
                 f"关键商品字段: {key_fields or ['无']}。"

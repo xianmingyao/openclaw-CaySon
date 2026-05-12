@@ -1,0 +1,15 @@
+{
+  "db_type": "mysql",
+  "mysql_pool_size": 10,
+  "mysql_max_overflow": 20,
+  "mysql_connect_timeout": 8,
+  "mysql_read_timeout": 15,
+  "mysql_write_timeout": 15,
+  "mysql_init_retries": 3,
+  "mysql_retry_delay_sec": 1.5,
+  "reachable": true,
+  "error": "",
+  "started_at": "2026-05-12T01:37:34.477062",
+  "create_tables": "ok",
+  "final_db_type": "mysql"
+}

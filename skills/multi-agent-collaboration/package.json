@@ -1,7 +1,7 @@
 {
   "name": "ai-collaboration-system",
-  "version": "1.0.0",
-  "description": "AI协作操作系统 - 完整集成版。包含统一记忆系统、信息信号识别系统、工作流资产沉淀系统、个人目标追踪系统。",
+  "version": "2.0.0",
+  "description": "AI协作操作系统 Claude Grade 增强版。补齐分层记忆检索、多Agent Coordinator、Verification、安全闸门和成本治理。",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -14,7 +14,11 @@
     "memory-system",
     "signal-recognition",
     "workflow-asset",
-    "goal-tracking"
+    "goal-tracking",
+    "claude-grade",
+    "verification-agent",
+    "safety-pipeline",
+    "cost-governor"
   ],
   "author": "AI",
   "license": "MIT",

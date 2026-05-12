@@ -435,7 +435,34 @@ publish_product - 发布商品
         paragraphs = self._load_workflow_paragraphs()
         publish_mode = self._resolve_publish_mode(product_data)
         specs = self._build_doc_step_specs_from_paragraphs(paragraphs, publish_mode=publish_mode)
-        return [self._build_doc_step(spec, product_data) for spec in specs]
+        steps = [self._build_doc_step(spec, product_data) for spec in specs]
+        return self._annotate_doc_workflow_sequence(steps)
+
+    @staticmethod
+    def _annotate_doc_workflow_sequence(steps: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        total = len(steps or [])
+        annotated: List[Dict[str, Any]] = []
+        for index, step in enumerate(steps, start=1):
+            item = dict(step or {})
+            prev_action = str(steps[index - 2].get("action", "") or "").strip() if index > 1 else ""
+            next_action = str(steps[index].get("action", "") or "").strip() if index < total else ""
+            workflow_context = {
+                "step_index": index,
+                "step_total": total,
+                "previous_action": prev_action,
+                "next_action": next_action,
+                "section": str(item.get("workflow_section", "") or ""),
+                "requirement": str(item.get("workflow_requirement", "") or ""),
+                "excerpt": str(item.get("workflow_excerpt", "") or ""),
+                "phase": str(item.get("phase", "") or ""),
+            }
+            item["workflow_context"] = workflow_context
+            item["workflow_step_index"] = index
+            item["workflow_step_total"] = total
+            item["workflow_previous_action"] = prev_action
+            item["workflow_next_action"] = next_action
+            annotated.append(item)
+        return annotated
 
     def _build_doc_step(self, spec: Dict[str, Any], product_data: Dict[str, Any]) -> Dict[str, Any]:
         action = str(spec.get("action", "") or "")
@@ -589,6 +616,11 @@ publish_product - 发布商品
         guards: Dict[str, Dict[str, Any]] = {
             "navigate_to": {
                 "recovery_hint": "navigate_to",
+                "recovery_sequence": [
+                    {"type": "recover_locator"},
+                    {"type": "refresh_page", "mode": "soft"},
+                    {"type": "navigate_to", "page": "publish"},
+                ],
                 "precheck": {
                     "allowed_page_states": ["browser_host", "unknown", "product_list_page", "category_page", "product_info_page"],
                     "required_markers": ["京麦", "工作台", "商品", "发布商品", "类目", "商品标题"],
@@ -602,6 +634,12 @@ publish_product - 发布商品
             },
             "select_category": {
                 "recovery_hint": "navigate_to",
+                "recovery_sequence": [
+                    {"type": "recover_locator"},
+                    {"type": "refresh_page", "mode": "soft"},
+                    {"type": "navigate_to", "page": "publish"},
+                    {"type": "select_category"},
+                ],
                 "precheck": {
                     "allowed_page_states": ["category_page", "product_info_page"],
                     "required_markers": [marker for marker in ["类目", "商品标题", *category_tokens] if marker],
@@ -615,6 +653,12 @@ publish_product - 发布商品
             },
             "fill_product_info": {
                 "recovery_hint": "navigate_to",
+                "recovery_sequence": [
+                    {"type": "recover_locator"},
+                    {"type": "refresh_page", "mode": "soft"},
+                    {"type": "navigate_to", "page": "publish"},
+                    {"type": "select_category"},
+                ],
                 "precheck": {
                     "allowed_page_states": ["product_info_page"],
                     "required_markers": [marker for marker in ["商品标题", "品牌", "市场价", "京东价", *field_labels("basic_info"), *field_labels("sales_attributes")] if marker],
@@ -628,6 +672,12 @@ publish_product - 发布商品
             },
             "fill_product_description": {
                 "recovery_hint": "fill_product_description",
+                "recovery_sequence": [
+                    {"type": "recover_locator"},
+                    {"type": "refresh_page", "mode": "soft"},
+                    {"type": "navigate_to", "page": "publish"},
+                    {"type": "select_category"},
+                ],
                 "precheck": {
                     "allowed_page_states": ["description_page"],
                     "required_markers": ["商品描述", "图文编辑", "代码编辑"],
@@ -641,6 +691,11 @@ publish_product - 发布商品
             },
             "publish_product": {
                 "recovery_hint": "publish_product",
+                "recovery_sequence": [
+                    {"type": "recover_locator"},
+                    {"type": "refresh_page", "mode": "soft"},
+                    {"type": "opencli_state_probe", "reason": "publish_product"},
+                ],
                 "precheck": {
                     "allowed_page_states": ["product_info_page", "description_page", "publish_confirm_page"],
                     "required_markers": ["发布商品", "保存草稿", "商品标题"],
@@ -654,6 +709,11 @@ publish_product - 发布商品
             },
             "verify_result": {
                 "recovery_hint": "verify_result",
+                "recovery_sequence": [
+                    {"type": "recover_locator"},
+                    {"type": "wait", "seconds": 2},
+                    {"type": "opencli_state_probe", "reason": "verify_result"},
+                ],
                 "precheck": {
                     "allowed_page_states": ["publish_confirm_page", "product_list_page", "product_info_page"],
                     "required_markers": ["发布成功", "商品列表", "审核", "发布商品"],
@@ -674,6 +734,9 @@ publish_product - 发布商品
             stage_guard["reject_markers"] = [item for item in stage_guard.get("reject_markers", []) if str(item or "").strip()]
             if stage_guard:
                 guard[stage] = stage_guard
+        recovery_sequence = [item for item in list(guard.get("recovery_sequence") or []) if isinstance(item, dict)]
+        if recovery_sequence:
+            guard["recovery_sequence"] = recovery_sequence
         return guard
 
     def _derive_product_data_from_task(self, task_desc: str) -> Dict[str, Any]:
@@ -1046,6 +1109,25 @@ publish_product - 发布商品
             item = dict(step)
             contract = dict(item.get("react_contract") or build_contract(item.get("action", "")))
             guard = dict(item.get("doc_strict_guard") or {})
+            workflow_context = dict(item.get("workflow_context") or {})
+            if workflow_context:
+                contract["workflow_context"] = workflow_context
+                requirement = str(workflow_context.get("requirement", "") or "").strip()
+                section = str(workflow_context.get("section", "") or "").strip()
+                step_index = workflow_context.get("step_index")
+                step_total = workflow_context.get("step_total")
+                next_action = str(workflow_context.get("next_action", "") or "").strip()
+                context_bits: List[str] = []
+                if section:
+                    context_bits.append(f"文档章节={section}")
+                if requirement:
+                    context_bits.append(f"文档要求={requirement}")
+                if step_index and step_total:
+                    context_bits.append(f"文档步骤={step_index}/{step_total}")
+                if next_action:
+                    context_bits.append(f"下一动作={next_action}")
+                if context_bits:
+                    contract["goal"] = f"{contract.get('goal', '')}。{'；'.join(context_bits)}".strip("。")
             if item.get("doc_strict") and guard:
                 contract = apply_doc_strict_guard(contract, guard)
             item["react_contract"] = contract

@@ -9,9 +9,13 @@ Internal workflow:
 
 from __future__ import annotations
 
+import argparse
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
+import os
+from pathlib import Path
 import sys
+import time
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from ..chunker import (
@@ -19,7 +23,7 @@ from ..chunker import (
     _FALLBACK_BOUNDARIES,
     _SENTENCE_BOUNDARIES,
 )
-from ..client import HaSClient, estimate_token_count
+from ..client import HaSClient
 from ..lang import is_same_language
 from ..mapping import (
     TAG_PATTERN,
@@ -61,7 +65,8 @@ class SeekDocument:
 
 
 def _warn(message: str) -> None:
-    print(f"Warning: {message}", file=sys.stderr)
+    if os.environ.get("HAS_TEXT_VERBOSE") == "1":
+        print(f"Warning: {message}", file=sys.stderr)
 
 
 def _clone_seek_client(client: HaSClient) -> HaSClient:
@@ -522,7 +527,7 @@ def estimate_seek_model_request_count(
     mapping: Dict[str, List[str]],
     max_chunk_tokens: int = DEFAULT_MAX_CHUNK_TOKENS,
     *,
-    count_tokens: Callable[[str], int] = estimate_token_count,
+    count_tokens: Callable[[str], int],
     original_text: Optional[str] = None,
 ) -> int:
     """Estimate how many model-backed seek requests a text will need."""
@@ -544,7 +549,7 @@ def estimate_seek_batch_model_request_count(
     mapping: Dict[str, List[str]],
     max_chunk_tokens: int = DEFAULT_MAX_CHUNK_TOKENS,
     *,
-    count_tokens: Callable[[str], int] = estimate_token_count,
+    count_tokens: Callable[[str], int],
 ) -> int:
     """Estimate total model-backed seek requests across a batch."""
     return sum(
@@ -680,10 +685,11 @@ def run_seek(
         return {"text": text}
 
     if _should_try_tool_seek(text, mapping, original_text=original_text):
-        print(
-            "Tool-Seek self-check failed, falling back to Model-Seek...",
-            file=sys.stderr,
-        )
+        if os.environ.get("HAS_TEXT_VERBOSE") == "1":
+            print(
+                "Tool-Seek self-check failed, falling back to Model-Seek...",
+                file=sys.stderr,
+            )
 
     chunks = _plan_seek_chunks(client, text, mapping, max_chunk_tokens)
     restored_text = _execute_seek_chunks(
@@ -697,3 +703,212 @@ def run_seek(
     if len(chunks) > 1:
         result["chunks"] = len(chunks)
     return result
+
+
+# ======================================================================
+# CLI handler
+# ======================================================================
+
+
+def cmd_restore(args: argparse.Namespace) -> None:
+    """Execute the restore command."""
+    from ..cli_utils import (
+        absolute_path,
+        collect_text_documents,
+        default_restore_output_dir,
+        default_seek_mapping_dir,
+        estimate_tokens_for_planning,
+        fatal,
+        load_mapping_file,
+        output,
+        read_text,
+        required_slots,
+        resolve_single_output_path,
+        seek_mapping_path,
+        write_text_output,
+    )
+    from ..client import DEFAULT_SERVER
+    from ..mapping import has_tags, load_mapping
+    from ..server_runtime import acquire_server
+
+    dir_path = getattr(args, "dir", None)
+
+    t0 = time.time()
+    if dir_path:
+        if args.mapping:
+            fatal(
+                "invalid_mapping_usage",
+                "restore --dir does not support --mapping; use per-file mappings under <dir>/mappings or --mapping-dir.",
+            )
+        if args.output:
+            fatal(
+                "invalid_output_usage",
+                "restore --dir does not support --output; use --output-dir instead.",
+            )
+
+        raw_documents, skipped = collect_text_documents(dir_path)
+        documents = [
+            SeekDocument(source=item["file"], text=item["text"])
+            for item in raw_documents
+        ]
+        mapping_dir_arg = getattr(args, "mapping_dir", None)
+        mapping_dir = Path(mapping_dir_arg) if mapping_dir_arg else default_seek_mapping_dir(dir_path)
+
+        restored_results: List[Optional[Dict[str, Any]]] = [None] * len(documents)
+        pending_documents: List[tuple[int, SeekDocument, Dict[str, List[str]]]] = []
+        missing_mappings: List[str] = []
+
+        for index, document in enumerate(documents):
+            source_path = Path(document.source)
+            document_mapping: Optional[Dict[str, List[str]]] = None
+
+            per_file_mapping_path = seek_mapping_path(mapping_dir, source_path)
+            if per_file_mapping_path.is_file():
+                document_mapping = load_mapping(str(per_file_mapping_path))
+            elif has_tags(document.text):
+                missing_mappings.append(str(per_file_mapping_path))
+                continue
+
+            if document_mapping is None:
+                if has_tags(document.text):
+                    fatal(
+                        "missing_mapping",
+                        "Batch restore requires per-file mappings under "
+                        f"{mapping_dir} for files that still contain anonymized tags."
+                    )
+
+                restored_results[index] = {"file": document.source, "text": document.text}
+                continue
+
+            restored = restore_without_model(document.text, document_mapping)
+            if restored is not None:
+                restored_results[index] = {"file": document.source, "text": restored}
+            else:
+                pending_documents.append((index, document, document_mapping))
+
+        if missing_mappings:
+            fatal(
+                "missing_mapping",
+                "Missing per-file mapping JSON for batch restore: "
+                + ", ".join(sorted(missing_mappings))
+            )
+
+        if pending_documents:
+            request_count = 0
+            for _, document, document_mapping in pending_documents:
+                try:
+                    request_count += estimate_seek_model_request_count(
+                        document.text,
+                        document_mapping,
+                        max_chunk_tokens=args.max_chunk_tokens,
+                        count_tokens=estimate_tokens_for_planning,
+                    )
+                except RuntimeError:
+                    request_count += 1
+
+            with acquire_server(
+                DEFAULT_SERVER,
+                required_slots=required_slots(
+                    max(request_count, 1),
+                    args.max_parallel_requests,
+                ),
+            ) as lease:
+                client = lease.create_client()
+                for index, document, document_mapping in pending_documents:
+                    item = run_seek(
+                        client,
+                        document.text,
+                        document_mapping,
+                        max_chunk_tokens=args.max_chunk_tokens,
+                        max_parallel_requests=args.max_parallel_requests,
+                    )
+                    item["file"] = document.source
+                    restored_results[index] = item
+
+        output_dir_path = Path(args.output_dir or str(default_restore_output_dir(dir_path)))
+        manifest_results: List[Dict[str, Any]] = []
+        for item in restored_results:
+            if item is None:
+                continue
+            source_path = Path(item["file"])
+            output_path = output_dir_path / source_path.name
+            if output_path.resolve() == source_path.resolve():
+                fatal("refusing_overwrite", f"Refusing to overwrite source file: {source_path}")
+            write_text_output(output_path, str(item["text"]))
+
+            manifest_item: Dict[str, Any] = {
+                "file": absolute_path(source_path),
+                "output": absolute_path(output_path),
+            }
+            if "chunks" in item:
+                manifest_item["chunks"] = item["chunks"]
+            manifest_results.append(manifest_item)
+
+        result = {"results": manifest_results, "count": len(manifest_results)}
+        if skipped:
+            result["skipped"] = skipped
+            result["skipped_count"] = len(skipped)
+    else:
+        if args.mapping_dir:
+            fatal(
+                "invalid_output_usage",
+                "restore without --dir does not support --mapping-dir.",
+            )
+        if args.output_dir:
+            fatal(
+                "invalid_output_usage",
+                "restore without --dir does not support --output-dir; use --output instead.",
+            )
+        if not args.mapping:
+            fatal("missing_mapping", "restore requires --mapping in single-file mode.")
+
+        mapping_path = Path(args.mapping)
+        mapping = load_mapping_file(args.mapping)
+        source_path = Path(args.file) if args.file else None
+        output_path = resolve_single_output_path(args.output, input_path=source_path)
+        if output_path is not None and output_path.resolve(strict=False) == mapping_path.resolve(strict=False):
+            fatal(
+                "invalid_output_usage",
+                "restore output must be different from the mapping file.",
+            )
+        text = read_text(args)
+        restored = restore_without_model(text, mapping)
+        if restored is not None:
+            result = {"text": restored}
+        else:
+            try:
+                request_count = estimate_seek_model_request_count(
+                    text,
+                    mapping,
+                    max_chunk_tokens=args.max_chunk_tokens,
+                    count_tokens=estimate_tokens_for_planning,
+                )
+            except RuntimeError:
+                request_count = 1
+
+            with acquire_server(
+                DEFAULT_SERVER,
+                required_slots=required_slots(request_count, args.max_parallel_requests),
+            ) as lease:
+                client = lease.create_client()
+                result = run_seek(
+                    client,
+                    text,
+                    mapping,
+                    max_chunk_tokens=args.max_chunk_tokens,
+                    max_parallel_requests=args.max_parallel_requests,
+                )
+        if output_path is not None:
+            write_text_output(output_path, str(result["text"]))
+            single_result: Dict[str, Any] = {"output": absolute_path(output_path)}
+            if "chunks" in result:
+                single_result["chunks"] = result["chunks"]
+            result = single_result
+    elapsed_ms = round((time.time() - t0) * 1000)
+
+    output(
+        "restore",
+        result,
+        timing=args.timing,
+        elapsed_ms=elapsed_ms,
+    )

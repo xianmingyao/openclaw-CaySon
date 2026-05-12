@@ -1966,7 +1966,14 @@ def _price_area_ready(state: Optional[Dict[str, Any]]) -> bool:
     has_title_context = bool(state.get("title_visible") or "SKU编码" in anchors or "销售属性" in anchors)
     has_sku_batch_context = bool(state.get("sku_batch_visible"))
     has_input_target = bool(state.get("market_input_visible") or state.get("jd_input_visible"))
-    return has_sku_batch_context or has_input_target or (has_template_anchor and has_title_context and has_price_anchor)
+    has_visible_price_row = int(state.get("visible_price_row_count", 0) or 0) >= 2
+    return (
+        has_sku_batch_context
+        or has_input_target
+        or has_visible_price_row
+        or (has_template_anchor and has_title_context)
+        or (has_title_context and has_price_anchor)
+    )
 
 
 def _ensure_price_area_visible(locator=None, log=None, max_rounds: int = 3) -> Dict[str, Any]:
@@ -2231,6 +2238,22 @@ def _find_price_input_center(label: str, locator=None, log=None) -> Optional[tup
 
 def _ensure_basic_info_page(locator=None, log=None) -> bool:
     locator = _get_locator(locator, log)
+    page_state = _collect_fill_page_state(locator=locator, log=log)
+    if page_state.get("title_top"):
+        return True
+    if (
+        page_state.get("product_name_mid")
+        or page_state.get("sku_mid")
+        or page_state.get("sales_attr_mid")
+        or page_state.get("market_mid")
+        or page_state.get("jd_mid")
+        or _find_visible_price_edit_row(locator=locator, log=log)
+    ):
+        _debug_log(log, "[fill_product_info] basic info page confirmed from page-state context")
+        return True
+    if page_state.get("category_page"):
+        _debug_log(log, "[fill_product_info] category page detected before restore")
+        return False
     if _visible_text_contains("商品标题", locator=locator, log=log, top_range=(280, 520), left_range=(560, 1080)):
         return True
     if (
@@ -2249,12 +2272,26 @@ def _ensure_basic_info_page(locator=None, log=None) -> bool:
         element, _, _ = target
         if click_uia_element(element, log=log):
             time.sleep(0.8)
+            refreshed_state = _collect_fill_page_state(locator=locator, log=log)
+            if (
+                refreshed_state.get("title_top")
+                or refreshed_state.get("product_name_mid")
+                or refreshed_state.get("sku_mid")
+                or refreshed_state.get("market_mid")
+                or refreshed_state.get("jd_mid")
+            ):
+                _debug_log(log, "[fill_product_info] switched to basic info page via UIA fallback/page-state")
+                return True
             success = _visible_text_contains("商品标题", locator=locator, log=log, top_range=(280, 520), left_range=(560, 1080))
             if success:
                 _debug_log(log, "[fill_product_info] switched to basic info page via UIA fallback")
                 return True
 
     success = False
+    page_state = _collect_fill_page_state(locator=locator, log=log)
+    if page_state.get("category_page") or page_state.get("next_button"):
+        _debug_log(log, "[fill_product_info] category page detected from page-state, skip unsafe top-tab coordinate fallback")
+        return False
     if (
         _visible_text_contains("类目选择发品", locator=locator, log=log, top_range=(120, 320), left_range=(480, 1200))
         or _visible_text_contains("下一步，完善其他商品信息", locator=locator, log=log, top_range=(1180, 1380), left_range=(980, 1680))
@@ -2267,6 +2304,16 @@ def _ensure_basic_info_page(locator=None, log=None) -> bool:
         time.sleep(0.5)
         locator.click(410, 160, delay=0.4)
         time.sleep(0.8)
+    refreshed_state = _collect_fill_page_state(locator=locator, log=log)
+    if (
+        refreshed_state.get("title_top")
+        or refreshed_state.get("product_name_mid")
+        or refreshed_state.get("sku_mid")
+        or refreshed_state.get("market_mid")
+        or refreshed_state.get("jd_mid")
+    ):
+        _debug_log(log, "[fill_product_info] switched to basic info page via top-tab/page-state")
+        return True
     success = _visible_text_contains("商品标题", locator=locator, log=log, top_range=(280, 520), left_range=(560, 1080))
     if success:
         _debug_log(log, "[fill_product_info] switched to basic info page via top-tab coordinates")
@@ -2983,6 +3030,12 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
 
     visibility = _ensure_price_area_visible(locator=locator, log=log)
     if not visibility.get("success"):
+        seek_result = _seek_price_area(locator=locator, log=log)
+        if seek_result.get("success"):
+            visibility = _ensure_price_area_visible(locator=locator, log=log, max_rounds=1)
+        if not visibility.get("success") and seek_result.get("success"):
+            visibility = {"success": True, "state": visibility.get("state") or seek_result}
+    if not visibility.get("success"):
         details.append(
             {
                 "field": "price_area_anchor",
@@ -3022,6 +3075,9 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
             continue
         x, y = fallback_center
         target_match = _find_price_input_target(label, locator=locator, log=log) if label else None
+        if field == "purchase_price" and not target_match:
+            _debug_log(log, "[fill_product_info] purchase_price target not found, skip optional derived field")
+            continue
         if target_match:
             element, rect = target_match
             x, y = ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
@@ -3570,6 +3626,37 @@ def _fill_required_logistics_fields(
                         "expected": current_text,
                         "actual": current_text,
                     }
+        if not result.get("success"):
+            _activate_publish_section_tab("商品物流", "商品售后及其他", locator=locator, log=log)
+            _focus_publish_scroll_anchor(
+                spec["labels"],
+                locator=locator,
+                log=log,
+                page_hint="浜害鍟嗗搧鍙戝竷椤典腑鍥炲埌褰撳墠澶辫触瀛楁闄勮繎锛岄噸璇曞畾浣嶅苟濉啓",
+            )
+            time.sleep(0.2)
+            retry_result = (
+                _fill_labeled_dropdown_field(
+                    field,
+                    spec["labels"],
+                    value,
+                    locator=locator,
+                    log=log,
+                    top_range=(520, 1380),
+                    preferred_keywords=spec["labels"],
+                )
+                if spec["kind"] == "dropdown"
+                else _fill_labeled_text_field(
+                    field,
+                    spec["labels"],
+                    value,
+                    locator=locator,
+                    log=log,
+                    top_range=(520, 1380),
+                )
+            )
+            if retry_result.get("success"):
+                result = retry_result
         results.append(result)
         time.sleep(0.2)
     return results
@@ -3873,6 +3960,7 @@ def fill_product_info(
         "inferred_values": inference["inferred_values"],
         "unresolved_required_fields": inference["unresolved_required_fields"],
         "required_visual_fields": required_visual_fields or {},
+        "current_page_state": _collect_fill_page_state(locator=locator, log=log) if not skip_page_guards else {},
     }
     if failed_fields:
         payload["failed_fields"] = failed_fields

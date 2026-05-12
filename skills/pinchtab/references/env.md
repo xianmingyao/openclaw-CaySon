@@ -17,7 +17,7 @@ Use the `--server` CLI flag instead of environment variables:
 
 ```bash
 pinchtab --server http://192.168.1.50:9867 snap
-pinchtab --server https://pinchtab.example.com snap
+pinchtab --server https://pinchtab.com snap
 ```
 
 ## What is intentionally not listed
@@ -32,5 +32,20 @@ For most agent tasks, the only variable you need is:
 ```bash
 PINCHTAB_TOKEN=...
 ```
+
+For multi-step flows on the same tab, run `pinchtab nav URL` once and then use
+unscoped commands. Anonymous CLI calls remember the current tab in a shared
+local state file. Identified callers use server-side current-tab state instead:
+agent sessions scope the current tab by session, and `--agent-id` /
+`PINCHTAB_AGENT_ID` scope it by agent ID when no session is present. Use
+`--tab <id>` only when you need to target a specific tab explicitly.
+
+Or use agent sessions for per-agent identity and revocability:
+
+```bash
+PINCHTAB_SESSION=ses_...
+```
+
+When `PINCHTAB_SESSION` is set, the CLI uses `Authorization: Session <token>` instead of bearer auth. The session maps to a specific agentId server-side and can be revoked independently.
 
 Everything else should be handled through config, profiles, instances, and the `--server` flag.

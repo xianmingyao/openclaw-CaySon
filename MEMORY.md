@@ -159,6 +159,19 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 
 ## Dream 整合记录（最近）
 
+### 2026-05-12 整合（03:00）
+- 扫描文件：05-11 / 05-12（2个文件）
+- MEMORY.md：无新增（纯运维日志）
+- 主要发现：continuous-ingest 稳定运行（每5分钟0文件），安全扫描发现Feishu群组高危配置
+
+### 2026-05-11 安全扫描发现（07:52）
+- Feishu 群组 groupPolicy=open + elevated tools（高危）
+- 6个Skills含child_process代码（需关注）
+- apify-ultimate-scraper 潜在数据外泄警告
+- 插件未固定版本（acpx/feishu/openclaw-weixin）
+- Gateway信任代理配置缺失
+- 状态：已通知宁兄
+
 ### 2026-05-10 整合（03:00）
 - 扫描文件：05-09 / 05-10（2个文件）
 - MEMORY.md：无新增（05-09知识已在上次全面整合）

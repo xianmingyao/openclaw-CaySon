@@ -13,17 +13,27 @@ export type {
   MemoryConfig,
   AIMirrorInsight 
 } from './core/memory';
+export { ClaudeMemorySystem } from './core/claude-memory';
 
 // 导出三个子系统
 export { SignalRecognitionSystem } from './systems/signal';
 export { WorkflowAssetSystem } from './systems/workflow';
 export { PersonalGoalSystem } from './systems/goal';
+export { VerificationAgent } from './systems/verification';
+export { SafetyGatePipeline } from './systems/safety';
+export { CostGovernor } from './systems/cost';
+export { ClaudeCoordinator } from './systems/claude-coordinator';
 
 // 导入
 import { UnifiedMemorySystem, MemoryConfig } from './core/memory';
 import { SignalRecognitionSystem } from './systems/signal';
 import { WorkflowAssetSystem } from './systems/workflow';
 import { PersonalGoalSystem } from './systems/goal';
+import { ClaudeMemorySystem } from './core/claude-memory';
+import { VerificationAgent } from './systems/verification';
+import { SafetyGatePipeline } from './systems/safety';
+import { CostGovernor } from './systems/cost';
+import { ClaudeCoordinator } from './systems/claude-coordinator';
 
 /**
  * AI协作操作系统 - 完整集成类
@@ -89,6 +99,27 @@ export class AICollaborationSystem {
   weeklyReview(goals: any[], timeLog: any, ideal: any, priorities: any): any {
     const period = `${new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]} - ${new Date().toISOString().split('T')[0]}`;
     return this.goal.generateWeeklySelfAwarenessReport(period, goals, timeLog, ideal, priorities);
+  }
+}
+
+/**
+ * Claude Grade 多智能体协作系统
+ * 补齐：分层记忆检索、Coordinator、Verification、安全与成本治理。
+ */
+export class ClaudeGradeCollaborationSystem extends AICollaborationSystem {
+  public claudeMemory: ClaudeMemorySystem;
+  public verifier: VerificationAgent;
+  public safety: SafetyGatePipeline;
+  public cost: CostGovernor;
+  public coordinator: ClaudeCoordinator;
+
+  constructor(skillName: string = 'claude_grade_system', baseDir: string = 'memory', config?: Partial<MemoryConfig>) {
+    super(skillName, baseDir, config);
+    this.claudeMemory = new ClaudeMemorySystem(baseDir, `${skillName}_claude`);
+    this.verifier = new VerificationAgent();
+    this.safety = new SafetyGatePipeline();
+    this.cost = new CostGovernor();
+    this.coordinator = new ClaudeCoordinator(this.claudeMemory);
   }
 }
 

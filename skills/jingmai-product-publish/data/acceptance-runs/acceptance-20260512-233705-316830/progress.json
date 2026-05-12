@@ -1,0 +1,38 @@
+{
+  "completed_count": 0,
+  "failed_indices": [
+    1
+  ],
+  "items": [
+    {
+      "index": 1,
+      "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+      "task_id": "6e688730",
+      "success": false,
+      "publish_mode": "single",
+      "error": "still on category selection page; select_category must complete before fill_product_info",
+      "failed_step": 5,
+      "start_from_phase": "product_info_ready",
+      "workflow_policy": "doc_strict",
+      "plan_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260512-233705-316830\\item-1.json",
+      "evidence_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260512-233705-316830\\evidence\\001-6e688730.json",
+      "result_page_judgement": {
+        "status": "unknown",
+        "reason": "still on category selection page; select_category must complete before fill_product_info",
+        "stage": "",
+        "action": "",
+        "step": 5
+      },
+      "product_snapshot": {
+        "product_id": "16793098028",
+        "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+        "source": "publish:doc_strict"
+      },
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    }
+  ]
+}

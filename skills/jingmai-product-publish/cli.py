@@ -793,6 +793,16 @@ def _write_acceptance_summary(summary_file: str, payload: Dict[str, Any]) -> str
     return str(path.resolve())
 
 
+def _safe_filename_fragment(value: Any, default: str = "item") -> str:
+    text = str(value or "").strip()
+    if not text:
+        return default
+    text = re.sub('[<>:"/\\\\|?*\x00-\x1f]+', "-", text)
+    text = re.sub(r"\s+", "-", text)
+    text = text.strip(" .-_")
+    return text[:120] or default
+
+
 def _collect_step_screenshots(results: List[Dict[str, Any]]) -> List[str]:
     screenshots: List[str] = []
     for item in results or []:
@@ -863,7 +873,7 @@ def _build_execution_evidence(exec_result: Dict[str, Any], product_data: Dict[st
 def _write_item_evidence(base_dir: str, index: int, exec_result: Dict[str, Any], product_data: Dict[str, Any]) -> str:
     evidence_dir = Path(base_dir) / "evidence"
     evidence_dir.mkdir(parents=True, exist_ok=True)
-    task_slug = str(exec_result.get("task_id", "") or f"item-{index}")
+    task_slug = _safe_filename_fragment(exec_result.get("task_id", "") or f"item-{index}", default=f"item-{index}")
     path = evidence_dir / f"{index:03d}-{task_slug}.json"
     payload = _build_execution_evidence(exec_result, product_data)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")

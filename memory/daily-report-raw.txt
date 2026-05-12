@@ -1,36 +1,116 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-05-11 17:20:23
+Date: 2026-05-12 17:20:18
 --- GIT COMMITS ---
-  c38ceb4c 11
-  d10cc8d9 11
-  9d44aa0e 瀹氭椂鑷姩鎻愪氦 - 2026-05-11 07:50:26
+  ff1f6c0f 瀹氭椂鑷姩鎻愪氦 - 2026-05-12 00:24:09
 --- FILES MODIFIED ---
-  17:19 | skills\jingmai-product-publish\resources\screenshots\cache\price_probe_京东价.png
-  17:19 | skills\jingmai-product-publish\resources\screenshots\cache\price_probe_市场价.png
-  17:19 | skills\jingmai-product-publish\resources\screenshots\cache\price_state_title.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_contact_sheet.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_frame_4.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_frame_3.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_frame_2.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-05-fill_product_info\precheck_frame_1.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\ddc690d8_precheck_fill_product_info_1778491033.png
-  17:17 | skills\jingmai-product-publish\data\acceptance-runs\acceptance-20260511-171552-f8d958\item-1.json
-  17:17 | skills\jingmai-product-publish\logs\memory\short_term\0d37e128.json
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_contact_sheet.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_frame_4.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_frame_3.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_frame_2.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\postcheck_frame_1.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\ddc690d8_postcheck_select_category_1778491030.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\precheck_contact_sheet.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\precheck_frame_4.png
-  17:17 | skills\jingmai-product-publish\resources\screenshots\video-observer\ddc690d8\step-04-select_category\precheck_frame_3.png
+  17:05 | .git\FETCH_HEAD
+  17:03 | knowledge-base\.notion_sync_state.json
+  17:03 | knowledge-base\.sync_state.json
+  16:10 | scripts\feishu_sync_wechat_final.py
+  16:07 | scripts\feishu_import_md_final.py
+  15:06 | memory\2026-05-12.md
+  15:06 | knowledge-base\wiki\概念\Claude-Code-飞书Agent办公-部署与使用指南.md
+  15:03 | wechat_article.png
+  15:03 | wechat_article.txt
+  14:38 | scripts\feishu_sync_wechat.py
+  14:38 | scripts\feishu_import_md_api.py
+  14:20 | knowledge-base\wiki\概念\企业AI本体Ontology-从工具到Agent的关键.md
+  12:35 | skills\jingmai-product-publish\.idea\workspace.xml
+  12:21 | scripts\feishu_sync_v3.py
+  12:19 | scripts\feishu_sync_final2.py
+  11:49 | knowledge-base\wiki\概念\企业AI本体化闭环流程-从工具到Agent的完整指南.md
+  11:47 | scripts\feishu_sync_slow.py
+  11:47 | knowledge-base\wiki\log.md
+  11:46 | scripts\feishu_sync_test.py
+  11:44 | scripts\feishu_sync_final.py
 --- SESSIONS ---
-  Count: 251
-  - 008a1664-1bb9-42e0-82d5-b4d31977afa4.jsonl [12:20]
-  - 008a1664-1bb9-42e0-82d5-b4d31977afa4.trajectory.jsonl [12:20]
-  - 00f65fee-5d89-4c1d-93c4-92a9a201826a.jsonl [12:15]
+  Count: 447
+  - 00105f8d-1fb3-4009-9367-27ea8971ac53.jsonl [02:03]
+  - 00105f8d-1fb3-4009-9367-27ea8971ac53.trajectory.jsonl [02:03]
+  - 0196b6c0-2c2c-44eb-9077-69c1e50c0a2f.jsonl [10:50]
 --- SKILLS ---
-  + jingmai-product-publish
+  + .openclaw-install-backups
+  + agent-reach
+  + ai-image-generator
+  + ai-social-media-pro
+  + ai-web-automation
+  + best-ai-video-editor-free
+  + best-video-editor-for-beginners
+  + claude-code-control
+  + claude-code-pro
+  + claude-code-runner
+  + claw-self-improving
+  + clips-machine
+  + competitive-analysis
+  + competitor-teardown
+  + content-generator
+  + context-product-manager
+  + cpo
+  + cron-mastery
+  + cron-scheduling
+  + customer-persona
+  + desktop-control-1-0-0
+  + diagram-generator
+  + easy-opencode
+  + edgeone-clawscan
+  + elite-longterm-memory
+  + evomap
+  + feature-requirements-clarification
+  + filesystem
+  + free-ai-video-editor
+  + free-video-editor
+  + frontend
+  + frontend-design-pro
+  + github
+  + has-anonymizer
+  + hd-infoimage
+  + huguanjin-libtv-skill
+  + jianying
+  + market-research
+  + mcporter
+  + mem0
+  + memory-dream
+  + memory-hygiene
+  + memos
+  + multi-agent-collaboration
+  + multi-search-engine
+  + mvp
+  + office
+  + openclaw-agent-browser
+  + openclaw-skill-vetter-1-0-0
+  + opencli-agent
+  + opencode
+  + opencode-acp-control-3
+  + opencode-cli
+  + opencode-controller
+  + openmaic
+  + pinchtab
+  + prd-writer
+  + product-manager
+  + product-strategy
+  + ralph-loop-agent
+  + ralph-loops
+  + requirements-analysis
+  + searxng
+  + self-improving
+  + serpapi
+  + simplify
+  + social-content
+  + social-media-agent
+  + social-media-publish
+  + tmux
+  + triple-memory
+  + ui-design
+  + ui-ux-design
+  + ui-ux-pro-max
+  + user-research
+  + video-frames
+  + video-maker-free
+  + web-access
+  + web-monitor
+  + web-scraper-as-a-service
+  + wiki-knowledge-base
+  + wireframe
+  + xiaoming-social-media
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-product-publish"],"dayOfWeek":"Monday","sessionCount":251,"modifiedFiles":["E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cache\\price_probe_京东价.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cache\\price_probe_市场价.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\cache\\price_state_title.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_contact_sheet.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_frame_4.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_frame_3.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_frame_2.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-05-fill_product_info\\precheck_frame_1.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\ddc690d8_precheck_fill_product_info_1778491033.png","E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260511-171552-f8d958\\item-1.json","E:\\workspace\\skills\\jingmai-product-publish\\logs\\memory\\short_term\\0d37e128.json","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_contact_sheet.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_frame_4.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_frame_3.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_frame_2.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\postcheck_frame_1.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\ddc690d8_postcheck_select_category_1778491030.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\precheck_contact_sheet.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\precheck_frame_4.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\ddc690d8\\step-04-select_category\\precheck_frame_3.png"],"gitCommits":["c38ceb4c 11","d10cc8d9 11","9d44aa0e 瀹氭椂鑷姩鎻愪氦 - 2026-05-11 07:50:26"],"date":"2026.05.11"}
+{"skillsUpdated":[".openclaw-install-backups","agent-reach","ai-image-generator","ai-social-media-pro","ai-web-automation","best-ai-video-editor-free","best-video-editor-for-beginners","claude-code-control","claude-code-pro","claude-code-runner","claw-self-improving","clips-machine","competitive-analysis","competitor-teardown","content-generator","context-product-manager","cpo","cron-mastery","cron-scheduling","customer-persona","desktop-control-1-0-0","diagram-generator","easy-opencode","edgeone-clawscan","elite-longterm-memory","evomap","feature-requirements-clarification","filesystem","free-ai-video-editor","free-video-editor","frontend","frontend-design-pro","github","has-anonymizer","hd-infoimage","huguanjin-libtv-skill","jianying","market-research","mcporter","mem0","memory-dream","memory-hygiene","memos","multi-agent-collaboration","multi-search-engine","mvp","office","openclaw-agent-browser","openclaw-skill-vetter-1-0-0","opencli-agent","opencode","opencode-acp-control-3","opencode-cli","opencode-controller","openmaic","pinchtab","prd-writer","product-manager","product-strategy","ralph-loop-agent","ralph-loops","requirements-analysis","searxng","self-improving","serpapi","simplify","social-content","social-media-agent","social-media-publish","tmux","triple-memory","ui-design","ui-ux-design","ui-ux-pro-max","user-research","video-frames","video-maker-free","web-access","web-monitor","web-scraper-as-a-service","wiki-knowledge-base","wireframe","xiaoming-social-media"],"dayOfWeek":"Tuesday","sessionCount":447,"modifiedFiles":["E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\scripts\\feishu_sync_wechat_final.py","E:\\workspace\\scripts\\feishu_import_md_final.py","E:\\workspace\\memory\\2026-05-12.md","E:\\workspace\\knowledge-base\\wiki\\概念\\Claude-Code-飞书Agent办公-部署与使用指南.md","E:\\workspace\\wechat_article.png","E:\\workspace\\wechat_article.txt","E:\\workspace\\scripts\\feishu_sync_wechat.py","E:\\workspace\\scripts\\feishu_import_md_api.py","E:\\workspace\\knowledge-base\\wiki\\概念\\企业AI本体Ontology-从工具到Agent的关键.md","E:\\workspace\\skills\\jingmai-product-publish\\.idea\\workspace.xml","E:\\workspace\\scripts\\feishu_sync_v3.py","E:\\workspace\\scripts\\feishu_sync_final2.py","E:\\workspace\\knowledge-base\\wiki\\概念\\企业AI本体化闭环流程-从工具到Agent的完整指南.md","E:\\workspace\\scripts\\feishu_sync_slow.py","E:\\workspace\\knowledge-base\\wiki\\log.md","E:\\workspace\\scripts\\feishu_sync_test.py","E:\\workspace\\scripts\\feishu_sync_final.py"],"gitCommits":"ff1f6c0f 瀹氭椂鑷姩鎻愪氦 - 2026-05-12 00:24:09","date":"2026.05.12"}

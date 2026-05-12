@@ -1,6 +1,6 @@
 # Profile Management
 
-When running `pinchtab`, profiles are managed via the dashboard API on port 9867.
+When running `pinchtab`, profiles are managed via the HTTP API on port 9867.
 
 ## List profiles
 
@@ -46,12 +46,16 @@ curl http://localhost:9867/profiles/<ID>/instance
 curl http://localhost:9867/profiles/My%20Profile/instance
 ```
 
-## Launch by name
+## Start by existing profile
 
 ```bash
-curl -X POST http://localhost:9867/instances/launch \
+curl -X POST http://localhost:9867/profiles \
   -H 'Content-Type: application/json' \
-  -d '{"name": "work", "port": "9868"}'
+  -d '{"name": "work"}'
+
+curl -X POST http://localhost:9867/instances/start \
+  -H 'Content-Type: application/json' \
+  -d '{"profileId": "work", "port": "9868"}'
 ```
 
 ## CLI usage with profiles
@@ -98,7 +102,7 @@ Headed mode = real visible Chrome window managed by Pinchtab.
 Recommended human + agent flow:
 
 ```bash
-# Human starts dashboard and sets up profile
+# Human starts PinchTab and sets up profile
 pinchtab
 
 # Agent resolves the profile endpoint

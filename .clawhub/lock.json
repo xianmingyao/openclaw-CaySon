@@ -2,88 +2,88 @@
   "version": 1,
   "skills": {
     "edgeone-clawscan": {
-      "version": "1.0.13",
-      "installedAt": 1773808023086
+      "version": "1.0.15",
+      "installedAt": 1778517937254
     },
     "cron-scheduling": {
       "version": "1.0.0",
-      "installedAt": 1773808261981
+      "installedAt": 1778517940079
     },
     "memory-hygiene": {
       "version": "1.0.0",
-      "installedAt": 1773808322131
+      "installedAt": 1778517941519
     },
     "triple-memory": {
       "version": "1.0.0",
-      "installedAt": 1773808330101
+      "installedAt": 1778517944060
     },
     "web-scraper-as-a-service": {
       "version": "1.0.0",
-      "installedAt": 1773808382250
+      "installedAt": 1778517946190
     },
     "web-monitor": {
-      "version": "1.0.0",
-      "installedAt": 1773808390796
+      "version": "1.0.1",
+      "installedAt": 1778517948795
     },
     "filesystem": {
       "version": "1.0.0",
-      "installedAt": 1773808442045
+      "installedAt": 1778517950488
     },
     "serpapi": {
       "version": "1.0.0",
-      "installedAt": 1773808445514
+      "installedAt": 1778517953310
     },
     "searxng": {
       "version": "1.0.3",
-      "installedAt": 1773808448234
+      "installedAt": 1778517955710
     },
     "office": {
       "version": "1.0.0",
-      "installedAt": 1773808455955
+      "installedAt": 1778517958888
     },
     "multi-search-engine": {
-      "version": "2.0.1",
-      "installedAt": 1773808502296
+      "version": "2.1.3",
+      "installedAt": 1778517961462
     },
     "social-content": {
       "version": "0.1.0",
-      "installedAt": 1773808505808
+      "installedAt": 1778517963761
     },
     "diagram-generator": {
       "version": "1.1.1",
-      "installedAt": 1773808513638
+      "installedAt": 1778517966162
     },
     "elite-longterm-memory": {
       "version": "1.2.3",
-      "installedAt": 1773808516587
+      "installedAt": 1778517968018
     },
     "pinchtab": {
-      "version": "0.8.3",
-      "installedAt": 1773808562359
+      "version": "0.11.0",
+      "installedAt": 1778517971021
     },
     "memos": {
       "version": "0.1.1",
-      "installedAt": 1773808572229
+      "installedAt": 1778517973191
     },
     "evomap": {
       "version": "1.0.0",
-      "installedAt": 1773808622599
+      "installedAt": 1778517974989
     },
     "ai-web-automation": {
       "version": "1.0.0",
-      "installedAt": 1773808637727
+      "installedAt": 1778517976895
     },
     "multi-agent-collaboration": {
-      "version": "1.0.0",
-      "installedAt": 1773808685286
+      "version": "2.0.0",
+      "installedAt": 1778517983595
     },
     "ralph-loops": {
       "version": "1.0.2",
-      "installedAt": 1773808760139
+      "installedAt": 1778517987793
     },
     "ralph-loop-agent": {
       "version": "1.1.0",
-      "installedAt": 1773808802496
+      "installedAt": 1778517990358
     },
     "agent-browser": {
       "version": "0.2.0",
@@ -91,135 +91,135 @@
     },
     "cron-mastery": {
       "version": "1.0.3",
-      "installedAt": 1773809044848
+      "installedAt": 1778517993371
     },
     "has-anonymizer": {
-      "version": "1.0.1",
-      "installedAt": 1773809103348
+      "version": "1.0.3",
+      "installedAt": 1778517998388
     },
     "agent-reach": {
       "version": "1.1.0",
-      "installedAt": 1773809283375
+      "installedAt": 1778518000523
     },
     "ui-ux-design": {
       "version": "1.0.0",
-      "installedAt": 1773809342494
+      "installedAt": 1778518003070
     },
     "ui-design": {
       "version": "1.0.0",
-      "installedAt": 1773809346081
+      "installedAt": 1778518005548
     },
     "simplify": {
       "version": "1.0.2",
-      "installedAt": 1773809401796
+      "installedAt": 1778518007578
     },
     "ui-ux-pro-max": {
       "version": "0.1.0",
-      "installedAt": 1773809465405
+      "installedAt": 1778518012448
     },
     "frontend": {
       "version": "1.0.2",
-      "installedAt": 1773809522127
+      "installedAt": 1778518014815
     },
     "frontend-design-pro": {
       "version": "1.0.0",
-      "installedAt": 1773809525456
+      "installedAt": 1778518016694
     },
     "self-improving": {
       "version": "1.2.16",
-      "installedAt": 1773819782697
+      "installedAt": 1778518019664
     },
     "find-skills": {
       "version": "0.1.0",
       "installedAt": 1773819842430
     },
     "openmaic": {
-      "version": "0.2.1",
-      "installedAt": 1773821943860
+      "version": "0.3.1",
+      "installedAt": 1778518023416
     },
     "openclaw-agent-browser": {
       "version": "1.0.0",
-      "installedAt": 1774602557391
+      "installedAt": 1778518025466
     },
     "openclaw-skill-vetter-1-0-0": {
       "version": "1.0.0",
-      "installedAt": 1774602573405
+      "installedAt": 1778518027675
     },
     "claw-self-improving": {
       "version": "1.2.10",
-      "installedAt": 1774602615998
+      "installedAt": 1778518030204
     },
     "desktop-control-1-0-0": {
       "version": "1.0.0",
-      "installedAt": 1778344705517
+      "installedAt": 1778518032719
     },
     "mem0": {
       "version": "1.0.0",
-      "installedAt": 1774657708545
+      "installedAt": 1778518037120
     },
     "video-frames": {
       "version": "1.0.0",
-      "installedAt": 1774846089514
+      "installedAt": 1778518038813
     },
     "tmux": {
       "version": "1.0.0",
-      "installedAt": 1774846096920
+      "installedAt": 1778518040125
     },
     "github": {
       "version": "1.0.0",
-      "installedAt": 1774846110292
+      "installedAt": 1778518041334
     },
     "mcporter": {
       "version": "1.0.0",
-      "installedAt": 1774846117846
+      "installedAt": 1778518042721
     },
     "memory-dream": {
       "version": "1.0.3",
-      "installedAt": 1775522251321
+      "installedAt": 1778518044828
     },
     "opencli-agent": {
       "version": "1.0.1",
-      "installedAt": 1778344718443
+      "installedAt": 1778518047919
     },
     "web-access": {
       "version": "1.0.0",
-      "installedAt": 1776212573229
+      "installedAt": 1778518050488
     },
     "prd-writer": {
       "version": "1.0.1",
-      "installedAt": 1776215484514
+      "installedAt": 1778518052833
     },
     "wiki-knowledge-base": {
       "version": "1.0.0",
-      "installedAt": 1776405798456
+      "installedAt": 1778518055193
     },
     "ai-image-generator": {
       "version": "1.0.52",
-      "installedAt": 1776407096993
+      "installedAt": 1778518057230
     },
     "hd-infoimage": {
-      "version": "1.1.0",
-      "installedAt": 1776407114166
+      "version": "1.2.0",
+      "installedAt": 1778518060418
     },
     "ai-social-media-pro": {
       "version": "1.1.0",
-      "installedAt": 1776410599671
+      "installedAt": 1778518062458
     },
     "xiaoming-social-media": {
-      "version": "1.0.0",
-      "installedAt": 1776410609101
+      "version": "1.1.0",
+      "installedAt": 1778518064631
     },
     "content-generator": {
       "version": "1.0.0",
-      "installedAt": 1776410617470
+      "installedAt": 1778518066546
     },
     "social-media-agent": {
       "version": "1.0.0",
-      "installedAt": 1776410783254
+      "installedAt": 1778518068537
     },
     "social-media-publish": {
       "version": "1.0.0",
-      "installedAt": 1776410809778
+      "installedAt": 1778518070375
     },
     "capcut-video-editor": {
       "version": "1.0.0",
@@ -231,11 +231,11 @@
     },
     "best-video-editor-for-beginners": {
       "version": "1.0.0",
-      "installedAt": 1776834675317
+      "installedAt": 1778518074095
     },
     "free-ai-video-editor": {
       "version": "1.1.1",
-      "installedAt": 1776834685361
+      "installedAt": 1778518076230
     },
     "shorts-editor": {
       "version": "1.0.5",
@@ -247,7 +247,7 @@
     },
     "free-video-editor": {
       "version": "1.0.3",
-      "installedAt": 1776834890201
+      "installedAt": 1778518079942
     },
     "wechat-video-editor": {
       "version": "1.0.0",
@@ -255,7 +255,7 @@
     },
     "clips-machine": {
       "version": "1.2.1",
-      "installedAt": 1776834926050
+      "installedAt": 1778518083964
     },
     "chat-video-editor": {
       "version": "1.0.0",
@@ -263,7 +263,7 @@
     },
     "video-maker-free": {
       "version": "1.0.1",
-      "installedAt": 1776834982699
+      "installedAt": 1778518086932
     },
     "clip-editor": {
       "version": "1.0.0",
@@ -271,99 +271,99 @@
     },
     "jianying": {
       "version": "0.1.0",
-      "installedAt": 1776835039577
+      "installedAt": 1778518089859
     },
     "best-ai-video-editor-free": {
       "version": "1.0.0",
-      "installedAt": 1776835049096
+      "installedAt": 1778518092187
     },
     "market-research": {
       "version": "1.0.1",
-      "installedAt": 1776865699612
+      "installedAt": 1778518094467
     },
     "product-manager": {
       "version": "1.0.0",
-      "installedAt": 1776865718252
+      "installedAt": 1778518096305
     },
     "context-product-manager": {
       "version": "0.1.0",
-      "installedAt": 1776865727936
+      "installedAt": 1778518098860
     },
     "product-strategy": {
       "version": "1.0.0",
-      "installedAt": 1776865737093
+      "installedAt": 1778518101225
     },
     "cpo": {
       "version": "1.0.1",
-      "installedAt": 1776865746281
+      "installedAt": 1778518103947
     },
     "user-research": {
       "version": "1.0.0",
-      "installedAt": 1776865789283
+      "installedAt": 1778518106028
     },
     "competitive-analysis": {
       "version": "0.1.0",
-      "installedAt": 1776865815366
+      "installedAt": 1778518108452
     },
     "competitor-teardown": {
       "version": "0.1.5",
-      "installedAt": 1776865824010
+      "installedAt": 1778518110481
     },
     "requirements-analysis": {
       "version": "1.0.0",
-      "installedAt": 1776865841821
+      "installedAt": 1778518112955
     },
     "feature-requirements-clarification": {
       "version": "1.0.0",
-      "installedAt": 1776865850898
+      "installedAt": 1778518114986
     },
     "customer-persona": {
       "version": "0.1.5",
-      "installedAt": 1776865868515
+      "installedAt": 1778518117157
     },
     "wireframe": {
       "version": "3.4.1",
-      "installedAt": 1776865886133
+      "installedAt": 1778518118975
     },
     "mvp": {
       "version": "1.0.0",
-      "installedAt": 1776865904413
+      "installedAt": 1778518121763
     },
     "claude-code-runner": {
       "version": "0.1.0",
-      "installedAt": 1776866152148
+      "installedAt": 1778518123912
     },
     "claude-code-pro": {
       "version": "1.1.0",
-      "installedAt": 1776866162421
+      "installedAt": 1778518126641
     },
     "claude-code-control": {
       "version": "1.2.0",
-      "installedAt": 1776866173646
+      "installedAt": 1778518130070
     },
     "opencode": {
       "version": "1.2.2",
-      "installedAt": 1776871655470
+      "installedAt": 1778518133061
     },
     "opencode-cli": {
       "version": "1.1.0",
-      "installedAt": 1776871666055
+      "installedAt": 1778518135777
     },
     "opencode-controller": {
       "version": "1.0.0",
-      "installedAt": 1776871676737
+      "installedAt": 1778518137782
     },
     "easy-opencode": {
       "version": "1.1.1",
-      "installedAt": 1776871686832
+      "installedAt": 1778518140028
     },
     "opencode-acp-control-3": {
       "version": "0.1.1",
-      "installedAt": 1776871722833
+      "installedAt": 1778518142217
     },
     "huguanjin-libtv-skill": {
       "version": "1.0.4",
-      "installedAt": 1777422441520
+      "installedAt": 1778518146596
     }
   }
 }

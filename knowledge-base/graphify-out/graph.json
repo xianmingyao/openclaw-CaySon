@@ -319,13 +319,13 @@
       "norm_label": "main()"
     },
     {
-      "label": "\u6279\u91cf\u4e3a\u591a\u4e2a\u6982\u5ff5\u751f\u6210wiki\u6bb5\u843d\uff0c\u5927\u5e45\u51cf\u5c11LLM\u8c03\u7528",
+      "label": "批量为多个概念生成wiki段落，大幅减少LLM调用",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\compile.py",
       "source_location": "L142",
       "id": "compile_rationale_142",
       "community": 0,
-      "norm_label": "\u6279\u91cf\u4e3a\u591a\u4e2a\u6982\u5ff5\u751f\u6210wiki\u6bb5\u843d,\u5927\u5e45\u51cf\u5c11llm\u8c03\u7528"
+      "norm_label": "批量为多个概念生成wiki段落,大幅减少llm调用"
     },
     {
       "label": "confirm_links.py",
@@ -661,22 +661,22 @@
       "norm_label": "main()"
     },
     {
-      "label": "\u5bfc\u51fa\u5230 Obsidian Vault          Args:         vault_path: Obsidian Vault \u8def\u5f84",
+      "label": "导出到 Obsidian Vault          Args:         vault_path: Obsidian Vault 路径",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\export_obsidian.py",
       "source_location": "L108",
       "id": "export_obsidian_rationale_108",
       "community": 9,
-      "norm_label": "\u5bfc\u51fa\u5230 obsidian vault          args:         vault_path: obsidian vault \u8def\u5f84"
+      "norm_label": "导出到 obsidian vault          args:         vault_path: obsidian vault 路径"
     },
     {
-      "label": "\u751f\u6210 Obsidian Graph View \u6240\u9700\u7684 JSON",
+      "label": "生成 Obsidian Graph View 所需的 JSON",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\export_obsidian.py",
       "source_location": "L187",
       "id": "export_obsidian_rationale_187",
       "community": 9,
-      "norm_label": "\u751f\u6210 obsidian graph view \u6240\u9700\u7684 json"
+      "norm_label": "生成 obsidian graph view 所需的 json"
     },
     {
       "label": "find_chinese.py",
@@ -958,22 +958,22 @@
       "norm_label": "main()"
     },
     {
-      "label": "\u68c0\u67e5\u91cd\u590d\u6807\u9898\uff08\u76f8\u4f3c\u540d\u79f0\u7684\u9875\u9762\u53ef\u80fd\u662f\u91cd\u590d\u7684\uff09",
+      "label": "检查重复标题（相似名称的页面可能是重复的）",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\lint.py",
       "source_location": "L100",
       "id": "lint_rationale_100",
       "community": 7,
-      "norm_label": "\u68c0\u67e5\u91cd\u590d\u6807\u9898(\u76f8\u4f3c\u540d\u79f0\u7684\u9875\u9762\u53ef\u80fd\u662f\u91cd\u590d\u7684)"
+      "norm_label": "检查重复标题(相似名称的页面可能是重复的)"
     },
     {
-      "label": "\u68c0\u67e5\u77db\u76fe\u8bf4\u6cd5\uff08\u7b80\u5316\u7248\uff1a\u68c0\u67e5\u540c\u4e00\u5173\u952e\u8bcd\u5728\u4e0d\u540c\u9875\u9762\u7684\u5b9a\u4e49\uff09",
+      "label": "检查矛盾说法（简化版：检查同一关键词在不同页面的定义）",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\lint.py",
       "source_location": "L120",
       "id": "lint_rationale_120",
       "community": 7,
-      "norm_label": "\u68c0\u67e5\u77db\u76fe\u8bf4\u6cd5(\u7b80\u5316\u7248:\u68c0\u67e5\u540c\u4e00\u5173\u952e\u8bcd\u5728\u4e0d\u540c\u9875\u9762\u7684\u5b9a\u4e49)"
+      "norm_label": "检查矛盾说法(简化版:检查同一关键词在不同页面的定义)"
     },
     {
       "label": "lint_quick.py",
@@ -1165,22 +1165,22 @@
       "norm_label": "query_once()"
     },
     {
-      "label": "\u4ece MAGMA \u8bb0\u5fc6\u7cfb\u7edf\u68c0\u7d22\uff08Mem0 + Milvus\uff09",
+      "label": "从 MAGMA 记忆系统检索（Mem0 + Milvus）",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\query.py",
       "source_location": "L147",
       "id": "query_rationale_147",
       "community": 2,
-      "norm_label": "\u4ece magma \u8bb0\u5fc6\u7cfb\u7edf\u68c0\u7d22(mem0 + milvus)"
+      "norm_label": "从 magma 记忆系统检索(mem0 + milvus)"
     },
     {
-      "label": "\u7edf\u4e00\u68c0\u7d22\u5165\u53e3          modes:         - \"all\": \u5168\u7cfb\u7edf\u68c0\u7d22\uff08wiki + skills + magma\uff09         - \"",
+      "label": "统一检索入口          modes:         - \"all\": 全系统检索（wiki + skills + magma）         - \"",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\query.py",
       "source_location": "L282",
       "id": "query_rationale_282",
       "community": 2,
-      "norm_label": "\u7edf\u4e00\u68c0\u7d22\u5165\u53e3          modes:         - \"all\": \u5168\u7cfb\u7edf\u68c0\u7d22(wiki + skills + magma)         - \""
+      "norm_label": "统一检索入口          modes:         - \"all\": 全系统检索(wiki + skills + magma)         - \""
     },
     {
       "label": "rebuild_graph.py",
@@ -1534,13 +1534,13 @@
       "norm_label": "main()"
     },
     {
-      "label": "\u65ad\u70b9\u7eed\u4f20\u540c\u6b65          Args:         batch_start: \u4ece\u7b2c\u51e0\u4e2a\u6587\u4ef6\u5f00\u59cb\uff080\u7d22\u5f15\uff09         batch_size: \u6bcf\u6b21\u540c",
+      "label": "断点续传同步          Args:         batch_start: 从第几个文件开始（0索引）         batch_size: 每次同",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_feishu_resume.py",
       "source_location": "L194",
       "id": "sync_feishu_resume_rationale_194",
       "community": 4,
-      "norm_label": "\u65ad\u70b9\u7eed\u4f20\u540c\u6b65          args:         batch_start: \u4ece\u7b2c\u51e0\u4e2a\u6587\u4ef6\u5f00\u59cb(0\u7d22\u5f15)         batch_size: \u6bcf\u6b21\u540c"
+      "norm_label": "断点续传同步          args:         batch_start: 从第几个文件开始(0索引)         batch_size: 每次同"
     },
     {
       "label": "sync_feishu_v2.py",
@@ -1723,31 +1723,31 @@
       "norm_label": "main()"
     },
     {
-      "label": "\u52a0\u8f7d wiki \u76ee\u5f55\u4e0b\u7684\u6240\u6709 .md \u6587\u4ef6",
+      "label": "加载 wiki 目录下的所有 .md 文件",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_notion.py",
       "source_location": "L44",
       "id": "sync_notion_rationale_44",
       "community": 5,
-      "norm_label": "\u52a0\u8f7d wiki \u76ee\u5f55\u4e0b\u7684\u6240\u6709 .md \u6587\u4ef6"
+      "norm_label": "加载 wiki 目录下的所有 .md 文件"
     },
     {
-      "label": "\u5c06 Markdown \u8f6c\u6362\u4e3a Notion blocks \u683c\u5f0f",
+      "label": "将 Markdown 转换为 Notion blocks 格式",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_notion.py",
       "source_location": "L60",
       "id": "sync_notion_rationale_60",
       "community": 5,
-      "norm_label": "\u5c06 markdown \u8f6c\u6362\u4e3a notion blocks \u683c\u5f0f"
+      "norm_label": "将 markdown 转换为 notion blocks 格式"
     },
     {
-      "label": "\u521b\u5efa Notion Database\uff08\u4f5c\u4e3a\u77e5\u8bc6\u5e93\u7684\u6839\u76ee\u5f55\uff09",
+      "label": "创建 Notion Database（作为知识库的根目录）",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_notion.py",
       "source_location": "L188",
       "id": "sync_notion_rationale_188",
       "community": 5,
-      "norm_label": "\u521b\u5efa notion database(\u4f5c\u4e3a\u77e5\u8bc6\u5e93\u7684\u6839\u76ee\u5f55)"
+      "norm_label": "创建 notion database(作为知识库的根目录)"
     },
     {
       "label": "sync_pull_all.py",
@@ -1849,31 +1849,31 @@
       "norm_label": "sync_pull()"
     },
     {
-      "label": "\u83b7\u53d6\u98de\u4e66 Access Token\uff08\u4ece OpenClaw \u914d\u7f6e\u6216\u73af\u5883\u53d8\u91cf\uff09",
+      "label": "获取飞书 Access Token（从 OpenClaw 配置或环境变量）",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_pull_feishu.py",
       "source_location": "L39",
       "id": "sync_pull_feishu_rationale_39",
       "community": 8,
-      "norm_label": "\u83b7\u53d6\u98de\u4e66 access token(\u4ece openclaw \u914d\u7f6e\u6216\u73af\u5883\u53d8\u91cf)"
+      "norm_label": "获取飞书 access token(从 openclaw 配置或环境变量)"
     },
     {
-      "label": "\u5c06\u98de\u4e66 blocks \u8f6c\u6362\u4e3a Markdown",
+      "label": "将飞书 blocks 转换为 Markdown",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_pull_feishu.py",
       "source_location": "L155",
       "id": "sync_pull_feishu_rationale_155",
       "community": 8,
-      "norm_label": "\u5c06\u98de\u4e66 blocks \u8f6c\u6362\u4e3a markdown"
+      "norm_label": "将飞书 blocks 转换为 markdown"
     },
     {
-      "label": "\u4ece\u98de\u4e66\u62c9\u56de\u66f4\u65b0          Returns:         {pulled: int, skipped: int, errors: int}",
+      "label": "从飞书拉回更新          Returns:         {pulled: int, skipped: int, errors: int}",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_pull_feishu.py",
       "source_location": "L203",
       "id": "sync_pull_feishu_rationale_203",
       "community": 8,
-      "norm_label": "\u4ece\u98de\u4e66\u62c9\u56de\u66f4\u65b0          returns:         {pulled: int, skipped: int, errors: int}"
+      "norm_label": "从飞书拉回更新          returns:         {pulled: int, skipped: int, errors: int}"
     },
     {
       "label": "sync_pull_notion.py",
@@ -1966,40 +1966,40 @@
       "norm_label": "sync_pull()"
     },
     {
-      "label": "\u83b7\u53d6 Notion Database ID",
+      "label": "获取 Notion Database ID",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_pull_notion.py",
       "source_location": "L50",
       "id": "sync_pull_notion_rationale_50",
       "community": 6,
-      "norm_label": "\u83b7\u53d6 notion database id"
+      "norm_label": "获取 notion database id"
     },
     {
-      "label": "\u5c06 Notion blocks \u8f6c\u6362\u4e3a Markdown",
+      "label": "将 Notion blocks 转换为 Markdown",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_pull_notion.py",
       "source_location": "L82",
       "id": "sync_pull_notion_rationale_82",
       "community": 6,
-      "norm_label": "\u5c06 notion blocks \u8f6c\u6362\u4e3a markdown"
+      "norm_label": "将 notion blocks 转换为 markdown"
     },
     {
-      "label": "\u83b7\u53d6 Database \u9875\u9762\uff08API\u7ea7\u522b\u8fc7\u6ee4\uff0c\u4ec5\u8fd4\u56de\u9700\u8981\u66f4\u65b0\u7684\u9875\u9762\uff09          \u4f18\u5316\u7b14\u8bb0\uff082026-05-06\uff09\uff1a     - \u539f\u95ee\u9898\uff1a\u53cc\u91cd\u904d\u5386\uff08\u8ba1\u6570+",
+      "label": "获取 Database 页面（API级别过滤，仅返回需要更新的页面）          优化笔记（2026-05-06）：     - 原问题：双重遍历（计数+",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_pull_notion.py",
       "source_location": "L153",
       "id": "sync_pull_notion_rationale_153",
       "community": 6,
-      "norm_label": "\u83b7\u53d6 database \u9875\u9762(api\u7ea7\u522b\u8fc7\u6ee4,\u4ec5\u8fd4\u56de\u9700\u8981\u66f4\u65b0\u7684\u9875\u9762)          \u4f18\u5316\u7b14\u8bb0(2026-05-06):     - \u539f\u95ee\u9898:\u53cc\u91cd\u904d\u5386(\u8ba1\u6570+"
+      "norm_label": "获取 database 页面(api级别过滤,仅返回需要更新的页面)          优化笔记(2026-05-06):     - 原问题:双重遍历(计数+"
     },
     {
-      "label": "\u4ece Notion \u62c9\u56de\u66f4\u65b0\uff08API\u7ea7\u8fc7\u6ee4\uff0c\u5355\u6b21\u904d\u5386\uff09          Args:         force: \u662f\u5426\u5f3a\u5236\u5168\u91cf\u62c9\u56de         limit:",
+      "label": "从 Notion 拉回更新（API级过滤，单次遍历）          Args:         force: 是否强制全量拉回         limit:",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\sync_pull_notion.py",
       "source_location": "L272",
       "id": "sync_pull_notion_rationale_272",
       "community": 6,
-      "norm_label": "\u4ece notion \u62c9\u56de\u66f4\u65b0(api\u7ea7\u8fc7\u6ee4,\u5355\u6b21\u904d\u5386)          args:         force: \u662f\u5426\u5f3a\u5236\u5168\u91cf\u62c9\u56de         limit:"
+      "norm_label": "从 notion 拉回更新(api级过滤,单次遍历)          args:         force: 是否强制全量拉回         limit:"
     },
     {
       "label": "test_api.py",
@@ -2389,31 +2389,31 @@
       "norm_label": "main()"
     },
     {
-      "label": "\u5904\u7406\u5fae\u4fe1\u6587\u7ae0 URL\uff08\u53ef\u80fd\u9700\u8981\u901a\u8fc7\u4e2d\u95f4\u9875\uff09",
+      "label": "处理微信文章 URL（可能需要通过中间页）",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\web_clipper.py",
       "source_location": "L198",
       "id": "web_clipper_rationale_198",
       "community": 80,
-      "norm_label": "\u5904\u7406\u5fae\u4fe1\u6587\u7ae0 url(\u53ef\u80fd\u9700\u8981\u901a\u8fc7\u4e2d\u95f4\u9875)"
+      "norm_label": "处理微信文章 url(可能需要通过中间页)"
     },
     {
-      "label": "HuggingFace Papers \u6293\u53d6\u5668",
+      "label": "HuggingFace Papers 抓取器",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\web_clipper.py",
       "source_location": "L271",
       "id": "web_clipper_rationale_271",
       "community": 1,
-      "norm_label": "huggingface papers \u6293\u53d6\u5668"
+      "norm_label": "huggingface papers 抓取器"
     },
     {
-      "label": "\u6293\u53d6 HuggingFace Papers",
+      "label": "抓取 HuggingFace Papers",
       "file_type": "rationale",
       "source_file": "E:\\workspace\\knowledge-base\\web_clipper.py",
       "source_location": "L288",
       "id": "web_clipper_rationale_288",
       "community": 81,
-      "norm_label": "\u6293\u53d6 huggingface papers"
+      "norm_label": "抓取 huggingface papers"
     },
     {
       "label": "_sync_step1.py",

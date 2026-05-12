@@ -1,8 +1,7 @@
 ---
 name: edgeone-clawscan
-version: 1.0.0
-author: Tencent Zhuque Lab
-auth: aigsec
+version: 1.0.15
+author: aigsec/Tencent Zhuque Lab
 license: MIT
 description: >
   The first security skill to install after setting up OpenClaw — powered by
@@ -17,6 +16,9 @@ description: >
   skills for supply chain risk, or investigate whether a skill is safe.
   Do not trigger for general OpenClaw usage, project debugging, environment
   setup, or normal development requests.
+  Optional cloud mode: set AIG_CLOUD_LOOKUP=off for zero outbound HTTPS; when
+  enabled, only skill_name, source label, and OpenClaw version are sent to
+  A.I.G (never skill bodies, chats, or workspace files).
 keywords: [security, audit, scan, clawhub, skills, safety, vulnerability, shield, clawscan]
 triggers:
   - skill security
@@ -35,19 +37,20 @@ tags: [security, scan, threat-detection, clawscan, claw-audit, claw-shield]
 external_requests:
   - url: https://matrix.tencent.com/clawscan/skill_security
     purpose: >
-      Supply chain lookup — queries the A.I.G threat intelligence database with
-      skill_name and source to detect known-malicious or risky skills. Cloud
-      lookup is required because local static analysis cannot detect threats
-      added to a skill after installation via updates, nor can it access
-      community-aggregated malicious-skill signatures.
+      When AIG_CLOUD_LOOKUP is enabled, supply-chain lookup queries the A.I.G
+      threat intelligence database with skill_name and source. Local static
+      analysis alone cannot detect threats added after install via updates nor
+      access a continuously updated community signature set — the API closes
+      that gap. Disable with AIG_CLOUD_LOOKUP=off to skip this call entirely.
     data_sent: [skill_name, source]
     failure_mode: graceful_degradation_to_local_audit
   - url: https://matrix.tencent.com/clawscan/advisories
     purpose: >
-      CVE advisory lookup — queries the A.I.G vulnerability database with the
-      fixed product name "OpenClaw" and the locally detected version number.
-      Cloud lookup is required because an up-to-date CVE/GHSA database cannot
-      be bundled inside the skill and kept current without network access.
+      When AIG_CLOUD_LOOKUP is enabled, CVE advisory lookup queries the A.I.G
+      database with fixed product name "OpenClaw" and the locally detected
+      version. A current CVE/GHSA corpus cannot be bundled in-skill without
+      going stale — the API provides fresh version-matched advisories. Disable
+      with AIG_CLOUD_LOOKUP=off to skip this call entirely.
     data_sent: [product_name_fixed_string, version_number]
     failure_mode: skip_and_report_unavailable
 live_probe:
@@ -56,8 +59,13 @@ live_probe:
     The --deep flag issues a best-effort live network probe to the locally
     configured Gateway endpoint only. The probe target is determined by your
     local openclaw.json; no data is forwarded to any third-party service.
-    Review Gateway exposure and access-control settings before running against
-    production.
+    Do NOT run against a production Gateway without first reviewing its
+    exposure and access-control settings; run in an isolated or test
+    environment first.
+  binary_caution: >
+    Before execution, verify that `openclaw` on PATH is the intended binary
+    (e.g. `which openclaw` and check the binary origin). A different tool
+    named openclaw could be invoked accidentally.
 env_vars:
   - name: AIG_BASE_URL
     required: false
@@ -67,6 +75,29 @@ env_vars:
       instance. Defaults to the public Tencent endpoint declared in
       external_requests above. All curl commands use this variable so the
       override takes effect automatically.
+  - name: AIG_CLOUD_LOOKUP
+    required: false
+    default: "true"
+    purpose: >
+      Set to 0, false, or off (case-insensitive) to disable every outbound
+      A.I.G HTTPS request. In that mode the skill never sends skill names,
+      sources, or version strings to any remote host; Step 2 and Step 3 fall
+      back to local-only behavior (same as API failure). Use when auditors or
+      policy forbid any default Tencent endpoint regardless of data minimization.
+provenance:
+  publisher: Tencent Zhuque Lab
+  official_repo: https://github.com/Tencent/AI-Infra-Guard/
+  registry_metadata_caveat: >
+    Skill registries may list a different "owner" or uploader string than
+    author/publisher in this file. That label reflects the distribution channel,
+    not cryptographic proof of origin. Verify this package against official_repo
+    releases, commit history, or signed artifacts before trusting cloud results.
+  verification_note: >
+    Before installation, confirm this package originates from Tencent by checking
+    official repo signatures or a verified publisher at the URL above. If publisher
+    identity cannot be confirmed, treat all cloud lookup results cautiously, set
+    AIG_CLOUD_LOOKUP=off for a zero-outbound scan, or point AIG_BASE_URL at a
+    self-hosted instance you trust.
 metadata:
   openclaw:
     homepage: https://github.com/Tencent/AI-Infra-Guard/
@@ -74,8 +105,9 @@ metadata:
       bins: [openclaw]
 ---
 
-> **说明**：本 Skill 由腾讯朱雀实验室出品，一键全面扫描 OpenClaw 不安全配置、恶意 Skill与漏洞；支持全天候实时拦截危险指令与隐私泄露。  
-> 是安装 OpenClaw 后的必选首装旗舰级安全技能。
+> **说明**：本 Skill 由腾讯朱雀实验室出品，一键全面扫描 OpenClaw 不安全配置、恶意 Skill 与漏洞。  
+> **关于云端 API**：供应链与 CVE 情报需要持续更新，仅靠本地静态文件无法覆盖「安装后被篡改的技能」与「每日新增的漏洞库」；因此默认会向 A.I.G 发起**最小化**查询（仅 skill 名+来源标签、以及 OpenClaw 版本号），**不会**上传 Skill 源码、对话或工作区文件。若策略不允许任何外联，请设置 `AIG_CLOUD_LOOKUP=off` 做纯本地扫描，或把 `AIG_BASE_URL` 指向自建实例。  
+> 安装前请对照官方仓库核验来源；集市「所有者」字段可能与本文 `author` 不一致，不代表密码学意义上的发布者证明。
 
 ---
 # edgeone-clawscan 
@@ -86,11 +118,20 @@ OpenClaw security scanning powered by AI-Infra-Guard ( https://github.com/Tencen
 
 `AIG_BASE_URL` (optional) — base URL for the AI-Infra-Guard API.
 Defaults to `https://matrix.tencent.com/clawscan` (the public Tencent endpoint
-declared in the `external_requests` metadata above). Set this env var to point
-at a self-hosted AI-Infra-Guard instance if you prefer not to use the public
-endpoint. All curl commands in this skill use
-`${AIG_BASE_URL:-https://matrix.tencent.com/clawscan}` so the override takes
-effect automatically.
+declared in the `external_requests` metadata above).
+
+**Privacy / air-gapped environments**: to avoid sending skill names, source
+labels, or version strings to the public Tencent host, use one of: (1)
+`AIG_BASE_URL` pointing at a self-hosted AI-Infra-Guard you operate, or (2)
+`AIG_CLOUD_LOOKUP=off` so **no** A.I.G HTTPS request runs (fully local Step 2
+and Step 3). Curl uses
+`${AIG_BASE_URL:-https://matrix.tencent.com/clawscan}` only when cloud lookup
+is enabled.
+
+```bash
+export AIG_BASE_URL=https://your-self-hosted-aig.example.com/clawscan
+export AIG_CLOUD_LOOKUP=off
+```
 
 ## Security Declaration
 
@@ -98,10 +139,46 @@ This section is an upfront disclosure of every network action and live probe
 this skill performs. Auditors and end users should read this section before
 installation or execution against production data.
 
+### Pre-run Safety Checklist
+
+| # | Check | Action |
+|---|-------|--------|
+| 1 | **Publisher vs registry** | `author` here may not match marketplace "owner" text — see YAML `provenance.registry_metadata_caveat`. Verify against `official_repo` before trusting cloud verdicts. |
+| 2 | **Binary on PATH** | `which openclaw` must resolve to the intended OpenClaw build. |
+| 3 | **Outbound policy** | Default sends minimal metadata to Tencent A.I.G (tables below). For zero outbound: `AIG_CLOUD_LOOKUP=off`. For your own infra only: self-hosted `AIG_BASE_URL`. |
+| 4 | **Live probe** | `--deep` hits the local Gateway config; avoid production until exposure is reviewed. |
+
+### Why the A.I.G API Is Necessary (technical)
+
+The API is not optional telemetry for analytics. It supplies two signals that an
+offline skill **cannot** keep current or complete on its own:
+
+| Need | Local-only gap | API role |
+|------|----------------|----------|
+| **Supply-chain risk** | Disk code and registry metadata can change after install; no bundled file can mirror a global, hourly-updated malicious-skill list. | Query by `skill_name` + `source` → verdict from maintained threat intel (analogous to cloud AV signatures). |
+| **CVE/GHSA currency** | Embedding a full advisory DB in `SKILL.md` would be huge and **stale on day one**. | Query by fixed `OpenClaw` + **detected version** → advisories for that build. |
+
+If the API is disabled or unreachable, the workflow **still completes**: Step 2
+uses local audit; Step 3 omits online CVE matching and states that explicitly.
+
+### What the API is not (addresses "data leak" flags)
+
+Scanners may treat "default Tencent URL" as exfiltration risk. This skill sends
+only the fields in the table below. It does **not** upload skill bodies, user
+chats, workspace files, env secrets, or Gateway message payloads.
+
+| Sent (cloud on) | Not sent |
+|-----------------|----------|
+| `skill_name`, `source` label | `SKILL.md` text, scripts, arbitrary URLs |
+| literal `OpenClaw` + version string | prompts, transcripts, credentials |
+
+This is **declared threat-intel and advisory lookup**. If policy rejects even
+that metadata leaving the machine, set `AIG_CLOUD_LOOKUP=off` before any scan.
+
 ### Why Cloud Detection Is Necessary
 
-Local static analysis alone has two fundamental limits that make cloud lookups
-necessary:
+Local static analysis has two limits that make cloud lookups **valuable** when
+allowed:
 
 1. **Post-install threats**: A skill may be clean at install time but become
    malicious via a later update. Only a continuously updated cloud threat
@@ -111,8 +188,8 @@ necessary:
    bundled inside a skill file and kept current without network access. The
    cloud lookup ensures version-matched advisories reflect today's known issues.
 
-Both cloud calls are best-effort and degrade gracefully: if either call fails
-or is unavailable, the scan continues with local-only analysis and the report
+Both cloud calls are best-effort. If they fail, are disabled by
+`AIG_CLOUD_LOOKUP`, or are unavailable, the scan continues locally and the report
 notes what was skipped.
 
 ### Outbound HTTPS Requests (two calls only)
@@ -122,7 +199,8 @@ notes what was skipped.
 | Supply chain lookup (Step 2) | `GET /clawscan/skill_security` | Skill name + source label (e.g. `clawhub`) | Falls back to local audit; does not block scan |
 | CVE advisory lookup (Step 3) | `GET /clawscan/advisories` | Fixed string `OpenClaw` + version number | Skips online matching; report notes unavailability |
 
-No other outbound connections are made by this skill.
+When `AIG_CLOUD_LOOKUP` is `0`, `false`, or `off`, neither row runs — **no** HTTPS
+to A.I.G. No other outbound connections are made by this skill.
 
 ### Live Gateway Probe (`--deep` flag)
 
@@ -189,6 +267,33 @@ Do not treat ordinary mentions of `openclaw`, `clawdbot`, dependency installatio
 
 Perform a comprehensive security audit for the entire OpenClaw environment. Execute all 4 steps silently and generate one unified report at the end.
 
+## Step 0: Pre-flight Checks
+
+Before running any scan command, silently perform the following two checks and
+abort with a clear user-visible warning if either fails.
+
+**0.1 — Verify `openclaw` binary on PATH**
+
+```bash
+which openclaw
+```
+
+If the binary is not found or the path looks unexpected (e.g. a non-standard
+location), output a warning and ask the user to confirm the binary is the
+intended OpenClaw installation before continuing.
+
+**0.2 — Confirm environment is not a production Gateway**
+
+Inspect `openclaw.json` to determine the configured Gateway endpoint. If the
+endpoint appears to be a production URL (non-localhost, non-test domain), output
+the following warning and wait for explicit user confirmation before proceeding:
+
+> ⚠️ **Production Gateway Detected**
+> The locally configured Gateway appears to be a production endpoint.
+> Running `--deep` will probe it live. Verify your exposure and access-control
+> settings before continuing, or re-run in an isolated/test environment.
+> Reply "confirm" to proceed, or "cancel" to abort.
+
 ## Step 1: Built-in Security Audit
 
 Run the OpenClaw built-in security audit command:
@@ -229,11 +334,14 @@ Scan all installed skills for supply chain risks.
 
 Cloud threat intelligence is best-effort only and must not block the scan.
 
+- If `AIG_CLOUD_LOOKUP` is `0`, `false`, or `off` (case-insensitive), **do not**
+  run any A.I.G `curl` in Step 2; treat cloud as unavailable for every skill
+  and use local audit only. Record in the report that cloud lookup was disabled
+  by policy.
 - If the AIG API request times out, fails, returns non-200, returns empty content, or returns invalid JSON, treat the cloud result as unavailable rather than safe.
 - When cloud lookup is unavailable, continue with local audit for that skill.
 - A cloud lookup failure for one skill must not stop checks for other skills.
 - Local and GitHub-sourced skills should still default to local audit unless there is a reliable managed-catalog result.
-
 
 ### 2.1 Get Installed Skill List
 
@@ -243,10 +351,12 @@ openclaw skills list
 
 ### 2.2 Query AIG API for Each Skill
 
-> **Data sent**: only `skill_name` (the skill's registered name) and `source`
-> (its origin label such as `clawhub`). Cloud lookup is used here because local
-> static analysis cannot detect threats added via post-install updates or
-> catch skills already flagged by the community threat intelligence database.
+Skip this entire subsection when `AIG_CLOUD_LOOKUP` is disabled (see Resilience
+Rules).
+
+> **Data sent** (only when cloud enabled): `skill_name` and `source`. See
+> **Security Declaration → Why the A.I.G API Is Necessary** for why this query
+> exists; it does not upload skill source code.
 
 ```bash
 curl -s "${AIG_BASE_URL:-https://matrix.tencent.com/clawscan}/skill_security?skill_name=SKILL_NAME&source=SOURCE"
@@ -276,14 +386,17 @@ curl -s "${AIG_BASE_URL:-https://matrix.tencent.com/clawscan}/skill_security?ski
 
 ### 3.0 Environment Check
 
-Run the environment check needed to determine the installed OpenClaw version, then continue with Steps 3.1 and 3.2.
+Run the environment check needed to determine the installed OpenClaw version,
+then continue with Steps 3.1 and 3.2 unless `AIG_CLOUD_LOOKUP` is disabled — in
+that case skip 3.1 entirely and apply 3.3 as "online intelligence disabled".
 
 ### 3.1 Query CVE Advisory API
 
-> **Data sent**: only the fixed string `OpenClaw` and the locally detected
-> version number. Cloud lookup is used here because a current CVE/GHSA database
-> cannot be bundled inside the skill; without this call the scan would have no
-> visibility into vulnerabilities disclosed after the skill was installed.
+Skip this entire subsection when `AIG_CLOUD_LOOKUP` is `0`, `false`, or `off`.
+
+> **Data sent** (only when cloud enabled): fixed string `OpenClaw` and the
+> locally detected version. Rationale: see **Security Declaration**; no other
+> product or personal data is transmitted.
 
 ```bash
 curl -s "${AIG_BASE_URL:-https://matrix.tencent.com/clawscan}/advisories?name=OpenClaw&version=VERSION"
@@ -304,6 +417,9 @@ curl -s "${AIG_BASE_URL:-https://matrix.tencent.com/clawscan}/advisories?name=Op
 
 CVE advisory matching is best-effort only and must not block the final report.
 
+- If `AIG_CLOUD_LOOKUP` is disabled, skip online CVE matching and state that
+  cloud advisory lookup was turned off by configuration (not equivalent to
+  "zero vulnerabilities").
 - If the advisory API request times out, fails, returns non-200, returns empty content, or returns invalid data, skip online CVE matching and continue the report.
 - When online CVE matching is skipped, do not report `✅ 无` and do not claim that zero vulnerabilities were found.
 - Instead, clearly state that online vulnerability intelligence was unavailable for this run and recommend retrying later.
@@ -355,9 +471,15 @@ Perform a deep security scan for a specific skill.
 
 ### 1. Decide Whether Cloud Lookup Applies
 
-If the skill source is `local` or `github`, treat it as a custom skill and skip the cloud API lookup by default. Go directly to local audit.
+If `AIG_CLOUD_LOOKUP` is `0`, `false`, or `off`, skip the cloud API entirely and
+go straight to local audit (subsection 2).
 
-Only query the AIG API first for registry-backed sources such as `clawhub`, or other sources that are clearly managed by a trusted remote catalog.
+If the skill source is `local` or `github`, treat it as a custom skill and skip
+the cloud API lookup by default. Go directly to local audit.
+
+Only query the AIG API first for registry-backed sources such as `clawhub`, or
+other sources that are clearly managed by a trusted remote catalog, and only
+when cloud lookup is enabled.
 
 ```bash
 curl -s "${AIG_BASE_URL:-https://matrix.tencent.com/clawscan}/skill_security?skill_name=SKILL_NAME&source=SOURCE"
@@ -652,7 +774,7 @@ If multiple confirmed findings exist, summarize only the highest-impact one or t
 
 遇到问题、有建议反馈与更多 AI 安全产品需求，可点击加入 [微信交流群](https://work.weixin.qq.com/gm/5d8c044c9fe077b444c12a9b29253648) 与 [Discord](https://discord.gg/7WkHc7Rt6g)
 
-欢迎大家 Star 与体验我们的 [A.I.G 开源版](https://github.com/tencent/AI-Infra-Guard)
+欢迎大家 Star 与体验我们的 [A.I.G 开源版](https://github.com/tencent/AI-Infra-Guard), 如果这次体检对你有帮助，欢迎填写 [反馈问卷](https://doc.weixin.qq.com/smartsheet/form/1_wpkSFfCgAAIzkZ-F0ncReQFci0uBXXig_f87c9d)
 
 ---
 

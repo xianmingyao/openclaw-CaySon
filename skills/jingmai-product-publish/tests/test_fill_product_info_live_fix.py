@@ -82,6 +82,11 @@ def test_fill_product_info_adds_sales_attributes_section(monkeypatch):
         "_fill_required_logistics_fields",
         lambda *args, **kwargs: [{"field": "sales_unit", "success": True, "write_success": True, "verify_success": True}],
     )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_required_sku_image_fields",
+        lambda *args, **kwargs: [{"field": "sku_square_image", "success": True, "write_success": True, "verify_success": True}],
+    )
 
     result = form_module.fill_product_info(
         {"title": "公牛插座", "brand": "公牛", "model": "GN-B5440", "jd_price": 70, "attributes": {"current": "10A"}},
@@ -94,7 +99,99 @@ def test_fill_product_info_adds_sales_attributes_section(monkeypatch):
 
     assert result["success"] is True
     assert result["sections"]["sales_attributes"]["success"] == 1
+    assert result["sections"]["sku_images"]["success"] == 1
     assert "current" in result["successful_fields"]
+
+
+def test_fill_required_sku_image_fields_uploads_square_and_transparent(monkeypatch):
+    import actions.form as form_module
+
+    class Rect:
+        def __init__(self, left, top, right, bottom):
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    class FakeLocator(SimpleNamespace):
+        def __init__(self):
+            super().__init__(clicks=[])
+
+        def click(self, x, y, delay=0.0):
+            self.clicks.append((x, y, delay))
+            return True
+
+    upload_calls = []
+    locator = FakeLocator()
+
+    monkeypatch.setattr(form_module, "_activate_publish_section_tab", lambda *args, **kwargs: True)
+    monkeypatch.setattr(form_module, "_focus_publish_scroll_anchor", lambda *args, **kwargs: True)
+    monkeypatch.setattr(
+        form_module,
+        "_find_named_control",
+        lambda keyword, *_args, **_kwargs: (object(), keyword, Rect(430 if keyword == "方图" else 1220, 140, 520 if keyword == "方图" else 1310, 170))
+        if keyword in {"方图", "透图"}
+        else None,
+    )
+    monkeypatch.setattr(
+        form_module,
+        "upload_image",
+        lambda image_path, **kwargs: upload_calls.append(image_path) or {"success": True, "method": "file-dialog", "prepared_image": image_path},
+    )
+
+    result = form_module._fill_required_sku_image_fields(
+        {
+            "sku_square_image": r"E:\images\square.jpg",
+            "sku_transparent_image": r"E:\images\transparent.png",
+        },
+        required_visual_fields={
+            "sku_images": [
+                {"field": "sku_square_image", "label": "方图", "value": r"E:\images\square.jpg"},
+                {"field": "sku_transparent_image", "label": "透图", "value": r"E:\images\transparent.png"},
+            ]
+        },
+        locator=locator,
+    )
+
+    assert [item["field"] for item in result] == ["sku_square_image", "sku_transparent_image"]
+    assert all(item["success"] for item in result)
+    assert upload_calls == [r"E:\images\square.jpg", r"E:\images\transparent.png"]
+    assert len(locator.clicks) == 2
+
+
+def test_fill_brand_field_prefers_keyboard_first_option_when_dropdown_option_is_visible(monkeypatch):
+    import actions.form as form_module
+
+    keypresses = []
+
+    class FakeLocator(SimpleNamespace):
+        def click(self, *args, **kwargs):
+            return True
+
+    class FakePyAutoGui:
+        @staticmethod
+        def press(key):
+            keypresses.append(key)
+
+    monkeypatch.setitem(sys.modules, "pyautogui", FakePyAutoGui)
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or FakeLocator())
+    monkeypatch.setattr(form_module, "_scroll_publish_page_to_top", lambda **kwargs: None)
+    monkeypatch.setattr(form_module, "_page_text_contains", lambda *args, **kwargs: False)
+    monkeypatch.setattr(
+        form_module,
+        "_dropdown_selection_confirmed",
+        lambda *args, **kwargs: keypresses == ["down", "enter"],
+    )
+    monkeypatch.setattr(form_module, "_visible_text_contains", lambda text, **kwargs: "公牛" in str(text))
+    monkeypatch.setattr(form_module, "find_jingmai_uia_window", lambda **kwargs: object())
+    monkeypatch.setattr(form_module, "_find_named_control", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module.time, "sleep", lambda *_args, **_kwargs: None)
+
+    result = form_module._fill_brand_field_v2("公牛", locator=FakeLocator())
+
+    assert result["success"] is True
+    assert result["method"] == "keyboard-first-option"
+    assert keypresses == ["down", "enter"]
 
 
 def test_find_price_input_center_prefers_overlap_candidate(monkeypatch):
@@ -304,6 +401,90 @@ def test_fill_required_logistics_fields_treats_sales_unit_as_text(monkeypatch):
     assert any(item["field"] == "sales_unit" for item in results)
 
 
+def test_fill_required_logistics_fields_supports_extended_fields(monkeypatch):
+    import actions.form as form_module
+
+    calls = []
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(form_module, "_activate_publish_section_tab", lambda *args, **kwargs: True)
+    monkeypatch.setattr(form_module, "_focus_publish_scroll_anchor", lambda *args, **kwargs: True)
+    monkeypatch.setattr(
+        form_module,
+        "_fill_labeled_text_field",
+        lambda field, labels, value, **kwargs: calls.append(("text", field, tuple(labels), value)) or {
+            "field": field,
+            "success": True,
+            "write_success": True,
+            "verify_success": True,
+        },
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_labeled_dropdown_field",
+        lambda field, labels, value, **kwargs: calls.append(("dropdown", field, tuple(labels), value)) or {
+            "field": field,
+            "success": True,
+            "write_success": True,
+            "verify_success": True,
+        },
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_hazardous_goods_field",
+        lambda value, **kwargs: calls.append(("custom", "hazardous_goods", tuple(), value)) or {
+            "field": "hazardous_goods",
+            "success": True,
+            "write_success": True,
+            "verify_success": True,
+        },
+    )
+    monkeypatch.setattr(form_module, "_visible_text_contains", lambda *args, **kwargs: False)
+
+    results = form_module._fill_required_logistics_fields(
+        {
+            "shelf_life_days": "30",
+            "sales_unit": "个",
+            "package_spec": "10只/盒",
+            "package_spec_unit": "盒",
+            "package_type": "盒装",
+            "special_delivery_mark": "普通商品",
+            "hazardous_goods": "无",
+            "packing_list": "数量：1",
+            "warranty_period": "1年",
+        },
+        required_visual_fields={
+            "logistics": [
+                {"field": "shelf_life_days", "label": "保质期（天）", "value": "30"},
+                {"field": "sales_unit", "label": "销售单位", "value": "个"},
+                {"field": "package_spec", "label": "包装规格", "value": "10只/盒"},
+                {"field": "package_spec_unit", "label": "包装规格单位", "value": "盒"},
+                {"field": "package_type", "label": "商品包装", "value": "盒装"},
+                {"field": "special_delivery_mark", "label": "特殊发货时效标记", "value": "普通商品"},
+                {"field": "hazardous_goods", "label": "是否危险商品", "value": "无"},
+                {"field": "packing_list", "label": "包装清单", "value": "数量：1"},
+                {"field": "warranty_period", "label": "质保期", "value": "1年"},
+            ]
+        },
+        locator=SimpleNamespace(),
+    )
+
+    assert ("text", "shelf_life_days", ("保质期（天）", "保质期(天)", "保质期"), "30") in calls
+    assert ("text", "package_spec", ("包装规格",), "10只/盒") in calls
+    assert ("dropdown", "package_spec_unit", ("包装规格单位",), "盒") in calls
+    assert ("custom", "hazardous_goods", tuple(), "无") in calls
+    assert {item["field"] for item in results} == {
+        "shelf_life_days",
+        "sales_unit",
+        "package_spec",
+        "package_spec_unit",
+        "package_type",
+        "special_delivery_mark",
+        "hazardous_goods",
+        "packing_list",
+        "warranty_period",
+    }
+
+
 def test_fill_sku_pricing_fields_v3_prefers_uia_target(monkeypatch):
     import actions.form as form_module
 
@@ -404,6 +585,45 @@ def test_fill_required_sales_attributes_fields_accepts_visible_existing(monkeypa
     assert results[0]["method"] == "visible-text-existing"
 
 
+def test_fill_required_sales_attributes_fields_supports_voltage_and_lead_time(monkeypatch):
+    import actions.form as form_module
+
+    calls = []
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(form_module, "_activate_publish_section_tab", lambda *args, **kwargs: True)
+    monkeypatch.setattr(form_module, "_focus_publish_scroll_anchor", lambda *args, **kwargs: True)
+    monkeypatch.setattr(
+        form_module,
+        "_fill_labeled_text_field",
+        lambda field, labels, value, **kwargs: calls.append((field, tuple(labels), value)) or {
+            "field": field,
+            "success": True,
+            "write_success": True,
+            "verify_success": True,
+        },
+    )
+
+    results = form_module._fill_required_sales_attributes_fields(
+        {
+            "attributes": {"current": "10A", "rated_voltage": "250V"},
+            "lead_time": "现货",
+        },
+        required_visual_fields={
+            "sales_attributes": [
+                {"field": "current", "label": "电流", "value": "10A"},
+                {"field": "rated_voltage", "label": "电压", "value": "250V"},
+                {"field": "lead_time", "label": "货期", "value": "现货"},
+            ]
+        },
+        locator=SimpleNamespace(),
+    )
+
+    assert [item["field"] for item in results] == ["current", "rated_voltage", "lead_time"]
+    assert ("current", ("电流", "请填写电流"), "10A") in calls
+    assert ("rated_voltage", ("电压", "请输入电压"), "250V") in calls
+    assert ("lead_time", ("货期", "请输入货期"), "现货") in calls
+
+
 def test_price_area_ready_requires_real_input_targets():
     import actions.form as form_module
 
@@ -428,6 +648,19 @@ def test_price_area_ready_requires_real_input_targets():
             "market_input_visible": True,
             "jd_input_visible": False,
             "sku_batch_visible": False,
+        }
+    ) is True
+
+    assert form_module._price_area_ready(
+        {
+            "text_anchors": ["SKU灞炴€?", "鎵归噺瀵煎叆"],
+            "title_visible": False,
+            "market_visible": False,
+            "jd_visible": False,
+            "market_input_visible": False,
+            "jd_input_visible": False,
+            "sku_batch_visible": False,
+            "sku_table_anchor_visible": True,
         }
     ) is True
 
@@ -492,6 +725,108 @@ def test_find_price_input_target_falls_back_to_visible_edit_row(monkeypatch):
     assert jd_target[0] is jd_edit
 
 
+def test_find_visible_price_edit_row_accepts_rows_above_previous_top_cutoff(monkeypatch):
+    import actions.form as form_module
+
+    class Rect:
+        def __init__(self, left, top, right, bottom):
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    market_edit = object()
+    purchase_edit = object()
+    jd_edit = object()
+
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(
+        form_module,
+        "_find_edit_elements",
+        lambda **kwargs: [
+            (market_edit, "", Rect(1180, 708, 1280, 744)),
+            (purchase_edit, "", Rect(1320, 710, 1420, 746)),
+            (jd_edit, "", Rect(1480, 712, 1580, 748)),
+        ],
+    )
+
+    row = form_module._find_visible_price_edit_row(locator=SimpleNamespace())
+
+    assert [item[0] for item in row] == [market_edit, purchase_edit, jd_edit]
+
+
+def test_find_price_input_target_accepts_lower_visible_inputs(monkeypatch):
+    import actions.form as form_module
+
+    class Rect:
+        def __init__(self, left, top, right, bottom):
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    label_rect = Rect(1180, 1085, 1260, 1115)
+    lower_edit = object()
+
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(form_module, "_find_named_control", lambda *args, **kwargs: (object(), "甯傚満浠?", label_rect))
+    monkeypatch.setattr(
+        form_module,
+        "_find_edit_elements",
+        lambda **kwargs: [(lower_edit, "", Rect(1185, 1155, 1295, 1193))],
+    )
+
+    target = form_module._find_price_input_target("甯傚満浠?", locator=SimpleNamespace())
+
+    assert target[0] is lower_edit
+
+
+def test_ensure_price_area_visible_accepts_sku_table_context_without_vertical_blind_scroll(monkeypatch):
+    import actions.form as form_module
+
+    calls = []
+
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(form_module, "_ensure_basic_info_page", lambda **kwargs: True)
+    monkeypatch.setattr(form_module, "_scroll_to_sku_section", lambda **kwargs: calls.append("scroll_sku"))
+    monkeypatch.setattr(form_module, "_scroll_price_fields_into_view", lambda **kwargs: calls.append("scroll_price"))
+    monkeypatch.setattr(form_module, "_debug_fill_live_context", lambda *args, **kwargs: {})
+    monkeypatch.setattr(form_module.time, "sleep", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(
+        form_module,
+        "_collect_price_area_template_state",
+        lambda **kwargs: {
+            "text_anchors": ["SKU灞炴€?", "鎵归噺瀵煎叆"],
+            "title_visible": False,
+            "market_visible": False,
+            "jd_visible": False,
+            "market_input_visible": False,
+            "jd_input_visible": False,
+            "sku_batch_visible": True,
+            "sku_table_anchor_visible": True,
+            "visible_price_row_count": 0,
+        },
+    )
+
+    class FakePyAutoGui:
+        @staticmethod
+        def moveTo(*args, **kwargs):
+            calls.append(("moveTo", args))
+
+        @staticmethod
+        def scroll(value):
+            calls.append(("scroll", value))
+
+    monkeypatch.setitem(sys.modules, "pyautogui", FakePyAutoGui)
+
+    result = form_module._ensure_price_area_visible(locator=SimpleNamespace(), log=None, max_rounds=1)
+
+    assert result["success"] is True
+    assert "scroll_sku" in calls
+    assert "scroll_price" in calls
+    assert not any(isinstance(item, tuple) and item[0] == "scroll" for item in calls)
+
+
 def test_ensure_price_area_visible_prefers_sku_then_price_scroll(monkeypatch):
     import actions.form as form_module
 
@@ -545,3 +880,66 @@ def test_ensure_price_area_visible_prefers_sku_then_price_scroll(monkeypatch):
     assert "scroll_sku" in calls
     assert "scroll_price" in calls
     assert ("scroll", -240) in calls
+
+
+def test_fill_sku_pricing_fields_v3_skips_seek_when_fail_fast(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(form_module, "_ensure_basic_info_page", lambda **kwargs: True)
+    monkeypatch.setattr(form_module, "_scroll_to_sku_section", lambda **kwargs: None)
+    monkeypatch.setattr(form_module, "_reset_sku_horizontal_scrollbar", lambda: None)
+    monkeypatch.setattr(form_module, "_fill_sku_product_name_field", lambda *args, **kwargs: {"field": "sku_product_name", "success": True})
+    monkeypatch.setattr(
+        form_module,
+        "_ensure_price_area_visible",
+        lambda **kwargs: {
+            "success": False,
+            "reason": "sku_table_context_without_price_targets",
+            "state": {"sku_batch_visible": True, "sku_table_anchor_visible": True},
+        },
+    )
+    seek_calls = []
+    monkeypatch.setattr(form_module, "_seek_price_area", lambda **kwargs: seek_calls.append("seek") or {"success": False})
+
+    details = form_module._fill_sku_pricing_fields_v3(
+        {"title": "鍏墰鎻掑骇", "market_price": 70, "jd_price": 70},
+        locator=SimpleNamespace(),
+    )
+
+    assert seek_calls == []
+    assert details[-1]["field"] == "price_area_anchor"
+    assert "sku_table_context_without_price_targets" in details[-1]["verify_error"]
+
+
+def test_fill_sku_pricing_fields_v3_stops_before_blind_click_when_price_target_missing(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(form_module, "_ensure_basic_info_page", lambda **kwargs: True)
+    monkeypatch.setattr(form_module, "_scroll_to_sku_section", lambda **kwargs: None)
+    monkeypatch.setattr(form_module, "_reset_sku_horizontal_scrollbar", lambda: None)
+    monkeypatch.setattr(form_module, "_fill_sku_product_name_field", lambda *args, **kwargs: {"field": "sku_product_name", "success": True})
+    monkeypatch.setattr(
+        form_module,
+        "_ensure_price_area_visible",
+        lambda **kwargs: {
+            "success": True,
+            "state": {"sku_batch_visible": True, "sku_table_anchor_visible": True},
+        },
+    )
+    monkeypatch.setattr(form_module, "_drag_sku_horizontal_scrollbar", lambda: None)
+    monkeypatch.setattr(form_module, "_find_price_input_target", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_find_price_input_center", lambda *args, **kwargs: None)
+    hover_calls = []
+    monkeypatch.setattr(form_module, "_hover_then_click", lambda *args, **kwargs: hover_calls.append((args, kwargs)) or True)
+
+    details = form_module._fill_sku_pricing_fields_v3(
+        {"title": "", "market_price": 70, "jd_price": 70},
+        locator=SimpleNamespace(),
+    )
+
+    assert hover_calls == []
+    assert details[0]["field"] == "market_price"
+    assert details[0]["method"] == "price-target-guard"
+    assert details[0]["success"] is False

@@ -899,16 +899,49 @@ publish_product - 发布商品
                     or product.get("current", "")
                     or product.get("rated_current", ""),
                 },
+                {
+                    "field": "rated_voltage",
+                    "label": "电压",
+                    "value": attributes.get("rated_voltage")
+                    or product.get("rated_voltage", "")
+                    or product.get("voltage", ""),
+                },
+                {
+                    "field": "lead_time",
+                    "label": "货期",
+                    "value": product.get("lead_time", "") or product.get("delivery_time", ""),
+                },
                 {"field": "sku_image", "label": "图片设置", "value": product.get("sku_image", "") or product.get("image", "")},
+            ],
+            "sku_images": [
+                {
+                    "field": "sku_square_image",
+                    "label": "方图",
+                    "value": product.get("sku_square_image", "")
+                    or product.get("square_image", "")
+                    or product.get("sku_image", "")
+                    or product.get("image", ""),
+                },
+                {
+                    "field": "sku_transparent_image",
+                    "label": "透图",
+                    "value": product.get("sku_transparent_image", "")
+                    or product.get("transparent_image", "")
+                    or product.get("transparent_image_path", ""),
+                },
             ],
             "description": [
                 {"field": "detail_content", "label": "商品详情", "value": product.get("detail_content", "") or product.get("description", "")},
                 {"field": "description_images", "label": "详情图片", "value": product.get("description_images", [])},
             ],
             "logistics": [
+                {"field": "shelf_life_days", "label": "保质期（天）", "value": product.get("shelf_life_days", "") or product.get("shelf_life", "")},
                 {"field": "sales_unit", "label": "销售单位", "value": product.get("sales_unit", "") or product.get("unit", "")},
+                {"field": "package_spec", "label": "包装规格", "value": product.get("package_spec", "")},
+                {"field": "package_spec_unit", "label": "包装规格单位", "value": product.get("package_spec_unit", "")},
                 {"field": "package_type", "label": "商品包装", "value": product.get("package_type", "")},
                 {"field": "special_delivery_mark", "label": "特殊发货时效标记", "value": product.get("special_delivery_mark", "")},
+                {"field": "hazardous_goods", "label": "是否危险商品", "value": product.get("hazardous_goods", "")},
                 {"field": "packing_list", "label": "包装清单", "value": product.get("packing_list", "") or product.get("notes", "")},
                 {"field": "warranty_period", "label": "质保期", "value": product.get("warranty_period", "")},
             ],

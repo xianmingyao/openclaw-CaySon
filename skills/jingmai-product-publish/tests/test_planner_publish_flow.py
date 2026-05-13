@@ -45,12 +45,16 @@ def test_template_plan_uses_direct_publish_flow():
         "jd_price",
         "purchase_price",
     ]
-    assert [item["field"] for item in required_fields["sales_attributes"]] == ["current", "sku_image"]
+    assert [item["field"] for item in required_fields["sales_attributes"]] == ["current", "rated_voltage", "lead_time", "sku_image"]
     assert [item["field"] for item in required_fields["description"]] == ["detail_content", "description_images"]
     assert [item["field"] for item in required_fields["logistics"]] == [
+        "shelf_life_days",
         "sales_unit",
+        "package_spec",
+        "package_spec_unit",
         "package_type",
         "special_delivery_mark",
+        "hazardous_goods",
         "packing_list",
         "warranty_period",
     ]
@@ -105,6 +109,7 @@ def test_required_visual_fields_reuses_existing_product_values():
     assert fields["basic_info"][0]["value"] == "公牛"
     assert fields["basic_info"][2]["value"] == "八位"
     assert fields["sales_attributes"][0]["value"] == "10A"
+    assert fields["sales_attributes"][1]["value"] == "250V"
     assert fields["logistics"][0]["value"] == "个"
     assert fields["logistics"][3]["value"] == "数量：2"
 

@@ -73,6 +73,11 @@ class Settings:
     OLLAMA_MODEL: str = "qwen3-vl"
     VLLM_BASE_URL: str = "http://localhost:8001"
     VLLM_MODEL: str = "qwen3-vl"
+    VLLM_AUTOSTART_ENABLED: bool = True
+    VLLM_STARTUP_TIMEOUT: int = 240
+    VLLM_STARTUP_POLL_INTERVAL: float = 2.0
+    VLLM_LAUNCH_COMMAND: str = ""
+    VLLM_EXTRA_ARGS: str = "--max-model-len 8192 --enable-prefix-caching --gpu-memory-utilization 0.9"
     LLM_TIMEOUT: int = 120
 
     # Milvus
@@ -129,6 +134,11 @@ class Settings:
             "OLLAMA_MODEL": "OLLAMA_MODEL",
             "VLLM_BASE_URL": "VLLM_BASE_URL",
             "VLLM_MODEL": "VLLM_MODEL",
+            "VLLM_AUTOSTART_ENABLED": "VLLM_AUTOSTART_ENABLED",
+            "VLLM_STARTUP_TIMEOUT": "VLLM_STARTUP_TIMEOUT",
+            "VLLM_STARTUP_POLL_INTERVAL": "VLLM_STARTUP_POLL_INTERVAL",
+            "VLLM_LAUNCH_COMMAND": "VLLM_LAUNCH_COMMAND",
+            "VLLM_EXTRA_ARGS": "VLLM_EXTRA_ARGS",
             "LLM_TIMEOUT": "LLM_TIMEOUT",
             # 数据库
             "MYSQL_URL": "MYSQL_URL",

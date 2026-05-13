@@ -1,5 +1,6 @@
 ﻿import json
 import sys
+import types
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -34,6 +35,7 @@ from actions.navigation import publish_product, save_draft, select_category
 from actions.window import navigate_to
 from infrastructure.locator import JingmaiLocator
 from llm.ollama import OllamaProvider
+from llm.service_manager import _build_vllm_command, ensure_vllm_ready
 
 
 class _LLMReturning:
@@ -591,6 +593,133 @@ def test_llm_manager_falls_back_on_empty_primary():
     assert manager.invoke("test") == '{"ok": true}'
 
 
+def test_build_vllm_command_uses_model_path_and_extra_args():
+    settings = SimpleNamespace(
+        VLLM_LAUNCH_COMMAND="",
+        VLLM_MODEL=r"E:\Program Files\huggingface_model\Qwen3.6-VL-REAP-26B-A3B-W4A16",
+        VLLM_BASE_URL="http://localhost:8001",
+        VLLM_EXTRA_ARGS="--dtype auto --gpu-memory-utilization 0.92",
+    )
+
+    command = _build_vllm_command(settings)
+
+    assert command[:2] == [sys.executable, "-m"]
+    assert command[2] in {"vllm.entrypoints.openai.api_server", "llm.vllm_compat_launcher"}
+    assert "--model" in command
+    assert r"E:\Program Files\huggingface_model\Qwen3.6-VL-REAP-26B-A3B-W4A16" in command
+    assert "--gpu-memory-utilization" in command
+    assert "0.92" in command
+
+
+def test_ensure_vllm_ready_autostarts_and_waits_for_health(monkeypatch, tmp_path: Path):
+    states = iter([False, False, True])
+    warmup_calls = []
+
+    class FakeProvider:
+        def __init__(self, base_url: str, model: str, timeout: int):
+            self.base_url = base_url
+            self.model = model
+            self.timeout = timeout
+
+        def health_check(self):
+            return next(states)
+
+        def invoke(self, prompt: str, **kwargs):
+            warmup_calls.append((prompt, kwargs))
+            return "ok"
+
+    class FakeProcess:
+        pid = 4321
+        returncode = None
+
+        def poll(self):
+            return None
+
+    monkeypatch.setattr("llm.service_manager.VLLMProvider", FakeProvider)
+    monkeypatch.setattr("llm.service_manager._probe_local_vllm_runtime", lambda: {"ok": True, "missing": []})
+    monkeypatch.setattr("llm.service_manager.subprocess.Popen", lambda *args, **kwargs: FakeProcess())
+    monkeypatch.setattr("llm.service_manager.time.sleep", lambda *_args, **_kwargs: None)
+
+    settings = SimpleNamespace(
+        VLLM_BASE_URL="http://localhost:8001",
+        VLLM_MODEL="fake-model",
+        VLLM_AUTOSTART_ENABLED=True,
+        VLLM_STARTUP_TIMEOUT=10,
+        VLLM_STARTUP_POLL_INTERVAL=0.01,
+        VLLM_LAUNCH_COMMAND="",
+        VLLM_EXTRA_ARGS="",
+        LLM_TIMEOUT=30,
+        LOG_DIR=str(tmp_path),
+    )
+
+    report = ensure_vllm_ready(settings)
+
+    assert report["started"] is True
+    assert report["ready"] is True
+    assert report["pid"] == 4321
+    assert report["reason"] == "started_and_healthy"
+    assert report["warmup_success"] is True
+    assert warmup_calls[0][0] == "ping"
+
+
+def test_ensure_vllm_ready_skips_spawn_when_runtime_probe_fails(monkeypatch, tmp_path: Path):
+    class FakeProvider:
+        def __init__(self, base_url: str, model: str, timeout: int):
+            self.base_url = base_url
+            self.model = model
+            self.timeout = timeout
+
+        def health_check(self):
+            return False
+
+    spawn_calls = []
+    monkeypatch.setattr("llm.service_manager.VLLMProvider", FakeProvider)
+    monkeypatch.setattr(
+        "llm.service_manager._probe_local_vllm_runtime",
+        lambda: {"ok": False, "missing": ["vllm._C"], "error": "No module named 'vllm._C'"},
+    )
+    monkeypatch.setattr("llm.service_manager.subprocess.Popen", lambda *args, **kwargs: spawn_calls.append((args, kwargs)))
+
+    settings = SimpleNamespace(
+        VLLM_BASE_URL="http://localhost:8001",
+        VLLM_MODEL="fake-model",
+        VLLM_AUTOSTART_ENABLED=True,
+        VLLM_STARTUP_TIMEOUT=10,
+        VLLM_STARTUP_POLL_INTERVAL=0.01,
+        VLLM_LAUNCH_COMMAND="",
+        VLLM_EXTRA_ARGS="",
+        LLM_TIMEOUT=30,
+        LOG_DIR=str(tmp_path),
+    )
+
+    report = ensure_vllm_ready(settings)
+
+    assert report["started"] is False
+    assert report["reason"] == "runtime_missing:vllm._C"
+    assert report["runtime_error"] == "No module named 'vllm._C'"
+    assert spawn_calls == []
+
+
+def test_vllm_compat_launcher_converts_runtime_module_not_found_to_system_exit(monkeypatch):
+    import llm.vllm_compat_launcher as launcher
+
+    fake_module = types.ModuleType("vllm.entrypoints.cli.main")
+
+    def fake_main():
+        raise ModuleNotFoundError("No module named 'vllm._C'", name="vllm._C")
+
+    fake_module.main = fake_main
+    monkeypatch.setitem(sys.modules, "vllm.entrypoints.cli.main", fake_module)
+    monkeypatch.setattr(launcher.sys, "argv", ["launcher.py", "--model", "fake-model"])
+
+    try:
+        launcher.main()
+    except SystemExit as exc:
+        assert str(exc) == "vLLM runtime dependency missing: vllm._C"
+    else:
+        raise AssertionError("launcher.main() should convert ModuleNotFoundError into SystemExit")
+
+
 def test_long_term_memory_degrades_without_embedder():
     memory = LongTermMemory(collection_name="jingmai_publish_memory_test")
     vector = memory._get_embedding("test")
@@ -611,6 +740,54 @@ def test_extract_plan_payload_supports_full_plan_and_steps_only():
     assert full_payload["steps"][0]["action"] == "find_window"
     assert legacy_payload["task_id"] == ""
     assert legacy_payload["total_steps"] == 1
+
+
+def test_acceptance_run_prepares_runtime_services_before_batch(monkeypatch, tmp_path: Path):
+    runner = CliRunner()
+    batch_file = tmp_path / "acceptance.xlsx"
+    batch_file.write_bytes(b"fake")
+    calls = []
+
+    class FakeDB:
+        def update_acceptance_run(self, *args, **kwargs):
+            calls.append(("update_acceptance_run", kwargs.get("status")))
+
+    monkeypatch.setattr("cli._load_batch_items", lambda _path: [{"title": "测试商品", "publish_mode": "single"}])
+    monkeypatch.setattr(
+        "cli._build_acceptance_run_paths",
+        lambda batch_file, plan_out="", progress_file="": {
+            "run_id": "run-1",
+            "batch_file": str(batch_file),
+            "plan_dir": str(tmp_path / "plans"),
+            "progress_file": str(tmp_path / "progress.json"),
+            "summary_file": str(tmp_path / "summary.json"),
+        },
+    )
+    monkeypatch.setattr("cli._record_acceptance_run_start", lambda *args, **kwargs: FakeDB())
+    monkeypatch.setattr("cli._run_db_preflight", lambda _settings: {"final_db_type": "mysql", "reachable": True, "create_tables": "ok"})
+    monkeypatch.setattr("cli._write_db_preflight", lambda _paths, _payload: str(tmp_path / "db-preflight.json"))
+    monkeypatch.setattr("cli._prepare_runtime_services", lambda overrides=None: calls.append(("prepare_runtime_services", overrides)) or {"ready": True})
+    monkeypatch.setattr(
+        "cli._run_batch_publish_items",
+        lambda *args, **kwargs: calls.append(("run_batch_publish_items", kwargs.get("settings_overrides"))) or {
+            "success_count": 1,
+            "fail_count": 0,
+            "total_items": 1,
+            "items": [],
+            "completed_count": 1,
+            "failed_indices": [],
+            "progress_file": str(tmp_path / "progress.json"),
+            "workflow_policy": "doc_strict",
+        },
+    )
+    monkeypatch.setattr("cli._read_batch_progress", lambda _path: {"completed_count": 1})
+    monkeypatch.setattr("cli._write_acceptance_summary", lambda _path, _payload: None)
+
+    result = runner.invoke(cli, ["acceptance-run", "--file", str(batch_file)])
+
+    assert result.exit_code == 0
+    assert calls[0] == ("prepare_runtime_services", {"VIDEO_OBSERVER_ENABLED": True})
+    assert calls[1] == ("run_batch_publish_items", {"VIDEO_OBSERVER_ENABLED": True})
 
 
 def test_build_plan_package_keeps_screen_context():
@@ -2170,6 +2347,36 @@ def test_infer_required_product_values_derives_missing_required_fields():
     assert result["unresolved_required_fields"] == []
 
 
+def test_infer_required_product_values_derives_basic_info_attributes_from_socket_title():
+    import actions.form as form_module
+
+    result = form_module._infer_required_product_values(
+        {
+            "title": "公牛（BULL）插座 排插 【8位】总控1.6米（新国标防过载）B5440",
+            "category": "电脑、办公 > 外设产品 > 插座/转换器",
+            "model": "无",
+        },
+        required_visual_fields={
+            "basic_info": [
+                {"field": "socket_config", "label": "孔型配置", "value": ""},
+                {"field": "rated_voltage", "label": "额定电压", "value": ""},
+                {"field": "cable_length", "label": "电缆长度", "value": ""},
+                {"field": "model", "label": "型号", "value": ""},
+            ]
+        },
+    )
+
+    product = result["product"]
+    assert product["socket_config"] == "8位"
+    assert product["rated_voltage"] == "250V"
+    assert product["cable_length"] == "1.6米"
+    assert product["model"] == "B5440"
+    assert product["attributes"]["socket_config"] == "8位"
+    assert product["attributes"]["rated_voltage"] == "250V"
+    assert product["attributes"]["cable_length"] == "1.6米"
+    assert result["unresolved_required_fields"] == []
+
+
 def test_fill_product_info_uses_required_visual_logistics_fields(monkeypatch):
     import actions.form as form_module
 
@@ -2186,7 +2393,7 @@ def test_fill_product_info_uses_required_visual_logistics_fields(monkeypatch):
     monkeypatch.setattr(
         form_module,
         "_fill_required_logistics_fields",
-        lambda product, required_visual_fields=None, locator=None, log=None: (
+        lambda product, required_visual_fields=None, locator=None, log=None, explicit_fields=None: (
             logistics_calls.append((product, required_visual_fields))
             or [{"field": "sales_unit", "success": True, "write_success": True, "verify_success": True}]
         ),
@@ -2210,6 +2417,66 @@ def test_fill_product_info_uses_required_visual_logistics_fields(monkeypatch):
     assert result["sections"]["logistics"]["success"] == 1
     assert logistics_calls[0][0]["sales_unit"] == "个"
     assert logistics_calls[0][0]["packing_list"] == "主体x1"
+
+
+def test_fill_product_info_pushes_inferred_basic_info_attributes_into_supported_attributes(monkeypatch):
+    import actions.form as form_module
+
+    attribute_products = []
+    monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {"field": "title", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_fill_sku_pricing_fields_v3", lambda *args, **kwargs: [])
+    monkeypatch.setattr(
+        form_module,
+        "_fill_brand_field_v2",
+        lambda *args, **kwargs: {"field": "brand", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_model_field_v2",
+        lambda *args, **kwargs: {"field": "model", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_supported_attributes",
+        lambda product, **kwargs: attribute_products.append(product) or [
+            {"field": "socket_config", "success": True, "write_success": True, "verify_success": True},
+            {"field": "rated_voltage", "success": True, "write_success": True, "verify_success": True},
+            {"field": "cable_length", "success": True, "write_success": True, "verify_success": True},
+        ],
+    )
+    monkeypatch.setattr(form_module, "_fill_required_sales_attributes_fields", lambda *args, **kwargs: [])
+    monkeypatch.setattr(form_module, "_fill_required_logistics_fields", lambda *args, **kwargs: [])
+
+    result = form_module.fill_product_info(
+        {
+            "title": "公牛（BULL）插座 排插 【8位】总控1.6米（新国标防过载）B5440",
+            "brand": "公牛",
+            "model": "无",
+            "jd_price": 70,
+        },
+        locator=SimpleNamespace(),
+        required_visual_fields={
+            "basic_info": [
+                {"field": "brand", "label": "品牌", "value": "公牛"},
+                {"field": "model", "label": "型号", "value": ""},
+                {"field": "socket_config", "label": "孔型配置", "value": ""},
+                {"field": "rated_voltage", "label": "额定电压", "value": ""},
+                {"field": "cable_length", "label": "电缆长度", "value": ""},
+            ]
+        },
+    )
+
+    assert result["success"] is True
+    inferred_product = attribute_products[0]
+    assert inferred_product["model"] == "B5440"
+    assert inferred_product["attributes"]["socket_config"] == "8位"
+    assert inferred_product["attributes"]["rated_voltage"] == "250V"
+    assert inferred_product["attributes"]["cable_length"] == "1.6米"
 
 
 def test_dismiss_popup_prefers_uia_button(monkeypatch):
@@ -2760,6 +3027,24 @@ def test_executor_coerces_fill_product_info_precheck_when_state_is_action_name()
     assert result["suggested_action"] == "proceed"
 
 
+def test_executor_coerces_fill_product_info_precheck_when_reason_explicitly_allows_continue():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "error",
+            "reason": "当前屏幕处于商品信息填写流程，商品基本信息区域已加载，因此可安全继续当前步骤。",
+            "current_state": "处于商品基本信息填写步骤",
+            "suggested_action": "fill_product_info",
+        },
+        history=[{"action": "select_category", "success": True}],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+
+
 def test_executor_coerces_navigate_to_precheck_when_already_on_product_form():
     agent = ExecutorAgent()
 
@@ -2893,6 +3178,93 @@ def test_executor_coerces_fill_product_info_postcheck_when_form_is_populated():
     assert result["suggested_action"] == "proceed"
 
 
+def test_executor_blocks_fill_product_info_precheck_on_description_page_text():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "ok",
+            "reason": "商品信息页面空白且可能已跳转至详情页，处于非编辑状态",
+            "current_state": "京东智铺详情页",
+            "suggested_action": "proceed",
+        },
+        history=[{"action": "fill_product_info", "success": True}],
+    )
+
+    assert result["status"] == "error"
+    assert result["suggested_action"] == "recover"
+    assert result["page_state"] == "description_page"
+
+
+def test_executor_blocks_fill_product_info_precheck_on_local_detail_editor(monkeypatch):
+    import agents.executor as executor_module
+
+    class Locator:
+        pass
+
+    agent = ExecutorAgent()
+    agent._locator = Locator()
+    monkeypatch.setattr(
+        executor_module.ExecutorAgent,
+        "_detect_local_page_state",
+        lambda self, action_name="": "description_page" if action_name == "fill_product_info" else "unknown",
+    )
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "error",
+            "reason": "vision uncertain",
+            "current_state": "商品信息页",
+            "suggested_action": "recover",
+        },
+        history=[{"action": "select_category", "success": True}],
+    )
+
+    assert result["status"] == "error"
+    assert result["suggested_action"] == "recover"
+    assert result["page_state"] == "description_page"
+
+
+def test_executor_blocks_fill_product_info_postcheck_on_description_page_text():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_postcheck_for_action(
+        "fill_product_info",
+        {
+            "status": "error",
+            "reason": "京东智铺详情页，当前不是商品信息编辑表单",
+            "current_state": "返回商家后台",
+            "suggested_action": "proceed",
+        },
+        history=[],
+    )
+
+    assert result["status"] == "error"
+    assert result["suggested_action"] == "recover"
+    assert result["page_state"] == "description_page"
+
+
+def test_executor_blocks_fill_product_info_precheck_on_wrong_blank_page():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "ok",
+            "reason": "当前页面空白且处于非编辑状态",
+            "current_state": "空白页面",
+            "suggested_action": "proceed",
+        },
+        history=[{"action": "fill_product_info", "success": True}],
+    )
+
+    assert result["status"] == "error"
+    assert result["suggested_action"] == "recover"
+    assert result["page_state"] == "wrong_blank_page"
+
+
 def test_ensure_basic_info_page_skips_unsafe_click_on_category_page(monkeypatch):
     import actions.form as form_module
 
@@ -2947,6 +3319,219 @@ def test_ensure_basic_info_page_accepts_sku_pricing_context(monkeypatch):
             raise AssertionError("should not click when sku context already confirms page")
 
     assert form_module._ensure_basic_info_page(locator=FakeLocator()) is True
+
+
+def test_ensure_basic_info_page_accepts_positive_markers_even_with_category_residue(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_collect_fill_page_state",
+        lambda **kwargs: {
+            "title_top": False,
+            "product_name_mid": False,
+            "sku_mid": True,
+            "sales_attr_mid": False,
+            "market_mid": True,
+            "jd_mid": False,
+            "category_page": True,
+            "next_button": True,
+            "basic_tab": True,
+        },
+    )
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+
+    class FakeLocator:
+        def click(self, *args, **kwargs):
+            raise AssertionError("should not click when positive product-info markers are already visible")
+
+    assert form_module._ensure_basic_info_page(locator=FakeLocator()) is True
+
+
+def test_is_category_selection_page_rejects_residual_category_markers_when_form_visible(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_collect_fill_page_state",
+        lambda **kwargs: {
+            "title_top": False,
+            "product_name_mid": False,
+            "sku_mid": True,
+            "sales_attr_mid": False,
+            "market_mid": True,
+            "jd_mid": True,
+            "category_page": True,
+            "next_button": True,
+            "basic_tab": True,
+        },
+    )
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+
+    assert form_module._is_category_selection_page(locator=SimpleNamespace()) is False
+
+
+def test_classify_fill_page_state_detects_sku_table_page(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(form_module, "_is_advanced_detail_editor", lambda **kwargs: False)
+    monkeypatch.setattr(
+        form_module,
+        "_collect_fill_page_state",
+        lambda **kwargs: {
+            "title_top": False,
+            "product_name_mid": False,
+            "sku_mid": True,
+            "sales_attr_mid": True,
+            "market_mid": False,
+            "jd_mid": False,
+            "category_page": False,
+            "next_button": False,
+            "basic_tab": True,
+        },
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_collect_price_area_template_state",
+        lambda **kwargs: {
+            "sku_batch_visible": True,
+            "market_input_visible": False,
+            "jd_input_visible": False,
+            "visible_price_row_count": 0,
+            "text_anchors": ["SKU编码"],
+        },
+    )
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+
+    assert form_module._classify_fill_page_state(locator=SimpleNamespace()) == "sku_table_page"
+
+
+def test_classify_fill_page_state_detects_wrong_blank_page(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(form_module, "_is_advanced_detail_editor", lambda **kwargs: False)
+    monkeypatch.setattr(
+        form_module,
+        "_collect_fill_page_state",
+        lambda **kwargs: {
+            "title_top": False,
+            "product_name_mid": False,
+            "sku_mid": False,
+            "sales_attr_mid": False,
+            "market_mid": False,
+            "jd_mid": False,
+            "category_page": False,
+            "next_button": False,
+            "basic_tab": True,
+        },
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_collect_price_area_template_state",
+        lambda **kwargs: {
+            "sku_batch_visible": False,
+            "market_input_visible": False,
+            "jd_input_visible": False,
+            "visible_price_row_count": 0,
+            "text_anchors": [],
+        },
+    )
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+
+    assert form_module._classify_fill_page_state(locator=SimpleNamespace()) == "wrong_blank_page"
+
+
+def test_fill_product_info_does_not_hard_stop_when_form_markers_visible_with_category_residue(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_collect_fill_page_state",
+        lambda **kwargs: {
+            "title_top": False,
+            "product_name_mid": False,
+            "sku_mid": True,
+            "sales_attr_mid": False,
+            "market_mid": True,
+            "jd_mid": True,
+            "category_page": True,
+            "next_button": True,
+            "basic_tab": True,
+        },
+    )
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+    monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {"field": "title", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        form_module,
+        "_fill_sku_pricing_fields_v3",
+        lambda *args, **kwargs: [{"field": "jd_price", "success": True, "write_success": True, "verify_success": True}],
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_brand_field_v2",
+        lambda *args, **kwargs: {"field": "brand", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_model_field_v2",
+        lambda *args, **kwargs: {"field": "model", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_supported_attributes", lambda *args, **kwargs: [])
+    monkeypatch.setattr(form_module, "_fill_required_sales_attributes_fields", lambda *args, **kwargs: [])
+    monkeypatch.setattr(form_module, "_fill_required_logistics_fields", lambda *args, **kwargs: [])
+
+    result = form_module.fill_product_info(
+        {"title": "公牛插座", "brand": "公牛", "model": "B5440", "jd_price": 70},
+        locator=SimpleNamespace(click=lambda *args, **kwargs: True),
+    )
+
+    assert result["success"] is True
+    assert result.get("requires_action") != "select_category"
+
+
+def test_fill_product_info_checks_basic_info_page_before_category_hard_stop(monkeypatch):
+    import actions.form as form_module
+
+    calls = []
+    monkeypatch.setattr(form_module, "_ensure_basic_info_page", lambda **kwargs: calls.append("ensure") or True)
+    monkeypatch.setattr(form_module, "_is_category_selection_page", lambda **kwargs: calls.append("category") or True)
+    monkeypatch.setattr(
+        form_module,
+        "_fill_title_field_v3",
+        lambda *args, **kwargs: {"field": "title", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_procurement_erp_field", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        form_module,
+        "_fill_sku_pricing_fields_v3",
+        lambda *args, **kwargs: [{"field": "jd_price", "success": True, "write_success": True, "verify_success": True}],
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_brand_field_v2",
+        lambda *args, **kwargs: {"field": "brand", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(
+        form_module,
+        "_fill_model_field_v2",
+        lambda *args, **kwargs: {"field": "model", "success": True, "write_success": True, "verify_success": True},
+    )
+    monkeypatch.setattr(form_module, "_fill_supported_attributes", lambda *args, **kwargs: [])
+    monkeypatch.setattr(form_module, "_fill_required_sales_attributes_fields", lambda *args, **kwargs: [])
+    monkeypatch.setattr(form_module, "_fill_required_logistics_fields", lambda *args, **kwargs: [])
+
+    result = form_module.fill_product_info(
+        {"title": "公牛插座", "brand": "公牛", "model": "B5440", "jd_price": 70},
+        locator=SimpleNamespace(click=lambda *args, **kwargs: True),
+    )
+
+    assert result["success"] is True
+    assert calls == ["ensure"]
 
 
 def test_fill_sku_pricing_fields_v3_uses_dynamic_price_centers(monkeypatch):

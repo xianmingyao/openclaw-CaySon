@@ -116,12 +116,12 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 - **解决方案**：generator 模式分批处理
 - **状态**：✅ 已解决
 
-### OpenClaw CVE 漏洞（04-28~04-30）
-- **评分**：72/100
-- **CVE总数**：28个（1 CRITICAL + 6 HIGH + 18 MEDIUM + 3 LOW）
+### OpenClaw CVE 漏洞（04-28~04-30 → 05-09 已修复）
+- **评分**：72/100（04-28）→ 0 CVE（05-09）
+- **CVE总数**：28个（04-28）：1 CRITICAL + 6 HIGH + 18 MEDIUM + 3 LOW
   - **CRITICAL**: GHSA-xh72-v6v9-mwhc（飞书Webhook验证失败开放）
   - **HIGH**: GHSA-xmxx-7p24-h892（Gateway HTTP认证令牌缓存）
-- **状态**：升级至 2026.4.21 ✅（04-30执行）
+- **状态**：升级至 2026.5.5 ✅（05-09确认），0 CVE
 - **供应链风险**：`feishu` / `openclaw-weixin` 插件未锁定版本
 
 ### 京麦自动化 Session 隔离根因（04-28 确认）
@@ -159,10 +159,31 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 
 ## Dream 整合记录（最近）
 
-### 2026-05-12 整合（03:00）
+### 2026-05-13 整合（08:00）
+- 扫描文件：05-06 / 05-07 / 05-08 / 05-09 / 05-10 / 05-11 / 05-12（7个文件）
+- MEMORY.md 更新：
+  1. **OpenClaw CVE状态更新**：升级至 2026.5.5（05-09确认），0 CVE ✅
+  2. **05-12知识库大更新**：5个企业AI/本体Ontology/Zilliz新文件
+     - `Zilliz-Cloud企业知识库完整指南.md`
+     - `企业AI本体Ontology-从工具到Agent的关键.md`（v2/v2.1融合版）
+     - `Agent评测方法论-老傅1024.md`
+     - `Hermes-Agent-7个等级-一蛙AI.md`
+     - `Claude-Code-飞书Agent办公-部署与使用指南.md`
+  3. **Zilliz Milvus同步脚本**：`sync_kb_simple.py`（使用768维向量，id/vector/text/user_id字段）
+  4. **踩坑记录更新**：apify-ultimate-scraper安全扫描仍待处理
+
+### 2026-05-12 知识库大更新（10:00~12:05）
+- Zilliz-Cloud企业知识库完整指南写入KB
+- 企业AI本体Ontology v2.0/v2.1融合版（工具→知识库→RAG→本体化→Agent五阶段闭环）
+- Claude Code飞书Agent办公指南（微信公众号）
+- Milvus同步：60条记录（768维向量，text[:4000]限制）
+- Mem0/ChromaDB：63条记录同步
+- 第67集内容（企业AI Agent七层架构）→ Milvus 11 sections
+
+### 2026-05-12 整合（03:00，原记录）
 - 扫描文件：05-11 / 05-12（2个文件）
-- MEMORY.md：无新增（纯运维日志）
-- 主要发现：continuous-ingest 稳定运行（每5分钟0文件），安全扫描发现Feishu群组高危配置
+- MEMORY.md：无新增（当时误判为纯运维日志）
+- 主要发现：continuous-ingest 稳定运行，安全扫描发现Feishu群组高危配置
 
 ### 2026-05-11 安全扫描发现（07:52）
 - Feishu 群组 groupPolicy=open + elevated tools（高危）

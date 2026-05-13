@@ -1051,6 +1051,12 @@ class ExecutorAgent(BaseAgent):
             if action_name in {"publish_product", "verify_result"}:
                 return [wait_action, window_action]
 
+        if page_state == "sku_table_page":
+            if action_name == "fill_product_info":
+                return [wait_action]
+            if action_name in {"publish_product", "verify_result"}:
+                return [wait_action, window_action]
+
         if page_state == "description_page":
             if action_name == "fill_product_info":
                 actions = [window_action, {"type": "navigate_to", "page": "publish"}]
@@ -1059,6 +1065,14 @@ class ExecutorAgent(BaseAgent):
                 return actions
             if action_name in {"publish_product", "verify_result"}:
                 return [wait_action, window_action]
+
+        if page_state == "wrong_blank_page":
+            actions = [window_action, {"type": "refresh_page", "mode": "hard"}, {"type": "opencli_state_probe", "reason": "wrong_blank_page"}]
+            if action_name not in {"find_window", "activate_window", "navigate_to"}:
+                actions.append({"type": "navigate_to", "page": "publish"})
+            if action_name in {"fill_product_info", "fill_product_description", "publish_product", "verify_result"} and category:
+                actions.append({"type": "select_category", "search_text": category})
+            return actions
 
         if page_state == "publish_confirm_page":
             if action_name in {"verify_result", "publish_product"}:
@@ -1257,6 +1271,22 @@ class ExecutorAgent(BaseAgent):
             return "product_info_page"
         if any(marker in text for marker in ("商品列表", "工作台", "草稿列表", "搜索结果", "列表页")):
             return "product_list_page"
+        if any(
+            marker in text
+            for marker in (
+                "sku属性",
+                "销售属性",
+                "批量导入",
+                "批量应用",
+                "默认全部sku",
+                "市场价",
+                "京东价",
+                "采购价",
+                "sku表格",
+                "价格区域已显示",
+            )
+        ):
+            return "sku_table_page"
         if (
             any(marker in text for marker in ("商品信息填写", "商品信息页", "商品基本信息页", "商品信息填写内容"))
             and not any(marker in text for marker in ("类目选择区域", "未显示类目选择区域", "仍在类目选择页"))
@@ -1266,6 +1296,8 @@ class ExecutorAgent(BaseAgent):
             return "category_page"
         if any(marker in text for marker in ("商品描述", "商详", "图文编辑", "代码编辑", "高级编辑模式")):
             return "description_page"
+        if any(marker in text for marker in ("空白且可能已跳转至详情页", "非编辑状态", "空白表单", "空白页面")):
+            return "wrong_blank_page"
         if any(marker in text for marker in ("继续发布", "采销审核", "发布成功", "提交成功")):
             return "publish_confirm_page"
         if any(marker in text for marker in ("商品标题", "品牌", "价格", "商品信息", "发布商品", "商品基本信息")):
@@ -1273,6 +1305,43 @@ class ExecutorAgent(BaseAgent):
         if action_name == "fill_product_description":
             return "description_page"
         return "unknown"
+
+    def _detect_local_page_state(self, action_name: str = "") -> str:
+        if self._locator is None:
+            return "unknown"
+        try:
+            if action_name in {"fill_product_info", "fill_product_description", "publish_product"}:
+                from actions.form import _classify_fill_page_state
+
+                return _classify_fill_page_state(locator=self._locator, log=self._logger)
+        except Exception:
+            pass
+        return "unknown"
+
+    @staticmethod
+    def _observation_indicates_description_page(observation: Optional[Dict[str, Any]]) -> bool:
+        if not isinstance(observation, dict):
+            return False
+        joined = "\n".join(
+            [
+                str(observation.get("reason", "") or ""),
+                str(observation.get("current_state", "") or ""),
+                str(observation.get("suggested_action", "") or ""),
+            ]
+        )
+        markers = (
+            "京东智铺",
+            "返回商家后台",
+            "详情页",
+            "跳转至详情页",
+            "已跳转至详情页",
+            "非编辑状态",
+            "图文编辑",
+            "代码编辑",
+            "高级编辑模式",
+            "空白且可能已跳转至详情页",
+        )
+        return any(marker in joined for marker in markers)
 
     def _vision_query(self, prompt: str, screenshot_path: str) -> Optional[Dict[str, Any]]:
         extra_paths = self._extra_visual_paths_from_primary(screenshot_path)
@@ -1423,9 +1492,9 @@ class ExecutorAgent(BaseAgent):
     @staticmethod
     def _probe_page_state_accepts_action(action_name: str, page_state: str) -> bool:
         acceptable = {
-            "navigate_to": {"category_page", "product_info_page", "description_page", "publish_confirm_page"},
-            "select_category": {"category_page", "product_info_page", "description_page"},
-            "fill_product_info": {"product_info_page", "description_page", "publish_confirm_page"},
+            "navigate_to": {"category_page", "product_info_page", "sku_table_page", "description_page", "publish_confirm_page"},
+            "select_category": {"category_page", "product_info_page", "sku_table_page", "description_page"},
+            "fill_product_info": {"product_info_page", "sku_table_page", "publish_confirm_page"},
             "publish_product": {"product_info_page", "description_page", "publish_confirm_page"},
         }
         return page_state in acceptable.get(action_name, set())
@@ -1439,6 +1508,35 @@ class ExecutorAgent(BaseAgent):
     ) -> Optional[Dict[str, Any]]:
         if not isinstance(observation, dict):
             return observation
+
+        if action_name == "fill_product_info":
+            local_page_state = self._detect_local_page_state(action_name=action_name)
+            observed_page_state = self._detect_page_state(observation, action_name=action_name)
+            if local_page_state in {"description_page", "wrong_blank_page"}:
+                normalized = dict(observation)
+                normalized["status"] = "error"
+                normalized["suggested_action"] = "recover"
+                normalized["page_state"] = local_page_state
+                normalized["reason"] = (
+                    "fill_product_info blocked: current page is advanced detail editor, must return to merchant backend first"
+                    if local_page_state == "description_page"
+                    else "fill_product_info blocked: current page is blank/non-editing state, should recover before retry"
+                )
+                return self._apply_doc_strict_guard(action_name, step, normalized, stage="precheck")
+            if observed_page_state == "wrong_blank_page":
+                normalized = dict(observation)
+                normalized["status"] = "error"
+                normalized["suggested_action"] = "recover"
+                normalized["page_state"] = "wrong_blank_page"
+                normalized["reason"] = "fill_product_info blocked: observation indicates blank/non-editing state"
+                return self._apply_doc_strict_guard(action_name, step, normalized, stage="precheck")
+            if self._observation_indicates_description_page(observation):
+                normalized = dict(observation)
+                normalized["status"] = "error"
+                normalized["suggested_action"] = "recover"
+                normalized["page_state"] = "description_page"
+                normalized["reason"] = "fill_product_info blocked: current page is advanced detail editor, must return to merchant backend first"
+                return self._apply_doc_strict_guard(action_name, step, normalized, stage="precheck")
 
         if action_name not in {"find_window", "activate_window", "navigate_to", "fill_product_info", "publish_product"}:
             return self._apply_doc_strict_guard(action_name, step, observation, stage="precheck")
@@ -1570,23 +1668,37 @@ class ExecutorAgent(BaseAgent):
             normalized["reason"] = "仍在发品表单页，允许 fill_product_info 继续执行以修复字段状态"
             return normalized
 
+        if action_name == "fill_product_info" and any(
+            marker in joined
+            for marker in (
+                "可安全继续当前步骤",
+                "可以安全继续当前步骤",
+                "可继续当前步骤",
+                "商品基本信息区域已加载",
+                "处于商品基本信息填写步骤",
+                "商品信息填写中",
+                "商品基本信息填写阶段",
+            )
+        ):
+            normalized = dict(observation)
+            normalized["status"] = "ok"
+            normalized["suggested_action"] = "proceed"
+            normalized["reason"] = "vision precheck explicitly confirms fill_product_info can continue on current form"
+            return normalized
+
         if action_name == "fill_product_info" and self._locator is not None:
             try:
-                from actions.form import _collect_fill_page_state
+                from actions.form import _classify_fill_page_state
 
-                local_fill_state = _collect_fill_page_state(locator=self._locator, log=self._logger)
+                local_fill_state = _classify_fill_page_state(locator=self._locator, log=self._logger)
             except Exception:
-                local_fill_state = {}
-            if (
-                isinstance(local_fill_state, dict)
-                and local_fill_state.get("basic_tab")
-                and not local_fill_state.get("category_page")
-            ):
+                local_fill_state = "unknown"
+            if local_fill_state in {"product_info_page", "sku_table_page"}:
                 normalized = dict(observation)
                 normalized["status"] = "ok"
                 normalized["suggested_action"] = "proceed"
-                normalized["page_state"] = "product_info_page"
-                normalized["reason"] = "local fill-page probe accepted basic info context for fill_product_info"
+                normalized["page_state"] = local_fill_state
+                normalized["reason"] = f"local fill-page probe accepted context for fill_product_info: {local_fill_state}"
                 return normalized
 
         if action_name == "publish_product":
@@ -1622,6 +1734,34 @@ class ExecutorAgent(BaseAgent):
     ) -> Optional[Dict[str, Any]]:
         if not isinstance(observation, dict):
             return observation
+        if action_name == "fill_product_info":
+            local_page_state = self._detect_local_page_state(action_name=action_name)
+            observed_page_state = self._detect_page_state(observation, action_name=action_name)
+            if local_page_state in {"description_page", "wrong_blank_page"}:
+                normalized = dict(observation)
+                normalized["status"] = "error"
+                normalized["suggested_action"] = "recover"
+                normalized["page_state"] = local_page_state
+                normalized["reason"] = (
+                    "fill_product_info postcheck detected advanced detail editor; should return to merchant backend before retry"
+                    if local_page_state == "description_page"
+                    else "fill_product_info postcheck detected blank/non-editing state; should recover before retry"
+                )
+                return self._apply_doc_strict_guard(action_name, step, normalized, stage="postcheck")
+            if observed_page_state == "wrong_blank_page":
+                normalized = dict(observation)
+                normalized["status"] = "error"
+                normalized["suggested_action"] = "recover"
+                normalized["page_state"] = "wrong_blank_page"
+                normalized["reason"] = "fill_product_info postcheck detected blank/non-editing state"
+                return self._apply_doc_strict_guard(action_name, step, normalized, stage="postcheck")
+            if self._observation_indicates_description_page(observation):
+                normalized = dict(observation)
+                normalized["status"] = "error"
+                normalized["suggested_action"] = "recover"
+                normalized["page_state"] = "description_page"
+                normalized["reason"] = "fill_product_info postcheck detected advanced detail editor; should return to merchant backend before retry"
+                return self._apply_doc_strict_guard(action_name, step, normalized, stage="postcheck")
         if action_name not in {"select_category", "fill_product_info"}:
             return self._apply_doc_strict_guard(action_name, step, observation, stage="postcheck")
         if str(observation.get("status", "unknown") or "unknown").lower() != "error":
@@ -1807,7 +1947,7 @@ class ExecutorAgent(BaseAgent):
                     if state not in expanded:
                         expanded.append(state)
             if action_name == "fill_product_info":
-                for state in ("product_info_page", "description_page", "publish_confirm_page"):
+                for state in ("product_info_page", "sku_table_page", "publish_confirm_page"):
                     if state not in expanded:
                         expanded.append(state)
             if action_name == "publish_product":
@@ -1825,7 +1965,7 @@ class ExecutorAgent(BaseAgent):
                     if state not in expanded:
                         expanded.append(state)
             if action_name == "fill_product_info":
-                for state in ("product_info_page", "description_page", "publish_confirm_page"):
+                for state in ("product_info_page", "sku_table_page", "publish_confirm_page"):
                     if state not in expanded:
                         expanded.append(state)
         return expanded
@@ -1848,7 +1988,7 @@ class ExecutorAgent(BaseAgent):
             ("select_category", "precheck", "product_info_page"),
             ("select_category", "precheck", "description_page"),
             ("fill_product_info", "precheck", "product_info_page"),
-            ("fill_product_info", "precheck", "description_page"),
+            ("fill_product_info", "precheck", "sku_table_page"),
             ("fill_product_info", "precheck", "publish_confirm_page"),
             ("publish_product", "precheck", "product_info_page"),
             ("publish_product", "precheck", "description_page"),
@@ -1859,8 +1999,9 @@ class ExecutorAgent(BaseAgent):
             ("navigate_to", "postcheck", "publish_confirm_page"),
             ("select_category", "postcheck", "category_page"),
             ("select_category", "postcheck", "product_info_page"),
+            ("select_category", "postcheck", "sku_table_page"),
             ("select_category", "postcheck", "description_page"),
-            ("fill_product_info", "postcheck", "description_page"),
+            ("fill_product_info", "postcheck", "sku_table_page"),
             ("fill_product_info", "postcheck", "publish_confirm_page"),
         }
 

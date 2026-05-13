@@ -1,0 +1,420 @@
+﻿[2026-05-13 02:41:59] [INFO] [Planner] 规划任务 06f71380: 公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/
+[2026-05-13 02:41:59] [INFO] [Planner] doc_strict 强约束已启用，使用文档模板规划，共 8 步
+[2026-05-13 02:42:00] [INFO] [Executor] 开始 ReAct 执行循环，8 个步骤
+[2026-05-13 02:42:00] [INFO] [Executor] 断点续跑: 跳过前 4 步，从步骤 5 开始
+[2026-05-13 02:42:00] [INFO] [Executor] 续跑预检恢复: 在重跑 fill_product_info 前先恢复窗口上下文
+[2026-05-13 02:42:00] [INFO] 查找京麦窗口...
+[2026-05-13 02:42:00] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-13 02:42:00] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 02:42:00] [INFO] [Executor] 窗口恢复成功(resume-preflight): hwnd=110433078
+[2026-05-13 02:42:00] [INFO] [Executor] --- 步骤 5/8: fill_product_info ---
+[2026-05-13 02:42:00] [INFO] 查找京麦窗口...
+[2026-05-13 02:42:09] [INFO] [Executor] 步骤 5 precheck: status=ok state=商品基本信息填写中，价格区域已显示 suggested=proceed
+[2026-05-13 02:42:09] [DEBUG] [Executor] 执行参数 fill_product_info: {'doc_sections': ['商品信息', '商品基本信息', '采销信息', '价格', '商品属性', '物流售后及其他', '商品物流', '商品售后及其他'], 'product': {'business_line': '慧采', 'title': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440', 'brand': '公牛', 'model': '无', 'length_mm': 250, 'width_mm': 76, 'height_mm': 29, 'weight_kg': 0.5, 'unit': '个', 'jd_price': 70, 'url': 'https://item.jd.com/16793098028.html', 'notes': '数量：2', 'price': 70, 'market_price': 70, 'source_meta': {'source_file': 'E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx', 'sheet_name': '上架模板', 'row_index': 4, 'workflow_doc': 'E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx', 'template_features': {'sheet_name': '上架模板', 'recognized_headers': ['business_line', 'title', 'brand', 'model', 'length_mm', 'width_mm', 'height_mm', 'weight_kg', 'unit', 'jd_price', 'url', 'qualification_files', 'summary', 'notes'], 'raw_headers': ['上架序号', '申请业务（自营/慧采）', '商品名称（对应京东开票内容）', '品牌', '商品型号', '长（mm）', '宽（mm）', '高（mm）', '重(KG）', '单位  （对应进项发票单位规格）', '京东挂网价（下单金额）', '只能读取京东链接（无链接请通过其他方式新增商品）', '商品资质（PDF格式）', '商品简述（有特殊参数要求可以填）', '备注（特殊要求）'], 'signals': []}, 'publish_mode': 'single', 'publish_mode_reason': 'single_row_standard_listing', 'item_index': 1, 'total_items': 1}, 'product_id': '16793098028', 'category': '电脑、办公 > 外设产品 > 插座/转换器', 'description': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】', 'description_images': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg'], 'images': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_10.jpg'], 'jd_url': 'https://item.jd.com/16793098028.html', 'publish_mode': 'single'}, 'required_visual_fields': {'pricing': [{'field': 'market_price', 'label': '市场价', 'value': 70}, {'field': 'jd_price', 'label': '京东价', 'value': 70}, {'field': 'purchase_price', 'label': '采购价', 'value': ''}], 'basic_info': [{'field': 'brand', 'label': '品牌', 'value': '公牛'}, {'field': 'model', 'label': '型号', 'value': '无'}, {'field': 'socket_config', 'label': '孔型配置', 'value': ''}, {'field': 'rated_voltage', 'label': '额定电压', 'value': ''}, {'field': 'cable_length', 'label': '电缆长度', 'value': ''}, {'field': 'procurement_erp', 'label': '采购ERP编码', 'value': ''}], 'sales_attributes': [{'field': 'current', 'label': '电流', 'value': ''}, {'field': 'rated_voltage', 'label': '电压', 'value': ''}, {'field': 'lead_time', 'label': '货期', 'value': ''}, {'field': 'sku_image', 'label': '图片设置', 'value': ''}], 'description': [{'field': 'detail_content', 'label': '商品详情', 'value': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】'}, {'field': 'description_images', 'label': '详情图片', 'value': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg']}], 'logistics': [{'field': 'shelf_life_days', 'label': '保质期（天）', 'value': ''}, {'field': 'sales_unit', 'label': '销售单位', 'value': '个'}, {'field': 'package_spec', 'label': '包装规格', 'value': ''}, {'field': 'package_spec_unit', 'label': '包装规格单位', 'value': ''}, {'field': 'package_type', 'label': '商品包装', 'value': ''}, {'field': 'special_delivery_mark', 'label': '特殊发货时效标记', 'value': ''}, {'field': 'hazardous_goods', 'label': '是否危险商品', 'value': ''}, {'field': 'packing_list', 'label': '包装清单', 'value': '数量：2'}, {'field': 'warranty_period', 'label': '质保期', 'value': ''}]}, 'publish_mode': 'single'}
+[2026-05-13 02:42:12] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:42:17] [DEBUG] LLM coords (329,358) -> ref (833,906) using plan=1011x550
+[2026-05-13 02:42:17] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=833 mapped_y=906
+[2026-05-13 02:42:19] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:42:29] [DEBUG] LLM coords (254,265) -> ref (643,670) using plan=1011x550
+[2026-05-13 02:42:29] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=643 mapped_y=670
+[2026-05-13 02:42:31] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:42:40] [DEBUG] LLM coords (264,215) -> ref (668,544) using plan=1011x550
+[2026-05-13 02:42:40] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=668 mapped_y=544
+[2026-05-13 02:42:43] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:42:48] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:42:48] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:42:54] [DEBUG] LLM coords (241,255) -> ref (610,645) using plan=1011x550
+[2026-05-13 02:42:54] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=610 mapped_y=645
+[2026-05-13 02:42:57] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:43:04] [DEBUG] LLM coords (256,184) -> ref (648,465) using plan=1011x550
+[2026-05-13 02:43:04] [DEBUG] [vision-click] target=商品名称 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=648 mapped_y=465
+[2026-05-13 02:43:07] [DEBUG] [vision-scroll] anchor clicked by vision: 商品名称
+[2026-05-13 02:43:07] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:43:07] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:43:10] [DEBUG] [fill_product_info] sku scrollbar reset by click-track
+[2026-05-13 02:43:10] [DEBUG] [fill_product_info] fill sku product name
+[2026-05-13 02:43:10] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:43:26] [DEBUG] LLM coords (489,171) -> ref (1238,432) using plan=1011x550
+[2026-05-13 02:43:26] [DEBUG] [vision-click] target=品牌 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1238 mapped_y=432
+[2026-05-13 02:43:28] [DEBUG] [vision-scroll] anchor clicked by vision: 品牌
+[2026-05-13 02:43:41] [DEBUG] LLM coords (254,526) -> ref (643,1331) using plan=1011x550
+[2026-05-13 02:43:41] [DEBUG] [vision-click] target=销售属性 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=643 mapped_y=1331
+[2026-05-13 02:43:44] [DEBUG] [vision-scroll] anchor clicked by vision: 销售属性
+[2026-05-13 02:43:44] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:43:44] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:43:48] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:43:51] [DEBUG] [fill_product_info] context stage=price-round-1-after-basic-restore page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:43:51] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:43:56] [DEBUG] LLM coords (243,153) -> ref (615,387) using plan=1011x550
+[2026-05-13 02:43:56] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=615 mapped_y=387
+[2026-05-13 02:43:58] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:44:05] [DEBUG] LLM coords (285,124) -> ref (721,313) using plan=1011x550
+[2026-05-13 02:44:05] [DEBUG] [vision-click] target=商品名称 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=721 mapped_y=313
+[2026-05-13 02:44:08] [DEBUG] [vision-scroll] anchor clicked by vision: 商品名称
+[2026-05-13 02:44:08] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:44:09] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:44:12] [DEBUG] [fill_product_info] context stage=price-round-1-after-sku-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:44:12] [DEBUG] [fill_product_info] scroll to price fields: step=1 delta=-420
+[2026-05-13 02:44:12] [DEBUG] [fill_product_info] scroll to price fields: step=2 delta=-420
+[2026-05-13 02:44:13] [DEBUG] [fill_product_info] scroll to price fields: step=3 delta=-420
+[2026-05-13 02:44:15] [DEBUG] [fill_product_info] context stage=price-round-1-after-price-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:44:21] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:44:24] [DEBUG] [fill_product_info] context stage=price-round-1-step-1 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:44:30] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:44:33] [DEBUG] [fill_product_info] context stage=price-round-1-step-2 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:44:38] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:44:40] [DEBUG] [fill_product_info] context stage=price-round-1-step-3 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[[628, 1067, 988, 1100], [1428, 1067, 1788, 1100]]
+[2026-05-13 02:44:46] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=True jd_input=True sku_batch=False
+[2026-05-13 02:44:46] [DEBUG] [fill_product_info] price area visible after round=1 step=3
+[2026-05-13 02:44:49] [DEBUG] [fill_product_info] sku scrollbar shift right by click-track title=False market=False jd=False
+[2026-05-13 02:44:51] [DEBUG] [fill_product_info] purchase_price target not found, skip optional derived field
+[2026-05-13 02:44:58] [DEBUG] LLM coords (276,152) -> ref (698,384) using plan=1011x550
+[2026-05-13 02:44:58] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=698 mapped_y=384
+[2026-05-13 02:45:01] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:45:30] [DEBUG] LLM coords (286,172) -> ref (724,435) using plan=1011x550
+[2026-05-13 02:45:30] [DEBUG] [vision-click] target=销售属性 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=724 mapped_y=435
+[2026-05-13 02:45:32] [DEBUG] [vision-scroll] anchor clicked by vision: 销售属性
+[2026-05-13 02:45:41] [DEBUG] LLM coords (226,540) -> ref (572,1366) using plan=1011x550
+[2026-05-13 02:45:41] [DEBUG] [vision-click] target=销售单位 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=572 mapped_y=1366
+[2026-05-13 02:45:44] [DEBUG] [vision-scroll] anchor clicked by vision: 销售单位
+[2026-05-13 02:45:58] [DEBUG] [ActionHook] fill_product_info took 228.55s
+[2026-05-13 02:45:58] [INFO] 查找京麦窗口...
+[2026-05-13 02:45:59] [WARNING] [Executor] Step 5 action failed (retry 1/3): Some product fields failed verification: current, rated_voltage (sections: sales_attributes)
+[2026-05-13 02:45:59] [INFO] [Executor] 步骤 5 恢复动作: wait 1.5s
+[2026-05-13 02:46:01] [INFO] 查找京麦窗口...
+[2026-05-13 02:46:01] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 02:46:01] [INFO] [Executor] 窗口恢复成功(matrix-recover): hwnd=110433078
+[2026-05-13 02:46:01] [INFO] [Executor] 步骤 5 恢复动作: refresh_page {'mode': 'soft'}
+[2026-05-13 02:46:02] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 02:46:03] [DEBUG] [ActionHook] refresh_page took 2.15s
+[2026-05-13 02:46:19] [WARNING] [Executor] 步骤 5 恢复矩阵执行失败: action_execution_error 当前屏幕显示的是商品发布流程的第5步（商品信息 / 物流售后及其他），根据截图分析：1. 界面清晰展示了商品基本信息区域（含品牌、价格等字段）2. 顶部有明确的步骤导航（Format 2/4等）3. 当前处于需要填写商品信息的页面，且视觉上已定位到价格区域 4. 未发现登录失效、系统错误等异常状态 5. 按照文档要求，已处于需要填写商品基本信息、价格等字段的阶段，可以安全继续。可以确认当前处于填写价格等字段的环节，但需要先确认商品基本信息和价格区域是否完整可见（根据截图，商品基本信息区域和价格区域都可见）。
+[2026-05-13 02:46:19] [INFO] 查找京麦窗口...
+[2026-05-13 02:46:19] [INFO] [Executor] 重试 [2/3]: 等待 2.3s 后重试
+[2026-05-13 02:46:25] [INFO] [Executor] 步骤 5 precheck: status=ok state=填写商品基本信息与价格阶段 suggested=proceed
+[2026-05-13 02:46:25] [DEBUG] [Executor] 执行参数 fill_product_info: {'doc_sections': ['商品信息', '商品基本信息', '采销信息', '价格', '商品属性', '物流售后及其他', '商品物流', '商品售后及其他'], 'product': {'business_line': '慧采', 'title': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440', 'brand': '公牛', 'model': '无', 'length_mm': 250, 'width_mm': 76, 'height_mm': 29, 'weight_kg': 0.5, 'unit': '个', 'jd_price': 70, 'url': 'https://item.jd.com/16793098028.html', 'notes': '数量：2', 'price': 70, 'market_price': 70, 'source_meta': {'source_file': 'E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx', 'sheet_name': '上架模板', 'row_index': 4, 'workflow_doc': 'E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx', 'template_features': {'sheet_name': '上架模板', 'recognized_headers': ['business_line', 'title', 'brand', 'model', 'length_mm', 'width_mm', 'height_mm', 'weight_kg', 'unit', 'jd_price', 'url', 'qualification_files', 'summary', 'notes'], 'raw_headers': ['上架序号', '申请业务（自营/慧采）', '商品名称（对应京东开票内容）', '品牌', '商品型号', '长（mm）', '宽（mm）', '高（mm）', '重(KG）', '单位  （对应进项发票单位规格）', '京东挂网价（下单金额）', '只能读取京东链接（无链接请通过其他方式新增商品）', '商品资质（PDF格式）', '商品简述（有特殊参数要求可以填）', '备注（特殊要求）'], 'signals': []}, 'publish_mode': 'single', 'publish_mode_reason': 'single_row_standard_listing', 'item_index': 1, 'total_items': 1}, 'product_id': '16793098028', 'category': '电脑、办公 > 外设产品 > 插座/转换器', 'description': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】', 'description_images': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg'], 'images': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_10.jpg'], 'jd_url': 'https://item.jd.com/16793098028.html', 'publish_mode': 'single'}, 'required_visual_fields': {'pricing': [{'field': 'market_price', 'label': '市场价', 'value': 70}, {'field': 'jd_price', 'label': '京东价', 'value': 70}, {'field': 'purchase_price', 'label': '采购价', 'value': ''}], 'basic_info': [{'field': 'brand', 'label': '品牌', 'value': '公牛'}, {'field': 'model', 'label': '型号', 'value': '无'}, {'field': 'socket_config', 'label': '孔型配置', 'value': ''}, {'field': 'rated_voltage', 'label': '额定电压', 'value': ''}, {'field': 'cable_length', 'label': '电缆长度', 'value': ''}, {'field': 'procurement_erp', 'label': '采购ERP编码', 'value': ''}], 'sales_attributes': [{'field': 'current', 'label': '电流', 'value': ''}, {'field': 'rated_voltage', 'label': '电压', 'value': ''}, {'field': 'lead_time', 'label': '货期', 'value': ''}, {'field': 'sku_image', 'label': '图片设置', 'value': ''}], 'description': [{'field': 'detail_content', 'label': '商品详情', 'value': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】'}, {'field': 'description_images', 'label': '详情图片', 'value': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg']}], 'logistics': [{'field': 'shelf_life_days', 'label': '保质期（天）', 'value': ''}, {'field': 'sales_unit', 'label': '销售单位', 'value': '个'}, {'field': 'package_spec', 'label': '包装规格', 'value': ''}, {'field': 'package_spec_unit', 'label': '包装规格单位', 'value': ''}, {'field': 'package_type', 'label': '商品包装', 'value': ''}, {'field': 'special_delivery_mark', 'label': '特殊发货时效标记', 'value': ''}, {'field': 'hazardous_goods', 'label': '是否危险商品', 'value': ''}, {'field': 'packing_list', 'label': '包装清单', 'value': '数量：2'}, {'field': 'warranty_period', 'label': '质保期', 'value': ''}]}, 'publish_mode': 'single'}
+[2026-05-13 02:46:27] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:46:32] [DEBUG] LLM coords (242,177) -> ref (612,447) using plan=1011x550
+[2026-05-13 02:46:32] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=612 mapped_y=447
+[2026-05-13 02:46:35] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:46:44] [DEBUG] LLM coords (263,201) -> ref (665,508) using plan=1011x550
+[2026-05-13 02:46:44] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=665 mapped_y=508
+[2026-05-13 02:46:46] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:46:56] [DEBUG] LLM coords (259,233) -> ref (655,589) using plan=1011x550
+[2026-05-13 02:46:56] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=655 mapped_y=589
+[2026-05-13 02:46:59] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:47:04] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:47:04] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:47:09] [DEBUG] LLM coords (295,188) -> ref (746,475) using plan=1011x550
+[2026-05-13 02:47:09] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=746 mapped_y=475
+[2026-05-13 02:47:12] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:47:19] [DEBUG] LLM coords (348,323) -> ref (881,817) using plan=1011x550
+[2026-05-13 02:47:19] [DEBUG] [vision-click] target=商品名称 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=881 mapped_y=817
+[2026-05-13 02:47:21] [DEBUG] [vision-scroll] anchor clicked by vision: 商品名称
+[2026-05-13 02:47:22] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:47:22] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:47:25] [DEBUG] [fill_product_info] sku scrollbar reset by click-track
+[2026-05-13 02:47:25] [DEBUG] [fill_product_info] fill sku product name
+[2026-05-13 02:47:25] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:47:35] [DEBUG] LLM coords (334,287) -> ref (845,726) using plan=1011x550
+[2026-05-13 02:47:35] [DEBUG] [vision-click] target=商品基本信息 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=845 mapped_y=726
+[2026-05-13 02:47:37] [DEBUG] [vision-scroll] anchor clicked by vision: 商品基本信息
+[2026-05-13 02:48:01] [DEBUG] LLM coords (415,195) -> ref (1050,493) using plan=1011x550
+[2026-05-13 02:48:01] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1050 mapped_y=493
+[2026-05-13 02:48:03] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:48:04] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:48:04] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:48:08] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:48:12] [DEBUG] [fill_product_info] context stage=price-round-1-after-basic-restore page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:48:12] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:48:28] [DEBUG] LLM coords (421,227) -> ref (1066,574) using plan=1011x550
+[2026-05-13 02:48:28] [DEBUG] [vision-click] target=品牌 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1066 mapped_y=574
+[2026-05-13 02:48:31] [DEBUG] [vision-scroll] anchor clicked by vision: 品牌
+[2026-05-13 02:48:43] [DEBUG] LLM coords (501,296) -> ref (1268,749) using plan=1011x550
+[2026-05-13 02:48:43] [DEBUG] [vision-click] target=销售属性 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1268 mapped_y=749
+[2026-05-13 02:48:46] [DEBUG] [vision-scroll] anchor clicked by vision: 销售属性
+[2026-05-13 02:48:46] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:48:46] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:48:50] [DEBUG] [fill_product_info] context stage=price-round-1-after-sku-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:48:50] [DEBUG] [fill_product_info] scroll to price fields: step=1 delta=-420
+[2026-05-13 02:48:50] [DEBUG] [fill_product_info] scroll to price fields: step=2 delta=-420
+[2026-05-13 02:48:51] [DEBUG] [fill_product_info] scroll to price fields: step=3 delta=-420
+[2026-05-13 02:48:54] [DEBUG] [fill_product_info] context stage=price-round-1-after-price-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:49:01] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:49:04] [DEBUG] [fill_product_info] context stage=price-round-1-step-1 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:49:10] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:49:14] [DEBUG] [fill_product_info] context stage=price-round-1-step-2 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:49:21] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:49:25] [DEBUG] [fill_product_info] context stage=price-round-1-step-3 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:49:31] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:49:34] [DEBUG] [fill_product_info] context stage=price-round-1-step-4 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:49:40] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:49:44] [DEBUG] [fill_product_info] context stage=price-round-1-step-5 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:49:50] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:49:53] [DEBUG] [fill_product_info] context stage=price-round-1-step-6 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:49:59] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:50:01] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:50:04] [DEBUG] [fill_product_info] context stage=price-round-2-after-basic-restore page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:50:04] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:50:15] [DEBUG] LLM coords (497,160) -> ref (1258,404) using plan=1011x550
+[2026-05-13 02:50:15] [DEBUG] [vision-click] target=商品基本信息 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1258 mapped_y=404
+[2026-05-13 02:50:18] [DEBUG] [vision-scroll] anchor clicked by vision: 商品基本信息
+[2026-05-13 02:50:31] [DEBUG] LLM coords (479,295) -> ref (1212,746) using plan=1011x550
+[2026-05-13 02:50:31] [DEBUG] [vision-click] target=销售属性 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1212 mapped_y=746
+[2026-05-13 02:50:34] [DEBUG] [vision-scroll] anchor clicked by vision: 销售属性
+[2026-05-13 02:50:34] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:50:34] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:50:38] [DEBUG] [fill_product_info] context stage=price-round-2-after-sku-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:50:38] [DEBUG] [fill_product_info] scroll to price fields: step=1 delta=-420
+[2026-05-13 02:50:39] [DEBUG] [fill_product_info] scroll to price fields: step=2 delta=-420
+[2026-05-13 02:50:39] [DEBUG] [fill_product_info] scroll to price fields: step=3 delta=-420
+[2026-05-13 02:50:43] [DEBUG] [fill_product_info] context stage=price-round-2-after-price-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:50:49] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:50:52] [DEBUG] [fill_product_info] context stage=price-round-2-step-1 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:50:58] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:51:02] [DEBUG] [fill_product_info] context stage=price-round-2-step-2 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:51:08] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:51:11] [DEBUG] [fill_product_info] context stage=price-round-2-step-3 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:51:17] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:51:21] [DEBUG] [fill_product_info] context stage=price-round-2-step-4 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:51:27] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:51:30] [DEBUG] [fill_product_info] context stage=price-round-2-step-5 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:51:36] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:51:40] [DEBUG] [fill_product_info] context stage=price-round-2-step-6 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:51:46] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:51:48] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:51:51] [DEBUG] [fill_product_info] context stage=price-round-3-after-basic-restore page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:51:51] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:52:02] [DEBUG] LLM coords (385,156) -> ref (974,394) using plan=1011x550
+[2026-05-13 02:52:02] [DEBUG] [vision-click] target=商品基本信息 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=974 mapped_y=394
+[2026-05-13 02:52:04] [DEBUG] [vision-scroll] anchor clicked by vision: 商品基本信息
+[2026-05-13 02:52:28] [DEBUG] LLM coords (523,775) -> ref (1324,1961) using plan=1011x550
+[2026-05-13 02:52:28] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1324 mapped_y=1961
+[2026-05-13 02:52:30] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:52:31] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:52:31] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:52:35] [DEBUG] [fill_product_info] context stage=price-round-3-after-sku-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:52:35] [DEBUG] [fill_product_info] scroll to price fields: step=1 delta=-420
+[2026-05-13 02:52:35] [DEBUG] [fill_product_info] scroll to price fields: step=2 delta=-420
+[2026-05-13 02:52:36] [DEBUG] [fill_product_info] scroll to price fields: step=3 delta=-420
+[2026-05-13 02:52:39] [DEBUG] [fill_product_info] context stage=price-round-3-after-price-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:52:46] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:52:49] [DEBUG] [fill_product_info] context stage=price-round-3-step-1 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:52:55] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:52:59] [DEBUG] [fill_product_info] context stage=price-round-3-step-2 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:53:05] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:53:09] [DEBUG] [fill_product_info] context stage=price-round-3-step-3 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:53:15] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:53:18] [DEBUG] [fill_product_info] context stage=price-round-3-step-4 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:53:24] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:53:28] [DEBUG] [fill_product_info] context stage=price-round-3-step-5 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:53:35] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:53:37] [DEBUG] [fill_product_info] context stage=price-round-3-step-6 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:53:43] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:53:43] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:53:49] [DEBUG] LLM coords (72,183) -> ref (182,463) using plan=1011x550
+[2026-05-13 02:53:49] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=182 mapped_y=463
+[2026-05-13 02:53:52] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:54:04] [DEBUG] LLM coords (468,295) -> ref (1185,746) using plan=1011x550
+[2026-05-13 02:54:04] [DEBUG] [vision-click] target=销售属性 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1185 mapped_y=746
+[2026-05-13 02:54:07] [DEBUG] [vision-scroll] anchor clicked by vision: 销售属性
+[2026-05-13 02:54:07] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:54:07] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:54:25] [DEBUG] [fill_product_info] price anchors attempt=1 found=[]
+[2026-05-13 02:54:25] [DEBUG] [fill_product_info] seek price anchors scroll step=1 delta=-380
+[2026-05-13 02:54:26] [DEBUG] [fill_product_info] price anchors attempt=2 found=[]
+[2026-05-13 02:54:27] [DEBUG] [fill_product_info] seek price anchors scroll step=2 delta=-380
+[2026-05-13 02:54:28] [DEBUG] [fill_product_info] price anchors attempt=3 found=[]
+[2026-05-13 02:54:28] [DEBUG] [fill_product_info] seek price anchors scroll step=3 delta=-380
+[2026-05-13 02:54:29] [DEBUG] [fill_product_info] price anchors attempt=4 found=[]
+[2026-05-13 02:54:29] [DEBUG] [fill_product_info] seek price anchors scroll step=4 delta=-380
+[2026-05-13 02:54:31] [DEBUG] [fill_product_info] price anchors attempt=5 found=[]
+[2026-05-13 02:54:31] [DEBUG] [fill_product_info] seek price anchors scroll step=5 delta=-380
+[2026-05-13 02:54:32] [DEBUG] [fill_product_info] price anchors attempt=6 found=[]
+[2026-05-13 02:54:32] [DEBUG] [fill_product_info] seek price anchors scroll step=6 delta=-380
+[2026-05-13 02:54:33] [DEBUG] [fill_product_info] price anchors attempt=7 found=[]
+[2026-05-13 02:54:55] [DEBUG] LLM coords (483,295) -> ref (1223,746) using plan=1011x550
+[2026-05-13 02:54:55] [DEBUG] [vision-click] target=类目 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1223 mapped_y=746
+[2026-05-13 02:54:57] [DEBUG] [vision-scroll] anchor clicked by vision: 类目
+[2026-05-13 02:55:35] [DEBUG] LLM coords (457,297) -> ref (1157,751) using plan=1011x550
+[2026-05-13 02:55:35] [DEBUG] [vision-click] target=SKU属性 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1157 mapped_y=751
+[2026-05-13 02:55:37] [DEBUG] [vision-scroll] anchor clicked by vision: SKU属性
+[2026-05-13 02:55:52] [DEBUG] LLM coords (467,302) -> ref (1182,764) using plan=1011x550
+[2026-05-13 02:55:52] [DEBUG] [vision-click] target=商品包装 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1182 mapped_y=764
+[2026-05-13 02:55:55] [DEBUG] [vision-scroll] anchor clicked by vision: 商品包装
+[2026-05-13 02:56:25] [DEBUG] [ActionHook] fill_product_info took 600.08s
+[2026-05-13 02:56:25] [INFO] 查找京麦窗口...
+[2026-05-13 02:56:26] [WARNING] [Executor] Step 5 action failed (retry 2/3): Some product fields failed verification: price_area_anchor, current, rated_voltage, sales_unit, package_type, packing_list (sections: pricing, sales_attributes, logistics)
+[2026-05-13 02:56:26] [INFO] [Executor] 步骤 5 恢复动作: wait 2.5s
+[2026-05-13 02:56:29] [INFO] 查找京麦窗口...
+[2026-05-13 02:56:29] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-13 02:56:29] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 02:56:29] [INFO] [Executor] 窗口恢复成功(matrix-force-relocate): hwnd=110433078
+[2026-05-13 02:56:29] [INFO] [Executor] 步骤 5 恢复动作: refresh_page {'mode': 'soft'}
+[2026-05-13 02:56:30] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 02:56:31] [DEBUG] [ActionHook] refresh_page took 2.16s
+[2026-05-13 02:56:40] [INFO] [Executor] 步骤 5 恢复矩阵执行成功: action_execution_error
+[2026-05-13 02:56:40] [INFO] 查找京麦窗口...
+[2026-05-13 02:56:40] [INFO] [Executor] 重试 [3/3]: 清除缓存，强制重定位窗口
+[2026-05-13 02:56:40] [INFO] 查找京麦窗口...
+[2026-05-13 02:56:40] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-13 02:56:40] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 02:56:40] [INFO] [Executor] 窗口恢复成功(force-relocate): hwnd=110433078
+[2026-05-13 02:56:46] [INFO] [Executor] 步骤 5 precheck: status=ok state=商品信息页面空白且可能已跳转至详情页，处于非编辑状态 suggested=proceed
+[2026-05-13 02:56:46] [DEBUG] [Executor] 执行参数 fill_product_info: {'doc_sections': ['商品信息', '商品基本信息', '采销信息', '价格', '商品属性', '物流售后及其他', '商品物流', '商品售后及其他'], 'product': {'business_line': '慧采', 'title': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440', 'brand': '公牛', 'model': '无', 'length_mm': 250, 'width_mm': 76, 'height_mm': 29, 'weight_kg': 0.5, 'unit': '个', 'jd_price': 70, 'url': 'https://item.jd.com/16793098028.html', 'notes': '数量：2', 'price': 70, 'market_price': 70, 'source_meta': {'source_file': 'E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx', 'sheet_name': '上架模板', 'row_index': 4, 'workflow_doc': 'E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx', 'template_features': {'sheet_name': '上架模板', 'recognized_headers': ['business_line', 'title', 'brand', 'model', 'length_mm', 'width_mm', 'height_mm', 'weight_kg', 'unit', 'jd_price', 'url', 'qualification_files', 'summary', 'notes'], 'raw_headers': ['上架序号', '申请业务（自营/慧采）', '商品名称（对应京东开票内容）', '品牌', '商品型号', '长（mm）', '宽（mm）', '高（mm）', '重(KG）', '单位  （对应进项发票单位规格）', '京东挂网价（下单金额）', '只能读取京东链接（无链接请通过其他方式新增商品）', '商品资质（PDF格式）', '商品简述（有特殊参数要求可以填）', '备注（特殊要求）'], 'signals': []}, 'publish_mode': 'single', 'publish_mode_reason': 'single_row_standard_listing', 'item_index': 1, 'total_items': 1}, 'product_id': '16793098028', 'category': '电脑、办公 > 外设产品 > 插座/转换器', 'description': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】', 'description_images': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg'], 'images': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_10.jpg'], 'jd_url': 'https://item.jd.com/16793098028.html', 'publish_mode': 'single'}, 'required_visual_fields': {'pricing': [{'field': 'market_price', 'label': '市场价', 'value': 70}, {'field': 'jd_price', 'label': '京东价', 'value': 70}, {'field': 'purchase_price', 'label': '采购价', 'value': ''}], 'basic_info': [{'field': 'brand', 'label': '品牌', 'value': '公牛'}, {'field': 'model', 'label': '型号', 'value': '无'}, {'field': 'socket_config', 'label': '孔型配置', 'value': ''}, {'field': 'rated_voltage', 'label': '额定电压', 'value': ''}, {'field': 'cable_length', 'label': '电缆长度', 'value': ''}, {'field': 'procurement_erp', 'label': '采购ERP编码', 'value': ''}], 'sales_attributes': [{'field': 'current', 'label': '电流', 'value': ''}, {'field': 'rated_voltage', 'label': '电压', 'value': ''}, {'field': 'lead_time', 'label': '货期', 'value': ''}, {'field': 'sku_image', 'label': '图片设置', 'value': ''}], 'description': [{'field': 'detail_content', 'label': '商品详情', 'value': '公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】'}, {'field': 'description_images', 'label': '详情图片', 'value': ['E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg', 'E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg']}], 'logistics': [{'field': 'shelf_life_days', 'label': '保质期（天）', 'value': ''}, {'field': 'sales_unit', 'label': '销售单位', 'value': '个'}, {'field': 'package_spec', 'label': '包装规格', 'value': ''}, {'field': 'package_spec_unit', 'label': '包装规格单位', 'value': ''}, {'field': 'package_type', 'label': '商品包装', 'value': ''}, {'field': 'special_delivery_mark', 'label': '特殊发货时效标记', 'value': ''}, {'field': 'hazardous_goods', 'label': '是否危险商品', 'value': ''}, {'field': 'packing_list', 'label': '包装清单', 'value': '数量：2'}, {'field': 'warranty_period', 'label': '质保期', 'value': ''}]}, 'publish_mode': 'single'}
+[2026-05-13 02:56:48] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:56:54] [DEBUG] LLM coords (257,274) -> ref (650,693) using plan=1011x550
+[2026-05-13 02:56:54] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=650 mapped_y=693
+[2026-05-13 02:56:56] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:57:06] [DEBUG] LLM coords (266,243) -> ref (673,615) using plan=1011x550
+[2026-05-13 02:57:06] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=673 mapped_y=615
+[2026-05-13 02:57:08] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:57:18] [DEBUG] LLM coords (295,240) -> ref (746,607) using plan=1011x550
+[2026-05-13 02:57:18] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=746 mapped_y=607
+[2026-05-13 02:57:20] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:57:26] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:57:26] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:57:31] [DEBUG] LLM coords (265,132) -> ref (671,334) using plan=1011x550
+[2026-05-13 02:57:31] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=671 mapped_y=334
+[2026-05-13 02:57:33] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 02:57:41] [DEBUG] LLM coords (432,650) -> ref (1093,1645) using plan=1011x550
+[2026-05-13 02:57:41] [DEBUG] [vision-click] target=商品名称 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1093 mapped_y=1645
+[2026-05-13 02:57:43] [DEBUG] [vision-scroll] anchor clicked by vision: 商品名称
+[2026-05-13 02:57:44] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:57:44] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:57:47] [DEBUG] [fill_product_info] sku scrollbar reset by click-track
+[2026-05-13 02:57:47] [DEBUG] [fill_product_info] fill sku product name
+[2026-05-13 02:57:47] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:58:08] [DEBUG] LLM coords (525,183) -> ref (1329,463) using plan=1011x550
+[2026-05-13 02:58:08] [DEBUG] [vision-click] target=类目 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1329 mapped_y=463
+[2026-05-13 02:58:11] [DEBUG] [vision-scroll] anchor clicked by vision: 类目
+[2026-05-13 02:58:29] [DEBUG] LLM coords (429,620) -> ref (1086,1569) using plan=1011x550
+[2026-05-13 02:58:29] [DEBUG] [vision-click] target=SKU actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1086 mapped_y=1569
+[2026-05-13 02:58:31] [DEBUG] [vision-scroll] anchor clicked by vision: SKU
+[2026-05-13 02:58:32] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:58:32] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:58:36] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 02:58:39] [DEBUG] [fill_product_info] context stage=price-round-1-after-basic-restore page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:58:39] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 02:58:50] [DEBUG] LLM coords (465,164) -> ref (1177,415) using plan=1011x550
+[2026-05-13 02:58:50] [DEBUG] [vision-click] target=商品基本信息 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1177 mapped_y=415
+[2026-05-13 02:58:52] [DEBUG] [vision-scroll] anchor clicked by vision: 商品基本信息
+[2026-05-13 02:59:10] [DEBUG] LLM coords (521,300) -> ref (1319,759) using plan=1011x550
+[2026-05-13 02:59:10] [DEBUG] [vision-click] target=SKU actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1319 mapped_y=759
+[2026-05-13 02:59:13] [DEBUG] [vision-scroll] anchor clicked by vision: SKU
+[2026-05-13 02:59:13] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 02:59:13] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 02:59:17] [DEBUG] [fill_product_info] context stage=price-round-1-after-sku-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:59:17] [DEBUG] [fill_product_info] scroll to price fields: step=1 delta=-420
+[2026-05-13 02:59:17] [DEBUG] [fill_product_info] scroll to price fields: step=2 delta=-420
+[2026-05-13 02:59:18] [DEBUG] [fill_product_info] scroll to price fields: step=3 delta=-420
+[2026-05-13 02:59:21] [DEBUG] [fill_product_info] context stage=price-round-1-after-price-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:59:28] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:59:31] [DEBUG] [fill_product_info] context stage=price-round-1-step-1 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:59:37] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:59:41] [DEBUG] [fill_product_info] context stage=price-round-1-step-2 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:59:47] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 02:59:50] [DEBUG] [fill_product_info] context stage=price-round-1-step-3 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 02:59:56] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:00:00] [DEBUG] [fill_product_info] context stage=price-round-1-step-4 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:00:06] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:00:09] [DEBUG] [fill_product_info] context stage=price-round-1-step-5 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:00:15] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:00:19] [DEBUG] [fill_product_info] context stage=price-round-1-step-6 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:00:25] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:00:27] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 03:00:29] [DEBUG] [fill_product_info] context stage=price-round-2-after-basic-restore page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:00:29] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 03:00:35] [DEBUG] LLM coords (501,155) -> ref (1268,392) using plan=1011x550
+[2026-05-13 03:00:35] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1268 mapped_y=392
+[2026-05-13 03:00:37] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 03:00:50] [DEBUG] LLM coords (466,301) -> ref (1179,761) using plan=1011x550
+[2026-05-13 03:00:50] [DEBUG] [vision-click] target=销售属性 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1179 mapped_y=761
+[2026-05-13 03:00:53] [DEBUG] [vision-scroll] anchor clicked by vision: 销售属性
+[2026-05-13 03:00:53] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 03:00:53] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 03:00:57] [DEBUG] [fill_product_info] context stage=price-round-2-after-sku-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:00:57] [DEBUG] [fill_product_info] scroll to price fields: step=1 delta=-420
+[2026-05-13 03:00:57] [DEBUG] [fill_product_info] scroll to price fields: step=2 delta=-420
+[2026-05-13 03:00:58] [DEBUG] [fill_product_info] scroll to price fields: step=3 delta=-420
+[2026-05-13 03:01:01] [DEBUG] [fill_product_info] context stage=price-round-2-after-price-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:01:08] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:01:11] [DEBUG] [fill_product_info] context stage=price-round-2-step-1 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:01:17] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:01:32] [DEBUG] [fill_product_info] context stage=price-round-2-step-2 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:01:38] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:01:41] [DEBUG] [fill_product_info] context stage=price-round-2-step-3 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:01:47] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:01:50] [DEBUG] [fill_product_info] context stage=price-round-2-step-4 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:01:57] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:01:59] [DEBUG] [fill_product_info] context stage=price-round-2-step-5 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:02:06] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:02:09] [DEBUG] [fill_product_info] context stage=price-round-2-step-6 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:02:16] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:02:17] [DEBUG] [fill_product_info] basic info page confirmed from page-state context
+[2026-05-13 03:02:21] [DEBUG] [fill_product_info] context stage=price-round-3-after-basic-restore page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:02:21] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 03:02:26] [DEBUG] LLM coords (507,170) -> ref (1283,430) using plan=1011x550
+[2026-05-13 03:02:26] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1283 mapped_y=430
+[2026-05-13 03:02:29] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 03:02:46] [DEBUG] LLM coords (450,588) -> ref (1139,1488) using plan=1011x550
+[2026-05-13 03:02:46] [DEBUG] [vision-click] target=SKU actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1139 mapped_y=1488
+[2026-05-13 03:02:49] [DEBUG] [vision-scroll] anchor clicked by vision: SKU
+[2026-05-13 03:02:49] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 03:02:50] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 03:02:53] [DEBUG] [fill_product_info] context stage=price-round-3-after-sku-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:02:54] [DEBUG] [fill_product_info] scroll to price fields: step=1 delta=-420
+[2026-05-13 03:02:54] [DEBUG] [fill_product_info] scroll to price fields: step=2 delta=-420
+[2026-05-13 03:02:54] [DEBUG] [fill_product_info] scroll to price fields: step=3 delta=-420
+[2026-05-13 03:02:58] [DEBUG] [fill_product_info] context stage=price-round-3-after-price-scroll page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:03:05] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:03:08] [DEBUG] [fill_product_info] context stage=price-round-3-step-1 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:03:14] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:03:18] [DEBUG] [fill_product_info] context stage=price-round-3-step-2 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:03:25] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:03:28] [DEBUG] [fill_product_info] context stage=price-round-3-step-3 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:03:35] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:03:38] [DEBUG] [fill_product_info] context stage=price-round-3-step-4 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:03:45] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:03:48] [DEBUG] [fill_product_info] context stage=price-round-3-step-5 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:03:55] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:03:59] [DEBUG] [fill_product_info] context stage=price-round-3-step-6 page_state={'title_top': False, 'product_name_mid': False, 'sku_mid': False, 'sales_attr_mid': False, 'market_mid': False, 'jd_mid': False, 'category_page': False, 'next_button': False, 'basic_tab': True} visible_price_row=[]
+[2026-05-13 03:04:05] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False
+[2026-05-13 03:04:05] [DEBUG] [fill_product_info] scroll to sku section: reset to top
+[2026-05-13 03:04:16] [DEBUG] LLM coords (423,158) -> ref (1071,399) using plan=1011x550
+[2026-05-13 03:04:16] [DEBUG] [vision-click] target=商品基本信息 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1071 mapped_y=399
+[2026-05-13 03:04:19] [DEBUG] [vision-scroll] anchor clicked by vision: 商品基本信息
+[2026-05-13 03:04:37] [DEBUG] LLM coords (511,300) -> ref (1293,759) using plan=1011x550
+[2026-05-13 03:04:37] [DEBUG] [vision-click] target=SKU actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1293 mapped_y=759
+[2026-05-13 03:04:40] [DEBUG] [vision-scroll] anchor clicked by vision: SKU
+[2026-05-13 03:04:40] [DEBUG] [fill_product_info] scroll to sku section: step=1 delta=-550
+[2026-05-13 03:04:40] [DEBUG] [fill_product_info] scroll to sku section: step=2 delta=-550
+[2026-05-13 03:04:58] [DEBUG] [fill_product_info] price anchors attempt=1 found=[]
+[2026-05-13 03:04:58] [DEBUG] [fill_product_info] seek price anchors scroll step=1 delta=-380
+[2026-05-13 03:04:59] [DEBUG] [fill_product_info] price anchors attempt=2 found=[]
+[2026-05-13 03:04:59] [DEBUG] [fill_product_info] seek price anchors scroll step=2 delta=-380
+[2026-05-13 03:05:00] [DEBUG] [fill_product_info] price anchors attempt=3 found=[]
+[2026-05-13 03:05:01] [DEBUG] [fill_product_info] seek price anchors scroll step=3 delta=-380
+[2026-05-13 03:05:02] [DEBUG] [fill_product_info] price anchors attempt=4 found=[]
+[2026-05-13 03:05:02] [DEBUG] [fill_product_info] seek price anchors scroll step=4 delta=-380
+[2026-05-13 03:05:04] [DEBUG] [fill_product_info] price anchors attempt=5 found=[]
+[2026-05-13 03:05:04] [DEBUG] [fill_product_info] seek price anchors scroll step=5 delta=-380
+[2026-05-13 03:05:05] [DEBUG] [fill_product_info] price anchors attempt=6 found=[]
+[2026-05-13 03:05:05] [DEBUG] [fill_product_info] seek price anchors scroll step=6 delta=-380
+[2026-05-13 03:05:06] [DEBUG] [fill_product_info] price anchors attempt=7 found=[]
+[2026-05-13 03:05:12] [DEBUG] LLM coords (510,166) -> ref (1291,420) using plan=1011x550
+[2026-05-13 03:05:12] [DEBUG] [vision-click] target=商品标题 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1291 mapped_y=420
+[2026-05-13 03:05:15] [DEBUG] [vision-scroll] anchor clicked by vision: 商品标题
+[2026-05-13 03:05:58] [DEBUG] LLM coords (493,300) -> ref (1248,759) using plan=1011x550
+[2026-05-13 03:05:58] [DEBUG] [vision-click] target=电流 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1248 mapped_y=759
+[2026-05-13 03:06:00] [DEBUG] [vision-scroll] anchor clicked by vision: 电流
+[2026-05-13 03:06:15] [DEBUG] LLM coords (452,302) -> ref (1144,764) using plan=1011x550
+[2026-05-13 03:06:15] [DEBUG] [vision-click] target=商品包装 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1144 mapped_y=764
+[2026-05-13 03:06:18] [DEBUG] [vision-scroll] anchor clicked by vision: 商品包装
+[2026-05-13 03:06:35] [DEBUG] LLM coords (453,295) -> ref (1147,746) using plan=1011x550
+[2026-05-13 03:06:35] [DEBUG] [vision-click] target=商品包装 actual_vision_size=[1011, 550] scale_x=2.5321 scale_y=2.5309 mapped_x=1147 mapped_y=746
+[2026-05-13 03:06:38] [DEBUG] [vision-scroll] anchor clicked by vision: 商品包装
+[2026-05-13 03:06:50] [DEBUG] [ActionHook] fill_product_info took 604.30s
+[2026-05-13 03:06:50] [INFO] 查找京麦窗口...
+[2026-05-13 03:06:52] [WARNING] [Executor] Step 5 action failed (retry 3/3): Some product fields failed verification: price_area_anchor, current, rated_voltage, sales_unit, package_type, packing_list (sections: pricing, sales_attributes, logistics)
+[2026-05-13 03:06:52] [DEBUG] [Executor] 计划文件已更新: 步骤 5/8
+[2026-05-13 03:06:52] [DEBUG] [Executor] 计划文件顶层状态已更新: failed

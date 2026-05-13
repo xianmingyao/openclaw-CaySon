@@ -14,6 +14,38 @@ from typing import Any, Dict, List, Tuple
 import click
 
 
+def _build_runtime_settings(settings_overrides: Dict[str, Any] | None = None):
+    from settings import Settings, get_settings
+
+    if settings_overrides:
+        settings = Settings(**settings_overrides)
+        settings.ensure_dirs()
+        return settings
+    return get_settings()
+
+
+def _prepare_runtime_services(settings_overrides: Dict[str, Any] | None = None) -> Dict[str, Any]:
+    from llm.service_manager import ensure_vllm_ready
+
+    settings = _build_runtime_settings(settings_overrides)
+    report = ensure_vllm_ready(settings)
+    if report.get("started"):
+        click.echo(
+            f"LLM preflight: vLLM start requested pid={report.get('pid')} "
+            f"log={report.get('log_file')}"
+        )
+    elif report.get("ready"):
+        click.echo("LLM preflight: vLLM ready")
+    elif report.get("reason") not in {"autostart_disabled", "non_local_base_url"}:
+        click.echo(f"LLM preflight: vLLM unavailable ({report.get('reason', 'unknown')})")
+        if report.get("runtime_error"):
+            click.echo(f"LLM preflight runtime error: {report['runtime_error']}")
+        if report.get("log_tail"):
+            click.echo("LLM preflight log tail:")
+            click.echo(report["log_tail"])
+    return report
+
+
 def _read_json_file(path: Path) -> Any:
     """兼容普通 UTF-8 和 UTF-8 BOM。"""
     return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -981,6 +1013,7 @@ def cli():
 def publish(config_file, data, plan_out, start_from_phase, workflow_policy):
     """发布商品（默认主入口：Plan-and-Solve → ReAct → Reflection）"""
     product_data = _load_product_data(config_file, data)
+    _prepare_runtime_services()
     result = _run_publish_flow(
         product_data=product_data,
         plan_out=plan_out,
@@ -1278,6 +1311,7 @@ def batch(batch_file, dir_path, stop_on_error, plan_out, resume, progress_file, 
         click.echo("错误: 需要 --file 或 --dir", err=True)
         sys.exit(1)
 
+    _prepare_runtime_services()
     summary = _run_batch_publish_items(
         items,
         stop_on_error=stop_on_error,
@@ -1317,6 +1351,7 @@ def live_run(batch_file, plan_out, progress_file, resume, start_from_phase, vide
         f"live-run: file={batch_path.name} mode={items[0].get('publish_mode', 'single')} "
         f"items={len(items)} workflow=doc_strict"
     )
+    _prepare_runtime_services({"VIDEO_OBSERVER_ENABLED": video_observer})
 
     summary = _run_batch_publish_items(
         items,
@@ -1358,6 +1393,7 @@ def acceptance_run(batch_file, plan_out, progress_file, resume, start_from_phase
 
     db_preflight = _run_db_preflight(get_settings())
     db_preflight_file = _write_db_preflight(paths, db_preflight)
+    _prepare_runtime_services({"VIDEO_OBSERVER_ENABLED": video_observer})
     click.echo(
         f"acceptance-run: run_id={paths['run_id']} file={batch_path.name} "
         f"items={len(items)} workflow={workflow_policy} video_observer={video_observer}"

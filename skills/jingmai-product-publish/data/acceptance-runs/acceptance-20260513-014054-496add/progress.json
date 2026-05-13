@@ -1,0 +1,38 @@
+{
+  "completed_count": 0,
+  "failed_indices": [
+    1
+  ],
+  "items": [
+    {
+      "index": 1,
+      "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+      "task_id": "99a796dc",
+      "success": false,
+      "publish_mode": "single",
+      "error": "视觉预检失败: 当前页面处于高级编辑器模式，而非商家后台的商品详情编辑界面。根据文档要求，必须避免进入高级编辑器，并应在商家后台内完成商品详情完善。当前界面显示为编辑器内部的代码/文本编辑区域，与商家后台的‘规格描述’编辑界面不符。",
+      "failed_step": 6,
+      "start_from_phase": "product_info_ready",
+      "workflow_policy": "doc_strict",
+      "plan_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-014054-496add\\item-1.json",
+      "evidence_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-014054-496add\\evidence\\001-99a796dc.json",
+      "result_page_judgement": {
+        "status": "unknown",
+        "reason": "视觉预检失败: 当前页面处于高级编辑器模式，而非商家后台的商品详情编辑界面。根据文档要求，必须避免进入高级编辑器，并应在商家后台内完成商品详情完善。当前界面显示为编辑器内部的代码/文本编辑区域，与商家后台的‘规格描述’编辑界面不符。",
+        "stage": "",
+        "action": "",
+        "step": 6
+      },
+      "product_snapshot": {
+        "product_id": "16793098028",
+        "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+        "source": "publish:doc_strict"
+      },
+      "vision_fallback_count": 0,
+      "vision_fallback_success_count": 0,
+      "vision_fallback_failed_count": 0,
+      "vision_templates": {},
+      "vision_failed_details": []
+    }
+  ]
+}

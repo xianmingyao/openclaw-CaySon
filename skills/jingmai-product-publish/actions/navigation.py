@@ -7,7 +7,7 @@ import re
 import tempfile
 import time
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from actions._uia_helpers import (
     click_uia_element,
@@ -360,7 +360,83 @@ def _build_vision_click_diagnostics(locator, screenshot: str, llm_x: int, llm_y:
     }
 
 
-@ActionRegistry.register("vision_click_text_center", "navigation", "使用 Ollama 视觉定位文本中心并执行 move + click")
+def _normalize_vision_bbox(payload: Dict[str, Any]) -> Optional[list[int]]:
+    bbox = payload.get("bbox")
+    if not isinstance(bbox, (list, tuple)) or len(bbox) != 4:
+        return None
+    try:
+        return [int(value) for value in bbox]
+    except Exception:
+        return None
+
+
+def _vision_bbox_is_valid(bbox: Optional[list[int]], center_x: int, center_y: int) -> bool:
+    if not bbox:
+        return False
+    left, top, right, bottom = bbox
+    if right <= left or bottom <= top:
+        return False
+    if (right - left) < 8 or (bottom - top) < 8:
+        return False
+    return left <= center_x <= right and top <= center_y <= bottom
+
+
+def _resolve_vision_click_consensus(samples: list[Dict[str, Any]], image_size: Optional[list[int]]) -> Dict[str, Any]:
+    if not samples:
+        return {"success": False, "reason": "no_valid_samples"}
+    if len(samples) == 1:
+        return {"success": True, "reason": "single_sample", "sample": samples[0]}
+
+    width = int((image_size or [0, 0])[0] or 0)
+    height = int((image_size or [0, 0])[1] or 0)
+    max_dx = max(24, int(width * 0.08)) if width else 48
+    max_dy = max(24, int(height * 0.08)) if height else 48
+
+    xs = [int(item["llm_x"]) for item in samples]
+    ys = [int(item["llm_y"]) for item in samples]
+    if max(xs) - min(xs) > max_dx or max(ys) - min(ys) > max_dy:
+        return {
+            "success": False,
+            "reason": "vision_target_drift",
+            "samples": [{"x": item["llm_x"], "y": item["llm_y"]} for item in samples],
+            "max_dx": max_dx,
+            "max_dy": max_dy,
+        }
+
+    chosen = dict(samples[0])
+    chosen["llm_x"] = round(sum(xs) / len(xs))
+    chosen["llm_y"] = round(sum(ys) / len(ys))
+    return {"success": True, "reason": "multi_sample_consensus", "sample": chosen}
+
+
+def _mapped_point_is_safe(locator, x: int, y: int, margin: int = 12) -> bool:
+    try:
+        x = int(x)
+        y = int(y)
+    except Exception:
+        return False
+
+    if x <= margin or y <= margin:
+        return False
+
+    rect = getattr(locator, "window_rect", None)
+    if not rect and hasattr(locator, "find_window"):
+        try:
+            info = locator.find_window()
+            rect = getattr(info, "rect", None) if info else None
+        except Exception:
+            rect = None
+
+    if rect and len(rect) == 4:
+        left, top, right, bottom = [int(value) for value in rect]
+        if x <= left + margin or y <= top + margin:
+            return False
+        if x >= right - margin or y >= bottom - margin:
+            return False
+    return True
+
+
+@ActionRegistry.register("vision_click_text_center", "navigation", "浣跨敤 Ollama 瑙嗚瀹氫綅鏂囨湰涓績骞舵墽琛?move + click")
 def vision_click_text_center(
     target_text: str,
     page_hint: str = "",
@@ -397,7 +473,6 @@ def vision_click_text_center(
 
     try:
         llm = LLMManager()
-        response = llm.invoke_multimodal(prompt, screenshot)
     except Exception as exc:
         return {
             "success": False,
@@ -406,37 +481,55 @@ def vision_click_text_center(
             "screenshot": screenshot,
         }
 
-    payload = _parse_vision_click_json(response)
-    if not payload:
+    samples: list[Dict[str, Any]] = []
+    last_payload: Optional[Dict[str, Any]] = None
+    last_error = ""
+    for _ in range(2):
+        try:
+            response = llm.invoke_multimodal(prompt, screenshot)
+        except Exception as exc:
+            last_error = f"ollama vision click failed: {exc}"
+            continue
+
+        payload = _parse_vision_click_json(response)
+        if not payload:
+            last_error = "ollama vision response is not valid json"
+            continue
+
+        last_payload = payload
+        if str(payload.get("status", "")).lower() != "ok":
+            last_error = payload.get("reason") or "target not found"
+            continue
+
+        try:
+            llm_x = int(payload["center_x"])
+            llm_y = int(payload["center_y"])
+        except Exception:
+            last_error = "ollama vision response missing center_x/center_y"
+            continue
+
+        bbox = _normalize_vision_bbox(payload)
+        if not _vision_bbox_is_valid(bbox, llm_x, llm_y):
+            last_error = "vision bbox is invalid or does not contain center"
+            continue
+
+        samples.append({"llm_x": llm_x, "llm_y": llm_y, "bbox": bbox, "payload": payload})
+
+    consensus = _resolve_vision_click_consensus(samples, None)
+    if not consensus.get("success"):
         return {
             "success": False,
-            "message": "ollama vision response is not valid json",
+            "message": consensus.get("reason") or last_error or "vision click consensus failed",
             "target_text": target_text,
-            "raw_response": response,
+            "vision_result": last_payload,
+            "samples": samples,
             "screenshot": screenshot,
         }
 
-    if str(payload.get("status", "")).lower() != "ok":
-        return {
-            "success": False,
-            "message": payload.get("reason") or "target not found",
-            "target_text": target_text,
-            "vision_result": payload,
-            "screenshot": screenshot,
-        }
-
-    try:
-        llm_x = int(payload["center_x"])
-        llm_y = int(payload["center_y"])
-    except Exception:
-        return {
-            "success": False,
-            "message": "ollama vision response missing center_x/center_y",
-            "target_text": target_text,
-            "vision_result": payload,
-            "screenshot": screenshot,
-        }
-
+    chosen = consensus["sample"]
+    llm_x = int(chosen["llm_x"])
+    llm_y = int(chosen["llm_y"])
+    payload = chosen["payload"]
     diagnostics = _build_vision_click_diagnostics(locator, screenshot, llm_x, llm_y)
     local_x = diagnostics["mapped_x"]
     local_y = diagnostics["mapped_y"]
@@ -447,6 +540,18 @@ def vision_click_text_center(
             f"scale_x={diagnostics.get('scale_x')} scale_y={diagnostics.get('scale_y')} "
             f"mapped_x={local_x} mapped_y={local_y}"
         )
+    if not _mapped_point_is_safe(locator, local_x, local_y):
+        return {
+            "success": False,
+            "message": "mapped click point is unsafe",
+            "target_text": target_text,
+            "screenshot": screenshot,
+            "llm_coords": {"x": llm_x, "y": llm_y},
+            "mapped_coords": {"x": local_x, "y": local_y},
+            "vision_result": payload,
+            "samples": samples,
+            **diagnostics,
+        }
     clicked = locator.click(local_x, local_y, delay=0.6)
     return {
         "success": bool(clicked),
@@ -456,6 +561,8 @@ def vision_click_text_center(
         "screenshot": screenshot,
         "llm_coords": {"x": llm_x, "y": llm_y},
         "mapped_coords": {"x": local_x, "y": local_y},
+        "consensus_reason": consensus.get("reason"),
+        "samples": samples,
         **diagnostics,
         "vision_result": payload,
         "drag": False,

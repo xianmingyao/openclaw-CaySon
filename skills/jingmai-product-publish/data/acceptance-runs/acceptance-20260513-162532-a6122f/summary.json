@@ -1,0 +1,106 @@
+{
+  "run_id": "acceptance-20260513-162532-a6122f",
+  "batch_file": "E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx",
+  "workflow_policy": "doc_strict",
+  "video_observer_enabled": true,
+  "plan_dir": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f",
+  "progress_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f\\progress.json",
+  "summary_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f\\summary.json",
+  "db_preflight": {
+    "db_type": "mysql",
+    "mysql_pool_size": 10,
+    "mysql_max_overflow": 20,
+    "mysql_connect_timeout": 8,
+    "mysql_read_timeout": 15,
+    "mysql_write_timeout": 15,
+    "mysql_init_retries": 3,
+    "mysql_retry_delay_sec": 1.5,
+    "reachable": true,
+    "error": "",
+    "started_at": "2026-05-13T16:25:32.975135",
+    "create_tables": "ok",
+    "final_db_type": "mysql"
+  },
+  "db_preflight_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f\\db-preflight.json",
+  "summary": {
+    "success_count": 0,
+    "fail_count": 1,
+    "total_items": 1,
+    "completed_count": 0,
+    "failed_indices": [
+      1
+    ],
+    "items": [
+      {
+        "index": 1,
+        "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+        "task_id": "caa0589c",
+        "success": false,
+        "publish_mode": "single",
+        "error": "视觉预检失败: 当前页面处于商品编辑流程，已确认为商品信息页面，需按文档要求填写商品基本信息、价格等字段。页面显示商品信息、采销信息、价格、商品属性等区域，且未见错误提示或登录失效等异常状态。步骤5/8要求填写商品基本信息与价格，当前页面已展示这些字段（如商品标题、品牌、价格等），可安全继续。",
+        "failed_step": 5,
+        "start_from_phase": "product_info_ready",
+        "workflow_policy": "doc_strict",
+        "plan_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f\\item-1.json",
+        "evidence_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f\\evidence\\001-caa0589c.json",
+        "result_page_judgement": {
+          "status": "unknown",
+          "reason": "视觉预检失败: 当前页面处于商品编辑流程，已确认为商品信息页面，需按文档要求填写商品基本信息、价格等字段。页面显示商品信息、采销信息、价格、商品属性等区域，且未见错误提示或登录失效等异常状态。步骤5/8要求填写商品基本信息与价格，当前页面已展示这些字段（如商品标题、品牌、价格等），可安全继续。",
+          "stage": "",
+          "action": "",
+          "step": 5
+        },
+        "product_snapshot": {
+          "product_id": "16793098028",
+          "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+          "source": "publish:doc_strict"
+        },
+        "vision_fallback_count": 0,
+        "vision_fallback_success_count": 0,
+        "vision_fallback_failed_count": 0,
+        "vision_templates": {},
+        "vision_failed_details": []
+      }
+    ],
+    "progress_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f\\progress.json",
+    "workflow_policy": "doc_strict"
+  },
+  "progress": {
+    "completed_count": 0,
+    "failed_indices": [
+      1
+    ],
+    "items": [
+      {
+        "index": 1,
+        "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/",
+        "task_id": "caa0589c",
+        "success": false,
+        "publish_mode": "single",
+        "error": "视觉预检失败: 当前页面处于商品编辑流程，已确认为商品信息页面，需按文档要求填写商品基本信息、价格等字段。页面显示商品信息、采销信息、价格、商品属性等区域，且未见错误提示或登录失效等异常状态。步骤5/8要求填写商品基本信息与价格，当前页面已展示这些字段（如商品标题、品牌、价格等），可安全继续。",
+        "failed_step": 5,
+        "start_from_phase": "product_info_ready",
+        "workflow_policy": "doc_strict",
+        "plan_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f\\item-1.json",
+        "evidence_file": "E:\\workspace\\skills\\jingmai-product-publish\\data\\acceptance-runs\\acceptance-20260513-162532-a6122f\\evidence\\001-caa0589c.json",
+        "result_page_judgement": {
+          "status": "unknown",
+          "reason": "视觉预检失败: 当前页面处于商品编辑流程，已确认为商品信息页面，需按文档要求填写商品基本信息、价格等字段。页面显示商品信息、采销信息、价格、商品属性等区域，且未见错误提示或登录失效等异常状态。步骤5/8要求填写商品基本信息与价格，当前页面已展示这些字段（如商品标题、品牌、价格等），可安全继续。",
+          "stage": "",
+          "action": "",
+          "step": 5
+        },
+        "product_snapshot": {
+          "product_id": "16793098028",
+          "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+          "source": "publish:doc_strict"
+        },
+        "vision_fallback_count": 0,
+        "vision_fallback_success_count": 0,
+        "vision_fallback_failed_count": 0,
+        "vision_templates": {},
+        "vision_failed_details": []
+      }
+    ]
+  }
+}

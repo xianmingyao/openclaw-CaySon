@@ -1,0 +1,3832 @@
+{
+  "task_id": "60353e18",
+  "status": "failed",
+  "current_step": 5,
+  "total_steps": 8,
+  "plan": [
+    {
+      "action": "find_window",
+      "params": {},
+      "required": true,
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_section": "窗口准备",
+      "workflow_requirement": "确认京麦客户端窗口存在。",
+      "workflow_excerpt": "京麦商品上柜指南",
+      "workflow_paragraphs": [
+        "京麦商品上柜指南"
+      ],
+      "doc_strict": true,
+      "doc_strict_guard": {
+        "precheck": {
+          "required_markers": [],
+          "reject_markers": []
+        },
+        "postcheck": {
+          "required_markers": [],
+          "reject_markers": []
+        }
+      },
+      "phase": "window_ready",
+      "workflow_context": {
+        "step_index": 1,
+        "step_total": 8,
+        "previous_action": "",
+        "next_action": "activate_window",
+        "section": "窗口准备",
+        "requirement": "确认京麦客户端窗口存在。",
+        "excerpt": "京麦商品上柜指南",
+        "phase": ""
+      },
+      "workflow_step_index": 1,
+      "workflow_step_total": 8,
+      "workflow_previous_action": "",
+      "workflow_next_action": "activate_window",
+      "react_contract": {
+        "goal": "定位并确认京麦客户端窗口存在。。文档章节=窗口准备；文档要求=确认京麦客户端窗口存在。；文档步骤=1/8；下一动作=activate_window",
+        "precheck": {
+          "expect_any": [],
+          "reject_any": [
+            "Windows 桌面崩溃",
+            "远程连接错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "商智",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "网络异常",
+            "系统错误"
+          ]
+        },
+        "workflow_context": {
+          "step_index": 1,
+          "step_total": 8,
+          "previous_action": "",
+          "next_action": "activate_window",
+          "section": "窗口准备",
+          "requirement": "确认京麦客户端窗口存在。",
+          "excerpt": "京麦商品上柜指南",
+          "phase": ""
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "activate_window",
+      "params": {},
+      "required": true,
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_section": "窗口准备",
+      "workflow_requirement": "激活京麦客户端，确保后续动作命中正确窗口。",
+      "workflow_excerpt": "京麦商品上柜需填写三部分信息：1、商品信息；2、规格描述；3、物流售后及其他。",
+      "workflow_paragraphs": [
+        "京麦商品上柜指南",
+        "京麦商品上柜需填写三部分信息：1、商品信息；2、规格描述；3、物流售后及其他。"
+      ],
+      "doc_strict": true,
+      "doc_strict_guard": {
+        "precheck": {
+          "required_markers": [],
+          "reject_markers": []
+        },
+        "postcheck": {
+          "required_markers": [],
+          "reject_markers": []
+        }
+      },
+      "phase": "window_ready",
+      "workflow_context": {
+        "step_index": 2,
+        "step_total": 8,
+        "previous_action": "find_window",
+        "next_action": "navigate_to",
+        "section": "窗口准备",
+        "requirement": "激活京麦客户端，确保后续动作命中正确窗口。",
+        "excerpt": "京麦商品上柜需填写三部分信息：1、商品信息；2、规格描述；3、物流售后及其他。",
+        "phase": ""
+      },
+      "workflow_step_index": 2,
+      "workflow_step_total": 8,
+      "workflow_previous_action": "find_window",
+      "workflow_next_action": "navigate_to",
+      "react_contract": {
+        "goal": "将京麦窗口切到前台，避免后续动作命中错误页面。。文档章节=窗口准备；文档要求=激活京麦客户端，确保后续动作命中正确窗口。；文档步骤=2/8；下一动作=navigate_to",
+        "precheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "系统错误"
+          ]
+        },
+        "postcheck": {
+          "expect_any": [
+            "京麦",
+            "发布商品",
+            "工作台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "系统错误"
+          ]
+        },
+        "workflow_context": {
+          "step_index": 2,
+          "step_total": 8,
+          "previous_action": "find_window",
+          "next_action": "navigate_to",
+          "section": "窗口准备",
+          "requirement": "激活京麦客户端，确保后续动作命中正确窗口。",
+          "excerpt": "京麦商品上柜需填写三部分信息：1、商品信息；2、规格描述；3、物流售后及其他。",
+          "phase": ""
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "navigate_to",
+      "params": {
+        "page": "publish"
+      },
+      "required": true,
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_section": "发布路径",
+      "workflow_requirement": "首页→商品→发布商品",
+      "workflow_excerpt": "京麦商品上柜需填写三部分信息：1、商品信息；2、规格描述；3、物流售后及其他。",
+      "workflow_paragraphs": [
+        "京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。",
+        "第一步：首页点击商品—发布商品"
+      ],
+      "doc_strict": true,
+      "doc_strict_guard": {
+        "recovery_hint": "navigate_to",
+        "recovery_sequence": [
+          {
+            "type": "recover_locator"
+          },
+          {
+            "type": "refresh_page",
+            "mode": "soft"
+          },
+          {
+            "type": "navigate_to",
+            "page": "publish"
+          }
+        ],
+        "precheck": {
+          "allowed_page_states": [
+            "browser_host",
+            "unknown",
+            "product_list_page",
+            "category_page",
+            "product_info_page"
+          ],
+          "required_markers": [
+            "京麦",
+            "工作台",
+            "商品",
+            "发布商品",
+            "类目",
+            "商品标题"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "网络异常"
+          ]
+        },
+        "postcheck": {
+          "allowed_page_states": [
+            "category_page",
+            "product_info_page"
+          ],
+          "required_markers": [
+            "类目",
+            "商品标题",
+            "品牌",
+            "下一步，完善其他商品信息"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "网络异常"
+          ]
+        }
+      },
+      "phase": "publish_page_ready",
+      "workflow_context": {
+        "step_index": 3,
+        "step_total": 8,
+        "previous_action": "activate_window",
+        "next_action": "select_category",
+        "section": "发布路径",
+        "requirement": "首页→商品→发布商品",
+        "excerpt": "京麦商品上柜需填写三部分信息：1、商品信息；2、规格描述；3、物流售后及其他。",
+        "phase": ""
+      },
+      "workflow_step_index": 3,
+      "workflow_step_total": 8,
+      "workflow_previous_action": "activate_window",
+      "workflow_next_action": "select_category",
+      "react_contract": {
+        "goal": "进入发品流程，允许停在类目选择页或商品基本信息页。。文档章节=发布路径；文档要求=首页→商品→发布商品；文档步骤=3/8；下一动作=select_category",
+        "precheck": {
+          "expect_any": [
+            "京麦",
+            "工作台",
+            "发布商品",
+            "商品管理",
+            "商品",
+            "类目",
+            "商品标题"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "网络异常"
+          ],
+          "allowed_page_states": [
+            "browser_host",
+            "unknown",
+            "product_list_page",
+            "category_page",
+            "product_info_page"
+          ],
+          "recovery_hint": "navigate_to"
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品标题",
+            "品牌",
+            "价格",
+            "类目",
+            "下一步，完善其他商品信息"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "网络异常"
+          ],
+          "allowed_page_states": [
+            "category_page",
+            "product_info_page"
+          ],
+          "recovery_hint": "navigate_to"
+        },
+        "workflow_context": {
+          "step_index": 3,
+          "step_total": 8,
+          "previous_action": "activate_window",
+          "next_action": "select_category",
+          "section": "发布路径",
+          "requirement": "首页→商品→发布商品",
+          "excerpt": "京麦商品上柜需填写三部分信息：1、商品信息；2、规格描述；3、物流售后及其他。",
+          "phase": ""
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "select_category",
+      "params": {
+        "search_text": "电脑、办公 > 外设产品 > 插座/转换器"
+      },
+      "required": true,
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_section": "选择商品所属类目",
+      "workflow_requirement": "选择所上架的商品所属的类目，从一级类目到末级类目依次选择。",
+      "workflow_excerpt": "选择所上架的商品所属的类目，从一级类目到末级类目依次选择。",
+      "workflow_paragraphs": [
+        "京麦上柜操作路径：首页→商品→发布商品→选择商品所属类目。以下以操作步骤为货架商品举例。",
+        "第一步：首页点击商品—发布商品",
+        "第二步：选择所上架的商品所属的类目，从一级类目到最末级类目（三级/四级）依次选择。示例：工业品—搬运存储—货架—中型货架",
+        "最后再检查所有带星号的信息都填写完整之后点击发布商品—继续发布就进入采销审核阶段，整个上架流程就结束了。"
+      ],
+      "doc_strict": true,
+      "doc_strict_guard": {
+        "recovery_hint": "navigate_to",
+        "recovery_sequence": [
+          {
+            "type": "recover_locator"
+          },
+          {
+            "type": "refresh_page",
+            "mode": "soft"
+          },
+          {
+            "type": "navigate_to",
+            "page": "publish"
+          },
+          {
+            "type": "select_category"
+          }
+        ],
+        "precheck": {
+          "allowed_page_states": [
+            "category_page",
+            "product_info_page"
+          ],
+          "required_markers": [
+            "类目",
+            "商品标题",
+            "电脑、办公 > 外设产品 > 插座/转换器",
+            "电脑、办公",
+            "外设产品",
+            "插座",
+            "转换器"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "网络异常"
+          ]
+        },
+        "postcheck": {
+          "allowed_page_states": [
+            "category_page",
+            "product_info_page"
+          ],
+          "required_markers": [
+            "商品标题",
+            "品牌",
+            "下一步，完善其他商品信息",
+            "电脑、办公 > 外设产品 > 插座/转换器",
+            "电脑、办公",
+            "外设产品",
+            "插座",
+            "转换器"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "网络异常"
+          ]
+        }
+      },
+      "phase": "category_ready",
+      "workflow_context": {
+        "step_index": 4,
+        "step_total": 8,
+        "previous_action": "navigate_to",
+        "next_action": "fill_product_info",
+        "section": "选择商品所属类目",
+        "requirement": "选择所上架的商品所属的类目，从一级类目到末级类目依次选择。",
+        "excerpt": "选择所上架的商品所属的类目，从一级类目到末级类目依次选择。",
+        "phase": ""
+      },
+      "workflow_step_index": 4,
+      "workflow_step_total": 8,
+      "workflow_previous_action": "navigate_to",
+      "workflow_next_action": "fill_product_info",
+      "react_contract": {
+        "goal": "选择类目 电脑、办公 > 外设产品 > 插座/转换器，或确认已进入商品信息页。。文档章节=选择商品所属类目；文档要求=选择所上架的商品所属的类目，从一级类目到末级类目依次选择。；文档步骤=4/8；下一动作=fill_product_info",
+        "precheck": {
+          "expect_any": [
+            "类目",
+            "商品标题",
+            "品牌",
+            "下一步，完善其他商品信息",
+            "电脑、办公 > 外设产品 > 插座/转换器",
+            "电脑、办公",
+            "外设产品",
+            "插座",
+            "转换器"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "网络异常"
+          ],
+          "allowed_page_states": [
+            "category_page",
+            "product_info_page"
+          ],
+          "recovery_hint": "navigate_to"
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品标题",
+            "品牌",
+            "价格",
+            "下一步，完善其他商品信息",
+            "电脑、办公 > 外设产品 > 插座/转换器",
+            "电脑、办公",
+            "外设产品",
+            "插座",
+            "转换器"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "网络异常"
+          ],
+          "allowed_page_states": [
+            "category_page",
+            "product_info_page"
+          ],
+          "recovery_hint": "navigate_to"
+        },
+        "workflow_context": {
+          "step_index": 4,
+          "step_total": 8,
+          "previous_action": "navigate_to",
+          "next_action": "fill_product_info",
+          "section": "选择商品所属类目",
+          "requirement": "选择所上架的商品所属的类目，从一级类目到末级类目依次选择。",
+          "excerpt": "选择所上架的商品所属的类目，从一级类目到末级类目依次选择。",
+          "phase": ""
+        }
+      },
+      "status": "success"
+    },
+    {
+      "action": "fill_product_info",
+      "params": {
+        "doc_sections": [
+          "商品信息",
+          "商品基本信息",
+          "采销信息",
+          "价格",
+          "商品属性",
+          "物流售后及其他",
+          "商品物流",
+          "商品售后及其他"
+        ],
+        "product": {
+          "business_line": "慧采",
+          "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+          "brand": "公牛",
+          "model": "无",
+          "length_mm": 250,
+          "width_mm": 76,
+          "height_mm": 29,
+          "weight_kg": 0.5,
+          "unit": "个",
+          "jd_price": 70,
+          "url": "https://item.jd.com/16793098028.html",
+          "notes": "数量：2",
+          "price": 70,
+          "market_price": 82.35,
+          "source_meta": {
+            "source_file": "E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx",
+            "sheet_name": "上架模板",
+            "row_index": 4,
+            "workflow_doc": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+            "template_features": {
+              "sheet_name": "上架模板",
+              "recognized_headers": [
+                "business_line",
+                "title",
+                "brand",
+                "model",
+                "length_mm",
+                "width_mm",
+                "height_mm",
+                "weight_kg",
+                "unit",
+                "jd_price",
+                "url",
+                "qualification_files",
+                "summary",
+                "notes"
+              ],
+              "raw_headers": [
+                "上架序号",
+                "申请业务（自营/慧采）",
+                "商品名称（对应京东开票内容）",
+                "品牌",
+                "商品型号",
+                "长（mm）",
+                "宽（mm）",
+                "高（mm）",
+                "重(KG）",
+                "单位  （对应进项发票单位规格）",
+                "京东挂网价（下单金额）",
+                "只能读取京东链接（无链接请通过其他方式新增商品）",
+                "商品资质（PDF格式）",
+                "商品简述（有特殊参数要求可以填）",
+                "备注（特殊要求）"
+              ],
+              "signals": []
+            },
+            "publish_mode": "single",
+            "publish_mode_reason": "single_row_standard_listing",
+            "item_index": 1,
+            "total_items": 1
+          },
+          "product_id": "16793098028",
+          "category": "电脑、办公 > 外设产品 > 插座/转换器",
+          "description": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】",
+          "description_images": [
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg"
+          ],
+          "images": [
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_01.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_02.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_03.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_04.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_05.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_06.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_07.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_08.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_09.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_10.jpg"
+          ],
+          "publish_mode": "single"
+        },
+        "required_visual_fields": {
+          "pricing": [
+            {
+              "field": "market_price",
+              "label": "市场价",
+              "value": 82.35,
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "市场价",
+                  "group": "pricing",
+                  "field": "market_price"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "jd_price",
+              "label": "京东价",
+              "value": 70,
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "京东价",
+                  "group": "pricing",
+                  "field": "jd_price"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "purchase_price",
+              "label": "采购价",
+              "value": 66.5,
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "采购价",
+                  "group": "pricing",
+                  "field": "purchase_price"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            }
+          ],
+          "basic_info": [
+            {
+              "field": "title",
+              "label": "商品名称",
+              "value": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "商品名称",
+                  "group": "basic_info",
+                  "field": "title"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "brand",
+              "label": "品牌",
+              "value": "公牛",
+              "component_type": "dropdown_searchable",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "品牌",
+                  "group": "basic_info",
+                  "field": "brand"
+                },
+                "action_type": "dropdown_select",
+                "steps": [
+                  "click_trigger",
+                  "wait_dropdown_panel",
+                  "hover_target_option",
+                  "click_target_option",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "keyboard_arrow_select",
+                  "vision_option_click"
+                ],
+                "preferred_confirmation": "mouse_hover_click",
+                "keyboard_sequence": [
+                  "ArrowDown",
+                  "Enter"
+                ],
+                "success_signal": "selected_label_matches"
+              }
+            },
+            {
+              "field": "model",
+              "label": "型号",
+              "value": "无",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "型号",
+                  "group": "basic_info",
+                  "field": "model"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "socket_config",
+              "label": "孔型配置",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "孔型配置",
+                  "group": "basic_info",
+                  "field": "socket_config"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "rated_voltage",
+              "label": "额定电压",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "额定电压",
+                  "group": "basic_info",
+                  "field": "rated_voltage"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "cable_length",
+              "label": "电缆长度",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "电缆长度",
+                  "group": "basic_info",
+                  "field": "cable_length"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "protection_level",
+              "label": "防护等级",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "防护等级",
+                  "group": "basic_info",
+                  "field": "protection_level"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "procurement_erp",
+              "label": "采购ERP编码",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "采购ERP编码",
+                  "group": "basic_info",
+                  "field": "procurement_erp"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            }
+          ],
+          "sales_attributes": [
+            {
+              "field": "current",
+              "label": "电流",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "电流",
+                  "group": "sales_attributes",
+                  "field": "current"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "电流",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "rated_voltage",
+              "label": "电压",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "电压",
+                  "group": "sales_attributes",
+                  "field": "rated_voltage"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "current_order",
+              "label": "电流顺序",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "电流顺序",
+                  "group": "sales_attributes",
+                  "field": "current_order"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "电流顺序",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "sku_product_name",
+              "label": "商品名称",
+              "value": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "商品名称",
+                  "group": "sales_attributes",
+                  "field": "sku_product_name"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "商品名称",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "short_title",
+              "label": "短标题",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "短标题",
+                  "group": "sales_attributes",
+                  "field": "short_title"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "短标题",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "lead_time",
+              "label": "货期",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "货期",
+                  "group": "sales_attributes",
+                  "field": "lead_time"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "货期",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "gross_margin",
+              "label": "毛利",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "毛利",
+                  "group": "sales_attributes",
+                  "field": "gross_margin"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "毛利",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "sku_attributes",
+              "label": "SKU属性",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "SKU属性",
+                  "group": "sales_attributes",
+                  "field": "sku_attributes"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "SKU属性",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "weight_kg",
+              "label": "重量(kg)",
+              "value": 0.5,
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "重量(kg)",
+                  "group": "sales_attributes",
+                  "field": "weight_kg"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "重量(kg)",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "length_mm",
+              "label": "长(mm)",
+              "value": 250,
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "长(mm)",
+                  "group": "sales_attributes",
+                  "field": "length_mm"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "长(mm)",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "width_mm",
+              "label": "宽(mm)",
+              "value": 76,
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "宽(mm)",
+                  "group": "sales_attributes",
+                  "field": "width_mm"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "宽(mm)",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "height_mm",
+              "label": "高(mm)",
+              "value": 29,
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "高(mm)",
+                  "group": "sales_attributes",
+                  "field": "height_mm"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "高(mm)",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "sku_image",
+              "label": "图片设置",
+              "value": "",
+              "component_type": "image_uploader",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "图片设置",
+                  "group": "sales_attributes",
+                  "field": "sku_image"
+                },
+                "action_type": "upload_image",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "click_upload_trigger",
+                  "wait_file_picker",
+                  "select_local_file",
+                  "confirm_upload",
+                  "wait_upload_result"
+                ],
+                "fallback_actions": [
+                  "retry_after_scroll",
+                  "vision_trigger_click"
+                ],
+                "success_signal": "thumbnail_or_filename_visible",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal"
+              }
+            }
+          ],
+          "sku_images": [
+            {
+              "field": "sku_square_image",
+              "label": "方图",
+              "value": "",
+              "component_type": "image_uploader",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "方图",
+                  "group": "sku_images",
+                  "field": "sku_square_image"
+                },
+                "action_type": "upload_image",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "click_upload_trigger",
+                  "wait_file_picker",
+                  "select_local_file",
+                  "confirm_upload",
+                  "wait_upload_result"
+                ],
+                "fallback_actions": [
+                  "retry_after_scroll",
+                  "vision_trigger_click"
+                ],
+                "success_signal": "thumbnail_or_filename_visible",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal"
+              }
+            },
+            {
+              "field": "sku_transparent_image",
+              "label": "透图",
+              "value": "",
+              "component_type": "image_uploader",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "透图",
+                  "group": "sku_images",
+                  "field": "sku_transparent_image"
+                },
+                "action_type": "upload_image",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "click_upload_trigger",
+                  "wait_file_picker",
+                  "select_local_file",
+                  "confirm_upload",
+                  "wait_upload_result"
+                ],
+                "fallback_actions": [
+                  "retry_after_scroll",
+                  "vision_trigger_click"
+                ],
+                "success_signal": "thumbnail_or_filename_visible",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal"
+              }
+            }
+          ],
+          "description": [
+            {
+              "field": "detail_content",
+              "label": "商品详情",
+              "value": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】",
+              "component_type": "textarea",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "商品详情",
+                  "group": "description",
+                  "field": "detail_content"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "description_images",
+              "label": "详情图片",
+              "value": [
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg"
+              ],
+              "component_type": "image_uploader",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "详情图片",
+                  "group": "description",
+                  "field": "description_images"
+                },
+                "action_type": "upload_image",
+                "steps": [
+                  "click_upload_trigger",
+                  "wait_file_picker",
+                  "select_local_file",
+                  "confirm_upload",
+                  "wait_upload_result"
+                ],
+                "fallback_actions": [
+                  "retry_after_scroll",
+                  "vision_trigger_click"
+                ],
+                "success_signal": "thumbnail_or_filename_visible"
+              }
+            }
+          ],
+          "logistics": [
+            {
+              "field": "shelf_life_days",
+              "label": "保质期（天）",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "保质期（天）",
+                  "group": "logistics",
+                  "field": "shelf_life_days"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "sales_unit",
+              "label": "销售单位",
+              "value": "个",
+              "component_type": "dropdown_single",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "销售单位",
+                  "group": "logistics",
+                  "field": "sales_unit"
+                },
+                "action_type": "dropdown_select",
+                "steps": [
+                  "click_trigger",
+                  "wait_dropdown_panel",
+                  "hover_target_option",
+                  "click_target_option",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "keyboard_arrow_select"
+                ],
+                "keyboard_sequence": [
+                  "ArrowDown",
+                  "Enter"
+                ],
+                "success_signal": "selected_label_matches"
+              }
+            },
+            {
+              "field": "package_spec",
+              "label": "包装规格",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "包装规格",
+                  "group": "logistics",
+                  "field": "package_spec"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "package_spec_unit",
+              "label": "包装规格单位",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "包装规格单位",
+                  "group": "logistics",
+                  "field": "package_spec_unit"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "package_type",
+              "label": "商品包装",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "商品包装",
+                  "group": "logistics",
+                  "field": "package_type"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "special_delivery_mark",
+              "label": "特殊发货时效标记",
+              "value": "",
+              "component_type": "radio_group",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "特殊发货时效标记",
+                  "group": "logistics",
+                  "field": "special_delivery_mark"
+                },
+                "action_type": "choice_select",
+                "steps": [
+                  "locate_choice_group",
+                  "click_target_choice",
+                  "selection_verify"
+                ],
+                "fallback_actions": [
+                  "keyboard_arrow_select",
+                  "space_confirm"
+                ],
+                "success_signal": "selected_choice_matches"
+              }
+            },
+            {
+              "field": "hazardous_goods",
+              "label": "是否危险商品",
+              "value": "",
+              "component_type": "radio_group",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "是否危险商品",
+                  "group": "logistics",
+                  "field": "hazardous_goods"
+                },
+                "action_type": "choice_select",
+                "steps": [
+                  "locate_choice_group",
+                  "click_target_choice",
+                  "selection_verify"
+                ],
+                "fallback_actions": [
+                  "keyboard_arrow_select",
+                  "space_confirm"
+                ],
+                "success_signal": "selected_choice_matches"
+              }
+            },
+            {
+              "field": "packing_list",
+              "label": "包装清单",
+              "value": "数量：2",
+              "component_type": "textarea",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "包装清单",
+                  "group": "logistics",
+                  "field": "packing_list"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "warranty_period",
+              "label": "质保期",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "质保期",
+                  "group": "logistics",
+                  "field": "warranty_period"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            }
+          ]
+        },
+        "publish_mode": "single"
+      },
+      "required": true,
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_section": "商品信息 / 物流售后及其他",
+      "workflow_requirement": "按文档填写商品基本信息、采销信息、价格、商品属性、商品物流与售后字段。",
+      "workflow_excerpt": "商品基本信息、采销信息、价格、商品属性、物流售后及其他、商品物流。",
+      "workflow_paragraphs": [
+        "商品信息",
+        "商品基本信息",
+        "商品基本信息包含标品选择、商品标题、品牌、短标题、型号、货号、是否厂直商品等信息。编辑商品信息时，带星号的为必填项，未带星号的可根据需上柜商品参考链接填写或不填。商品基本信息的必填项为：商品标题、品牌、型号、是否厂直商品这四项。",
+        "先选择品牌：上架过程中所有需要选择品牌的信息都应与第一次选择的保持一致;",
+        "编辑标题，先选择品牌，再编辑商品标题。标题需体现产品的卖点、功能、材质、颜色、规格等参数信息，且长度不能超过100字符，1个汉字=2字符",
+        "编辑商品型号，录入准确的商品型号",
+        "是否厂直商品，我们入驻京东是供应商模式，所以这里需选择是，关于厂直库存可根据需要填写数据（做自然单的建议开库存）",
+        "采销信息",
+        "采销信息主要填写商品的市场价、京东价（在京东售卖的价格）、采购价（我们与京东的结算价）、毛利、采销、采购的ERP信息",
+        "价格",
+        "三个价格之间的关系市场价＞京东价＞采购价；市场价高于京东价就行，没有明确的规定，我一般会控制在高于京东价20%内；京东价=采购价/0.95；毛利为5%（系统自动生成）",
+        "采销采购的ERP信息，一般都已经设置过默认，所以通常情况下不需要填写，如更换采销需重新编辑；在系统中采销和采购的ERP可以都写主采销的ERP，也可以对应填写。主采销ERP：zhaolin125、采购ERP：liuyuhong.daphne",
+        "商品属性",
+        "填写商品的参数信息，带星号的必填，没带星号的可不填（如有对应参数可以补充完整）。",
+        "物流售后及其他",
+        "商品物流",
+        "商品物流处需填写准确的商品重量、包装长宽高、包装规格、包装清单，这个涉及到发货考核，如实际发货重量和体积偏差过大会产生违约单、漏发少发会产生客诉。此外，特殊发货时效标记我们后台基本上是普通品，如是定制品需要正确选择定制品。以下为参考：",
+        "商品售后及其他",
+        "此处一般为质保多久，京东工业要求至少质保期一年，快消品除外，",
+        "最后再检查所有带星号的信息都填写完整之后点击发布商品—继续发布就进入采销审核阶段，整个上架流程就结束了。"
+      ],
+      "doc_strict": true,
+      "doc_strict_guard": {
+        "recovery_hint": "navigate_to",
+        "recovery_sequence": [
+          {
+            "type": "recover_locator"
+          },
+          {
+            "type": "refresh_page",
+            "mode": "soft"
+          },
+          {
+            "type": "navigate_to",
+            "page": "publish"
+          },
+          {
+            "type": "select_category"
+          }
+        ],
+        "precheck": {
+          "allowed_page_states": [
+            "product_info_page"
+          ],
+          "required_markers": [
+            "商品标题",
+            "品牌",
+            "市场价",
+            "京东价",
+            "商品名称",
+            "品牌",
+            "型号",
+            "孔型配置",
+            "额定电压",
+            "电缆长度",
+            "防护等级",
+            "采购ERP编码",
+            "电流",
+            "电压",
+            "电流顺序",
+            "商品名称",
+            "短标题",
+            "货期",
+            "毛利",
+            "SKU属性",
+            "重量(kg)",
+            "长(mm)",
+            "宽(mm)",
+            "高(mm)",
+            "图片设置"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "商品列表",
+            "草稿"
+          ]
+        },
+        "postcheck": {
+          "allowed_page_states": [
+            "product_info_page"
+          ],
+          "required_markers": [
+            "商品标题",
+            "品牌",
+            "公牛（BULL） 插座/B5系列 带",
+            "公牛",
+            "70",
+            "市场价",
+            "京东价"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "商品列表",
+            "草稿",
+            "类目"
+          ]
+        }
+      },
+      "phase": "product_info_ready",
+      "workflow_context": {
+        "step_index": 5,
+        "step_total": 8,
+        "previous_action": "select_category",
+        "next_action": "fill_product_description",
+        "section": "商品信息 / 物流售后及其他",
+        "requirement": "按文档填写商品基本信息、采销信息、价格、商品属性、商品物流与售后字段。",
+        "excerpt": "商品基本信息、采销信息、价格、商品属性、物流售后及其他、商品物流。",
+        "phase": ""
+      },
+      "workflow_step_index": 5,
+      "workflow_step_total": 8,
+      "workflow_previous_action": "select_category",
+      "workflow_next_action": "fill_product_description",
+      "react_contract": {
+        "goal": "先确认当前屏幕仍在发品主流程，再填写基础信息与价格；如果视觉上已偏到商品描述/物流售后等标签，需要先回到商品基本信息并滚到价格区域。。文档章节=商品信息 / 物流售后及其他；文档要求=按文档填写商品基本信息、采销信息、价格、商品属性、商品物流与售后字段。；文档步骤=5/8；下一动作=fill_product_description",
+        "precheck": {
+          "expect_any": [
+            "商品基本信息",
+            "商品标题",
+            "品牌",
+            "价格",
+            "商品描述",
+            "商品物流",
+            "商品售后及其他",
+            "市场价",
+            "京东价",
+            "商品名称",
+            "型号",
+            "孔型配置",
+            "额定电压",
+            "电缆长度",
+            "防护等级",
+            "采购ERP编码",
+            "电流",
+            "电压",
+            "电流顺序",
+            "短标题",
+            "货期",
+            "毛利",
+            "SKU属性",
+            "重量(kg)",
+            "长(mm)",
+            "宽(mm)",
+            "高(mm)",
+            "图片设置"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "商品列表",
+            "草稿"
+          ],
+          "allowed_page_states": [
+            "product_info_page"
+          ],
+          "recovery_hint": "navigate_to"
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品标题",
+            "品牌",
+            "市场价",
+            "京东价",
+            "公牛（BULL） 插座/B5系列 带",
+            "70",
+            "公牛"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "商品列表",
+            "草稿",
+            "类目"
+          ],
+          "allowed_page_states": [
+            "product_info_page"
+          ],
+          "recovery_hint": "navigate_to"
+        },
+        "workflow_context": {
+          "step_index": 5,
+          "step_total": 8,
+          "previous_action": "select_category",
+          "next_action": "fill_product_description",
+          "section": "商品信息 / 物流售后及其他",
+          "requirement": "按文档填写商品基本信息、采销信息、价格、商品属性、商品物流与售后字段。",
+          "excerpt": "商品基本信息、采销信息、价格、商品属性、物流售后及其他、商品物流。",
+          "phase": ""
+        }
+      },
+      "status": "failed",
+      "recovery_attempts": [
+        {
+          "reason": "resume-preflight",
+          "success": true,
+          "error": "",
+          "at": 1778666413,
+          "window": {
+            "hwnd": 110433078,
+            "title": "jd_465d1abd3ee76",
+            "rect": [
+              0,
+              0,
+              2560,
+              1392
+            ],
+            "width": 2560,
+            "height": 1392
+          }
+        },
+        {
+          "reason": "matrix-recover",
+          "success": true,
+          "error": "",
+          "at": 1778666581,
+          "window": {
+            "hwnd": 110433078,
+            "title": "jd_465d1abd3ee76",
+            "rect": [
+              0,
+              0,
+              2560,
+              1392
+            ],
+            "width": 2560,
+            "height": 1392
+          }
+        },
+        {
+          "reason": "action:action_execution_error",
+          "success": false,
+          "error": "fill_product_info blocked: current page is blank/non-editing state, should recover before retry",
+          "at": 1778666636,
+          "details": {
+            "deviation_type": "action_execution_error",
+            "recoverable": true,
+            "verified": false,
+            "actions": [
+              {
+                "type": "wait",
+                "success": true,
+                "seconds": 1.5
+              },
+              {
+                "type": "recover_locator",
+                "success": true,
+                "error": ""
+              },
+              {
+                "type": "refresh_page",
+                "success": true,
+                "result": {
+                  "success": true,
+                  "mode": "soft",
+                  "method": "f5"
+                },
+                "error": ""
+              },
+              {
+                "type": "opencli_state_probe",
+                "success": true,
+                "error": "",
+                "result": {
+                  "reason": "action_execution_error",
+                  "session": "jingmai-publish-60353e18",
+                  "commands": [
+                    {
+                      "args": [
+                        "browser",
+                        "--session",
+                        "jingmai-publish-60353e18",
+                        "state"
+                      ],
+                      "success": true,
+                      "returncode": 0,
+                      "output": "URL: about:blank\n\nurl: about:blank\ntitle: \nviewport: 1264x715\n---\n---\ninteractive: 0 | iframes: 0"
+                    },
+                    {
+                      "args": [
+                        "browser",
+                        "--session",
+                        "jingmai-publish-60353e18",
+                        "get",
+                        "title"
+                      ],
+                      "success": true,
+                      "returncode": 0,
+                      "output": ""
+                    },
+                    {
+                      "args": [
+                        "browser",
+                        "state",
+                        "--session",
+                        "jingmai-publish-60353e18"
+                      ],
+                      "success": false,
+                      "returncode": 1,
+                      "output": "error: required option '--session <name>' not specified"
+                    },
+                    {
+                      "args": [
+                        "browser",
+                        "get",
+                        "title",
+                        "--session",
+                        "jingmai-publish-60353e18"
+                      ],
+                      "success": false,
+                      "returncode": 1,
+                      "output": "error: required option '--session <name>' not specified"
+                    },
+                    {
+                      "args": [
+                        "browser",
+                        "state"
+                      ],
+                      "success": false,
+                      "returncode": 1,
+                      "output": "error: required option '--session <name>' not specified"
+                    },
+                    {
+                      "args": [
+                        "browser",
+                        "get",
+                        "title"
+                      ],
+                      "success": false,
+                      "returncode": 1,
+                      "output": "error: required option '--session <name>' not specified"
+                    }
+                  ],
+                  "raw_output": "URL: about:blank\n\nurl: about:blank\ntitle: \nviewport: 1264x715\n---\n---\ninteractive: 0 | iframes: 0",
+                  "observation": {
+                    "status": "unknown",
+                    "reason": "opencli state probe inferred unknown",
+                    "current_state": "URL: about:blank\n\nurl: about:blank\ntitle: \nviewport: 1264x715\n---\n---\ninteractive: 0 | iframes: 0",
+                    "suggested_action": "recover",
+                    "page_state": "unknown",
+                    "probe_reason": "action_execution_error"
+                  }
+                }
+              }
+            ],
+            "error": "fill_product_info blocked: current page is blank/non-editing state, should recover before retry",
+            "verification": {
+              "status": "error",
+              "reason": "fill_product_info blocked: current page is blank/non-editing state, should recover before retry",
+              "current_state": "当前处于商品信息填写流程中的价格设置环节，页面上已显示价格相关字段（市场价、京东价等），符合文档步骤要求，且未见明显错误或中断提示。",
+              "suggested_action": "recover",
+              "step_context": "已确认当前屏幕仍在发品主流程，且正处于商品基本信息填写阶段。根据文档要求，当前步骤需填写商品基本信息、价格等字段，页面已展示价格设置区域（市场价、京东价），符合继续操作的条件。",
+              "stage": "precheck",
+              "page_state": "wrong_blank_page"
+            },
+            "opencli_probe": {
+              "page_state": "unknown",
+              "reason": "opencli state probe inferred unknown",
+              "raw_output": "URL: about:blank\n\nurl: about:blank\ntitle: \nviewport: 1264x715\n---\n---\ninteractive: 0 | iframes: 0"
+            }
+          }
+        },
+        {
+          "reason": "matrix-force-relocate",
+          "success": true,
+          "error": "",
+          "at": 1778666659,
+          "window": {
+            "hwnd": 141305800,
+            "title": "新标签页 - Google Chrome",
+            "rect": [
+              10,
+              10,
+              1275,
+              1382
+            ],
+            "width": 1265,
+            "height": 1372
+          }
+        },
+        {
+          "reason": "precheck:precheck_blocked",
+          "success": false,
+          "error": "doc-strict precheck page mismatch for fill_product_info: expected one of ['product_info_page', 'sku_table_page', 'publish_confirm_page'], got unknown",
+          "at": 1778666700,
+          "details": {
+            "deviation_type": "precheck_blocked",
+            "recoverable": true,
+            "verified": false,
+            "actions": [
+              {
+                "type": "force_relocate",
+                "success": true,
+                "error": ""
+              },
+              {
+                "type": "refresh_page",
+                "success": true,
+                "result": {
+                  "success": true,
+                  "mode": "soft",
+                  "method": "f5"
+                },
+                "error": ""
+              },
+              {
+                "type": "navigate_to",
+                "success": true,
+                "result": {
+                  "success": true,
+                  "page": "publish",
+                  "steps": [
+                    "点击商品菜单",
+                    "点击发布商品"
+                  ]
+                },
+                "error": ""
+              },
+              {
+                "type": "select_category",
+                "success": true,
+                "result": {
+                  "success": true,
+                  "steps": [
+                    "already_past_category"
+                  ]
+                },
+                "error": ""
+              }
+            ],
+            "error": "doc-strict precheck page mismatch for fill_product_info: expected one of ['product_info_page', 'sku_table_page', 'publish_confirm_page'], got unknown",
+            "verification": {
+              "status": "error",
+              "reason": "doc-strict precheck page mismatch for fill_product_info: expected one of ['product_info_page', 'sku_table_page', 'publish_confirm_page'], got unknown",
+              "current_state": "浏览器Google搜索页面",
+              "suggested_action": "navigate_to",
+              "stage": "precheck",
+              "page_state": "wrong_blank_page"
+            },
+            "opencli_probe": {
+              "page_state": "unknown",
+              "reason": "opencli state probe inferred unknown",
+              "raw_output": "URL: about:blank\n\nurl: about:blank\ntitle: \nviewport: 1264x715\n---\n---\ninteractive: 0 | iframes: 0"
+            }
+          }
+        },
+        {
+          "reason": "force-relocate",
+          "success": true,
+          "error": "",
+          "at": 1778666701,
+          "window": {
+            "hwnd": 41489958,
+            "title": "小红书 - 你的生活兴趣社区 - Google Chrome",
+            "rect": [
+              10,
+              10,
+              1275,
+              1382
+            ],
+            "width": 1265,
+            "height": 1372
+          }
+        }
+      ],
+      "precheck_screenshot": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\60353e18_precheck_fill_product_info_1778666701.png",
+      "precheck_video_contact_sheet": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\precheck_contact_sheet.png",
+      "precheck_video_frames": [
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\precheck_frame_1.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\precheck_frame_2.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\precheck_frame_3.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\precheck_frame_4.png"
+      ],
+      "precheck_video_frame_count": 4,
+      "postcheck_screenshot": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\postcheck_contact_sheet.png",
+      "postcheck_video_contact_sheet": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\postcheck_contact_sheet.png",
+      "postcheck_video_frames": [
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\postcheck_frame_1.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\postcheck_frame_2.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\postcheck_frame_3.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\postcheck_frame_4.png"
+      ],
+      "postcheck_video_frame_count": 4,
+      "action_screenshot": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-fill_product_info\\postcheck_contact_sheet.png",
+      "recovery_screenshot": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\60353e18_recovery_recovery_fill_product_info_2_1778666670.png",
+      "recovery_video_contact_sheet": "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-recovery_fill_product_info_2\\recovery_contact_sheet.png",
+      "recovery_video_frames": [
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-recovery_fill_product_info_2\\recovery_frame_1.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-recovery_fill_product_info_2\\recovery_frame_2.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-recovery_fill_product_info_2\\recovery_frame_3.png",
+        "E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\video-observer\\60353e18\\step-05-recovery_fill_product_info_2\\recovery_frame_4.png"
+      ],
+      "recovery_video_frame_count": 4
+    },
+    {
+      "action": "fill_product_description",
+      "params": {
+        "doc_sections": [
+          "商品规格描述",
+          "商品图片",
+          "商品描述"
+        ],
+        "product": {
+          "business_line": "慧采",
+          "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+          "brand": "公牛",
+          "model": "无",
+          "length_mm": 250,
+          "width_mm": 76,
+          "height_mm": 29,
+          "weight_kg": 0.5,
+          "unit": "个",
+          "jd_price": 70,
+          "url": "https://item.jd.com/16793098028.html",
+          "notes": "数量：2",
+          "price": 70,
+          "market_price": 82.35,
+          "source_meta": {
+            "source_file": "E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx",
+            "sheet_name": "上架模板",
+            "row_index": 4,
+            "workflow_doc": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+            "template_features": {
+              "sheet_name": "上架模板",
+              "recognized_headers": [
+                "business_line",
+                "title",
+                "brand",
+                "model",
+                "length_mm",
+                "width_mm",
+                "height_mm",
+                "weight_kg",
+                "unit",
+                "jd_price",
+                "url",
+                "qualification_files",
+                "summary",
+                "notes"
+              ],
+              "raw_headers": [
+                "上架序号",
+                "申请业务（自营/慧采）",
+                "商品名称（对应京东开票内容）",
+                "品牌",
+                "商品型号",
+                "长（mm）",
+                "宽（mm）",
+                "高（mm）",
+                "重(KG）",
+                "单位  （对应进项发票单位规格）",
+                "京东挂网价（下单金额）",
+                "只能读取京东链接（无链接请通过其他方式新增商品）",
+                "商品资质（PDF格式）",
+                "商品简述（有特殊参数要求可以填）",
+                "备注（特殊要求）"
+              ],
+              "signals": []
+            },
+            "publish_mode": "single",
+            "publish_mode_reason": "single_row_standard_listing",
+            "item_index": 1,
+            "total_items": 1
+          },
+          "product_id": "16793098028",
+          "category": "电脑、办公 > 外设产品 > 插座/转换器",
+          "description": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】",
+          "description_images": [
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg"
+          ],
+          "images": [
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_01.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_02.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_03.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_04.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_05.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_06.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_07.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_08.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_09.jpg",
+            "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_10.jpg"
+          ],
+          "publish_mode": "single"
+        },
+        "required_visual_fields": {
+          "pricing": [
+            {
+              "field": "market_price",
+              "label": "市场价",
+              "value": 82.35,
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "市场价",
+                  "group": "pricing",
+                  "field": "market_price"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "jd_price",
+              "label": "京东价",
+              "value": 70,
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "京东价",
+                  "group": "pricing",
+                  "field": "jd_price"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "purchase_price",
+              "label": "采购价",
+              "value": 66.5,
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "采购价",
+                  "group": "pricing",
+                  "field": "purchase_price"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            }
+          ],
+          "basic_info": [
+            {
+              "field": "title",
+              "label": "商品名称",
+              "value": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "商品名称",
+                  "group": "basic_info",
+                  "field": "title"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "brand",
+              "label": "品牌",
+              "value": "公牛",
+              "component_type": "dropdown_searchable",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "品牌",
+                  "group": "basic_info",
+                  "field": "brand"
+                },
+                "action_type": "dropdown_select",
+                "steps": [
+                  "click_trigger",
+                  "wait_dropdown_panel",
+                  "hover_target_option",
+                  "click_target_option",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "keyboard_arrow_select",
+                  "vision_option_click"
+                ],
+                "preferred_confirmation": "mouse_hover_click",
+                "keyboard_sequence": [
+                  "ArrowDown",
+                  "Enter"
+                ],
+                "success_signal": "selected_label_matches"
+              }
+            },
+            {
+              "field": "model",
+              "label": "型号",
+              "value": "无",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "型号",
+                  "group": "basic_info",
+                  "field": "model"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "socket_config",
+              "label": "孔型配置",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "孔型配置",
+                  "group": "basic_info",
+                  "field": "socket_config"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "rated_voltage",
+              "label": "额定电压",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "额定电压",
+                  "group": "basic_info",
+                  "field": "rated_voltage"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "cable_length",
+              "label": "电缆长度",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "电缆长度",
+                  "group": "basic_info",
+                  "field": "cable_length"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "protection_level",
+              "label": "防护等级",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "防护等级",
+                  "group": "basic_info",
+                  "field": "protection_level"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "procurement_erp",
+              "label": "采购ERP编码",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "采购ERP编码",
+                  "group": "basic_info",
+                  "field": "procurement_erp"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            }
+          ],
+          "sales_attributes": [
+            {
+              "field": "current",
+              "label": "电流",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "电流",
+                  "group": "sales_attributes",
+                  "field": "current"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "电流",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "rated_voltage",
+              "label": "电压",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "电压",
+                  "group": "sales_attributes",
+                  "field": "rated_voltage"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "current_order",
+              "label": "电流顺序",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "电流顺序",
+                  "group": "sales_attributes",
+                  "field": "current_order"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "电流顺序",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "sku_product_name",
+              "label": "商品名称",
+              "value": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "商品名称",
+                  "group": "sales_attributes",
+                  "field": "sku_product_name"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "商品名称",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "short_title",
+              "label": "短标题",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "短标题",
+                  "group": "sales_attributes",
+                  "field": "short_title"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "短标题",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "lead_time",
+              "label": "货期",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "货期",
+                  "group": "sales_attributes",
+                  "field": "lead_time"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "货期",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "gross_margin",
+              "label": "毛利",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "毛利",
+                  "group": "sales_attributes",
+                  "field": "gross_margin"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "毛利",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "sku_attributes",
+              "label": "SKU属性",
+              "value": "",
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "SKU属性",
+                  "group": "sales_attributes",
+                  "field": "sku_attributes"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "SKU属性",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "weight_kg",
+              "label": "重量(kg)",
+              "value": 0.5,
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "重量(kg)",
+                  "group": "sales_attributes",
+                  "field": "weight_kg"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "重量(kg)",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "length_mm",
+              "label": "长(mm)",
+              "value": 250,
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "长(mm)",
+                  "group": "sales_attributes",
+                  "field": "length_mm"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "长(mm)",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "width_mm",
+              "label": "宽(mm)",
+              "value": 76,
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "宽(mm)",
+                  "group": "sales_attributes",
+                  "field": "width_mm"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "宽(mm)",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "height_mm",
+              "label": "高(mm)",
+              "value": 29,
+              "component_type": "table_cell_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "高(mm)",
+                  "group": "sales_attributes",
+                  "field": "height_mm"
+                },
+                "action_type": "table_cell_edit",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "activate_cell",
+                  "apply_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "track_drag_scroll",
+                  "keyboard_tab_navigation"
+                ],
+                "column_label": "高(mm)",
+                "success_signal": "cell_value_matches",
+                "apply_mode": "direct_input"
+              }
+            },
+            {
+              "field": "sku_image",
+              "label": "图片设置",
+              "value": "",
+              "component_type": "image_uploader",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "图片设置",
+                  "group": "sales_attributes",
+                  "field": "sku_image"
+                },
+                "action_type": "upload_image",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "click_upload_trigger",
+                  "wait_file_picker",
+                  "select_local_file",
+                  "confirm_upload",
+                  "wait_upload_result"
+                ],
+                "fallback_actions": [
+                  "retry_after_scroll",
+                  "vision_trigger_click"
+                ],
+                "success_signal": "thumbnail_or_filename_visible",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal"
+              }
+            }
+          ],
+          "sku_images": [
+            {
+              "field": "sku_square_image",
+              "label": "方图",
+              "value": "",
+              "component_type": "image_uploader",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "方图",
+                  "group": "sku_images",
+                  "field": "sku_square_image"
+                },
+                "action_type": "upload_image",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "click_upload_trigger",
+                  "wait_file_picker",
+                  "select_local_file",
+                  "confirm_upload",
+                  "wait_upload_result"
+                ],
+                "fallback_actions": [
+                  "retry_after_scroll",
+                  "vision_trigger_click"
+                ],
+                "success_signal": "thumbnail_or_filename_visible",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal"
+              }
+            },
+            {
+              "field": "sku_transparent_image",
+              "label": "透图",
+              "value": "",
+              "component_type": "image_uploader",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "透图",
+                  "group": "sku_images",
+                  "field": "sku_transparent_image"
+                },
+                "action_type": "upload_image",
+                "steps": [
+                  "ensure_table_visible",
+                  "resolve_column_visibility",
+                  "scroll_horizontally_if_needed",
+                  "click_upload_trigger",
+                  "wait_file_picker",
+                  "select_local_file",
+                  "confirm_upload",
+                  "wait_upload_result"
+                ],
+                "fallback_actions": [
+                  "retry_after_scroll",
+                  "vision_trigger_click"
+                ],
+                "success_signal": "thumbnail_or_filename_visible",
+                "container_component": "scrollable_table",
+                "table_axis": "horizontal"
+              }
+            }
+          ],
+          "description": [
+            {
+              "field": "detail_content",
+              "label": "商品详情",
+              "value": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】",
+              "component_type": "textarea",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "商品详情",
+                  "group": "description",
+                  "field": "detail_content"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "description_images",
+              "label": "详情图片",
+              "value": [
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg",
+                "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg"
+              ],
+              "component_type": "image_uploader",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "详情图片",
+                  "group": "description",
+                  "field": "description_images"
+                },
+                "action_type": "upload_image",
+                "steps": [
+                  "click_upload_trigger",
+                  "wait_file_picker",
+                  "select_local_file",
+                  "confirm_upload",
+                  "wait_upload_result"
+                ],
+                "fallback_actions": [
+                  "retry_after_scroll",
+                  "vision_trigger_click"
+                ],
+                "success_signal": "thumbnail_or_filename_visible"
+              }
+            }
+          ],
+          "logistics": [
+            {
+              "field": "shelf_life_days",
+              "label": "保质期（天）",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "保质期（天）",
+                  "group": "logistics",
+                  "field": "shelf_life_days"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "sales_unit",
+              "label": "销售单位",
+              "value": "个",
+              "component_type": "dropdown_single",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "销售单位",
+                  "group": "logistics",
+                  "field": "sales_unit"
+                },
+                "action_type": "dropdown_select",
+                "steps": [
+                  "click_trigger",
+                  "wait_dropdown_panel",
+                  "hover_target_option",
+                  "click_target_option",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "keyboard_arrow_select"
+                ],
+                "keyboard_sequence": [
+                  "ArrowDown",
+                  "Enter"
+                ],
+                "success_signal": "selected_label_matches"
+              }
+            },
+            {
+              "field": "package_spec",
+              "label": "包装规格",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "包装规格",
+                  "group": "logistics",
+                  "field": "package_spec"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "package_spec_unit",
+              "label": "包装规格单位",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "包装规格单位",
+                  "group": "logistics",
+                  "field": "package_spec_unit"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "package_type",
+              "label": "商品包装",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "商品包装",
+                  "group": "logistics",
+                  "field": "package_type"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "special_delivery_mark",
+              "label": "特殊发货时效标记",
+              "value": "",
+              "component_type": "radio_group",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "特殊发货时效标记",
+                  "group": "logistics",
+                  "field": "special_delivery_mark"
+                },
+                "action_type": "choice_select",
+                "steps": [
+                  "locate_choice_group",
+                  "click_target_choice",
+                  "selection_verify"
+                ],
+                "fallback_actions": [
+                  "keyboard_arrow_select",
+                  "space_confirm"
+                ],
+                "success_signal": "selected_choice_matches"
+              }
+            },
+            {
+              "field": "hazardous_goods",
+              "label": "是否危险商品",
+              "value": "",
+              "component_type": "radio_group",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "是否危险商品",
+                  "group": "logistics",
+                  "field": "hazardous_goods"
+                },
+                "action_type": "choice_select",
+                "steps": [
+                  "locate_choice_group",
+                  "click_target_choice",
+                  "selection_verify"
+                ],
+                "fallback_actions": [
+                  "keyboard_arrow_select",
+                  "space_confirm"
+                ],
+                "success_signal": "selected_choice_matches"
+              }
+            },
+            {
+              "field": "packing_list",
+              "label": "包装清单",
+              "value": "数量：2",
+              "component_type": "textarea",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "包装清单",
+                  "group": "logistics",
+                  "field": "packing_list"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            },
+            {
+              "field": "warranty_period",
+              "label": "质保期",
+              "value": "",
+              "component_type": "text_input",
+              "interaction_strategy": {
+                "locate_by": {
+                  "label": "质保期",
+                  "group": "logistics",
+                  "field": "warranty_period"
+                },
+                "action_type": "direct_input",
+                "steps": [
+                  "click_input",
+                  "focus_confirm",
+                  "clear_if_needed",
+                  "type_value",
+                  "readback_verify"
+                ],
+                "fallback_actions": [
+                  "uia_set_text",
+                  "clipboard_paste"
+                ],
+                "success_signal": "input_value_matches"
+              }
+            }
+          ]
+        },
+        "publish_mode": "single"
+      },
+      "required": true,
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_section": "规格描述",
+      "workflow_requirement": "按文档完善商品规格描述、商品图片和商品描述。",
+      "workflow_excerpt": "商品规格描述、商品图片、商品描述。",
+      "workflow_paragraphs": [
+        "商品规格描述",
+        "商品图片",
+        "商品图片即商品主图：要求至少上传3张不同角度展示商品、不限底色的图片，最多上传10张；图片宽高比例为1:1，且宽高均大于480px，推荐尺寸『1440*1440』，建议大小3M内，仅支持jpg、jpeg、png；拖拽可调整图片顺序。",
+        "此外还需要上传一张只有商品主体的透明图（无底色），要求图片尺寸至少为480px*480px，比例1:1，仅支持png格式。",
+        "图片上传步路径：点击加号—本地上传—上传文件夹/图片都可以—点击确定完成上传",
+        "商品描述",
+        "商品描述是商品的详情页。详情页需要展示商品的核心卖点、商品尺寸、商品细节、商品参数、使用场景以及售后服务等。",
+        "详情图片要求：①、宽度限制750px-1500px；",
+        "②、高度小于1500px的图片，大小要求3M以内（上传图片）；",
+        "③、高度大于等于1500px的图片；大小5M以内（上传设计稿）；",
+        "④、图片上传成功后将按照默认顺序置入画布中。",
+        "商详上传路径1（高级编辑模式）：点击商详空白出—图片上传—选择目标商品图片—点击保存—应用到小程序—返回商家后台",
+        "商详上传路径2（代码编辑模式）：商详处选择代码编辑—输入代码即可",
+        "商详上传路径3（图文编辑模式）：商详处选择图文编辑—输入文字+图片即可"
+      ],
+      "doc_strict": true,
+      "doc_strict_guard": {
+        "recovery_hint": "fill_product_description",
+        "recovery_sequence": [
+          {
+            "type": "recover_locator"
+          },
+          {
+            "type": "refresh_page",
+            "mode": "soft"
+          },
+          {
+            "type": "navigate_to",
+            "page": "publish"
+          },
+          {
+            "type": "select_category"
+          }
+        ],
+        "precheck": {
+          "allowed_page_states": [
+            "description_page"
+          ],
+          "required_markers": [
+            "商品描述",
+            "图文编辑",
+            "代码编辑"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "高级编辑"
+          ]
+        },
+        "postcheck": {
+          "allowed_page_states": [
+            "description_page"
+          ],
+          "required_markers": [
+            "商品描述",
+            "图文编辑",
+            "代码编辑"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "高级编辑"
+          ]
+        }
+      },
+      "phase": "product_info_ready",
+      "workflow_context": {
+        "step_index": 6,
+        "step_total": 8,
+        "previous_action": "fill_product_info",
+        "next_action": "publish_product",
+        "section": "规格描述",
+        "requirement": "按文档完善商品规格描述、商品图片和商品描述。",
+        "excerpt": "商品规格描述、商品图片、商品描述。",
+        "phase": ""
+      },
+      "workflow_step_index": 6,
+      "workflow_step_total": 8,
+      "workflow_previous_action": "fill_product_info",
+      "workflow_next_action": "publish_product",
+      "react_contract": {
+        "goal": "在商家后台内完善商品详情，避免进入高级编辑器，如误入则先返回商家后台。。文档章节=规格描述；文档要求=按文档完善商品规格描述、商品图片和商品描述。；文档步骤=6/8；下一动作=publish_product",
+        "precheck": {
+          "expect_any": [
+            "商品描述",
+            "图文编辑",
+            "代码编辑",
+            "返回商家后台"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "高级编辑",
+            "404"
+          ],
+          "allowed_page_states": [
+            "description_page"
+          ],
+          "recovery_hint": "fill_product_description"
+        },
+        "postcheck": {
+          "expect_any": [
+            "商品描述",
+            "图文编辑",
+            "代码编辑",
+            "商品物流"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "高级编辑",
+            "返回商家后台",
+            "404"
+          ],
+          "allowed_page_states": [
+            "description_page"
+          ],
+          "recovery_hint": "fill_product_description"
+        },
+        "workflow_context": {
+          "step_index": 6,
+          "step_total": 8,
+          "previous_action": "fill_product_info",
+          "next_action": "publish_product",
+          "section": "规格描述",
+          "requirement": "按文档完善商品规格描述、商品图片和商品描述。",
+          "excerpt": "商品规格描述、商品图片、商品描述。",
+          "phase": ""
+        }
+      },
+      "status": "pending"
+    },
+    {
+      "action": "publish_product",
+      "params": {},
+      "required": true,
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_section": "发布商品",
+      "workflow_requirement": "最后再检查所有带星号的信息都填写完整之后点击发布商品。",
+      "workflow_excerpt": "最后再检查所有带星号的信息都填写完整之后点击发布商品。",
+      "workflow_paragraphs": [
+        "最后再检查所有带星号的信息都填写完整之后点击发布商品—继续发布就进入采销审核阶段，整个上架流程就结束了。"
+      ],
+      "doc_strict": true,
+      "doc_strict_guard": {
+        "recovery_hint": "publish_product",
+        "recovery_sequence": [
+          {
+            "type": "recover_locator"
+          },
+          {
+            "type": "refresh_page",
+            "mode": "soft"
+          },
+          {
+            "type": "opencli_state_probe",
+            "reason": "publish_product"
+          }
+        ],
+        "precheck": {
+          "allowed_page_states": [
+            "product_info_page",
+            "description_page",
+            "publish_confirm_page"
+          ],
+          "required_markers": [
+            "发布商品",
+            "保存草稿",
+            "商品标题"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404"
+          ]
+        },
+        "postcheck": {
+          "allowed_page_states": [
+            "publish_confirm_page",
+            "product_list_page",
+            "product_info_page"
+          ],
+          "required_markers": [
+            "提交成功",
+            "发布成功",
+            "商品列表",
+            "审核"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404"
+          ]
+        }
+      },
+      "phase": "publish_submitted",
+      "workflow_context": {
+        "step_index": 7,
+        "step_total": 8,
+        "previous_action": "fill_product_description",
+        "next_action": "verify_result",
+        "section": "发布商品",
+        "requirement": "最后再检查所有带星号的信息都填写完整之后点击发布商品。",
+        "excerpt": "最后再检查所有带星号的信息都填写完整之后点击发布商品。",
+        "phase": ""
+      },
+      "workflow_step_index": 7,
+      "workflow_step_total": 8,
+      "workflow_previous_action": "fill_product_description",
+      "workflow_next_action": "verify_result",
+      "react_contract": {
+        "goal": "提交发布动作。。文档章节=发布商品；文档要求=最后再检查所有带星号的信息都填写完整之后点击发布商品。；文档步骤=7/8；下一动作=verify_result",
+        "precheck": {
+          "expect_any": [
+            "发布商品",
+            "保存草稿",
+            "商品标题"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404"
+          ],
+          "allowed_page_states": [
+            "product_info_page",
+            "description_page",
+            "publish_confirm_page"
+          ],
+          "recovery_hint": "publish_product"
+        },
+        "postcheck": {
+          "expect_any": [
+            "提交成功",
+            "发布成功",
+            "商品列表",
+            "草稿",
+            "审核"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404"
+          ],
+          "allowed_page_states": [
+            "publish_confirm_page",
+            "product_list_page",
+            "product_info_page"
+          ],
+          "recovery_hint": "publish_product"
+        },
+        "workflow_context": {
+          "step_index": 7,
+          "step_total": 8,
+          "previous_action": "fill_product_description",
+          "next_action": "verify_result",
+          "section": "发布商品",
+          "requirement": "最后再检查所有带星号的信息都填写完整之后点击发布商品。",
+          "excerpt": "最后再检查所有带星号的信息都填写完整之后点击发布商品。",
+          "phase": ""
+        }
+      },
+      "status": "pending"
+    },
+    {
+      "action": "verify_result",
+      "params": {
+        "check_errors": true
+      },
+      "required": true,
+      "workflow_source": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "workflow_section": "结果确认",
+      "workflow_requirement": "继续发布就进入采销审核阶段。",
+      "workflow_excerpt": "继续发布就进入采销审核阶段。",
+      "workflow_paragraphs": [
+        "最后再检查所有带星号的信息都填写完整之后点击发布商品—继续发布就进入采销审核阶段，整个上架流程就结束了。"
+      ],
+      "doc_strict": true,
+      "doc_strict_guard": {
+        "recovery_hint": "verify_result",
+        "recovery_sequence": [
+          {
+            "type": "recover_locator"
+          },
+          {
+            "type": "wait",
+            "seconds": 2
+          },
+          {
+            "type": "opencli_state_probe",
+            "reason": "verify_result"
+          }
+        ],
+        "precheck": {
+          "allowed_page_states": [
+            "publish_confirm_page",
+            "product_list_page",
+            "product_info_page"
+          ],
+          "required_markers": [
+            "发布成功",
+            "商品列表",
+            "审核",
+            "发布商品"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "错误",
+            "异常"
+          ]
+        },
+        "postcheck": {
+          "allowed_page_states": [
+            "publish_confirm_page",
+            "product_list_page"
+          ],
+          "required_markers": [
+            "商品列表",
+            "审核",
+            "发布成功"
+          ],
+          "reject_markers": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "错误",
+            "异常"
+          ]
+        }
+      },
+      "phase": "publish_verified",
+      "workflow_context": {
+        "step_index": 8,
+        "step_total": 8,
+        "previous_action": "publish_product",
+        "next_action": "",
+        "section": "结果确认",
+        "requirement": "继续发布就进入采销审核阶段。",
+        "excerpt": "继续发布就进入采销审核阶段。",
+        "phase": ""
+      },
+      "workflow_step_index": 8,
+      "workflow_step_total": 8,
+      "workflow_previous_action": "publish_product",
+      "workflow_next_action": "",
+      "react_contract": {
+        "goal": "检查当前页面是否存在错误提示，确认草稿或发布结果。。文档章节=结果确认；文档要求=继续发布就进入采销审核阶段。；文档步骤=8/8",
+        "precheck": {
+          "expect_any": [
+            "发布商品",
+            "草稿",
+            "商品标题",
+            "商品列表",
+            "发布成功",
+            "审核"
+          ],
+          "reject_any": [
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404",
+            "错误",
+            "异常"
+          ],
+          "allowed_page_states": [
+            "publish_confirm_page",
+            "product_list_page",
+            "product_info_page"
+          ],
+          "recovery_hint": "verify_result"
+        },
+        "postcheck": {
+          "expect_any": [
+            "草稿",
+            "发布成功",
+            "商品列表",
+            "发布商品",
+            "审核"
+          ],
+          "reject_any": [
+            "错误",
+            "异常",
+            "扫码登录",
+            "登录失效",
+            "系统错误",
+            "404"
+          ],
+          "allowed_page_states": [
+            "publish_confirm_page",
+            "product_list_page"
+          ],
+          "recovery_hint": "verify_result"
+        },
+        "workflow_context": {
+          "step_index": 8,
+          "step_total": 8,
+          "previous_action": "publish_product",
+          "next_action": "",
+          "section": "结果确认",
+          "requirement": "继续发布就进入采销审核阶段。",
+          "excerpt": "继续发布就进入采销审核阶段。",
+          "phase": ""
+        }
+      },
+      "status": "pending"
+    }
+  ],
+  "error": "视觉预检失败: doc-strict precheck page mismatch for fill_product_info: expected one of ['product_info_page', 'sku_table_page', 'publish_confirm_page'], got unknown",
+  "product_data": {
+    "business_line": "慧采",
+    "title": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+    "brand": "公牛",
+    "model": "无",
+    "length_mm": 250,
+    "width_mm": 76,
+    "height_mm": 29,
+    "weight_kg": 0.5,
+    "unit": "个",
+    "jd_price": 70,
+    "url": "https://item.jd.com/16793098028.html",
+    "notes": "数量：2",
+    "price": 70,
+    "market_price": 82.35,
+    "source_meta": {
+      "source_file": "E:\\workspace\\skills\\jingmai-product-publish\\湖南上架表格.xlsx",
+      "sheet_name": "上架模板",
+      "row_index": 4,
+      "workflow_doc": "E:\\workspace\\skills\\jingmai-product-publish\\京麦上架流程.docx",
+      "template_features": {
+        "sheet_name": "上架模板",
+        "recognized_headers": [
+          "business_line",
+          "title",
+          "brand",
+          "model",
+          "length_mm",
+          "width_mm",
+          "height_mm",
+          "weight_kg",
+          "unit",
+          "jd_price",
+          "url",
+          "qualification_files",
+          "summary",
+          "notes"
+        ],
+        "raw_headers": [
+          "上架序号",
+          "申请业务（自营/慧采）",
+          "商品名称（对应京东开票内容）",
+          "品牌",
+          "商品型号",
+          "长（mm）",
+          "宽（mm）",
+          "高（mm）",
+          "重(KG）",
+          "单位  （对应进项发票单位规格）",
+          "京东挂网价（下单金额）",
+          "只能读取京东链接（无链接请通过其他方式新增商品）",
+          "商品资质（PDF格式）",
+          "商品简述（有特殊参数要求可以填）",
+          "备注（特殊要求）"
+        ],
+        "signals": []
+      },
+      "publish_mode": "single",
+      "publish_mode_reason": "single_row_standard_listing",
+      "item_index": 1,
+      "total_items": 1
+    },
+    "product_id": "16793098028",
+    "category": "电脑、办公 > 外设产品 > 插座/转换器",
+    "description": "公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控5米（新国标防过载）B5440图片、价格、品牌样样齐全！【京东正品行货，全国配送，心动不如行动，立即购买享受更多优惠哦！】",
+    "description_images": [
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_01.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_02.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_03.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_04.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_05.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_06.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_07.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_08.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_09.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\detail\\detail_10.jpg"
+    ],
+    "images": [
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_01.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_02.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_03.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_04.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_05.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_06.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_07.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_08.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_09.jpg",
+      "E:\\workspace\\skills\\jingmai-product-publish\\data\\jd_detail_images\\16793098028\\main\\main_10.jpg"
+    ],
+    "publish_mode": "single"
+  },
+  "risk_stats": {
+    "high_risk_window_shift_count": 0,
+    "high_risk_window_shift_steps": []
+  },
+  "vision_fallback_stats": {
+    "count": 0,
+    "success_count": 0,
+    "failed_count": 0,
+    "steps": [],
+    "failed_details": [],
+    "templates": {},
+    "templates_success": {},
+    "templates_failed": {}
+  }
+}

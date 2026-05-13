@@ -1,116 +1,37 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-05-12 17:20:18
+Date: 2026-05-13 17:34:20
 --- GIT COMMITS ---
-  ff1f6c0f 瀹氭椂鑷姩鎻愪氦 - 2026-05-12 00:24:09
+  df8dd87a docs: update GitHub W19 with DeepSeek-TUI confirmed, create feishu upsert script
+  8a59f166 瀹氭椂鑷姩鎻愪氦 - 2026-05-13 09:39:22
+  1e0b1bda 瀹氭椂鑷姩鎻愪氦 - 2026-05-13 09:28:44
+  3c24e64b 瀹氭椂鑷姩鎻愪氦 - 2026-05-13 09:23:56
 --- FILES MODIFIED ---
-  17:05 | .git\FETCH_HEAD
-  17:03 | knowledge-base\.notion_sync_state.json
-  17:03 | knowledge-base\.sync_state.json
-  16:10 | scripts\feishu_sync_wechat_final.py
-  16:07 | scripts\feishu_import_md_final.py
-  15:06 | memory\2026-05-12.md
-  15:06 | knowledge-base\wiki\概念\Claude-Code-飞书Agent办公-部署与使用指南.md
-  15:03 | wechat_article.png
-  15:03 | wechat_article.txt
-  14:38 | scripts\feishu_sync_wechat.py
-  14:38 | scripts\feishu_import_md_api.py
-  14:20 | knowledge-base\wiki\概念\企业AI本体Ontology-从工具到Agent的关键.md
-  12:35 | skills\jingmai-product-publish\.idea\workspace.xml
-  12:21 | scripts\feishu_sync_v3.py
-  12:19 | scripts\feishu_sync_final2.py
-  11:49 | knowledge-base\wiki\概念\企业AI本体化闭环流程-从工具到Agent的完整指南.md
-  11:47 | scripts\feishu_sync_slow.py
-  11:47 | knowledge-base\wiki\log.md
-  11:46 | scripts\feishu_sync_test.py
-  11:44 | scripts\feishu_sync_final.py
+  17:34 | skills\jingmai-product-publish\tests\test_fill_product_info_live_fix.py
+  17:34 | skills\jingmai-product-publish\tests\test_planner_publish_flow.py
+  17:34 | skills\jingmai-product-publish\agents\planner.py
+  17:33 | skills\jingmai-product-publish\actions\form.py
+  17:32 | .git\FETCH_HEAD
+  17:31 | skills\jingmai-product-publish\.idea\workspace.xml
+  17:28 | skills\jingmai-product-publish\graphify-out\graph.html
+  17:28 | skills\jingmai-product-publish\graphify-out\graph.json
+  17:28 | skills\jingmai-product-publish\graphify-out\GRAPH_REPORT.md
+  17:28 | skills\jingmai-product-publish\graphify-out\cache\40bd638a22e988c0f622cb4bdda6f88028ca7eb522e25bdb399ce105f9e14201.json
+  17:28 | skills\jingmai-product-publish\graphify-out\cache\07d39823e7009683c10feb7516452fa087197c8a852364aacee9c9af844c3452.json
+  17:28 | skills\jingmai-product-publish\graphify-out\cache\b4a300ee324ba2ab9fc72adcfe2d765dfc3bed43bd0a6ef3f1a20dcd1f99db17.json
+  17:28 | skills\jingmai-product-publish\graphify-out\cache\6b9ae59d738bc992c63cfb18572341097f6cf9c3748bb00ca6d710c4f2a8bef6.json
+  17:28 | skills\jingmai-product-publish\graphify-out\converted\湖南上架表格_fa911bf6.md
+  17:28 | skills\jingmai-product-publish\graphify-out\converted\京麦上架流程_95edbbf7.md
+  17:28 | skills\jingmai-product-publish\.pytest_cache\v\cache\nodeids
+  17:28 | skills\jingmai-product-publish\agents\__pycache__\planner.cpython-312.pyc
+  17:28 | skills\jingmai-product-publish\tests\__pycache__\test_fill_product_info_live_fix.cpython-312-pytest-9.0.3.pyc
+  17:28 | skills\jingmai-product-publish\tests\__pycache__\test_planner_publish_flow.cpython-312-pytest-9.0.3.pyc
+  17:28 | skills\jingmai-product-publish\tests\__pycache__\test_planner_publish_flow_logistics_extended.cpython-312-pytest-9.0.3.pyc
 --- SESSIONS ---
-  Count: 447
-  - 00105f8d-1fb3-4009-9367-27ea8971ac53.jsonl [02:03]
-  - 00105f8d-1fb3-4009-9367-27ea8971ac53.trajectory.jsonl [02:03]
-  - 0196b6c0-2c2c-44eb-9077-69c1e50c0a2f.jsonl [10:50]
+  Count: 209
+  - 00d9abfa-206f-434e-b638-bad805b53958.jsonl [11:10]
+  - 00d9abfa-206f-434e-b638-bad805b53958.trajectory.jsonl [11:10]
+  - 0644a689-4d12-4bcb-ba7e-71c3753ad1a4.jsonl [13:02]
 --- SKILLS ---
-  + .openclaw-install-backups
-  + agent-reach
-  + ai-image-generator
-  + ai-social-media-pro
-  + ai-web-automation
-  + best-ai-video-editor-free
-  + best-video-editor-for-beginners
-  + claude-code-control
-  + claude-code-pro
-  + claude-code-runner
-  + claw-self-improving
-  + clips-machine
-  + competitive-analysis
-  + competitor-teardown
-  + content-generator
-  + context-product-manager
-  + cpo
-  + cron-mastery
-  + cron-scheduling
-  + customer-persona
-  + desktop-control-1-0-0
-  + diagram-generator
-  + easy-opencode
-  + edgeone-clawscan
-  + elite-longterm-memory
-  + evomap
-  + feature-requirements-clarification
-  + filesystem
-  + free-ai-video-editor
-  + free-video-editor
-  + frontend
-  + frontend-design-pro
-  + github
-  + has-anonymizer
-  + hd-infoimage
-  + huguanjin-libtv-skill
-  + jianying
-  + market-research
-  + mcporter
-  + mem0
-  + memory-dream
-  + memory-hygiene
-  + memos
-  + multi-agent-collaboration
-  + multi-search-engine
-  + mvp
-  + office
-  + openclaw-agent-browser
-  + openclaw-skill-vetter-1-0-0
-  + opencli-agent
-  + opencode
-  + opencode-acp-control-3
-  + opencode-cli
-  + opencode-controller
-  + openmaic
-  + pinchtab
-  + prd-writer
-  + product-manager
-  + product-strategy
-  + ralph-loop-agent
-  + ralph-loops
-  + requirements-analysis
-  + searxng
-  + self-improving
-  + serpapi
-  + simplify
-  + social-content
-  + social-media-agent
-  + social-media-publish
-  + tmux
-  + triple-memory
-  + ui-design
-  + ui-ux-design
-  + ui-ux-pro-max
-  + user-research
-  + video-frames
-  + video-maker-free
-  + web-access
-  + web-monitor
-  + web-scraper-as-a-service
-  + wiki-knowledge-base
-  + wireframe
-  + xiaoming-social-media
+  + jingmai-product-publish
 --- STRUCTURED ---
-{"skillsUpdated":[".openclaw-install-backups","agent-reach","ai-image-generator","ai-social-media-pro","ai-web-automation","best-ai-video-editor-free","best-video-editor-for-beginners","claude-code-control","claude-code-pro","claude-code-runner","claw-self-improving","clips-machine","competitive-analysis","competitor-teardown","content-generator","context-product-manager","cpo","cron-mastery","cron-scheduling","customer-persona","desktop-control-1-0-0","diagram-generator","easy-opencode","edgeone-clawscan","elite-longterm-memory","evomap","feature-requirements-clarification","filesystem","free-ai-video-editor","free-video-editor","frontend","frontend-design-pro","github","has-anonymizer","hd-infoimage","huguanjin-libtv-skill","jianying","market-research","mcporter","mem0","memory-dream","memory-hygiene","memos","multi-agent-collaboration","multi-search-engine","mvp","office","openclaw-agent-browser","openclaw-skill-vetter-1-0-0","opencli-agent","opencode","opencode-acp-control-3","opencode-cli","opencode-controller","openmaic","pinchtab","prd-writer","product-manager","product-strategy","ralph-loop-agent","ralph-loops","requirements-analysis","searxng","self-improving","serpapi","simplify","social-content","social-media-agent","social-media-publish","tmux","triple-memory","ui-design","ui-ux-design","ui-ux-pro-max","user-research","video-frames","video-maker-free","web-access","web-monitor","web-scraper-as-a-service","wiki-knowledge-base","wireframe","xiaoming-social-media"],"dayOfWeek":"Tuesday","sessionCount":447,"modifiedFiles":["E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\scripts\\feishu_sync_wechat_final.py","E:\\workspace\\scripts\\feishu_import_md_final.py","E:\\workspace\\memory\\2026-05-12.md","E:\\workspace\\knowledge-base\\wiki\\概念\\Claude-Code-飞书Agent办公-部署与使用指南.md","E:\\workspace\\wechat_article.png","E:\\workspace\\wechat_article.txt","E:\\workspace\\scripts\\feishu_sync_wechat.py","E:\\workspace\\scripts\\feishu_import_md_api.py","E:\\workspace\\knowledge-base\\wiki\\概念\\企业AI本体Ontology-从工具到Agent的关键.md","E:\\workspace\\skills\\jingmai-product-publish\\.idea\\workspace.xml","E:\\workspace\\scripts\\feishu_sync_v3.py","E:\\workspace\\scripts\\feishu_sync_final2.py","E:\\workspace\\knowledge-base\\wiki\\概念\\企业AI本体化闭环流程-从工具到Agent的完整指南.md","E:\\workspace\\scripts\\feishu_sync_slow.py","E:\\workspace\\knowledge-base\\wiki\\log.md","E:\\workspace\\scripts\\feishu_sync_test.py","E:\\workspace\\scripts\\feishu_sync_final.py"],"gitCommits":"ff1f6c0f 瀹氭椂鑷姩鎻愪氦 - 2026-05-12 00:24:09","date":"2026.05.12"}
+{"skillsUpdated":["jingmai-product-publish"],"dayOfWeek":"Wednesday","sessionCount":209,"modifiedFiles":["E:\\workspace\\skills\\jingmai-product-publish\\tests\\test_fill_product_info_live_fix.py","E:\\workspace\\skills\\jingmai-product-publish\\tests\\test_planner_publish_flow.py","E:\\workspace\\skills\\jingmai-product-publish\\agents\\planner.py","E:\\workspace\\skills\\jingmai-product-publish\\actions\\form.py","E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\skills\\jingmai-product-publish\\.idea\\workspace.xml","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\graph.html","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\graph.json","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\GRAPH_REPORT.md","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\cache\\40bd638a22e988c0f622cb4bdda6f88028ca7eb522e25bdb399ce105f9e14201.json","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\cache\\07d39823e7009683c10feb7516452fa087197c8a852364aacee9c9af844c3452.json","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\cache\\b4a300ee324ba2ab9fc72adcfe2d765dfc3bed43bd0a6ef3f1a20dcd1f99db17.json","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\cache\\6b9ae59d738bc992c63cfb18572341097f6cf9c3748bb00ca6d710c4f2a8bef6.json","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\converted\\湖南上架表格_fa911bf6.md","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\converted\\京麦上架流程_95edbbf7.md","E:\\workspace\\skills\\jingmai-product-publish\\.pytest_cache\\v\\cache\\nodeids","E:\\workspace\\skills\\jingmai-product-publish\\agents\\__pycache__\\planner.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\tests\\__pycache__\\test_fill_product_info_live_fix.cpython-312-pytest-9.0.3.pyc","E:\\workspace\\skills\\jingmai-product-publish\\tests\\__pycache__\\test_planner_publish_flow.cpython-312-pytest-9.0.3.pyc","E:\\workspace\\skills\\jingmai-product-publish\\tests\\__pycache__\\test_planner_publish_flow_logistics_extended.cpython-312-pytest-9.0.3.pyc"],"gitCommits":["df8dd87a docs: update GitHub W19 with DeepSeek-TUI confirmed, create feishu upsert script","8a59f166 瀹氭椂鑷姩鎻愪氦 - 2026-05-13 09:39:22","1e0b1bda 瀹氭椂鑷姩鎻愪氦 - 2026-05-13 09:28:44","3c24e64b 瀹氭椂鑷姩鎻愪氦 - 2026-05-13 09:23:56"],"date":"2026.05.13"}

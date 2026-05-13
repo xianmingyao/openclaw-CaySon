@@ -311,7 +311,7 @@ def test_load_batch_items_supports_hunan_template_xlsx(tmp_path: Path):
     assert items[0]["unit"] == "个"
     assert items[0]["jd_price"] == 70
     assert items[0]["price"] == 70
-    assert items[0]["market_price"] == 70
+    assert items[0]["market_price"] == 82.35
     assert items[0]["url"] == "https://item.jd.com/16793098028.html"
     assert items[0]["notes"] == "数量：2"
     assert items[0]["publish_mode"] == "single"
@@ -993,6 +993,44 @@ def test_locator_foreground_excludes_dd_workbench_host_window(monkeypatch):
         "_get_process_name",
         staticmethod(lambda hwnd: "jdm_dd_workbench"),
     )
+
+    locator = JingmaiLocator()
+    window = locator._find_window_foreground()
+
+    assert window is None
+
+
+def test_locator_foreground_rejects_generic_browser_tab_even_when_jingmai_window_exists(monkeypatch):
+    import infrastructure.locator as locator_module
+
+    monkeypatch.setattr(locator_module, "WIN32_AVAILABLE", True)
+
+    class FakeUser32:
+        @staticmethod
+        def GetForegroundWindow():
+            return 202
+
+        @staticmethod
+        def GetWindowRect(hwnd, rect_ptr):
+            rect_ptr.contents.left = 0
+            rect_ptr.contents.top = 0
+            rect_ptr.contents.right = 2560
+            rect_ptr.contents.bottom = 1392
+            return 1
+
+        @staticmethod
+        def GetWindowTextLengthW(hwnd):
+            return len("新标签页 - Google Chrome")
+
+        @staticmethod
+        def GetWindowTextW(hwnd, buf, length):
+            buf.value = "新标签页 - Google Chrome"
+            return len(buf.value)
+
+    monkeypatch.setattr(locator_module.ctypes, "windll", SimpleNamespace(user32=FakeUser32()))
+    monkeypatch.setattr(locator_module.JingmaiLocator, "_get_process_name", staticmethod(lambda hwnd: "chrome"))
+    monkeypatch.setattr(locator_module.JingmaiLocator, "_has_any_jingmai_window", lambda self: True)
+    monkeypatch.setattr(locator_module.JingmaiLocator, "_window_surface_is_blank", lambda self, hwnd=None: False)
 
     locator = JingmaiLocator()
     window = locator._find_window_foreground()
@@ -2339,7 +2377,7 @@ def test_infer_required_product_values_derives_missing_required_fields():
 
     product = result["product"]
     assert product["jd_price"] == 99
-    assert product["market_price"] == 99
+    assert product["market_price"] == 116.47
     assert product["purchase_price"] == 94.05
     assert product["sales_unit"] == "个"
     assert product["packing_list"] == "质保1年"
@@ -3009,6 +3047,30 @@ def test_executor_coerces_fill_product_info_precheck_when_still_on_form():
     assert "fill_product_info" in result["reason"]
 
 
+def test_executor_coerces_fill_product_info_unknown_precheck_when_local_probe_is_safe(monkeypatch):
+    import actions.form as form_module
+
+    agent = ExecutorAgent()
+    agent._locator = object()
+    monkeypatch.setattr(ExecutorAgent, "_detect_local_page_state", lambda self, action_name=None: "unknown")
+    monkeypatch.setattr(ExecutorAgent, "_detect_page_state", lambda self, observation, action_name=None: "unknown")
+    monkeypatch.setattr(form_module, "_classify_fill_page_state", lambda **kwargs: "product_info_page")
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "unknown",
+            "reason": "当前页面是商品信息页面，可安全继续当前步骤。",
+            "current_state": "未知",
+            "suggested_action": "recover",
+        },
+        history=[{"action": "select_category", "success": True}],
+    )
+
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
+
+
 def test_executor_coerces_fill_product_info_precheck_when_state_is_action_name():
     agent = ExecutorAgent()
 
@@ -3192,8 +3254,8 @@ def test_executor_blocks_fill_product_info_precheck_on_description_page_text():
         history=[{"action": "fill_product_info", "success": True}],
     )
 
-    assert result["status"] == "error"
-    assert result["suggested_action"] == "recover"
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
     assert result["page_state"] == "description_page"
 
 
@@ -3222,8 +3284,8 @@ def test_executor_blocks_fill_product_info_precheck_on_local_detail_editor(monke
         history=[{"action": "select_category", "success": True}],
     )
 
-    assert result["status"] == "error"
-    assert result["suggested_action"] == "recover"
+    assert result["status"] == "ok"
+    assert result["suggested_action"] == "proceed"
     assert result["page_state"] == "description_page"
 
 
@@ -3655,9 +3717,9 @@ def test_fill_sku_pricing_fields_v3_uses_dynamic_price_centers(monkeypatch):
     )
 
     assert [item["field"] for item in result] == ["market_price", "purchase_price", "jd_price"]
-    assert clicked == [(1100, 610), (1388, 603), (1500, 615)]
+    assert clicked == [(1100, 610), (1500, 615)]
     assert result[0]["verification_method"] == "verify@1100,610"
-    assert result[1]["verification_method"] == "verify@1388,603"
+    assert result[1]["method"] == "price-target-guard"
     assert result[2]["verification_method"] == "verify@1500,615"
 
 
@@ -3696,5 +3758,6 @@ def test_fill_sku_pricing_fields_v3_derives_purchase_price_from_jd_price(monkeyp
 
     result = form_module._fill_sku_pricing_fields_v3({"jd_price": 100}, locator=object())
 
-    assert [item["field"] for item in result] == ["purchase_price", "jd_price"]
-    assert writes == ["95.00", "100"]
+    assert [item["field"] for item in result] == ["market_price"]
+    assert result[0]["method"] == "price-target-guard"
+    assert writes == []

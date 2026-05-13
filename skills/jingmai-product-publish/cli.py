@@ -13,6 +13,8 @@ from typing import Any, Dict, List, Tuple
 
 import click
 
+from pricing_rules import derive_market_price
+
 
 def _build_runtime_settings(settings_overrides: Dict[str, Any] | None = None):
     from settings import Settings, get_settings
@@ -109,7 +111,9 @@ def _load_batch_items(path: Path) -> List[Dict[str, Any]]:
                     payload[key] = cell
                 if "jd_price" in payload:
                     payload.setdefault("price", payload["jd_price"])
-                    payload.setdefault("market_price", payload["jd_price"])
+                    market_price = derive_market_price(payload["jd_price"])
+                    if market_price is not None:
+                        payload.setdefault("market_price", market_price)
                 if payload:
                     workbook_meta["data_row_count"] += 1
                     payload["source_meta"] = {
@@ -409,7 +413,9 @@ def _enrich_product_from_source(payload: Dict[str, Any]) -> Dict[str, Any]:
     if enriched.get("jd_price") in (None, "") and scraped.get("price") not in (None, ""):
         enriched["jd_price"] = scraped.get("price")
     if enriched.get("market_price") in (None, "") and enriched.get("jd_price") not in (None, ""):
-        enriched["market_price"] = enriched["jd_price"]
+        market_price = derive_market_price(enriched.get("jd_price"))
+        if market_price is not None:
+            enriched["market_price"] = market_price
     return _merge_local_product_preset(enriched)
 
 

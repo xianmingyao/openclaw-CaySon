@@ -59,6 +59,7 @@ WINDOW_EXCLUDE_KEYWORDS = [
 BROWSER_PROCESS_HINTS = {"chrome", "msedge", "360chrome", "360se", "iexplore", "jingmai", "jd"}
 JINGMAI_PROCESS_HINTS = {"jmworkstation", "jdm_dd_workbench"}
 WINDOW_EXCLUDE_PROCESS_HINTS = {"jdm_dd_workbench"}
+FOREGROUND_BROWSER_TITLE_HINTS = ("jd_", "京麦", "京东", "发布商品", "商品标题", "京东智铺", "类目")
 
 
 class JingmaiLocator:
@@ -253,6 +254,9 @@ class JingmaiLocator:
             has_jingmai_hint = self._has_any_jingmai_window()
             if not self._is_matching_title(title):
                 if not (has_jingmai_hint and process_name in BROWSER_PROCESS_HINTS):
+                    return None
+                title_lower = title.lower()
+                if not any(hint.lower() in title_lower for hint in FOREGROUND_BROWSER_TITLE_HINTS):
                     return None
             if self._window_surface_is_blank(hwnd):
                 self._log('debug', f"skip blank foreground window: title='{title}', process='{process_name}'")

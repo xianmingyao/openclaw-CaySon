@@ -9,6 +9,10 @@ if str(PROJECT_ROOT) not in sys.path:
 from agents.planner import PlannerAgent
 
 
+def _field_map(items):
+    return {item["field"]: item for item in items}
+
+
 def test_template_plan_uses_direct_publish_flow():
     agent = PlannerAgent()
 
@@ -33,11 +37,13 @@ def test_template_plan_uses_direct_publish_flow():
     fill_step = next(step for step in plan if step["action"] == "fill_product_info")
     required_fields = fill_step["params"]["required_visual_fields"]
     assert [item["field"] for item in required_fields["basic_info"]] == [
+        "title",
         "brand",
         "model",
         "socket_config",
         "rated_voltage",
         "cable_length",
+        "protection_level",
         "procurement_erp",
     ]
     assert [item["field"] for item in required_fields["pricing"]] == [
@@ -45,7 +51,21 @@ def test_template_plan_uses_direct_publish_flow():
         "jd_price",
         "purchase_price",
     ]
-    assert [item["field"] for item in required_fields["sales_attributes"]] == ["current", "rated_voltage", "lead_time", "sku_image"]
+    assert [item["field"] for item in required_fields["sales_attributes"]] == [
+        "current",
+        "rated_voltage",
+        "current_order",
+        "sku_product_name",
+        "short_title",
+        "lead_time",
+        "gross_margin",
+        "sku_attributes",
+        "weight_kg",
+        "length_mm",
+        "width_mm",
+        "height_mm",
+        "sku_image",
+    ]
     assert [item["field"] for item in required_fields["description"]] == ["detail_content", "description_images"]
     assert [item["field"] for item in required_fields["logistics"]] == [
         "shelf_life_days",
@@ -58,6 +78,14 @@ def test_template_plan_uses_direct_publish_flow():
         "packing_list",
         "warranty_period",
     ]
+    basic_info_fields = _field_map(required_fields["basic_info"])
+    sales_fields = _field_map(required_fields["sales_attributes"])
+    assert basic_info_fields["title"]["component_type"] == "text_input"
+    assert basic_info_fields["brand"]["component_type"] == "dropdown_searchable"
+    assert basic_info_fields["brand"]["interaction_strategy"]["keyboard_sequence"] == ["ArrowDown", "Enter"]
+    assert sales_fields["current"]["component_type"] == "table_cell_input"
+    assert sales_fields["current"]["interaction_strategy"]["container_component"] == "scrollable_table"
+    assert sales_fields["current"]["interaction_strategy"]["table_axis"] == "horizontal"
 
 
 def test_planner_canonicalizes_legacy_draft_then_publish_sequence():
@@ -106,12 +134,38 @@ def test_required_visual_fields_reuses_existing_product_values():
         }
     )
 
-    assert fields["basic_info"][0]["value"] == "公牛"
-    assert fields["basic_info"][2]["value"] == "八位"
-    assert fields["sales_attributes"][0]["value"] == "10A"
-    assert fields["sales_attributes"][1]["value"] == "250V"
-    assert fields["logistics"][0]["value"] == "个"
-    assert fields["logistics"][3]["value"] == "数量：2"
+    basic_info_fields = _field_map(fields["basic_info"])
+    sales_fields = _field_map(fields["sales_attributes"])
+    logistics_fields = _field_map(fields["logistics"])
+    assert basic_info_fields["brand"]["value"] == "公牛"
+    assert basic_info_fields["socket_config"]["value"] == "八位"
+    assert sales_fields["current"]["value"] == "10A"
+    assert sales_fields["rated_voltage"]["value"] == "250V"
+    assert logistics_fields["sales_unit"]["value"] == "个"
+    assert logistics_fields["packing_list"]["value"] == "数量：2"
+
+
+def test_required_visual_fields_embed_component_strategies():
+    fields = PlannerAgent._build_required_visual_fields(
+        {
+            "title": "公牛插座",
+            "brand": "公牛",
+            "description_images": [r"E:\images\detail-1.jpg"],
+            "attributes": {"current": "10A"},
+        }
+    )
+
+    basic_info_fields = _field_map(fields["basic_info"])
+    sales_fields = _field_map(fields["sales_attributes"])
+    description_fields = _field_map(fields["description"])
+
+    assert basic_info_fields["title"]["interaction_strategy"]["action_type"] == "direct_input"
+    assert basic_info_fields["brand"]["interaction_strategy"]["action_type"] == "dropdown_select"
+    assert "hover_target_option" in basic_info_fields["brand"]["interaction_strategy"]["steps"]
+    assert "keyboard_arrow_select" in basic_info_fields["brand"]["interaction_strategy"]["fallback_actions"]
+    assert sales_fields["current"]["interaction_strategy"]["apply_mode"] == "direct_input"
+    assert "scroll_horizontally_if_needed" in sales_fields["current"]["interaction_strategy"]["steps"]
+    assert description_fields["description_images"]["component_type"] == "image_uploader"
 
 
 def test_doc_strict_template_tracks_workflow_doc_metadata():

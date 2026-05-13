@@ -1572,16 +1572,19 @@ class ExecutorAgent(BaseAgent):
         if action_name == "fill_product_info":
             local_page_state = self._detect_local_page_state(action_name=action_name)
             observed_page_state = self._detect_page_state(observation, action_name=action_name)
-            if local_page_state in {"description_page", "wrong_blank_page"}:
+            if local_page_state == "description_page":
+                normalized = dict(observation)
+                normalized["status"] = "ok"
+                normalized["suggested_action"] = "proceed"
+                normalized["page_state"] = "description_page"
+                normalized["reason"] = "fill_product_info precheck accepted description_page for in-action return"
+                return self._apply_doc_strict_guard(action_name, step, normalized, stage="precheck")
+            if local_page_state == "wrong_blank_page":
                 normalized = dict(observation)
                 normalized["status"] = "error"
                 normalized["suggested_action"] = "recover"
                 normalized["page_state"] = local_page_state
-                normalized["reason"] = (
-                    "fill_product_info blocked: current page is advanced detail editor, must return to merchant backend first"
-                    if local_page_state == "description_page"
-                    else "fill_product_info blocked: current page is blank/non-editing state, should recover before retry"
-                )
+                normalized["reason"] = "fill_product_info blocked: current page is blank/non-editing state, should recover before retry"
                 return self._apply_doc_strict_guard(action_name, step, normalized, stage="precheck")
             if observed_page_state == "wrong_blank_page":
                 normalized = dict(observation)
@@ -1592,17 +1595,19 @@ class ExecutorAgent(BaseAgent):
                 return self._apply_doc_strict_guard(action_name, step, normalized, stage="precheck")
             if self._observation_indicates_description_page(observation):
                 normalized = dict(observation)
-                normalized["status"] = "error"
-                normalized["suggested_action"] = "recover"
+                normalized["status"] = "ok"
+                normalized["suggested_action"] = "proceed"
                 normalized["page_state"] = "description_page"
-                normalized["reason"] = "fill_product_info blocked: current page is advanced detail editor, must return to merchant backend first"
+                normalized["reason"] = "fill_product_info precheck accepted observed description_page for in-action return"
                 return self._apply_doc_strict_guard(action_name, step, normalized, stage="precheck")
 
         if action_name not in {"find_window", "activate_window", "navigate_to", "fill_product_info", "publish_product"}:
             return self._apply_doc_strict_guard(action_name, step, observation, stage="precheck")
 
         status = str(observation.get("status", "unknown") or "unknown").lower()
-        if status != "error":
+        if status not in {"error", "unknown"}:
+            return self._apply_doc_strict_guard(action_name, step, observation, stage="precheck")
+        if status == "unknown" and action_name not in {"fill_product_info"}:
             return self._apply_doc_strict_guard(action_name, step, observation, stage="precheck")
         if action_name in {"find_window", "activate_window"}:
             joined = "\n".join(
@@ -2007,7 +2012,7 @@ class ExecutorAgent(BaseAgent):
                     if state not in expanded:
                         expanded.append(state)
             if action_name == "fill_product_info":
-                for state in ("product_info_page", "sku_table_page", "publish_confirm_page"):
+                for state in ("product_info_page", "sku_table_page", "description_page", "publish_confirm_page"):
                     if state not in expanded:
                         expanded.append(state)
             if action_name == "publish_product":
@@ -2025,7 +2030,7 @@ class ExecutorAgent(BaseAgent):
                     if state not in expanded:
                         expanded.append(state)
             if action_name == "fill_product_info":
-                for state in ("product_info_page", "sku_table_page", "publish_confirm_page"):
+                for state in ("product_info_page", "sku_table_page", "description_page", "publish_confirm_page"):
                     if state not in expanded:
                         expanded.append(state)
         return expanded
@@ -2049,6 +2054,7 @@ class ExecutorAgent(BaseAgent):
             ("select_category", "precheck", "description_page"),
             ("fill_product_info", "precheck", "product_info_page"),
             ("fill_product_info", "precheck", "sku_table_page"),
+            ("fill_product_info", "precheck", "description_page"),
             ("fill_product_info", "precheck", "publish_confirm_page"),
             ("publish_product", "precheck", "product_info_page"),
             ("publish_product", "precheck", "description_page"),
@@ -2062,6 +2068,7 @@ class ExecutorAgent(BaseAgent):
             ("select_category", "postcheck", "sku_table_page"),
             ("select_category", "postcheck", "description_page"),
             ("fill_product_info", "postcheck", "sku_table_page"),
+            ("fill_product_info", "postcheck", "description_page"),
             ("fill_product_info", "postcheck", "publish_confirm_page"),
         }
 

@@ -1,0 +1,60 @@
+﻿[2026-05-13 19:43:49] [INFO] [Planner] 规划任务 e88a4136: 公牛（BULL） 插座/B5系列 带儿童保护门/新国标插座/
+[2026-05-13 19:43:49] [INFO] [Planner] doc_strict 强约束已启用，使用文档模板规划，共 8 步
+[2026-05-13 19:43:50] [INFO] [Executor] 开始 ReAct 执行循环，8 个步骤
+[2026-05-13 19:43:50] [INFO] [Executor] 断点续跑: 跳过前 4 步，从步骤 5 开始
+[2026-05-13 19:43:50] [INFO] [Executor] 续跑预检恢复: 在重跑 fill_product_info 前先恢复窗口上下文
+[2026-05-13 19:43:50] [INFO] 查找京麦窗口...
+[2026-05-13 19:43:50] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-13 19:43:51] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 19:43:51] [INFO] [Executor] 窗口恢复成功(resume-preflight): hwnd=110433078
+[2026-05-13 19:43:51] [INFO] [Executor] --- 步骤 5/8: fill_product_info ---
+[2026-05-13 19:43:51] [INFO] 查找京麦窗口...
+[2026-05-13 19:44:14] [DEBUG] [vision] template missing: product_title_label.png
+[2026-05-13 19:44:14] [DEBUG] [vision] template missing: market_price_label.png
+[2026-05-13 19:44:14] [DEBUG] [vision] template missing: jd_price_label.png
+[2026-05-13 19:44:21] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False sku_table_anchor=False
+[2026-05-13 19:44:21] [DEBUG] [fill_structured] {"event": "template_probe", "fallback_mode": true, "jd_input_visible": false, "jd_visible": false, "market_input_visible": false, "market_visible": false, "section": "pricing", "sku_batch_visible": false, "sku_table_anchor_visible": false, "title_context_visible": true, "title_visible": false, "visible_price_row_count": 0}
+[2026-05-13 19:44:21] [INFO] [Executor] 步骤 5 precheck: status=error state=商品未创建状态，需先填写基础信息 suggested=navigate_to
+[2026-05-13 19:44:21] [WARNING] [Executor] 步骤 5 执行前视觉预检失败（重试 1/3）: doc-strict precheck page mismatch for fill_product_info: expected one of ['product_info_page', 'sku_table_page', 'publish_confirm_page'], got unknown
+[2026-05-13 19:44:21] [INFO] 查找京麦窗口...
+[2026-05-13 19:44:21] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 19:44:21] [INFO] [Executor] 窗口恢复成功(matrix-recover): hwnd=110433078
+[2026-05-13 19:44:21] [INFO] [Executor] 步骤 5 恢复动作: refresh_page {'mode': 'soft'}
+[2026-05-13 19:44:22] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 19:44:24] [DEBUG] [ActionHook] refresh_page took 2.19s
+[2026-05-13 19:44:24] [INFO] [Executor] 步骤 5 恢复动作: navigate_to {'page': 'publish'}
+[2026-05-13 19:44:24] [INFO] 导航: 点击商品菜单
+[2026-05-13 19:44:28] [INFO] 导航: 点击发布商品
+[2026-05-13 19:44:32] [DEBUG] [ActionHook] navigate_to took 8.20s
+[2026-05-13 19:44:32] [INFO] [Executor] 步骤 5 恢复动作: select_category {'search_text': '电脑、办公 > 外设产品 > 插座/转换器'}
+[2026-05-13 19:44:34] [DEBUG] [ActionHook] select_category took 2.01s
+[2026-05-13 19:44:57] [DEBUG] [vision] template missing: product_title_label.png
+[2026-05-13 19:44:57] [DEBUG] [vision] template missing: market_price_label.png
+[2026-05-13 19:44:57] [DEBUG] [vision] template missing: jd_price_label.png
+[2026-05-13 19:45:04] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False sku_table_anchor=False
+[2026-05-13 19:45:04] [DEBUG] [fill_structured] {"event": "template_probe", "fallback_mode": true, "jd_input_visible": false, "jd_visible": false, "market_input_visible": false, "market_visible": false, "section": "pricing", "sku_batch_visible": false, "sku_table_anchor_visible": false, "title_context_visible": true, "title_visible": false, "visible_price_row_count": 0}
+[2026-05-13 19:45:04] [WARNING] [Executor] 步骤 5 恢复矩阵执行失败: precheck_blocked doc-strict precheck page mismatch for fill_product_info: expected one of ['product_info_page', 'sku_table_page', 'publish_confirm_page'], got description_page
+[2026-05-13 19:45:04] [INFO] 查找京麦窗口...
+[2026-05-13 19:45:04] [INFO] [Executor] 重试 [2/3]: 等待 2.5s 后重试
+[2026-05-13 19:45:30] [DEBUG] [vision] template missing: product_title_label.png
+[2026-05-13 19:45:30] [DEBUG] [vision] template missing: market_price_label.png
+[2026-05-13 19:45:30] [DEBUG] [vision] template missing: jd_price_label.png
+[2026-05-13 19:45:36] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False sku_table_anchor=False
+[2026-05-13 19:45:36] [DEBUG] [fill_structured] {"event": "template_probe", "fallback_mode": true, "jd_input_visible": false, "jd_visible": false, "market_input_visible": false, "market_visible": false, "section": "pricing", "sku_batch_visible": false, "sku_table_anchor_visible": false, "title_context_visible": true, "title_visible": false, "visible_price_row_count": 0}
+[2026-05-13 19:45:36] [INFO] [Executor] 步骤 5 precheck: status=error state=登录失效 suggested=fill_product_info
+[2026-05-13 19:45:36] [WARNING] [Executor] 步骤 5 执行前视觉预检失败（重试 2/3）: fill_product_info blocked: current page is blank/non-editing state, should recover before retry
+[2026-05-13 19:45:36] [INFO] 查找京麦窗口...
+[2026-05-13 19:45:36] [INFO] [Executor] 重试 [3/3]: 清除缓存，强制重定位窗口
+[2026-05-13 19:45:36] [INFO] 查找京麦窗口...
+[2026-05-13 19:45:36] [INFO] 命中前台窗口: title='jd_465d1abd3ee76', process='jmworkstation', rect=(0, 0, 2560, 1392)
+[2026-05-13 19:45:37] [INFO] 窗口已激活: (0, 0, 2560, 1392)
+[2026-05-13 19:45:37] [INFO] [Executor] 窗口恢复成功(force-relocate): hwnd=110433078
+[2026-05-13 19:45:52] [DEBUG] [vision] template missing: product_title_label.png
+[2026-05-13 19:45:52] [DEBUG] [vision] template missing: market_price_label.png
+[2026-05-13 19:45:52] [DEBUG] [vision] template missing: jd_price_label.png
+[2026-05-13 19:45:58] [DEBUG] [fill_product_info] price area state title=False market=False jd=False market_input=False jd_input=False sku_batch=False sku_table_anchor=False
+[2026-05-13 19:45:58] [DEBUG] [fill_structured] {"event": "template_probe", "fallback_mode": true, "jd_input_visible": false, "jd_visible": false, "market_input_visible": false, "market_visible": false, "section": "pricing", "sku_batch_visible": false, "sku_table_anchor_visible": false, "title_context_visible": true, "title_visible": false, "visible_price_row_count": 0}
+[2026-05-13 19:45:58] [INFO] [Executor] 步骤 5 precheck: status=error state=商品信息页面无有效内容 suggested=recover
+[2026-05-13 19:45:58] [WARNING] [Executor] 步骤 5 执行前视觉预检失败（重试 3/3）: fill_product_info blocked: current page is blank/non-editing state, should recover before retry
+[2026-05-13 19:45:58] [DEBUG] [Executor] 计划文件已更新: 步骤 5/8
+[2026-05-13 19:45:58] [DEBUG] [Executor] 计划文件顶层状态已更新: failed

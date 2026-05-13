@@ -13,6 +13,7 @@ import zipfile
 
 from actions import ActionRegistry
 from agents.base import BaseAgent
+from pricing_rules import derive_market_price, derive_purchase_price
 
 
 class PlannerAgent(BaseAgent):
@@ -876,76 +877,220 @@ publish_product - 发布商品
     def _build_required_visual_fields(product_data: Dict[str, Any]) -> Dict[str, Any]:
         product = product_data.get("product", product_data) if isinstance(product_data, dict) else {}
         attributes = dict(product.get("attributes") or {})
+        market_price = product.get("market_price", "")
+        if market_price in (None, ""):
+            market_price = derive_market_price(product.get("jd_price", "") or product.get("price", "")) or ""
+        purchase_price = product.get("purchase_price", "")
+        if purchase_price in (None, ""):
+            purchase_price = derive_purchase_price(product.get("jd_price", "") or product.get("price", "")) or ""
+
+        def build_field(group: str, field: str, label: str, value: Any) -> Dict[str, Any]:
+            component_type = PlannerAgent._infer_component_type(group, field)
+            interaction_strategy = PlannerAgent._build_interaction_strategy(group, field, label, component_type)
+            return {
+                "field": field,
+                "label": label,
+                "value": value,
+                "component_type": component_type,
+                "interaction_strategy": interaction_strategy,
+            }
+
         return {
             "pricing": [
-                {"field": "market_price", "label": "市场价", "value": product.get("market_price", "") or product.get("jd_price", "") or product.get("price", "")},
-                {"field": "jd_price", "label": "京东价", "value": product.get("jd_price", "") or product.get("price", "")},
-                {"field": "purchase_price", "label": "采购价", "value": product.get("purchase_price", "")},
+                build_field("pricing", "market_price", "市场价", market_price),
+                build_field("pricing", "jd_price", "京东价", product.get("jd_price", "") or product.get("price", "")),
+                build_field("pricing", "purchase_price", "采购价", purchase_price),
             ],
             "basic_info": [
-                {"field": "brand", "label": "品牌", "value": product.get("brand", "") or product.get("品牌", "")},
-                {"field": "model", "label": "型号", "value": product.get("model", "")},
-                {"field": "socket_config", "label": "孔型配置", "value": attributes.get("socket_config", product.get("socket_config", ""))},
-                {"field": "rated_voltage", "label": "额定电压", "value": attributes.get("rated_voltage", product.get("rated_voltage", ""))},
-                {"field": "cable_length", "label": "电缆长度", "value": attributes.get("cable_length", product.get("cable_length", ""))},
-                {"field": "procurement_erp", "label": "采购ERP编码", "value": product.get("procurement_erp", "")},
+                build_field("basic_info", "title", "商品名称", product.get("title", "")),
+                build_field("basic_info", "brand", "品牌", product.get("brand", "") or product.get("品牌", "")),
+                build_field("basic_info", "model", "型号", product.get("model", "")),
+                build_field("basic_info", "socket_config", "孔型配置", attributes.get("socket_config", product.get("socket_config", ""))),
+                build_field("basic_info", "rated_voltage", "额定电压", attributes.get("rated_voltage", product.get("rated_voltage", ""))),
+                build_field("basic_info", "cable_length", "电缆长度", attributes.get("cable_length", product.get("cable_length", ""))),
+                build_field("basic_info", "protection_level", "防护等级", attributes.get("protection_level", product.get("protection_level", ""))),
+                build_field("basic_info", "procurement_erp", "采购ERP编码", product.get("procurement_erp", "")),
             ],
             "sales_attributes": [
-                {
-                    "field": "current",
-                    "label": "电流",
-                    "value": attributes.get("current")
+                build_field(
+                    "sales_attributes",
+                    "current",
+                    "电流",
+                    attributes.get("current")
                     or attributes.get("rated_current")
                     or product.get("current", "")
                     or product.get("rated_current", ""),
-                },
-                {
-                    "field": "rated_voltage",
-                    "label": "电压",
-                    "value": attributes.get("rated_voltage")
+                ),
+                build_field(
+                    "sales_attributes",
+                    "rated_voltage",
+                    "电压",
+                    attributes.get("rated_voltage")
                     or product.get("rated_voltage", "")
                     or product.get("voltage", ""),
-                },
-                {
-                    "field": "lead_time",
-                    "label": "货期",
-                    "value": product.get("lead_time", "") or product.get("delivery_time", ""),
-                },
-                {"field": "sku_image", "label": "图片设置", "value": product.get("sku_image", "") or product.get("image", "")},
+                ),
+                build_field("sales_attributes", "current_order", "电流顺序", product.get("current_order", "")),
+                build_field("sales_attributes", "sku_product_name", "商品名称", product.get("sku_product_name", "") or product.get("title", "")),
+                build_field("sales_attributes", "short_title", "短标题", product.get("short_title", "")),
+                build_field("sales_attributes", "lead_time", "货期", product.get("lead_time", "") or product.get("delivery_time", "")),
+                build_field("sales_attributes", "gross_margin", "毛利", product.get("gross_margin", "")),
+                build_field("sales_attributes", "sku_attributes", "SKU属性", product.get("sku_attributes", "")),
+                build_field("sales_attributes", "weight_kg", "重量(kg)", product.get("weight_kg", "")),
+                build_field("sales_attributes", "length_mm", "长(mm)", product.get("length_mm", "")),
+                build_field("sales_attributes", "width_mm", "宽(mm)", product.get("width_mm", "")),
+                build_field("sales_attributes", "height_mm", "高(mm)", product.get("height_mm", "")),
+                build_field("sales_attributes", "sku_image", "图片设置", product.get("sku_image", "") or product.get("image", "")),
             ],
             "sku_images": [
-                {
-                    "field": "sku_square_image",
-                    "label": "方图",
-                    "value": product.get("sku_square_image", "")
+                build_field(
+                    "sku_images",
+                    "sku_square_image",
+                    "方图",
+                    product.get("sku_square_image", "")
                     or product.get("square_image", "")
                     or product.get("sku_image", "")
                     or product.get("image", ""),
-                },
-                {
-                    "field": "sku_transparent_image",
-                    "label": "透图",
-                    "value": product.get("sku_transparent_image", "")
+                ),
+                build_field(
+                    "sku_images",
+                    "sku_transparent_image",
+                    "透图",
+                    product.get("sku_transparent_image", "")
                     or product.get("transparent_image", "")
                     or product.get("transparent_image_path", ""),
-                },
+                ),
             ],
             "description": [
-                {"field": "detail_content", "label": "商品详情", "value": product.get("detail_content", "") or product.get("description", "")},
-                {"field": "description_images", "label": "详情图片", "value": product.get("description_images", [])},
+                build_field("description", "detail_content", "商品详情", product.get("detail_content", "") or product.get("description", "")),
+                build_field("description", "description_images", "详情图片", product.get("description_images", [])),
             ],
             "logistics": [
-                {"field": "shelf_life_days", "label": "保质期（天）", "value": product.get("shelf_life_days", "") or product.get("shelf_life", "")},
-                {"field": "sales_unit", "label": "销售单位", "value": product.get("sales_unit", "") or product.get("unit", "")},
-                {"field": "package_spec", "label": "包装规格", "value": product.get("package_spec", "")},
-                {"field": "package_spec_unit", "label": "包装规格单位", "value": product.get("package_spec_unit", "")},
-                {"field": "package_type", "label": "商品包装", "value": product.get("package_type", "")},
-                {"field": "special_delivery_mark", "label": "特殊发货时效标记", "value": product.get("special_delivery_mark", "")},
-                {"field": "hazardous_goods", "label": "是否危险商品", "value": product.get("hazardous_goods", "")},
-                {"field": "packing_list", "label": "包装清单", "value": product.get("packing_list", "") or product.get("notes", "")},
-                {"field": "warranty_period", "label": "质保期", "value": product.get("warranty_period", "")},
+                build_field("logistics", "shelf_life_days", "保质期（天）", product.get("shelf_life_days", "") or product.get("shelf_life", "")),
+                build_field("logistics", "sales_unit", "销售单位", product.get("sales_unit", "") or product.get("unit", "")),
+                build_field("logistics", "package_spec", "包装规格", product.get("package_spec", "")),
+                build_field("logistics", "package_spec_unit", "包装规格单位", product.get("package_spec_unit", "")),
+                build_field("logistics", "package_type", "商品包装", product.get("package_type", "")),
+                build_field("logistics", "special_delivery_mark", "特殊发货时效标记", product.get("special_delivery_mark", "")),
+                build_field("logistics", "hazardous_goods", "是否危险商品", product.get("hazardous_goods", "")),
+                build_field("logistics", "packing_list", "包装清单", product.get("packing_list", "") or product.get("notes", "")),
+                build_field("logistics", "warranty_period", "质保期", product.get("warranty_period", "")),
             ],
         }
+
+    @staticmethod
+    def _infer_component_type(group: str, field: str) -> str:
+        if field in {"title", "model", "socket_config", "rated_voltage", "cable_length", "protection_level", "procurement_erp"}:
+            return "text_input"
+        if field == "brand":
+            return "dropdown_searchable"
+        if field in {"market_price", "jd_price", "purchase_price"}:
+            return "text_input"
+        if field in {"current", "lead_time", "current_order", "sku_product_name", "short_title", "gross_margin", "sku_attributes", "weight_kg", "length_mm", "width_mm", "height_mm"}:
+            return "table_cell_input"
+        if group == "sales_attributes" and field == "rated_voltage":
+            return "table_cell_dropdown"
+        if field in {"sku_image", "sku_square_image", "sku_transparent_image", "description_images"}:
+            return "image_uploader"
+        if field == "detail_content":
+            return "textarea"
+        if field == "sales_unit":
+            return "dropdown_single"
+        if field in {"special_delivery_mark", "hazardous_goods"}:
+            return "radio_group"
+        if field in {"packing_list"}:
+            return "textarea"
+        return "text_input"
+
+    @staticmethod
+    def _build_interaction_strategy(group: str, field: str, label: str, component_type: str) -> Dict[str, Any]:
+        label_text = str(label or "").strip() or field
+        strategy: Dict[str, Any] = {
+            "locate_by": {"label": label_text, "group": group, "field": field},
+        }
+        if component_type == "dropdown_searchable":
+            strategy.update(
+                {
+                    "action_type": "dropdown_select",
+                    "steps": ["click_trigger", "wait_dropdown_panel", "hover_target_option", "click_target_option", "readback_verify"],
+                    "fallback_actions": ["keyboard_arrow_select", "vision_option_click"],
+                    "preferred_confirmation": "mouse_hover_click",
+                    "keyboard_sequence": ["ArrowDown", "Enter"],
+                    "success_signal": "selected_label_matches",
+                }
+            )
+            return strategy
+        if component_type == "dropdown_single":
+            strategy.update(
+                {
+                    "action_type": "dropdown_select",
+                    "steps": ["click_trigger", "wait_dropdown_panel", "hover_target_option", "click_target_option", "readback_verify"],
+                    "fallback_actions": ["keyboard_arrow_select"],
+                    "keyboard_sequence": ["ArrowDown", "Enter"],
+                    "success_signal": "selected_label_matches",
+                }
+            )
+            return strategy
+        if component_type in {"table_cell_input", "table_cell_dropdown"}:
+            strategy.update(
+                {
+                    "action_type": "table_cell_edit",
+                    "container_component": "scrollable_table",
+                    "table_axis": "horizontal",
+                    "steps": ["ensure_table_visible", "resolve_column_visibility", "scroll_horizontally_if_needed", "activate_cell", "apply_value", "readback_verify"],
+                    "fallback_actions": ["track_drag_scroll", "keyboard_tab_navigation"],
+                    "column_label": label_text,
+                    "success_signal": "cell_value_matches",
+                }
+            )
+            if component_type == "table_cell_dropdown":
+                strategy["apply_mode"] = "dropdown_select"
+                strategy["dropdown_fallback"] = ["keyboard_arrow_select", "Enter"]
+            else:
+                strategy["apply_mode"] = "direct_input"
+            return strategy
+        if component_type == "image_uploader":
+            strategy.update(
+                {
+                    "action_type": "upload_image",
+                    "steps": ["click_upload_trigger", "wait_file_picker", "select_local_file", "confirm_upload", "wait_upload_result"],
+                    "fallback_actions": ["retry_after_scroll", "vision_trigger_click"],
+                    "success_signal": "thumbnail_or_filename_visible",
+                }
+            )
+            if group in {"sales_attributes", "sku_images"}:
+                strategy["container_component"] = "scrollable_table"
+                strategy["table_axis"] = "horizontal"
+                strategy["steps"] = ["ensure_table_visible", "resolve_column_visibility", "scroll_horizontally_if_needed"] + strategy["steps"]
+            return strategy
+        if component_type == "textarea":
+            strategy.update(
+                {
+                    "action_type": "direct_input",
+                    "steps": ["click_input", "focus_confirm", "clear_if_needed", "type_value", "readback_verify"],
+                    "fallback_actions": ["clipboard_paste"],
+                    "success_signal": "input_value_matches",
+                }
+            )
+            return strategy
+        if component_type == "radio_group":
+            strategy.update(
+                {
+                    "action_type": "choice_select",
+                    "steps": ["locate_choice_group", "click_target_choice", "selection_verify"],
+                    "fallback_actions": ["keyboard_arrow_select", "space_confirm"],
+                    "success_signal": "selected_choice_matches",
+                }
+            )
+            return strategy
+        strategy.update(
+            {
+                "action_type": "direct_input",
+                "steps": ["click_input", "focus_confirm", "clear_if_needed", "type_value", "readback_verify"],
+                "fallback_actions": ["uia_set_text", "clipboard_paste"],
+                "success_signal": "input_value_matches",
+            }
+        )
+        return strategy
 
     @staticmethod
     def _annotate_plan_phases(plan: List[Dict[str, Any]]) -> List[Dict[str, Any]]:

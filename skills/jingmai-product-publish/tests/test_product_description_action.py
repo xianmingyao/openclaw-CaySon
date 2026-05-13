@@ -33,9 +33,10 @@ def test_fill_product_description_returns_from_advanced_editor(monkeypatch):
     import actions.form as form_module
 
     calls = []
+    editor_states = iter([True, False])
     monkeypatch.setattr(form_module, "_return_from_advanced_detail_editor", lambda **kwargs: calls.append("return") or True)
     monkeypatch.setattr(form_module, "_scroll_to_description_section", lambda **kwargs: calls.append("scroll"))
-    monkeypatch.setattr(form_module, "_is_advanced_detail_editor", lambda **kwargs: False)
+    monkeypatch.setattr(form_module, "_is_advanced_detail_editor", lambda **kwargs: next(editor_states))
     monkeypatch.setattr(form_module, "_extract_description_images", lambda product: [])
     monkeypatch.setattr(
         form_module,
@@ -74,6 +75,46 @@ def test_fill_product_description_prefers_backend_image_upload(monkeypatch):
     assert result["success"] is True
     assert ("upload", "E:/tmp/detail1.png") in calls
     assert not any(call[0] == "code" for call in calls if isinstance(call, tuple))
+
+
+def test_fill_product_description_uploads_inside_advanced_editor_when_images_present(monkeypatch):
+    import actions.form as form_module
+
+    calls = []
+    monkeypatch.setattr(form_module, "_is_advanced_detail_editor", lambda **kwargs: True)
+    monkeypatch.setattr(form_module, "_extract_description_images", lambda product: ["E:/tmp/detail1.png"])
+    monkeypatch.setattr(
+        form_module,
+        "_upload_advanced_detail_editor_image",
+        lambda image_path, **kwargs: calls.append(("advanced-upload", image_path)) or {"success": True, "field": "detail_image"},
+    )
+    monkeypatch.setattr(form_module, "_return_from_advanced_detail_editor", lambda **kwargs: calls.append("return") or True)
+    monkeypatch.setattr(form_module, "_scroll_to_description_section", lambda **kwargs: calls.append("scroll"))
+
+    result = form_module.fill_product_description({"description_images": ["E:/tmp/detail1.png"]}, locator=object())
+
+    assert result["success"] is True
+    assert result["route"] == "advanced_detail_editor_expected_upload"
+    assert calls == [("advanced-upload", "E:/tmp/detail1.png")]
+
+
+def test_guard_fill_product_info_page_context_returns_from_advanced_editor(monkeypatch):
+    import actions.form as form_module
+
+    calls = []
+    page_states = iter(["description_page"])
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or object())
+    monkeypatch.setattr(form_module, "_classify_fill_page_state", lambda **kwargs: next(page_states))
+    monkeypatch.setattr(form_module, "_return_from_advanced_detail_editor", lambda **kwargs: calls.append("return") or True)
+    monkeypatch.setattr(form_module, "_ensure_basic_info_page", lambda **kwargs: calls.append("ensure") or True)
+    monkeypatch.setattr(form_module.time, "sleep", lambda *_args, **_kwargs: None)
+
+    result = form_module._guard_fill_product_info_page_context("before-attributes", locator=object())
+
+    assert result["success"] is True
+    assert result["reason"] == "advanced_detail_editor_unexpected_return"
+    assert result["recovered"] is True
+    assert calls == ["return", "ensure"]
 
 
 def test_fill_product_description_falls_back_to_explicit_detail_content(monkeypatch):

@@ -39,10 +39,48 @@ def _normalize_anchor_list(value: Any) -> list[str]:
     return [str(item).strip() for item in value if str(item).strip()]
 
 
+def infer_actual_from_signals(case: dict[str, Any]) -> dict[str, Any]:
+    signals = case.get("signals") or {}
+    if not isinstance(signals, dict):
+        return {}
+
+    markers = _normalize_anchor_list(signals.get("markers"))
+    joined = "\n".join(markers + [str(signals.get("observation_text", "") or "")])
+    local_page_state = str(signals.get("local_page_state", "") or "").strip()
+    basic_tab = bool(signals.get("basic_tab", False))
+    sku_batch_visible = bool(signals.get("sku_batch_visible", False))
+    sku_table_anchor_visible = bool(signals.get("sku_table_anchor_visible", False))
+    visible_price_row_count = int(signals.get("visible_price_row_count", 0) or 0)
+
+    description_markers = ("返回商家后台", "京东智铺", "详情", "图文编辑", "高级编辑模式")
+    product_info_markers = ("商品标题", "品牌", "价格", "商品基本信息")
+    sku_table_markers = ("SKU属性", "批量导入", "默认全部SKU", "批量应用")
+
+    if any(marker in joined for marker in description_markers) or local_page_state == "description_page":
+        page_state = "description_page"
+    elif local_page_state:
+        page_state = local_page_state
+    elif sku_batch_visible or sku_table_anchor_visible or visible_price_row_count >= 2 or any(marker in joined for marker in sku_table_markers):
+        page_state = "sku_table_page"
+    elif basic_tab and any(marker in joined for marker in product_info_markers):
+        page_state = "product_info_page"
+    elif basic_tab:
+        page_state = "wrong_blank_page"
+    else:
+        page_state = "unknown"
+
+    should_block = page_state in {"description_page", "wrong_blank_page"}
+    return {
+        "page_state": page_state,
+        "should_block_fill_product_info": should_block,
+        "anchors": markers,
+    }
+
+
 def score_case(case: dict[str, Any]) -> CaseScore:
     case_id = str(case.get("id", "") or "unknown-case")
     expected = case.get("expected") or {}
-    actual = case.get("actual") or {}
+    actual = case.get("actual") or infer_actual_from_signals(case)
     failures: list[str] = []
 
     expected_page_state = str(expected.get("page_state", "") or "").strip()
@@ -93,12 +131,14 @@ def build_report(cases: list[dict[str, Any]]) -> dict[str, Any]:
     total_score = sum(item.score for item in results)
     max_score = len(results) * 100
     average = round(total_score / len(results), 2) if results else 0.0
+    full_score_count = sum(1 for item in results if item.score == 100)
     return {
         "summary": {
             "case_count": len(results),
             "total_score": total_score,
             "max_score": max_score,
             "average_score": average,
+            "full_score_count": full_score_count,
         },
         "results": [
             {
@@ -117,11 +157,19 @@ def build_report(cases: list[dict[str, Any]]) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="jingmai 视觉基准评分")
     parser.add_argument("--cases", required=True, help="case JSON 路径")
+    parser.add_argument("--fail-under", type=float, default=None, help="平均分低于该值时返回非 0")
+    parser.add_argument("--output", default="", help="可选：把报告写入 JSON 文件")
     args = parser.parse_args()
 
     cases_path = Path(args.cases).resolve()
     report = build_report(load_cases(cases_path))
+    if args.output:
+        output_path = Path(args.output).resolve()
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
+    if args.fail_under is not None and float(report["summary"]["average_score"]) < float(args.fail_under):
+        return 1
     return 0
 
 

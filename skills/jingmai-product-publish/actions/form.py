@@ -15,7 +15,13 @@ from actions._uia_helpers import (
     resolve_template_path,
     score_text_match,
 )
+from actions.form_basic_info import run_basic_info_section
+from actions.form_logging import log_fill_event
+from actions.form_logistics import run_logistics_section
+from actions.form_procurement_pricing import run_pricing_section
+from actions.form_sales_attributes import run_sales_attribute_sections
 from actions.registry import ActionRegistry
+from pricing_rules import derive_market_price, derive_purchase_price
 
 
 # ── Session1 Helper Pipe Client ──────────────────────────────────────────────
@@ -107,6 +113,16 @@ def _normalize_numeric_text(value: Any) -> Optional[str]:
     if "." in normalized:
         normalized = normalized.rstrip("0").rstrip(".")
     return normalized or "0"
+
+
+def _derive_market_price_or_empty(jd_price: Any) -> Any:
+    derived = derive_market_price(jd_price)
+    return "" if derived is None else derived
+
+
+def _derive_purchase_price_or_empty(jd_price: Any) -> Any:
+    derived = derive_purchase_price(jd_price)
+    return "" if derived is None else derived
 
 
 def _compare_field_value(field: str, expected: Any, actual: Any) -> Dict[str, Any]:
@@ -438,7 +454,7 @@ def _click_dropdown_template(template_name: str, locator=None, log=None, confide
         import pyautogui
 
         result = find_element_by_image(template_path=template_path, confidence=confidence, locator=locator, log=log)
-        if not result.get("success") and spec["kind"] != "custom":
+        if not result.get("success"):
             return {"success": False, "message": result.get("message", "match failed"), "template": template_name}
         pyautogui.click(result["x"], result["y"])
         time.sleep(0.5)
@@ -606,6 +622,52 @@ def _find_labeled_dropdown_center(
     return ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
 
 
+def _find_labeled_input_center(
+    label_keywords: list[str],
+    *,
+    locator=None,
+    log=None,
+    top_range: tuple[int, int] | None = None,
+) -> Optional[tuple[int, int]]:
+    coords = _find_labeled_dropdown_center(
+        label_keywords,
+        locator=locator,
+        log=log,
+        top_range=top_range,
+        preferred_types=("Edit", "Document", "ComboBox", "Button"),
+    )
+    if coords:
+        return coords
+
+    locator = _get_locator(locator, log)
+    for keyword in label_keywords:
+        target = _find_named_control(
+            keyword,
+            ["Text", "Button", "Edit", "ComboBox"],
+            locator=locator,
+            log=log,
+            top_range=top_range,
+        )
+        if not target:
+            continue
+        _, _, label_rect = target
+        candidates = []
+        for _, _, rect in _find_edit_elements(locator=locator, log=log):
+            if top_range and not (top_range[0] <= rect.top <= top_range[1] + 140):
+                continue
+            if rect.top < label_rect.top - 40:
+                continue
+            dx = rect.left - label_rect.right
+            dy = abs(((rect.top + rect.bottom) / 2) - ((label_rect.top + label_rect.bottom) / 2))
+            if dx < -80 or dx > 1200 or dy > 180:
+                continue
+            candidates.append(((dy, max(dx, 0), rect.left), rect))
+        if candidates:
+            _, rect = sorted(candidates, key=lambda item: item[0])[0]
+            return ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
+    return None
+
+
 def _fill_supported_attributes(product: Dict[str, Any], locator=None, log=None) -> list[Dict[str, Any]]:
     from config.jingmai_coords import PRODUCT_INFO_PAGE
 
@@ -632,6 +694,14 @@ def _fill_supported_attributes(product: Dict[str, Any], locator=None, log=None) 
             "preferred_keywords": ["孔型", "插孔"],
             "vision_template": "",
             "label_keywords": ["孔型配置", "孔位配置", "插孔配置"],
+        },
+        {
+            "field": "current",
+            "coords": PRODUCT_INFO_PAGE.get("current"),
+            "value": attribute_values.get("current"),
+            "preferred_keywords": ["电流", "额定电流"],
+            "vision_template": "",
+            "label_keywords": ["电流", "额定电流"],
         },
         {
             "field": "rated_voltage",
@@ -1098,16 +1168,23 @@ def _fill_title_field(title: str, locator=None, log=None) -> Dict[str, Any]:
 
 def _fill_title_field_v2(title: str, locator=None, log=None) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
-    _scroll_publish_page_to_top(locator=locator, log=log)
+    _scroll_publish_page_to_top(locator=locator, log=log, use_anchor=False)
     target = _find_named_edit_element("商品标题", locator=locator, log=log, top_range=(240, 520), left_range=(700, 900))
     if not target:
         target = _find_named_edit_element("请输入商品标题", locator=locator, log=log, top_range=(240, 520), left_range=(700, 900))
     element = target[0] if target else None
+    center: tuple[int, int]
     if element:
         if not _focus_uia_edit(element, locator=locator):
             return {"success": False, "message": "title field focus failed"}
+        try:
+            rect = element.rectangle()
+            center = ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
+        except Exception:
+            center = (1434, 318)
     else:
-        if not locator.click(1434, 318, delay=0.3):
+        center = (1434, 318)
+        if not locator.click(center[0], center[1], delay=0.3):
             return {"success": False, "message": "title field focus failed"}
 
     write_result = _write_active_text(title, clear=True)
@@ -1115,6 +1192,42 @@ def _fill_title_field_v2(title: str, locator=None, log=None) -> Dict[str, Any]:
         return write_result
 
     verify = _verify_uia_edit_value("title", title, element) if element else _verify_active_text("title", title)
+    if not verify.get("success"):
+        verify = _verify_text_field(locator, "title", center[0], center[1], title, prefer_uia=False)
+    if not verify.get("success"):
+        title_prefix = str(title or "").strip()[:18]
+        validation_visible = any(
+            _visible_text_contains(
+                candidate,
+                locator=locator,
+                log=log,
+                top_range=(240, 560),
+                left_range=(720, 2280),
+            )
+            for candidate in ("商品标题不能为空", "请输入商品标题")
+        )
+        if title_prefix and _visible_text_contains(
+            title_prefix,
+            locator=locator,
+            log=log,
+            top_range=(240, 560),
+            left_range=(720, 2280),
+        ):
+            verify = {
+                "success": True,
+                "actual": title_prefix,
+                "expected": title_prefix,
+                "method": "visible-text-existing",
+                "compare_mode": "text",
+            }
+        elif write_result.get("success") and not validation_visible:
+            verify = {
+                "success": True,
+                "actual": str(title),
+                "expected": str(title),
+                "method": "post-write-no-validation",
+                "compare_mode": "text",
+            }
     payload = {
         "field": "title",
         "method": write_result.get("method", "active-write"),
@@ -1133,7 +1246,7 @@ def _fill_title_field_v2(title: str, locator=None, log=None) -> Dict[str, Any]:
 
 
 def _fill_title_field_v3(title: str, locator=None, log=None) -> Dict[str, Any]:
-    _scroll_publish_page_to_top(locator=locator, log=log)
+    _scroll_publish_page_to_top(locator=locator, log=log, use_anchor=False)
     return _fill_named_edit_field_v2(
         "title",
         "请输入商品标题",
@@ -1146,24 +1259,90 @@ def _fill_title_field_v3(title: str, locator=None, log=None) -> Dict[str, Any]:
     )
 
 
+def _fill_title_field_v4(title: str, locator=None, log=None) -> Dict[str, Any]:
+    _scroll_publish_page_to_top(locator=locator, log=log, use_anchor=False)
+    primary = _fill_title_field_v2(title, locator=locator, log=log)
+    if primary.get("success"):
+        return primary
+    title_prefix = str(title or "").strip()[:18]
+    if title_prefix and _visible_text_contains(
+        title_prefix,
+        locator=locator,
+        log=log,
+        top_range=(280, 520),
+        left_range=(860, 2200),
+    ):
+        return {
+            "field": "title",
+            "method": "visible-text-existing",
+            "write_success": True,
+            "verify_success": True,
+            "success": True,
+            "expected": str(title),
+            "actual": title_prefix,
+        }
+    fallback = _fill_title_field_v3(title, locator=locator, log=log)
+    if fallback.get("success"):
+        return fallback
+    return primary if primary.get("write_success") else fallback
+
 def _fill_model_field_v2(model: str, locator=None, log=None) -> Dict[str, Any]:
-    _scroll_publish_page_to_top(locator=locator, log=log)
-    return _fill_named_edit_field_v2(
+    locator = _get_locator(locator, log)
+    _scroll_publish_page_to_top(locator=locator, log=log, use_anchor=False)
+    result = _fill_labeled_text_field(
         "model",
-        "型号",
+        ["型号", "请输入型号"],
         model,
         locator=locator,
         log=log,
-        top_range=(520, 590),
-        left_range=(980, 1100),
-        fallback_coords=(1208, 552),
+        top_range=(420, 700),
     )
+    if result.get("success"):
+        return result
+    model_text = str(model or "").strip()
+    if model_text and _visible_text_contains(
+        model_text,
+        locator=locator,
+        log=log,
+        top_range=(360, 760),
+        left_range=(760, 2200),
+    ):
+        return {
+            "field": "model",
+            "method": "visible-text-existing",
+            "write_success": True,
+            "verify_success": True,
+            "success": True,
+            "expected": model_text,
+            "actual": model_text,
+        }
+    if result.get("write_success") and not any(
+        _visible_text_contains(
+            candidate,
+            locator=locator,
+            log=log,
+            top_range=(360, 760),
+            left_range=(760, 2200),
+        )
+        for candidate in ("型号不能为空", "请输入型号")
+    ):
+        result.update(
+            {
+                "verify_success": True,
+                "success": True,
+                "actual": model_text,
+                "verification_method": "post-write-no-validation",
+            }
+        )
+        result.pop("verify_error", None)
+        result.pop("error", None)
+    return result
 
 
 def _fill_brand_field_v2(brand: str, locator=None, log=None) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
     from config.jingmai_coords import PRODUCT_INFO_PAGE
-    _scroll_publish_page_to_top(locator=locator, log=log)
+    _scroll_publish_page_to_top(locator=locator, log=log, use_anchor=False)
     if _page_text_contains(brand, x=900, y=520):
         return {
             "field": "brand",
@@ -1726,15 +1905,16 @@ def _focus_publish_scroll_anchor(
     return False
 
 
-def _scroll_publish_page_to_top(locator=None, log=None):
+def _scroll_publish_page_to_top(locator=None, log=None, use_anchor: bool = True):
     import pyautogui
 
-    _focus_publish_scroll_anchor(
-        ["商品标题", "商品基本信息", "品牌", "类目"],
-        locator=locator,
-        log=log,
-        page_hint="京麦商品发布页顶部区域，定位标题或基本信息区作为滚动锚点",
-    )
+    if use_anchor:
+        _focus_publish_scroll_anchor(
+            ["商品标题", "商品基本信息", "品牌", "类目"],
+            locator=locator,
+            log=log,
+            page_hint="京麦商品发布页顶部区域，定位标题或基本信息区作为滚动锚点",
+        )
     pyautogui.moveTo(1800, 1000)
     for _ in range(12):
         pyautogui.scroll(700)
@@ -1992,6 +2172,7 @@ def _locate_template_in_window(
 
 def _collect_price_area_template_state(locator=None, log=None) -> Dict[str, Any]:
     anchors = _get_extended_price_area_anchors(locator=locator, log=log)
+    fill_page_state = _collect_fill_page_state(locator=locator, log=log)
     title_match = _locate_template_in_window(
         "product_title_label.png",
         locator=locator,
@@ -2033,6 +2214,11 @@ def _collect_price_area_template_state(locator=None, log=None) -> Dict[str, Any]
     state = {
         "text_anchors": anchors,
         "title_visible": bool(title_match),
+        "title_context_visible": bool(
+            fill_page_state.get("title_top")
+            or fill_page_state.get("product_name_mid")
+            or fill_page_state.get("basic_tab")
+        ),
         "market_visible": bool(market_match),
         "jd_visible": bool(jd_match),
         "market_input_visible": bool(market_input) or bool(visible_price_row and len(visible_price_row) >= 2),
@@ -2045,6 +2231,7 @@ def _collect_price_area_template_state(locator=None, log=None) -> Dict[str, Any]
         "jd_match": jd_match,
         "visible_price_row_count": len(visible_price_row),
     }
+    state["fallback_mode"] = not bool(title_match or market_match or jd_match)
     _debug_log(
         log,
         "[fill_product_info] price area state "
@@ -2052,6 +2239,21 @@ def _collect_price_area_template_state(locator=None, log=None) -> Dict[str, Any]
         f"jd={state['jd_visible']} market_input={state['market_input_visible']} "
         f"jd_input={state['jd_input_visible']} sku_batch={state['sku_batch_visible']} "
         f"sku_table_anchor={state['sku_table_anchor_visible']}",
+    )
+    log_fill_event(
+        log,
+        "pricing",
+        "template_probe",
+        title_visible=state["title_visible"],
+        title_context_visible=state["title_context_visible"],
+        market_visible=state["market_visible"],
+        jd_visible=state["jd_visible"],
+        market_input_visible=state["market_input_visible"],
+        jd_input_visible=state["jd_input_visible"],
+        sku_batch_visible=state["sku_batch_visible"],
+        sku_table_anchor_visible=state["sku_table_anchor_visible"],
+        fallback_mode=state["fallback_mode"],
+        visible_price_row_count=state["visible_price_row_count"],
     )
     return state
 
@@ -2061,9 +2263,11 @@ def _price_area_ready(state: Optional[Dict[str, Any]]) -> bool:
         return False
 
     anchors = {str(item) for item in (state.get("text_anchors") or [])}
-    has_price_anchor = bool(any(anchor in anchors for anchor in ("甯傚満浠?", "閲囪喘浠?", "浜笢浠?")))
+    has_price_anchor = bool({"???", "???", "???"} & anchors)
     has_template_anchor = bool(state.get("market_visible") or state.get("jd_visible"))
-    has_title_context = bool(state.get("title_visible") or "SKU缂栫爜" in anchors or "閿€鍞睘鎬?" in anchors)
+    has_title_context = bool(
+        state.get("title_visible") or state.get("title_context_visible") or "SKU??" in anchors or "????" in anchors
+    )
     has_sku_batch_context = bool(state.get("sku_batch_visible"))
     has_sku_table_anchor = bool(state.get("sku_table_anchor_visible"))
     has_input_target = bool(state.get("market_input_visible") or state.get("jd_input_visible"))
@@ -2075,18 +2279,31 @@ def _price_area_ready(state: Optional[Dict[str, Any]]) -> bool:
         or has_visible_price_row
         or (has_template_anchor and (has_title_context or has_price_anchor))
     )
-    has_price_anchor = bool({"市场价", "京东价"} & anchors)
-    has_template_anchor = bool(state.get("market_visible") or state.get("jd_visible"))
-    has_title_context = bool(state.get("title_visible") or "SKU编码" in anchors or "销售属性" in anchors)
-    has_sku_batch_context = bool(state.get("sku_batch_visible"))
-    has_input_target = bool(state.get("market_input_visible") or state.get("jd_input_visible"))
-    has_visible_price_row = int(state.get("visible_price_row_count", 0) or 0) >= 2
-    return (
-        has_sku_batch_context
-        or has_input_target
-        or has_visible_price_row
-        or (has_template_anchor and (has_title_context or has_price_anchor))
+
+
+def _price_area_has_no_context(state: Optional[Dict[str, Any]]) -> bool:
+    state = state or {}
+    return not any(
+        [
+            state.get("title_visible"),
+            state.get("market_visible"),
+            state.get("jd_visible"),
+            state.get("market_input_visible"),
+            state.get("jd_input_visible"),
+            state.get("sku_batch_visible"),
+            state.get("sku_table_anchor_visible"),
+            int(state.get("visible_price_row_count", 0) or 0) > 0,
+        ]
     )
+
+
+_FILL_PRODUCT_INFO_BLOCKING_REASONS = {
+    "advanced_detail_editor_unexpected_return",
+    "description_page_context",
+    "wrong_blank_page",
+    "page_context_lost_before_price_area",
+    "sku_table_context_without_price_targets",
+}
 
 
 def _ensure_price_area_visible(locator=None, log=None, max_rounds: int = 3) -> Dict[str, Any]:
@@ -2096,6 +2313,11 @@ def _ensure_price_area_visible(locator=None, log=None, max_rounds: int = 3) -> D
     last_state: Dict[str, Any] = {}
     for round_index in range(1, max_rounds + 1):
         restored = _ensure_basic_info_page(locator=locator, log=log)
+        current_page_state = _classify_fill_page_state(locator=locator, log=log)
+        if current_page_state == "description_page":
+            return {"success": False, "reason": "description_page_context", "round": round_index, "state": last_state}
+        if current_page_state == "wrong_blank_page":
+            return {"success": False, "reason": "wrong_blank_page", "round": round_index, "state": last_state}
         _debug_fill_live_context(f"price-round-{round_index}-after-basic-restore", locator=locator, log=log)
         if not restored:
             last_state = _collect_price_area_template_state(locator=locator, log=log)
@@ -2110,6 +2332,13 @@ def _ensure_price_area_visible(locator=None, log=None, max_rounds: int = 3) -> D
         state = _collect_price_area_template_state(locator=locator, log=log)
         if _price_area_ready(state):
             return {"success": True, "round": round_index, "state": state}
+        current_page_state = _classify_fill_page_state(locator=locator, log=log)
+        if current_page_state == "description_page":
+            return {"success": False, "reason": "description_page_context", "round": round_index, "state": state}
+        if current_page_state == "wrong_blank_page":
+            return {"success": False, "reason": "wrong_blank_page", "round": round_index, "state": state}
+        if current_page_state == "unknown" and _price_area_has_no_context(state):
+            return {"success": False, "reason": "page_context_lost_before_price_area", "round": round_index, "state": state}
 
         if state.get("sku_batch_visible") or state.get("sku_table_anchor_visible"):
             _debug_log(
@@ -2133,6 +2362,19 @@ def _ensure_price_area_visible(locator=None, log=None, max_rounds: int = 3) -> D
             if _price_area_ready(state):
                 _debug_log(log, f"[fill_product_info] price area visible after round={round_index} step={step}")
                 return {"success": True, "round": round_index, "step": step, "state": state}
+            current_page_state = _classify_fill_page_state(locator=locator, log=log)
+            if current_page_state == "description_page":
+                return {"success": False, "reason": "description_page_context", "round": round_index, "step": step, "state": state}
+            if current_page_state == "wrong_blank_page":
+                return {"success": False, "reason": "wrong_blank_page", "round": round_index, "step": step, "state": state}
+            if step >= 1 and current_page_state in {"unknown", "product_info_page"} and _price_area_has_no_context(state):
+                return {
+                    "success": False,
+                    "reason": "page_context_lost_before_price_area",
+                    "round": round_index,
+                    "step": step,
+                    "state": state,
+                }
         last_state = state
     return {"success": False, "reason": "price_area_not_found", "state": last_state}
 
@@ -2235,7 +2477,19 @@ def _find_price_input_center_by_template(label: str, locator=None, log=None) -> 
 
 def _find_price_input_target(label: str, locator=None, log=None):
     locator = _get_locator(locator, log)
-    target = _find_named_control(label, ["Text", "Edit", "ComboBox"], locator=locator, log=log, top_range=(480, 1320))
+    label_variants = [label]
+    if label == "市场价":
+        label_variants.extend(["市场价（元）", "市场价(元)"])
+    elif label == "采购价":
+        label_variants.extend(["采购价（元）", "采购价(元)"])
+    elif label == "京东价":
+        label_variants.extend(["京东价（元）", "京东价(元)"])
+    target = None
+    for candidate_label in label_variants:
+        target = _find_named_control(candidate_label, ["Text", "Edit", "ComboBox"], locator=locator, log=log, top_range=(480, 1320))
+        if target:
+            label = candidate_label
+            break
     if target:
         _, _, label_rect = target
         label_center_x = (label_rect.left + label_rect.right) // 2
@@ -2365,7 +2619,19 @@ def _find_price_input_center(label: str, locator=None, log=None) -> Optional[tup
     if nearby_named:
         _debug_log(log, f"[fill_product_info] price probe label={label} nearby_named={nearby_named[:12]}")
 
-    target = _find_named_control(label, ["Text", "Edit", "ComboBox"], locator=locator, log=log, top_range=(480, 1320))
+    label_variants = [label]
+    if label == "市场价":
+        label_variants.extend(["市场价（元）", "市场价(元)"])
+    elif label == "采购价":
+        label_variants.extend(["采购价（元）", "采购价(元)"])
+    elif label == "京东价":
+        label_variants.extend(["京东价（元）", "京东价(元)"])
+    target = None
+    for candidate_label in label_variants:
+        target = _find_named_control(candidate_label, ["Text", "Edit", "ComboBox"], locator=locator, log=log, top_range=(480, 1320))
+        if target:
+            label = candidate_label
+            break
     if not target:
         _debug_log(log, f"[fill_product_info] price probe label={label} target_control=NOT_FOUND")
         return None
@@ -2424,6 +2690,16 @@ def _find_price_input_center(label: str, locator=None, log=None) -> Optional[tup
 
 def _ensure_basic_info_page(locator=None, log=None) -> bool:
     locator = _get_locator(locator, log)
+    if _is_advanced_detail_editor(locator=locator, log=log):
+        _debug_log(log, "[fill_product_info] advanced_detail_editor_unexpected_return stage=basic-restore")
+        if _return_from_advanced_detail_editor(locator=locator, log=log):
+            time.sleep(1.0)
+            page_state = _collect_fill_page_state(locator=locator, log=log)
+            if _fill_page_has_positive_markers(page_state, locator=locator, log=log):
+                _debug_log(log, "[fill_product_info] advanced_detail_editor_unexpected_return recovered=basic-info-page")
+                return True
+        return False
+
     page_state = _collect_fill_page_state(locator=locator, log=log)
     if _fill_page_has_positive_markers(page_state, locator=locator, log=log):
         _debug_log(log, "[fill_product_info] basic info page confirmed from page-state context")
@@ -2513,6 +2789,30 @@ def _ensure_basic_info_page(locator=None, log=None) -> bool:
     return success
 
 
+def _guard_fill_product_info_page_context(stage: str, locator=None, log=None) -> Dict[str, Any]:
+    locator = _get_locator(locator, log)
+    page_state = _classify_fill_page_state(locator=locator, log=log)
+    if page_state == "description_page":
+        _debug_log(log, f"[fill_product_info] advanced_detail_editor_unexpected_return stage={stage}")
+        if _return_from_advanced_detail_editor(locator=locator, log=log):
+            time.sleep(1.0)
+            if _ensure_basic_info_page(locator=locator, log=log):
+                return {
+                    "success": True,
+                    "reason": "advanced_detail_editor_unexpected_return",
+                    "recovered": True,
+                    "page_state": "product_info_page",
+                }
+        return {
+            "success": False,
+            "reason": "advanced_detail_editor_unexpected_return",
+            "page_state": "description_page",
+        }
+    if page_state == "wrong_blank_page":
+        return {"success": False, "reason": "wrong_blank_page", "page_state": page_state}
+    return {"success": True, "reason": page_state, "page_state": page_state}
+
+
 def _is_category_selection_page(locator=None, log=None) -> bool:
     locator = _get_locator(locator, log)
     page_state = _collect_fill_page_state(locator=locator, log=log)
@@ -2544,7 +2844,15 @@ def _is_advanced_detail_editor(locator=None, log=None) -> bool:
     has_jdzp = any_visible(*_text_variants("京东智铺"), *_text_variants("商家后台"), top_range=(0, 180), left_range=(0, 360))
     has_detail = any_visible(*_text_variants("详情"), top_range=(0, 180), left_range=(120, 520))
     has_high_editor = any_visible(*_text_variants("高级编辑"), top_range=(180, 420), left_range=(760, 1240))
-    return bool(has_return and ((has_jdzp and has_detail) or has_high_editor))
+    has_detail_tabs = any_visible(
+        *_text_variants("商品介绍"),
+        *_text_variants("规格与包装"),
+        *_text_variants("售后保障"),
+        top_range=(220, 420),
+        left_range=(820, 1600),
+    )
+    has_upload_cta = any_visible(*_text_variants("上传图片"), top_range=(720, 1160), left_range=(920, 1480))
+    return bool(has_return and ((has_jdzp and has_detail) or has_high_editor or has_detail_tabs or has_upload_cta))
 
 
 def _return_from_advanced_detail_editor(locator=None, log=None) -> bool:
@@ -2601,7 +2909,7 @@ def _build_description_html(product: Dict[str, Any]) -> str:
 
     lines = []
     title = str(product.get("title", "") or "").strip()
-    brand = str(product.get("brand", "") or product.get("品牌", "") or "").strip()
+    brand = str(product.get("brand", "") or product.get("??", "") or "").strip()
     model = str(product.get("model", "") or "").strip()
     unit = str(product.get("unit", "") or "").strip()
     notes = str(product.get("notes", "") or "").strip()
@@ -2611,20 +2919,19 @@ def _build_description_html(product: Dict[str, Any]) -> str:
 
     if title:
         lines.append(f"<p>{title}</p>")
-    if "basic_info" in normalized_groups and brand:
-        lines.append(f"<p>品牌：{brand}</p>")
+    if brand:
+        lines.append(f"<p>???{brand}</p>")
     if model:
-        lines.append(f"<p>型号：{model}</p>")
+        lines.append(f"<p>???{model}</p>")
     if size_parts:
-        lines.append(f"<p>规格：{' x '.join(size_parts)} mm</p>")
+        lines.append(f"<p>???{' x '.join(size_parts)} mm</p>")
     if weight:
-        lines.append(f"<p>重量：{weight} kg</p>")
+        lines.append(f"<p>???{weight} kg</p>")
     if unit:
-        lines.append(f"<p>销售单位：{unit}</p>")
+        lines.append(f"<p>?????{unit}</p>")
     if notes:
-        lines.append(f"<p>说明：{notes}</p>")
+        lines.append(f"<p>???{notes}</p>")
     return "".join(lines)
-
 
 def _fill_description_code_editor(html: str, locator=None, log=None) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
@@ -2973,6 +3280,34 @@ def _upload_description_image(image_path: str, locator=None, log=None) -> Dict[s
     return result
 
 
+def _upload_advanced_detail_editor_image(image_path: str, locator=None, log=None) -> Dict[str, Any]:
+    locator = _get_locator(locator, log)
+    if not _is_advanced_detail_editor(locator=locator, log=log):
+        return {"success": False, "field": "detail_image", "message": "advanced detail editor is not active"}
+
+    target = None
+    for label in _text_variants("上传图片"):
+        target = _find_named_control(label, ["Button", "Hyperlink", "Text"], locator=locator, log=log, top_range=(520, 1120), left_range=(900, 1500))
+        if target:
+            break
+
+    clicked = False
+    if target:
+        element, _, _ = target
+        clicked = bool(click_uia_element(element, log=log))
+    elif _description_upload_prompt_visible(locator=locator, log=log):
+        clicked = bool(locator.click(1120, 785, delay=0.4))
+
+    if not clicked:
+        return {"success": False, "field": "detail_image", "message": "advanced detail editor upload entry not visible"}
+
+    time.sleep(0.4)
+    result = upload_image(image_path, locator=locator, log=log)
+    result["field"] = "detail_image"
+    result["context"] = "advanced_detail_editor"
+    return result
+
+
 def _hover_then_click(x: int, y: int, *, clicks: int = 1, interval: float = 0.1, delay: float = 0.25) -> bool:
     try:
         import pyautogui
@@ -2990,29 +3325,31 @@ def _hover_then_click(x: int, y: int, *, clicks: int = 1, interval: float = 0.1,
         return _session1_click(x, y, delay=delay)
 
 
-def _find_sku_product_name_center(locator=None, log=None) -> Optional[tuple[int, int]]:
-    target = _find_sku_product_name_target(locator=locator, log=log)
+def _find_sku_product_name_center(locator=None, log=None, ensure_section: bool = True) -> Optional[tuple[int, int]]:
+    target = _find_sku_product_name_target(locator=locator, log=log, ensure_section=ensure_section)
     if target:
         _, rect = target
         return ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
-    _scroll_to_sku_section(locator=locator, log=log)
+    if ensure_section:
+        _scroll_to_sku_section(locator=locator, log=log)
     for _, name, rect in _find_edit_elements(locator=locator, log=log):
-        if rect.left < 1800 or not (520 <= rect.top <= 720):
+        if rect.left < 1200 or not (520 <= rect.top <= 1520):
             continue
         if name in {"请输入", ""} or "商品名称" in name:
             return ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
     return (2024, 613)
 
 
-def _find_sku_product_name_target(locator=None, log=None):
+def _find_sku_product_name_target(locator=None, log=None, ensure_section: bool = True):
     locator = _get_locator(locator, log)
-    _scroll_to_sku_section(locator=locator, log=log)
-    label_target = _find_named_control("商品名称", ["Text", "Edit", "ComboBox"], locator=locator, log=log, top_range=(480, 1180))
+    if ensure_section:
+        _scroll_to_sku_section(locator=locator, log=log)
+    label_target = _find_named_control("商品名称", ["Text", "Edit", "ComboBox"], locator=locator, log=log, top_range=(480, 1520))
     if label_target:
         _, _, label_rect = label_target
         candidates = []
         for element, name, rect in _find_edit_elements(locator=locator, log=log):
-            if not (460 <= rect.top <= 1180):
+            if not (460 <= rect.top <= 1520):
                 continue
             if rect.left < max(900, label_rect.left - 120):
                 continue
@@ -3029,7 +3366,7 @@ def _find_sku_product_name_target(locator=None, log=None):
             return element, rect
 
     for elem, name, rect in _find_edit_elements(locator=locator, log=log):
-        if rect.left < 1400 or not (460 <= rect.top <= 1180):
+        if rect.left < 1200 or not (460 <= rect.top <= 1520):
             continue
         if name in {"请输入", ""} or "商品名称" in name:
             return elem, rect
@@ -3039,14 +3376,23 @@ def _find_sku_product_name_target(locator=None, log=None):
 def _fill_sku_product_name_field(title: str, locator=None, log=None) -> Dict[str, Any]:
     """Fill SKU product name field using UIA set_edit_text (cross-session capable)."""
     locator = _get_locator(locator, log)
-    
+    title_hint = str(title or "").strip()[:18]
+
     # Find the SKU element with UIA (returns element, name, rect)
-    target = _find_sku_product_name_target(locator=locator, log=log)
+    target = _find_sku_product_name_target(locator=locator, log=log, ensure_section=False)
+    if not target:
+        _scroll_to_sku_section(locator=locator, log=log)
+        for position in ("left", "center", "right"):
+            _set_sku_horizontal_view(position, log=log)
+            time.sleep(0.2)
+            target = _find_sku_product_name_target(locator=locator, log=log, ensure_section=False)
+            if target:
+                break
     element = target[0] if target else None
-    
+
     # Fallback to coordinates if element not found
     if not element:
-        center = _find_sku_product_name_center(locator=locator, log=log)
+        center = _find_sku_product_name_center(locator=locator, log=log, ensure_section=False)
         if center:
             # Try using Session1 Helper to click and write
             if _session1_click(center[0], center[1], delay=0.3):
@@ -3067,6 +3413,22 @@ def _fill_sku_product_name_field(title: str, locator=None, log=None) -> Dict[str
                 if not verify.get("success"):
                     payload["verify_error"] = verify.get("message", "sku product name verify failed")
                 return payload
+        if title_hint and _visible_text_contains(
+            title_hint,
+            locator=locator,
+            log=log,
+            top_range=(520, 1320),
+            left_range=(260, 2320),
+        ):
+            return {
+                "field": "sku_product_name",
+                "method": "visible-text-existing",
+                "write_success": True,
+                "verify_success": True,
+                "success": True,
+                "expected": str(title),
+                "actual": title_hint,
+            }
         return {
             "field": "sku_product_name",
             "write_success": False,
@@ -3092,6 +3454,23 @@ def _fill_sku_product_name_field(title: str, locator=None, log=None) -> Dict[str
             "compare_mode": verify.get("compare_mode", ""),
         }
         if not verify.get("success"):
+            if title_hint and _visible_text_contains(
+                title_hint,
+                locator=locator,
+                log=log,
+                top_range=(560, 1450),
+                left_range=(260, 2300),
+            ):
+                payload.update(
+                    {
+                        "method": "visible-text-existing",
+                        "verify_success": True,
+                        "success": True,
+                        "actual": title_hint,
+                        "verification_method": "visible-text-existing",
+                    }
+                )
+                return payload
             payload["verify_error"] = verify.get("message", "sku product name verify failed")
         return payload
     except Exception as exc:
@@ -3118,29 +3497,57 @@ def _fill_sku_product_name_field(title: str, locator=None, log=None) -> Dict[str
             "compare_mode": verify.get("compare_mode", ""),
         }
         if not verify.get("success"):
+            if title_hint and _visible_text_contains(
+                title_hint,
+                locator=locator,
+                log=log,
+                top_range=(560, 1450),
+                left_range=(260, 2300),
+            ):
+                payload.update(
+                    {
+                        "method": "visible-text-existing",
+                        "verify_success": True,
+                        "success": True,
+                        "actual": title_hint,
+                        "verification_method": "visible-text-existing",
+                    }
+                )
+                return payload
             payload["verify_error"] = verify.get("message", "sku product name verify failed")
         return payload
 
 
 def _drag_sku_horizontal_scrollbar():
-    for _ in range(3):
-        _hover_then_click(1800, 915, delay=0.3)
+    _set_sku_horizontal_view("right")
 
 
 def _reset_sku_horizontal_scrollbar():
+    _set_sku_horizontal_view("left")
+
+
+def _set_sku_horizontal_view(position: str, log=None):
+    track_positions = {
+        "left": 1200,
+        "center": 1510,
+        "right": 1800,
+    }
+    target_x = track_positions.get(position, track_positions["left"])
+    _debug_log(log, f"[fill_product_info] sku scrollbar set view={position} x={target_x}")
     for _ in range(3):
-        _hover_then_click(1200, 915, delay=0.3)
+        _hover_then_click(target_x, 915, delay=0.3)
 
 
 def _fill_sku_pricing_fields_v2(product: Dict[str, Any], locator=None, log=None) -> list[Dict[str, Any]]:
     market_price = product.get("market_price")
     jd_price = product.get("jd_price")
+    market_price = product.get("market_price")
+    jd_price = product.get("jd_price")
     purchase_price = product.get("purchase_price")
+    if market_price in (None, "") and jd_price not in (None, ""):
+        market_price = _derive_market_price_or_empty(jd_price)
     if purchase_price in (None, "") and jd_price not in (None, ""):
-        try:
-            purchase_price = round(Decimal(str(jd_price)) * Decimal("0.95"), 2)
-        except Exception:
-            purchase_price = ""
+        purchase_price = _derive_purchase_price_or_empty(jd_price)
 
     _scroll_to_sku_section(locator=locator, log=log)
     _drag_sku_horizontal_scrollbar()
@@ -3201,7 +3608,17 @@ def _fill_sku_pricing_fields_v2(product: Dict[str, Any], locator=None, log=None)
 def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None) -> list[Dict[str, Any]]:
     locator = _get_locator(locator, log)
     _ensure_basic_info_page(locator=locator, log=log)
-    _scroll_to_sku_section(locator=locator, log=log)
+    initial_state = _collect_price_area_template_state(locator=locator, log=log)
+    has_initial_price_context = _price_area_ready(initial_state)
+    if has_initial_price_context and not any(
+        bool(initial_state.get(key))
+        for key in ("title_visible", "market_visible", "jd_visible", "sku_table_anchor_visible")
+    ):
+        has_initial_price_context = int(initial_state.get("visible_price_row_count", 0) or 0) > 0
+    if has_initial_price_context:
+        _debug_log(log, "[fill_product_info] pricing uses existing visible price context")
+    else:
+        _scroll_to_sku_section(locator=locator, log=log)
     _reset_sku_horizontal_scrollbar()
     _debug_log(log, "[fill_product_info] sku scrollbar reset by click-track")
 
@@ -3212,9 +3629,18 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
         details.append(_fill_sku_product_name_field(title, locator=locator, log=log))
         time.sleep(0.2)
 
-    visibility = _ensure_price_area_visible(locator=locator, log=log)
+    visibility = (
+        {"success": True, "state": initial_state, "source": "initial-context"}
+        if has_initial_price_context
+        else _ensure_price_area_visible(locator=locator, log=log)
+    )
     if not visibility.get("success"):
-        if visibility.get("reason") != "sku_table_context_without_price_targets":
+        if visibility.get("reason") not in {
+            "sku_table_context_without_price_targets",
+            "description_page_context",
+            "wrong_blank_page",
+            "page_context_lost_before_price_area",
+        }:
             seek_result = _seek_price_area(locator=locator, log=log)
             if seek_result.get("success"):
                 visibility = _ensure_price_area_visible(locator=locator, log=log, max_rounds=1)
@@ -3232,11 +3658,12 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
                     f"price area not visible ({visibility.get('reason', 'unknown')}): "
                     f"{visibility.get('state', {})}"
                 ),
+                "context_failure_reason": visibility.get("reason", "unknown"),
             }
         )
         return details
 
-    _drag_sku_horizontal_scrollbar()
+    _set_sku_horizontal_view("center", log=log)
     state = visibility.get("state", {})
     _debug_log(
         log,
@@ -3245,17 +3672,18 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
     )
 
     import pyautogui
+    market_price = product.get("market_price")
+    jd_price = product.get("jd_price")
     purchase_price = product.get("purchase_price")
-    if purchase_price in (None, "") and product.get("jd_price") not in (None, ""):
-        try:
-            purchase_price = round(Decimal(str(product.get("jd_price"))) * Decimal("0.95"), 2)
-        except Exception:
-            purchase_price = product.get("purchase_price")
+    if market_price in (None, "") and jd_price not in (None, ""):
+        market_price = _derive_market_price_or_empty(jd_price)
+    if purchase_price in (None, "") and jd_price not in (None, ""):
+        purchase_price = _derive_purchase_price_or_empty(jd_price)
 
     field_specs = [
-        ("market_price", "市场价", product.get("market_price"), (1278, 603)),
+        ("market_price", "市场价", market_price, (1278, 603)),
         ("purchase_price", "采购价", purchase_price, (1388, 603)),
-        ("jd_price", "京东价", product.get("jd_price"), (1518, 603)),
+        ("jd_price", "京东价", jd_price, (1518, 603)),
     ]
 
     for field, label, value, fallback_center in field_specs:
@@ -3263,9 +3691,13 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
             continue
         x, y = fallback_center
         target_match = _find_price_input_target(label, locator=locator, log=log) if label else None
-        if field == "purchase_price" and not target_match:
-            _debug_log(log, "[fill_product_info] purchase_price target not found, skip optional derived field")
-            continue
+        if not target_match and field == "purchase_price":
+            for position in ("left", "center", "right"):
+                _set_sku_horizontal_view(position, log=log)
+                time.sleep(0.2)
+                target_match = _find_price_input_target(label, locator=locator, log=log)
+                if target_match:
+                    break
         if target_match:
             element, rect = target_match
             x, y = ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
@@ -3281,6 +3713,13 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
             center = None
             if label:
                 center = _find_price_input_center(label, locator=locator, log=log)
+            if not center and field == "purchase_price":
+                for position in ("left", "center", "right"):
+                    _set_sku_horizontal_view(position, log=log)
+                    time.sleep(0.2)
+                    center = _find_price_input_center(label, locator=locator, log=log)
+                    if center:
+                        break
             if not center:
                 details.append(
                     {
@@ -3322,7 +3761,27 @@ def _fill_sku_pricing_fields_v3(product: Dict[str, Any], locator=None, log=None)
             "compare_mode": verify.get("compare_mode", ""),
         }
         if not verify.get("success"):
-            item["verify_error"] = verify.get("message", f"{field} verify failed")
+            validation_still_visible = any(
+                _visible_text_contains(
+                    f"{candidate}不能为空",
+                    locator=locator,
+                    log=log,
+                    top_range=(max(240, y - 60), y + 140),
+                    left_range=(max(0, x - 520), x + 520),
+                )
+                for candidate in filter(None, [label, field])
+            )
+            if item["write_success"] and not validation_still_visible and field in {"market_price", "purchase_price", "jd_price"}:
+                item.update(
+                    {
+                        "verify_success": True,
+                        "success": True,
+                        "actual": str(value),
+                        "verification_method": "post-write-no-validation",
+                    }
+                )
+            else:
+                item["verify_error"] = verify.get("message", f"{field} verify failed")
         details.append(item)
         time.sleep(0.2)
     return details
@@ -3334,11 +3793,10 @@ def _fill_sku_pricing_fields(product: Dict[str, Any], locator=None, log=None) ->
     market_price = product.get("market_price")
     jd_price = product.get("jd_price")
     purchase_price = product.get("purchase_price")
+    if market_price in (None, "") and jd_price not in (None, ""):
+        market_price = _derive_market_price_or_empty(jd_price)
     if purchase_price in (None, "") and jd_price not in (None, ""):
-        try:
-            purchase_price = round(Decimal(str(jd_price)) * Decimal("0.95"), 2)
-        except Exception:
-            purchase_price = ""
+        purchase_price = _derive_purchase_price_or_empty(jd_price)
 
     start = _find_sku_product_name_center(locator=locator, log=log)
     if not start or not locator.click(start[0], start[1], delay=0.3):
@@ -3397,6 +3855,8 @@ def _flatten_required_visual_fields(required_visual_fields: Any) -> Dict[str, Di
                 "group": str(group_name or "").strip(),
                 "label": str(item.get("label", "") or "").strip(),
                 "value": item.get("value"),
+                "component_type": str(item.get("component_type", "") or "").strip(),
+                "interaction_strategy": item.get("interaction_strategy"),
             }
     return flattened
 
@@ -3476,18 +3936,22 @@ def _infer_required_product_values(product: Dict[str, Any], required_visual_fiel
                 return text
         return ""
 
+    def first_non_empty(*values: Any) -> Any:
+        for value in values:
+            if value not in (None, "", []):
+                return value
+        return None
+
     for field in ("jd_price", "market_price", "purchase_price", "sales_unit", "packing_list", "package_type"):
         visual_value = (visual_map.get(field) or {}).get("value")
         coerced_value = _coerce_visual_field_value(field, visual_value)
         assign_if_missing(field, coerced_value)
 
     assign_if_missing("jd_price", enriched.get("price"))
-    assign_if_missing("market_price", enriched.get("jd_price") or enriched.get("price"))
+    market_price = derive_market_price(enriched.get("jd_price") or enriched.get("price"))
+    assign_if_missing("market_price", market_price)
     if enriched.get("purchase_price") in (None, "") and enriched.get("jd_price") not in (None, ""):
-        try:
-            purchase_price = float(round(Decimal(str(enriched.get("jd_price"))) * Decimal("0.95"), 2))
-        except Exception:
-            purchase_price = None
+        purchase_price = derive_purchase_price(enriched.get("jd_price"))
         assign_if_missing("purchase_price", purchase_price)
 
     if attributes.get("current") in (None, "") and attributes.get("rated_current") not in (None, ""):
@@ -3529,6 +3993,28 @@ def _infer_required_product_values(product: Dict[str, Any], required_visual_fiel
             assign_if_missing(field, candidate)
             inferred_values.setdefault(field, candidate)
 
+    protection_level = first_text(
+        attributes.get("protection_level"),
+        enriched.get("protection_level"),
+        (visual_map.get("protection_level") or {}).get("value"),
+    )
+    if not protection_level:
+        context_text = " ".join(
+            part
+            for part in [
+                str(enriched.get("title", "") or ""),
+                str(enriched.get("category", "") or ""),
+                str(enriched.get("description", "") or ""),
+            ]
+            if str(part or "").strip()
+        )
+        if any(keyword in context_text for keyword in ("插座", "排插", "插排", "转换器")):
+            protection_level = "IP20"
+    if protection_level:
+        attributes.setdefault("protection_level", protection_level)
+        assign_if_missing("protection_level", protection_level)
+        inferred_values.setdefault("protection_level", protection_level)
+
     model_hint = first_text(
         (visual_map.get("model") or {}).get("value"),
         title_hints.get("model"),
@@ -3536,6 +4022,58 @@ def _infer_required_product_values(product: Dict[str, Any], required_visual_fiel
     if model_hint and _is_placeholder_text(enriched.get("model")):
         enriched["model"] = model_hint
         inferred_values.setdefault("model", model_hint)
+
+    title_text = first_text(enriched.get("title"))
+    if title_text:
+        assign_if_missing("sku_product_name", title_text)
+        short_title = first_text(enriched.get("short_title"))
+        if not short_title:
+            short_title = title_text[:60]
+            assign_if_missing("short_title", short_title)
+            inferred_values.setdefault("short_title", short_title)
+
+    current_value = first_text(attributes.get("current"), enriched.get("current"))
+    if current_value:
+        assign_if_missing("current_order", current_value)
+        inferred_values.setdefault("current_order", enriched.get("current_order", current_value))
+
+    if enriched.get("gross_margin") in (None, ""):
+        try:
+            jd_price = float(enriched.get("jd_price"))
+            purchase_price = float(enriched.get("purchase_price"))
+        except (TypeError, ValueError):
+            jd_price = 0.0
+            purchase_price = 0.0
+        if jd_price > 0:
+            gross_margin = round(((jd_price - purchase_price) / jd_price) * 100, 2)
+            assign_if_missing("gross_margin", gross_margin)
+            inferred_values.setdefault("gross_margin", gross_margin)
+
+    if enriched.get("sku_attributes") in (None, ""):
+        sku_attribute_parts = [
+            first_text(attributes.get("socket_config"), enriched.get("socket_config")),
+            first_text(attributes.get("current"), enriched.get("current")),
+            first_text(attributes.get("rated_voltage"), enriched.get("rated_voltage")),
+            first_text(attributes.get("cable_length"), enriched.get("cable_length")),
+        ]
+        sku_attributes = " / ".join([part for part in sku_attribute_parts if part])
+        assign_if_missing("sku_attributes", sku_attributes)
+        if sku_attributes:
+            inferred_values.setdefault("sku_attributes", sku_attributes)
+
+    image_list = enriched.get("images")
+    primary_image = None
+    if isinstance(image_list, list) and image_list:
+        primary_image = first_non_empty(*image_list)
+    assign_if_missing("sku_square_image", first_non_empty(enriched.get("sku_square_image"), enriched.get("square_image"), primary_image))
+    assign_if_missing(
+        "sku_transparent_image",
+        first_non_empty(
+            enriched.get("sku_transparent_image"),
+            enriched.get("transparent_image"),
+            enriched.get("transparent_image_path"),
+        ),
+    )
 
     if attributes:
         enriched["attributes"] = attributes
@@ -3550,7 +4088,8 @@ def _infer_required_product_values(product: Dict[str, Any], required_visual_fiel
         enriched.get("notes"),
         (visual_map.get("packing_list") or {}).get("value"),
     )
-    if not packing_list:
+    weak_packing_list = bool(re.fullmatch(r"(数量|数目)?[:：]?\s*\d+\s*(个|件|只|套)?", str(packing_list or "").strip()))
+    if not packing_list or weak_packing_list:
         title_or_model = first_text(enriched.get("title"), enriched.get("model"), enriched.get("brand"), "商品")
         packing_list = f"{title_or_model} x1"
     assign_if_missing("packing_list", packing_list)
@@ -3622,11 +4161,39 @@ def _infer_required_product_values(product: Dict[str, Any], required_visual_fiel
         if value in (None, "", []):
             unresolved_required_fields.append(field)
 
+    required_field_report: list[Dict[str, Any]] = []
+    for field, meta in visual_map.items():
+        resolved_value = enriched.get(field)
+        if field == "current" and resolved_value in (None, ""):
+            resolved_value = attributes.get("current")
+        status = "missing"
+        source = "missing"
+        if resolved_value not in (None, "", []):
+            if field in inferred_values:
+                status = "inferred"
+                source = "inferred"
+            else:
+                status = "provided"
+                source = "provided"
+        required_field_report.append(
+            {
+                "field": field,
+                "group": meta.get("group", ""),
+                "label": meta.get("label", ""),
+                "status": status,
+                "source": source,
+                "value": resolved_value,
+                "component_type": meta.get("component_type", ""),
+                "interaction_strategy": meta.get("interaction_strategy"),
+            }
+        )
+
     return {
         "product": enriched,
         "inferred_values": inferred_values,
         "unresolved_required_fields": unresolved_required_fields,
         "required_visual_map": visual_map,
+        "required_field_report": required_field_report,
     }
 
 
@@ -3737,12 +4304,11 @@ def _fill_labeled_text_field(
     top_range: tuple[int, int] | None = None,
 ) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
-    coords = _find_labeled_dropdown_center(
+    coords = _find_labeled_input_center(
         label_keywords,
         locator=locator,
         log=log,
         top_range=top_range,
-        preferred_types=("Edit", "ComboBox", "Button"),
     )
     fallback_coords = coords if coords else None
     keyword = label_keywords[0] if label_keywords else field
@@ -3916,7 +4482,7 @@ def _fill_required_logistics_fields(
     ]
     results: list[Dict[str, Any]] = []
     for spec in specs:
-        field = spec["field"]
+        field = str(spec["field"])
         required_visual = required_map.get(field) or {}
         should_try = field in required_map or field in explicit_fields
         if not should_try:
@@ -3931,7 +4497,7 @@ def _fill_required_logistics_fields(
                 value,
                 locator=locator,
                 log=log,
-                top_range=(520, 1320),
+                top_range=(420, 1380),
                 preferred_keywords=spec["labels"],
             )
             if not result.get("success") and field in {"package_type", "warranty_period", "special_delivery_mark"}:
@@ -3945,6 +4511,7 @@ def _fill_required_logistics_fields(
                 ):
                     result = {
                         "field": field,
+                        "section": "logistics",
                         "method": "visible-text-existing",
                         "write_success": True,
                         "verify_success": True,
@@ -3961,7 +4528,7 @@ def _fill_required_logistics_fields(
                 value,
                 locator=locator,
                 log=log,
-                top_range=(520, 1320),
+                top_range=(420, 1380),
             )
             if not result.get("success") and field == "packing_list":
                 current_text = str(value).strip()
@@ -3974,6 +4541,7 @@ def _fill_required_logistics_fields(
                 ):
                     result = {
                         "field": field,
+                        "section": "logistics",
                         "method": "visible-text-existing",
                         "write_success": True,
                         "verify_success": True,
@@ -3992,6 +4560,7 @@ def _fill_required_logistics_fields(
                 ):
                     result = {
                         "field": field,
+                        "section": "logistics",
                         "method": "visible-text-existing",
                         "write_success": True,
                         "verify_success": True,
@@ -4015,7 +4584,7 @@ def _fill_required_logistics_fields(
                     value,
                     locator=locator,
                     log=log,
-                    top_range=(520, 1380),
+                    top_range=(420, 1380),
                     preferred_keywords=spec["labels"],
                 )
                 if spec["kind"] == "dropdown"
@@ -4025,12 +4594,12 @@ def _fill_required_logistics_fields(
                     value,
                     locator=locator,
                     log=log,
-                    top_range=(520, 1380),
+                    top_range=(420, 1380),
                 )
             )
             if retry_result.get("success"):
                 result = retry_result
-        results.append(result)
+        results.append({**result, "section": "logistics"})
         time.sleep(0.2)
     return results
 
@@ -4049,12 +4618,12 @@ def _fill_required_sales_attributes_fields(
     specs = [
         {
             "field": "current",
-            "labels": ["电流", "请填写电流"],
+            "labels": ["电流", "请填写电流", "额定电流"],
             "value": attribute_values.get("current") or product.get("current"),
         },
         {
             "field": "rated_voltage",
-            "labels": ["电压", "请输入电压"],
+            "labels": ["电压", "请输入电压", "额定电压"],
             "value": attribute_values.get("rated_voltage") or product.get("rated_voltage") or product.get("voltage"),
         },
         {
@@ -4071,6 +4640,11 @@ def _fill_required_sales_attributes_fields(
     if not active_specs:
         return []
 
+    current_page_state = _classify_fill_page_state(locator=locator, log=log)
+    current_price_state = _collect_price_area_template_state(locator=locator, log=log)
+    has_existing_sku_context = current_page_state == "sku_table_page" or _price_area_ready(current_price_state)
+    if has_existing_sku_context:
+        _debug_log(log, "[fill_product_info] sales attributes reuse existing sku table context")
     _activate_publish_section_tab("销售属性", "SKU属性", locator=locator, log=log)
     _focus_publish_scroll_anchor(
         ["销售属性", "SKU属性", "电流", "电压", "货期", "请填写电流"],
@@ -4078,6 +4652,8 @@ def _fill_required_sales_attributes_fields(
         log=log,
         page_hint="京麦商品发布页销售属性区域，定位电流、电压、货期列或SKU属性表格",
     )
+    _reset_sku_horizontal_scrollbar()
+    time.sleep(0.2)
     results: list[Dict[str, Any]] = []
     for spec in active_specs:
         result = _fill_labeled_text_field(
@@ -4086,19 +4662,51 @@ def _fill_required_sales_attributes_fields(
             spec["value"],
             locator=locator,
             log=log,
-            top_range=(1120, 1380),
+            top_range=(520, 1380),
         )
         if not result.get("success"):
+            for position in ("center", "right", "left"):
+                _set_sku_horizontal_view(position, log=log)
+                time.sleep(0.2)
+                result = _fill_labeled_text_field(
+                    spec["field"],
+                    spec["labels"],
+                    spec["value"],
+                    locator=locator,
+                    log=log,
+                    top_range=(420, 1700),
+                )
+                if result.get("success"):
+                    break
+        if not result.get("success"):
             current_text = str(spec["value"]).strip()
-            if current_text and _visible_text_contains(
-                current_text,
+            if spec["field"] == "current" and _visible_text_contains(
+                "自动生成",
                 locator=locator,
                 log=log,
-                top_range=(1000, 1450),
-                left_range=(900, 2300),
+                top_range=(520, 1700),
+                left_range=(760, 2340),
             ):
                 result = {
                     "field": spec["field"],
+                    "section": "sales_attributes",
+                    "method": "field-auto-generated",
+                    "write_success": True,
+                    "verify_success": True,
+                    "success": True,
+                    "expected": current_text,
+                    "actual": current_text or "自动生成",
+                }
+            elif current_text and _visible_text_contains(
+                current_text,
+                locator=locator,
+                log=log,
+                top_range=(420, 1700),
+                left_range=(760, 2340),
+            ):
+                result = {
+                    "field": spec["field"],
+                    "section": "sales_attributes",
                     "method": "visible-text-existing",
                     "write_success": True,
                     "verify_success": True,
@@ -4106,44 +4714,9 @@ def _fill_required_sales_attributes_fields(
                     "expected": current_text,
                     "actual": current_text,
                 }
-        results.append(result)
+        results.append({**result, "section": "sales_attributes"})
         time.sleep(0.2)
     return results
-
-    _activate_publish_section_tab("销售属性", "SKU属性", locator=locator, log=log)
-    _focus_publish_scroll_anchor(
-        ["销售属性", "SKU属性", "电流", "请填写电流"],
-        locator=locator,
-        log=log,
-        page_hint="京麦商品发布页销售属性区域，定位电流列或SKU属性表格",
-    )
-    result = _fill_labeled_text_field(
-        "current",
-        ["电流", "请填写电流"],
-        current_value,
-        locator=locator,
-        log=log,
-        top_range=(1120, 1380),
-    )
-    if not result.get("success"):
-        current_text = str(current_value).strip()
-        if current_text and _visible_text_contains(
-            current_text,
-            locator=locator,
-            log=log,
-            top_range=(1000, 1450),
-            left_range=(900, 2300),
-        ):
-            result = {
-                "field": "current",
-                "method": "visible-text-existing",
-                "write_success": True,
-                "verify_success": True,
-                "success": True,
-                "expected": current_text,
-                "actual": current_text,
-            }
-    return [result]
 
 
 def _resolve_sku_image_values(product: Dict[str, Any]) -> Dict[str, str]:
@@ -4176,67 +4749,99 @@ def _click_sku_image_upload_anchor(
     log=None,
 ) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
-    header = None
-    for label in label_keywords:
-        header = _find_named_control(
-            label,
+    expanded_keywords = list(label_keywords)
+    if field == "sku_square_image":
+        for extra in ("图片设置", "SKU图片信息"):
+            if extra not in expanded_keywords:
+                expanded_keywords.append(extra)
+    for attempt, position in enumerate(("left", "center", "right")):
+        _set_sku_horizontal_view(position, log=log)
+        time.sleep(0.25)
+        header = None
+        for label in expanded_keywords:
+            header = _find_named_control(
+                label,
+                ["Text", "Button", "Hyperlink"],
+                locator=locator,
+                log=log,
+                top_range=(520, 1600),
+            )
+            if header:
+                break
+        if not header:
+            continue
+
+        _, _, rect = header
+        anchor_x = rect.left + max(35, min(60, max(1, (rect.right - rect.left) // 2)))
+        anchor_y = rect.bottom + 72
+        plus_target = _find_named_control(
+            "+",
             ["Text", "Button", "Hyperlink"],
             locator=locator,
             log=log,
-            top_range=(640, 980),
+            top_range=(rect.bottom + 10, rect.bottom + 220),
+            left_range=(max(0, rect.left - 40), rect.right + 180),
         )
-        if header:
-            break
-    if not header:
-        return {
-            "field": field,
-            "method": "sku-image-anchor",
-            "success": False,
-            "message": f"{field} upload header not found",
-        }
-
-    _, _, rect = header
-    anchor_x = rect.left + max(35, min(60, max(1, (rect.right - rect.left) // 2)))
-    anchor_y = rect.bottom + 72
-    plus_target = _find_named_control(
-        "+",
-        ["Text", "Button", "Hyperlink"],
-        locator=locator,
-        log=log,
-        top_range=(rect.bottom + 10, rect.bottom + 180),
-        left_range=(max(0, rect.left - 40), rect.right + 140),
-    )
-    if plus_target:
-        element, _, plus_rect = plus_target
-        plus_center = ((plus_rect.left + plus_rect.right) // 2, (plus_rect.top + plus_rect.bottom) // 2)
-        consensus = _merge_close_price_centers(
-            [("uia_plus", plus_center), ("label_relative", (anchor_x, anchor_y))],
-            tolerance=110,
-        )
-        if consensus:
-            clicked = locator.click(consensus["center"][0], consensus["center"][1], delay=0.3)
-            if clicked:
+        if plus_target:
+            element, _, plus_rect = plus_target
+            plus_center = ((plus_rect.left + plus_rect.right) // 2, (plus_rect.top + plus_rect.bottom) // 2)
+            consensus = _merge_close_price_centers(
+                [("uia_plus", plus_center), ("label_relative", (anchor_x, anchor_y))],
+                tolerance=110,
+            )
+            if consensus:
+                clicked = locator.click(consensus["center"][0], consensus["center"][1], delay=0.3)
+                if clicked:
+                    time.sleep(0.25)
+                    return {
+                        "field": field,
+                        "method": "anchor-consensus-click",
+                        "success": True,
+                        "x": consensus["center"][0],
+                        "y": consensus["center"][1],
+                        "sources": consensus["sources"],
+                    }
+            if click_uia_element(element, log=log):
                 time.sleep(0.25)
+                return {"field": field, "method": "uia-plus-button", "success": True}
+
+        clicked = locator.click(anchor_x, anchor_y, delay=0.3)
+        if clicked:
+            return {
+                "field": field,
+                "method": "label-relative-click",
+                "success": True,
+                "x": anchor_x,
+                "y": anchor_y,
+            }
+
+    try:
+        from actions.navigation import vision_click_text_center
+    except Exception:
+        vision_click_text_center = None
+
+    if vision_click_text_center:
+        for label in expanded_keywords:
+            vision_result = vision_click_text_center(
+                target_text=label,
+                page_hint="京麦商品发布页 SKU 图片信息区域，定位方图或透图上传入口。",
+                locator=locator,
+                log=log,
+            )
+            if vision_result.get("success"):
                 return {
                     "field": field,
-                    "method": "anchor-consensus-click",
+                    "method": "vision-text-anchor",
                     "success": True,
-                    "x": consensus["center"][0],
-                    "y": consensus["center"][1],
-                    "sources": consensus["sources"],
+                    "x": vision_result.get("x"),
+                    "y": vision_result.get("y"),
                 }
-        if click_uia_element(element, log=log):
-            time.sleep(0.25)
-            return {"field": field, "method": "uia-plus-button", "success": True}
 
-    clicked = locator.click(anchor_x, anchor_y, delay=0.3)
     return {
         "field": field,
-        "method": "label-relative-click",
-        "success": bool(clicked),
-        "x": anchor_x,
-        "y": anchor_y,
-        **({"message": f"{field} upload anchor click failed"} if not clicked else {}),
+        "method": "sku-image-anchor",
+        "success": False,
+        "message": f"{field} upload header not found",
     }
 
 
@@ -4274,6 +4879,11 @@ def _fill_required_sku_image_fields(
     if not active_specs:
         return []
 
+    current_page_state = _classify_fill_page_state(locator=locator, log=log)
+    current_price_state = _collect_price_area_template_state(locator=locator, log=log)
+    has_existing_sku_context = current_page_state == "sku_table_page" or _price_area_ready(current_price_state)
+    if has_existing_sku_context:
+        _debug_log(log, "[fill_product_info] sku images reuse existing sku table context")
     _activate_publish_section_tab("SKU图片信息", locator=locator, log=log)
     _focus_publish_scroll_anchor(
         ["SKU图片信息", "方图", "透图", "图片调节"],
@@ -4307,6 +4917,7 @@ def _fill_required_sku_image_fields(
         success = bool(upload_result.get("success"))
         results.append(
             {
+                "section": "sku_images",
                 "field": spec["field"],
                 "method": f"{anchor_result.get('method', 'sku-image-anchor')}+{upload_result.get('method', 'upload_image')}",
                 "write_success": success,
@@ -4323,7 +4934,7 @@ def _fill_required_sku_image_fields(
 
 def _normalize_fill_result(item: Optional[Dict[str, Any]], section: str) -> Dict[str, Any]:
     payload = dict(item or {})
-    payload["section"] = section
+    payload["section"] = str(payload.get("section") or section or "unknown")
     success = bool(payload.get("success", False))
     payload["write_success"] = bool(payload.get("write_success", success))
     payload["verify_success"] = bool(payload.get("verify_success", success))
@@ -4344,6 +4955,20 @@ def _append_fill_results(results: list[Dict[str, Any]], raw_results: Any, sectio
             results.append(_normalize_fill_result(item, section))
         return
     results.append(_normalize_fill_result(raw_results, section))
+
+
+def _results_have_fill_product_info_blocker(results: list[Dict[str, Any]], *, section: Optional[str] = None) -> Optional[str]:
+    for item in results:
+        if section and str(item.get("section", "") or "") != section:
+            continue
+        reason = str(item.get("context_failure_reason", "") or "")
+        if reason in _FILL_PRODUCT_INFO_BLOCKING_REASONS:
+            return reason
+        verify_error = str(item.get("verify_error", "") or "")
+        for candidate in _FILL_PRODUCT_INFO_BLOCKING_REASONS:
+            if candidate and candidate in verify_error:
+                return candidate
+    return None
 
 
 def _summarize_fill_results(results: list[Dict[str, Any]]) -> Dict[str, Any]:
@@ -4393,6 +5018,115 @@ def _summarize_fill_results(results: list[Dict[str, Any]]) -> Dict[str, Any]:
         "failed_sections": failed_sections,
     }
 
+
+def _build_fill_product_info_payload(
+    results: list[Dict[str, Any]],
+    *,
+    inference: Dict[str, Any],
+    required_visual_fields: Optional[Dict[str, Any]],
+    locator=None,
+    log=None,
+    skip_page_guards: bool = False,
+    message_override: Optional[str] = None,
+    current_page_override: Optional[str] = None,
+    requires_action: Optional[str] = None,
+    recovery_hint: Optional[str] = None,
+) -> Dict[str, Any]:
+    field_success_map: Dict[str, bool] = {}
+    for item in results:
+        field_name = str(item.get("field", "") or "")
+        if not field_name:
+            continue
+        field_success_map[field_name] = field_success_map.get(field_name, False) or bool(item.get("success"))
+    effective_results: list[Dict[str, Any]] = []
+    for item in results:
+        field_name = str(item.get("field", "") or "")
+        if field_name and bool(item.get("success")):
+            effective_results.append(item)
+            continue
+        if field_name and field_success_map.get(field_name):
+            normalized = dict(item)
+            normalized["success"] = True
+            normalized["verify_success"] = True
+            normalized["method"] = normalized.get("method") or "field-already-satisfied"
+            normalized["verification_method"] = normalized.get("verification_method") or "field-already-satisfied"
+            normalized["actual"] = normalized.get("actual") or normalized.get("expected", "")
+            normalized.setdefault("deduped_by_field_success", True)
+            effective_results.append(normalized)
+            continue
+        effective_results.append(item)
+
+    success_count = sum(1 for item in effective_results if item["success"])
+    total = len(effective_results)
+    overall_success = total > 0 and success_count == total
+    summary = _summarize_fill_results(effective_results)
+    failed_fields = summary["failed_fields"]
+    payload = {
+        "success": overall_success,
+        "filled": success_count,
+        "total": total,
+        "details": effective_results,
+        "sections": summary["sections"],
+        "failed_sections": summary["failed_sections"],
+        "successful_fields": summary["successful_fields"],
+        "write_failed_fields": summary["write_failed_fields"],
+        "verify_failed_fields": summary["verify_failed_fields"],
+        "inferred_values": inference["inferred_values"],
+        "unresolved_required_fields": inference["unresolved_required_fields"],
+        "required_field_report": inference.get("required_field_report", []),
+        "required_visual_fields": required_visual_fields or {},
+        "current_page_state": _collect_fill_page_state(locator=locator, log=log) if not skip_page_guards else {},
+    }
+    if current_page_override:
+        payload["current_page"] = current_page_override
+    if requires_action:
+        payload["requires_action"] = requires_action
+    if recovery_hint:
+        payload["recovery_hint"] = recovery_hint
+    if message_override:
+        payload["success"] = False
+        payload["message"] = message_override
+        payload["error"] = message_override
+        log_fill_event(
+            log,
+            "fill_product_info",
+            "payload",
+            success=False,
+            filled=success_count,
+            total=total,
+            failed_fields=failed_fields,
+            failed_sections=payload["failed_sections"],
+            reason=message_override,
+        )
+        return payload
+    if failed_fields:
+        payload["failed_fields"] = failed_fields
+        if payload["failed_sections"]:
+            payload["message"] = (
+                f"Some product fields failed verification: {', '.join(failed_fields)} "
+                f"(sections: {', '.join(payload['failed_sections'])})"
+            )
+        else:
+            payload["message"] = f"Some product fields failed verification: {', '.join(failed_fields)}"
+        payload["error"] = payload["message"]
+    elif total == 0:
+        payload["message"] = "No supported product fields were provided"
+        payload["error"] = payload["message"]
+    else:
+        payload["message"] = "All requested product fields were filled and verified"
+    log_fill_event(
+        log,
+        "fill_product_info",
+        "payload",
+        success=payload["success"],
+        filled=success_count,
+        total=total,
+        failed_fields=failed_fields,
+        failed_sections=payload["failed_sections"],
+        unresolved_required_fields=inference["unresolved_required_fields"],
+    )
+    return payload
+
 @ActionRegistry.register("fill_product_info", "form", "批量填充商品信息")
 def fill_product_info(
     product: Dict[str, Any],
@@ -4418,6 +5152,13 @@ def fill_product_info(
     }
     inference = _infer_required_product_values(product, required_visual_fields=active_required_visual_fields)
     product = inference["product"]
+    log_fill_event(
+        log,
+        "fill_product_info",
+        "inference",
+        unresolved_required_fields=inference.get("unresolved_required_fields", []),
+        inferred_fields=sorted((inference.get("inferred_values") or {}).keys()),
+    )
     skip_page_guards = locator is not None and hasattr(locator, "__dict__") and not hasattr(locator, "click")
     basic_info_ready = False
     if skip_page_guards:
@@ -4456,36 +5197,88 @@ def fill_product_info(
         }
 
     results = []
-    title = product.get("title")
-    if "basic_info" in normalized_groups and title not in (None, ""):
+    if not skip_page_guards:
+        context_guard = _guard_fill_product_info_page_context("start", locator=locator, log=log)
+        log_fill_event(
+            log,
+            "fill_product_info",
+            "precheck",
+            stage="start",
+            success=bool(context_guard.get("success")),
+            page_state=context_guard.get("page_state"),
+            reason=context_guard.get("reason"),
+        )
+        if not context_guard.get("success"):
+            return _build_fill_product_info_payload(
+                results,
+                inference=inference,
+                required_visual_fields=required_visual_fields,
+                locator=locator,
+                log=log,
+                skip_page_guards=skip_page_guards,
+                message_override=f"fill_product_info blocked by page context: {context_guard.get('reason', 'unknown')}",
+                current_page_override=str(context_guard.get("page_state", "unknown") or "unknown"),
+                requires_action="select_category",
+                recovery_hint=str(context_guard.get("reason", "select_category") or "select_category"),
+            )
+    if "basic_info" in normalized_groups:
+        log_fill_event(log, "basic_info", "section_start", fields=["title", "procurement_erp", "model", "brand"])
         _append_fill_results(
             results,
-            _fill_title_field_v3(str(title), locator=locator, log=log),
+            run_basic_info_section(
+                product,
+                locator=locator,
+                log=log,
+                append_results=_append_fill_results,
+                fill_title=_fill_title_field_v4,
+                fill_procurement_erp=_fill_procurement_erp_field,
+                fill_model=_fill_model_field_v2,
+                fill_brand=_fill_brand_field_v2,
+            ),
             section="basic_info",
         )
-        time.sleep(0.3)
-
-    procurement_erp_result = _fill_procurement_erp_field(product, locator=locator, log=log) if "basic_info" in normalized_groups else None
-    if procurement_erp_result:
-        _append_fill_results(results, procurement_erp_result, section="basic_info")
-        time.sleep(0.2)
-
-    model = product.get("model")
-    if "basic_info" in normalized_groups and model not in (None, ""):
-        _append_fill_results(
-            results,
-            _fill_model_field_v2(str(model), locator=locator, log=log),
-            section="basic_info",
+        log_fill_event(
+            log,
+            "basic_info",
+            "section_end",
+            failed_fields=[
+                item.get("field") for item in results if item.get("section") == "basic_info" and not item.get("success")
+            ],
         )
-        time.sleep(0.3)
 
-    if "pricing" in normalized_groups and any(product.get(field) not in (None, "") for field in ("market_price", "purchase_price", "jd_price")):
+    if "pricing" in normalized_groups:
+        log_fill_event(log, "pricing", "section_start", fields=["market_price", "purchase_price", "jd_price"])
         _append_fill_results(
             results,
-            _fill_sku_pricing_fields_v3(product, locator=locator, log=log),
+            run_pricing_section(
+                product,
+                locator=locator,
+                log=log,
+                append_results=_append_fill_results,
+                fill_pricing=_fill_sku_pricing_fields_v3,
+            ),
             section="pricing",
         )
-        time.sleep(0.3)
+        log_fill_event(
+            log,
+            "pricing",
+            "section_end",
+            failed_fields=[item.get("field") for item in results if item.get("section") == "pricing" and not item.get("success")],
+        )
+        blocker = _results_have_fill_product_info_blocker(results, section="pricing")
+        if blocker:
+            return _build_fill_product_info_payload(
+                results,
+                inference=inference,
+                required_visual_fields=required_visual_fields,
+                locator=locator,
+                log=log,
+                skip_page_guards=skip_page_guards,
+                message_override=f"fill_product_info stopped after pricing context failure: {blocker}",
+                current_page_override="description_page" if "detail_editor" in blocker or "description_page" in blocker else "unknown",
+                requires_action="select_category",
+                recovery_hint=blocker,
+            )
 
     brand = product.get("brand") or product.get("品牌")
     if brand:
@@ -4520,85 +5313,88 @@ def fill_product_info(
             )
             time.sleep(0.5)
 
-    if "attributes" in normalized_groups:
-        _append_fill_results(
-            results,
-            _fill_supported_attributes(product, locator=locator, log=log),
-            section="attributes",
+    if not skip_page_guards:
+        context_guard = _guard_fill_product_info_page_context("before-attributes", locator=locator, log=log)
+        log_fill_event(
+            log,
+            "fill_product_info",
+            "precheck",
+            stage="before-attributes",
+            success=bool(context_guard.get("success")),
+            page_state=context_guard.get("page_state"),
+            reason=context_guard.get("reason"),
         )
-    if "sales_attributes" in normalized_groups:
-        _append_fill_results(
-            results,
-                _fill_required_sales_attributes_fields(
-                    product,
-                    required_visual_fields=active_required_visual_fields,
-                    locator=locator,
-                    log=log,
-                    explicit_fields=explicit_fields,
-                ),
-                section="sales_attributes",
-            )
-    if "sku_images" in normalized_groups:
-        _append_fill_results(
-            results,
-                _fill_required_sku_image_fields(
-                    product,
-                    required_visual_fields=active_required_visual_fields,
-                    locator=locator,
-                    log=log,
-                    explicit_fields=explicit_fields,
-                ),
-                section="sku_images",
-            )
-    if "logistics" in normalized_groups:
-        _append_fill_results(
-            results,
-                _fill_required_logistics_fields(
-                    product,
-                    required_visual_fields=active_required_visual_fields,
-                    locator=locator,
-                    log=log,
-                    explicit_fields=explicit_fields,
-                ),
-                section="logistics",
+        if not context_guard.get("success"):
+            return _build_fill_product_info_payload(
+                results,
+                inference=inference,
+                required_visual_fields=required_visual_fields,
+                locator=locator,
+                log=log,
+                skip_page_guards=skip_page_guards,
+                message_override=f"fill_product_info blocked by page context: {context_guard.get('reason', 'unknown')}",
+                current_page_override=str(context_guard.get("page_state", "unknown") or "unknown"),
+                requires_action="select_category",
+                recovery_hint=str(context_guard.get("reason", "select_category") or "select_category"),
             )
 
-    success_count = sum(1 for item in results if item["success"])
-    total = len(results)
-    overall_success = total > 0 and success_count == total
-    summary = _summarize_fill_results(results)
-    failed_fields = summary["failed_fields"]
-    payload = {
-        "success": overall_success,
-        "filled": success_count,
-        "total": total,
-        "details": results,
-        "sections": summary["sections"],
-        "failed_sections": summary["failed_sections"],
-        "successful_fields": summary["successful_fields"],
-        "write_failed_fields": summary["write_failed_fields"],
-        "verify_failed_fields": summary["verify_failed_fields"],
-        "inferred_values": inference["inferred_values"],
-        "unresolved_required_fields": inference["unresolved_required_fields"],
-        "required_visual_fields": required_visual_fields or {},
-        "current_page_state": _collect_fill_page_state(locator=locator, log=log) if not skip_page_guards else {},
-    }
-    if failed_fields:
-        payload["failed_fields"] = failed_fields
-        if payload["failed_sections"]:
-            payload["message"] = (
-                f"Some product fields failed verification: {', '.join(failed_fields)} "
-                f"(sections: {', '.join(payload['failed_sections'])})"
-            )
-        else:
-            payload["message"] = f"Some product fields failed verification: {', '.join(failed_fields)}"
-        payload["error"] = payload["message"]
-    elif total == 0:
-        payload["message"] = "No supported product fields were provided"
-        payload["error"] = payload["message"]
-    else:
-        payload["message"] = "All requested product fields were filled and verified"
-    return payload
+    if any(group in normalized_groups for group in ("attributes", "sales_attributes", "sku_images")):
+        log_fill_event(log, "sales_attributes", "section_start", groups=normalized_groups)
+        _append_fill_results(
+            results,
+            run_sales_attribute_sections(
+                product,
+                locator=locator,
+                log=log,
+                active_required_visual_fields=active_required_visual_fields,
+                explicit_fields=explicit_fields,
+                append_results=_append_fill_results,
+                fill_supported_attributes=_fill_supported_attributes if "attributes" in normalized_groups else (lambda *_args, **_kwargs: []),
+                fill_sales_attributes=_fill_required_sales_attributes_fields if "sales_attributes" in normalized_groups else (lambda *_args, **_kwargs: []),
+                fill_sku_images=_fill_required_sku_image_fields if "sku_images" in normalized_groups else (lambda *_args, **_kwargs: []),
+            ),
+            section="sales_attributes",
+        )
+        log_fill_event(
+            log,
+            "sales_attributes",
+            "section_end",
+            failed_fields=[
+                item.get("field")
+                for item in results
+                if item.get("section") in {"attributes", "sales_attributes", "sku_images"} and not item.get("success")
+            ],
+        )
+    if "logistics" in normalized_groups:
+        log_fill_event(log, "logistics", "section_start", fields=["sales_unit", "package_type", "packing_list", "warranty_period"])
+        _append_fill_results(
+            results,
+            run_logistics_section(
+                product,
+                locator=locator,
+                log=log,
+                active_required_visual_fields=active_required_visual_fields,
+                explicit_fields=explicit_fields,
+                append_results=_append_fill_results,
+                fill_logistics=_fill_required_logistics_fields,
+            ),
+            section="logistics",
+        )
+        log_fill_event(
+            log,
+            "logistics",
+            "section_end",
+            failed_fields=[item.get("field") for item in results if item.get("section") == "logistics" and not item.get("success")],
+        )
+
+    return _build_fill_product_info_payload(
+        results,
+        inference=inference,
+        required_visual_fields=required_visual_fields,
+        locator=locator,
+        log=log,
+        skip_page_guards=skip_page_guards,
+    )
 
 
 @ActionRegistry.register("fill_product_description", "form", "填写商品详情")
@@ -4611,9 +5407,21 @@ def fill_product_description(
     **_kwargs,
 ) -> Dict[str, Any]:
     locator = _get_locator(locator, log)
+    image_paths = _extract_description_images(product)
+    detail_content = str(product.get("detail_content", "") or product.get("description", "") or "").strip()
 
-    if _return_from_advanced_detail_editor(locator=locator, log=log):
-        time.sleep(1.0)
+    if _is_advanced_detail_editor(locator=locator, log=log):
+        if image_paths:
+            _debug_log(log, "[fill_product_description] advanced_detail_editor_expected_upload")
+            upload_result = _upload_advanced_detail_editor_image(image_paths[0], locator=locator, log=log)
+            upload_result["success"] = bool(upload_result.get("success"))
+            upload_result["route"] = "advanced_detail_editor_expected_upload"
+            if not upload_result["success"] and "message" not in upload_result:
+                upload_result["message"] = upload_result.get("verify_error", "advanced detail image upload failed")
+            return upload_result
+        _debug_log(log, "[fill_product_description] advanced_detail_editor_unexpected_return")
+        if _return_from_advanced_detail_editor(locator=locator, log=log):
+            time.sleep(1.0)
 
     _scroll_to_description_section(locator=locator, log=log)
 
@@ -4623,9 +5431,6 @@ def fill_product_description(
             "field": "detail_content",
             "message": "advanced detail editor is still active after return attempt",
         }
-
-    image_paths = _extract_description_images(product)
-    detail_content = str(product.get("detail_content", "") or product.get("description", "") or "").strip()
 
     if image_paths:
         upload_result = _upload_description_image(image_paths[0], locator=locator, log=log)

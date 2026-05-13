@@ -254,6 +254,22 @@ YYYY.MM.DD(日报)
 ...
 ```
 
+## 2026-05-13 今日学习
+
+### GitHub一周热榜Top20 第19周（来源：赛博笔记抖音视频）
+- **三大核心信号**：Skills生态内卷(8个Skills项目)、金融Agent破局(TradingAgents+13.3k)、DeepSeek黑马(DeepSeek-TUI周增量21,613⭐夺冠)
+- **完整Top3**：andrej-karpathy-skills(121k)、mattpocock/skills(66.7k)、TradingAgents(72.3k)
+- **本周新上榜**：Pixelle-Video、maigret、docuseal、hello-agents、ppt-master
+- **知识库**：`knowledge-base/wiki/概念/GitHub一周热榜Top20-2026年第19周.md`
+- **飞书**：https://feishu.cn/docx/NMOrdM7f4oZpp1xmcwpcg1YFn4b
+
+### CLAUDE.md 200行规则与模块化部署（来源：Ali厂长+Seronote）
+- **核心结论**：超过200行后代码质量从96%降到79%，拆成3个文件后回升到96.9%
+- **四层架构**：CLAUDE.md(核心≤200行) + .claude/rules/(按需) + .claude/skills/(显式激活) + .claude/memory/(AI学习)
+- **避坑**：安全规则放最前、低频内容优先拆分
+- **知识库**：`knowledge-base/wiki/概念/CLAUDE.md-200行规则与模块化部署指南.md`
+- **飞书**：https://feishu.cn/docx/CKmGdoLHEojoosxW2P3cm0m8nxh
+
 ## 2026-05-09 新增知识
 
 ### cheat-on-content - 短视频内容预测系统

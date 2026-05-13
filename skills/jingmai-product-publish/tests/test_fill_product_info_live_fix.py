@@ -159,6 +159,49 @@ def test_fill_required_sku_image_fields_uploads_square_and_transparent(monkeypat
     assert len(locator.clicks) == 2
 
 
+def test_click_sku_image_upload_anchor_prefers_consensus_click(monkeypatch):
+    import actions.form as form_module
+
+    class Rect:
+        def __init__(self, left, top, right, bottom):
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    class FakeLocator(SimpleNamespace):
+        def __init__(self):
+            super().__init__(clicks=[])
+
+        def click(self, x, y, delay=0.0):
+            self.clicks.append((x, y, delay))
+            return True
+
+    locator = FakeLocator()
+
+    def fake_find_named_control(keyword, *_args, **_kwargs):
+        if keyword == "鏂瑰浘":
+            return (object(), keyword, Rect(430, 140, 520, 170))
+        if keyword == "+":
+            return (object(), keyword, Rect(468, 216, 492, 240))
+        return None
+
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator)
+    monkeypatch.setattr(form_module, "_find_named_control", fake_find_named_control)
+    monkeypatch.setattr(form_module, "click_uia_element", lambda *args, **kwargs: False)
+
+    result = form_module._click_sku_image_upload_anchor(
+        "sku_square_image",
+        ["鏂瑰浘"],
+        locator=locator,
+    )
+
+    assert result["success"] is True
+    assert result["method"] == "anchor-consensus-click"
+    assert result["sources"] == ["label_relative", "uia_plus"] or result["sources"] == ["uia_plus", "label_relative"]
+    assert len(locator.clicks) == 1
+
+
 def test_fill_brand_field_prefers_keyboard_first_option_when_dropdown_option_is_visible(monkeypatch):
     import actions.form as form_module
 
@@ -779,6 +822,48 @@ def test_find_price_input_target_accepts_lower_visible_inputs(monkeypatch):
     target = form_module._find_price_input_target("甯傚満浠?", locator=SimpleNamespace())
 
     assert target[0] is lower_edit
+
+
+def test_find_price_input_center_requires_consensus_when_no_direct_target(monkeypatch):
+    import actions.form as form_module
+
+    class Rect:
+        def __init__(self, left, top, right, bottom):
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(form_module, "_find_price_input_target", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_find_price_input_center_by_template", lambda *args, **kwargs: (1280, 920))
+    monkeypatch.setattr(form_module, "find_jingmai_uia_window", lambda *args, **kwargs: object())
+    monkeypatch.setattr(form_module, "iter_named_descendants", lambda *args, **kwargs: [])
+    monkeypatch.setattr(form_module, "_find_named_control", lambda *args, **kwargs: (object(), "甯傚満浠?", Rect(1100, 820, 1180, 850)))
+    monkeypatch.setattr(
+        form_module,
+        "_find_edit_elements",
+        lambda **kwargs: [(object(), "", Rect(1230, 900, 1330, 940))],
+    )
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+
+    center = form_module._find_price_input_center("甯傚満浠?", locator=SimpleNamespace())
+
+    assert center == (1280, 920)
+
+
+def test_find_price_input_center_returns_none_when_only_single_source_exists(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(form_module, "_get_locator", lambda locator, log=None: locator or SimpleNamespace())
+    monkeypatch.setattr(form_module, "_find_price_input_target", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_find_price_input_center_by_template", lambda *args, **kwargs: (1280, 920))
+    monkeypatch.setattr(form_module, "find_jingmai_uia_window", lambda *args, **kwargs: None)
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+
+    center = form_module._find_price_input_center("甯傚満浠?", locator=SimpleNamespace())
+
+    assert center is None
 
 
 def test_ensure_price_area_visible_accepts_sku_table_context_without_vertical_blind_scroll(monkeypatch):

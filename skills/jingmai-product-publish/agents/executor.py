@@ -1059,12 +1059,28 @@ class ExecutorAgent(BaseAgent):
 
         if page_state == "description_page":
             if action_name == "fill_product_info":
-                actions = [window_action, {"type": "navigate_to", "page": "publish"}]
-                if category:
-                    actions.append({"type": "select_category", "search_text": category})
-                return actions
+                return [
+                    window_action,
+                    {
+                        "type": "recover_from_detail_editor",
+                        "page": "publish",
+                        "search_text": category,
+                        "target_action": action_name,
+                    },
+                    {"type": "opencli_state_probe", "reason": "description_page"},
+                ]
             if action_name in {"publish_product", "verify_result"}:
-                return [wait_action, window_action]
+                return [
+                    wait_action,
+                    window_action,
+                    {
+                        "type": "recover_from_detail_editor",
+                        "page": "publish",
+                        "search_text": category,
+                        "target_action": action_name,
+                    },
+                    {"type": "opencli_state_probe", "reason": "description_page"},
+                ]
 
         if page_state == "wrong_blank_page":
             actions = [window_action, {"type": "refresh_page", "mode": "hard"}, {"type": "opencli_state_probe", "reason": "wrong_blank_page"}]
@@ -1180,6 +1196,50 @@ class ExecutorAgent(BaseAgent):
                 if normalized_probe["success"] and not probe.get("success"):
                     normalized_probe["error"] = ""
                 return {"type": action_type, **normalized_probe}
+
+            if action_type == "recover_from_detail_editor":
+                from actions.form import _return_from_advanced_detail_editor
+                from actions.window import navigate_to
+
+                category = str(action.get("search_text", "") or "").strip()
+                target_page = str(action.get("page", "publish") or "publish").strip() or "publish"
+                return_success = bool(_return_from_advanced_detail_editor(locator=self._locator, log=self._logger))
+                current_state = self._detect_local_page_state(action_name=str(action.get("target_action", "") or ""))
+                if current_state in {"product_info_page", "sku_table_page", "category_page", "publish_confirm_page"}:
+                    return {
+                        "type": action_type,
+                        "success": True,
+                        "method": "return_to_merchant_backend",
+                        "page_state": current_state,
+                    }
+
+                navigate_result = navigate_to(page=target_page, locator=self._locator, log=self._logger)
+                navigate_success = bool((navigate_result or {}).get("success", False))
+                select_success = True
+                select_result: Dict[str, Any] | None = None
+                if category:
+                    select_result = ActionRegistry.execute(
+                        "select_category",
+                        search_text=category,
+                        locator=self._locator,
+                        log=self._logger,
+                    )
+                    select_success = bool((select_result or {}).get("success", False))
+
+                current_state = self._detect_local_page_state(action_name=str(action.get("target_action", "") or ""))
+                success = current_state in {"product_info_page", "sku_table_page", "category_page", "publish_confirm_page"}
+                return {
+                    "type": action_type,
+                    "success": success,
+                    "method": "return_then_navigate",
+                    "return_success": return_success,
+                    "navigate_success": navigate_success,
+                    "select_success": select_success,
+                    "navigate_result": navigate_result,
+                    "select_result": select_result,
+                    "page_state": current_state,
+                    "error": "" if success else "detail editor recovery did not return to publish flow",
+                }
 
             params = dict(action)
             params.pop("type", None)

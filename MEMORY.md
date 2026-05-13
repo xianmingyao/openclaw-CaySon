@@ -256,12 +256,20 @@ YYYY.MM.DD(日报)
 
 ## 2026-05-13 今日学习
 
-### GitHub一周热榜Top20 第19周（来源：赛博笔记抖音视频）
+### GitHub一周热榜Top20 第19周 ✅完整版（来源：赛博笔记抖音+B站113期）
+- **第8名已确认**：DeepSeek-TUI（23.9k，+21,613⭐）——本周增量冠军！
 - **三大核心信号**：Skills生态内卷(8个Skills项目)、金融Agent破局(TradingAgents+13.3k)、DeepSeek黑马(DeepSeek-TUI周增量21,613⭐夺冠)
 - **完整Top3**：andrej-karpathy-skills(121k)、mattpocock/skills(66.7k)、TradingAgents(72.3k)
 - **本周新上榜**：Pixelle-Video、maigret、docuseal、hello-agents、ppt-master
+- **B站113期补充**：Warp(AI终端)、Hackingtool(黑客工具箱)
 - **知识库**：`knowledge-base/wiki/概念/GitHub一周热榜Top20-2026年第19周.md`
-- **飞书**：https://feishu.cn/docx/NMOrdM7f4oZpp1xmcwpcg1YFn4b
+- **飞书**：https://feishu.cn/docx/WTXPdBcBZovBNwxQmSacbYvbnEd
+
+### opencli限制与修复
+- **抖音/B站登录限制**：opencli需要Chrome已登录对应网站
+- **Chrome登录状态**：需在Chrome浏览器中登录douyin.com和bilibili.com
+- **Graphify命令修复**：`npx graphify`→`graphify.exe`
+- **Chromadb偶发Error**：已验证实际连接正常
 
 ### CLAUDE.md 200行规则与模块化部署（来源：Ali厂长+Seronote）
 - **核心结论**：超过200行后代码质量从96%降到79%，拆成3个文件后回升到96.9%

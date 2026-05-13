@@ -17,7 +17,7 @@
 | 5 | agent-skills | 35.5k | - | **连续5次** 🔥 | AI编程生产级技能 |
 | 6 | anthropics/financial-services | 15.3k | +8,841 | - | Claude官方金融插件 |
 | 7 | cc-switch | 63.7k | - | 连续3次 | 跨平台AI助手全能工具 |
-| 8 | DeepSeek-TUI | 23.9k | **+21,613** 🏆 | 本周新上榜 🆕 | DeepSeek终端Coding Agent |
+| 8 | **DeepSeek-TUI** ✅已确认 | 23.9k | **+21,613** 🏆 | 本周新上榜 🆕 | DeepSeek V4终端Coding Agent |
 | 9 | Pixelle-Video | 13.8k | - | 本周新上榜 | AI全自动短视频引擎 |
 | 10 | maigret | 26.6k | +5,600 | 本周新上榜 | OSINT情报收集 |
 | 11 | warp | 56.8k | +8,600 | 连续2次 | AI终端开发环境 |
@@ -135,3 +135,7 @@ Skills赛道持续火热，占据Top20半壁江山：
 - 赛博笔记抖音视频（https://v.douyin.com/hziAPyUR7aQ/）
 - RayByte（https://raybyte.cn/page/github-weekly-2026-w19）
 - git-trending-rank.github.io
+
+## 📌 飞书文档
+
+- **完整版**：https://feishu.cn/docx/WTXPdBcBZovBNwxQmSacbYvbnEd

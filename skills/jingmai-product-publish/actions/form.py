@@ -2286,15 +2286,66 @@ def _find_price_input_target(label: str, locator=None, log=None):
     return None
 
 
+def _merge_close_price_centers(candidates: list[tuple[str, tuple[int, int]]], tolerance: int = 120) -> Optional[Dict[str, Any]]:
+    if not candidates:
+        return None
+
+    groups: list[list[tuple[str, tuple[int, int]]]] = []
+    for source, point in candidates:
+        x, y = point
+        for group in groups:
+            anchor_x = sum(item[1][0] for item in group) / len(group)
+            anchor_y = sum(item[1][1] for item in group) / len(group)
+            if abs(x - anchor_x) <= tolerance and abs(y - anchor_y) <= tolerance:
+                group.append((source, point))
+                break
+        else:
+            groups.append([(source, point)])
+
+    ranked = sorted(groups, key=lambda group: (-len(group), sorted(item[0] for item in group)))
+    best = ranked[0] if ranked else []
+    if len(best) < 2:
+        return None
+
+    center_x = int(sum(item[1][0] for item in best) / len(best))
+    center_y = int(sum(item[1][1] for item in best) / len(best))
+    return {
+        "center": (center_x, center_y),
+        "sources": [item[0] for item in best],
+    }
+
+
 def _find_price_input_center(label: str, locator=None, log=None) -> Optional[tuple[int, int]]:
     locator = _get_locator(locator, log)
     target_match = _find_price_input_target(label, locator=locator, log=log)
     if target_match:
         _, rect = target_match
         return ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
+    center_candidates: list[tuple[str, tuple[int, int]]] = []
     template_center = _find_price_input_center_by_template(label, locator=locator, log=log)
     if template_center:
-        return template_center
+        center_candidates.append(("template", template_center))
+    inferred_row = _find_visible_price_edit_row(locator=locator, log=log)
+    if inferred_row:
+        row_index_map = {
+            "甯傚満浠?": 0,
+            "閲囪喘浠?": 1,
+            "浜笢浠?": 2,
+        }
+        row_index = row_index_map.get(label)
+        if row_index is not None:
+            row_rect = None
+            if len(inferred_row) >= 3 and row_index < len(inferred_row):
+                row_rect = inferred_row[row_index][1]
+            elif len(inferred_row) == 2:
+                if row_index == 0:
+                    row_rect = inferred_row[0][1]
+                elif row_index == 2:
+                    row_rect = inferred_row[-1][1]
+            if row_rect:
+                center_candidates.append(
+                    ("visible_row", ((row_rect.left + row_rect.right) // 2, (row_rect.top + row_rect.bottom) // 2))
+                )
     window = find_jingmai_uia_window(locator=locator, log=log)
     nearby_named = []
     if window:
@@ -2355,7 +2406,18 @@ def _find_price_input_center(label: str, locator=None, log=None) -> Optional[tup
 
     if candidates:
         _, rect = sorted(candidates, key=lambda item: item[0])[0]
-        return ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)
+        center_candidates.append(("nearby_edit", ((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2)))
+
+    consensus = _merge_close_price_centers(center_candidates)
+    if consensus:
+        _debug_log(
+            log,
+            f"[fill_product_info] price click consensus label={label} center={consensus['center']} sources={consensus['sources']}",
+        )
+        return consensus["center"]
+
+    if center_candidates:
+        _debug_log(log, f"[fill_product_info] price click consensus unresolved label={label} candidates={center_candidates}")
 
     return None
 
@@ -4134,6 +4196,8 @@ def _click_sku_image_upload_anchor(
         }
 
     _, _, rect = header
+    anchor_x = rect.left + max(35, min(60, max(1, (rect.right - rect.left) // 2)))
+    anchor_y = rect.bottom + 72
     plus_target = _find_named_control(
         "+",
         ["Text", "Button", "Hyperlink"],
@@ -4143,13 +4207,28 @@ def _click_sku_image_upload_anchor(
         left_range=(max(0, rect.left - 40), rect.right + 140),
     )
     if plus_target:
-        element, _, _ = plus_target
+        element, _, plus_rect = plus_target
+        plus_center = ((plus_rect.left + plus_rect.right) // 2, (plus_rect.top + plus_rect.bottom) // 2)
+        consensus = _merge_close_price_centers(
+            [("uia_plus", plus_center), ("label_relative", (anchor_x, anchor_y))],
+            tolerance=110,
+        )
+        if consensus:
+            clicked = locator.click(consensus["center"][0], consensus["center"][1], delay=0.3)
+            if clicked:
+                time.sleep(0.25)
+                return {
+                    "field": field,
+                    "method": "anchor-consensus-click",
+                    "success": True,
+                    "x": consensus["center"][0],
+                    "y": consensus["center"][1],
+                    "sources": consensus["sources"],
+                }
         if click_uia_element(element, log=log):
             time.sleep(0.25)
             return {"field": field, "method": "uia-plus-button", "success": True}
 
-    anchor_x = rect.left + max(35, min(60, max(1, (rect.right - rect.left) // 2)))
-    anchor_y = rect.bottom + 72
     clicked = locator.click(anchor_x, anchor_y, delay=0.3)
     return {
         "field": field,

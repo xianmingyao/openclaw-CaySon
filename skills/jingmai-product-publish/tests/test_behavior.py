@@ -3265,6 +3265,80 @@ def test_executor_blocks_fill_product_info_precheck_on_wrong_blank_page():
     assert result["page_state"] == "wrong_blank_page"
 
 
+def test_build_recovery_actions_prioritizes_detail_editor_return():
+    agent = ExecutorAgent()
+
+    actions = agent._build_recovery_actions(
+        action_name="fill_product_info",
+        step={"params": {"product": {"category": "电脑、办公 > 外设产品 > 插座/转换器"}}},
+        retry_index=0,
+        deviation={"type": "precheck_blocked", "page_state": "description_page"},
+    )
+
+    assert actions[1]["type"] == "recover_from_detail_editor"
+    assert actions[2]["type"] == "opencli_state_probe"
+    assert actions[1]["search_text"] == "电脑、办公 > 外设产品 > 插座/转换器"
+
+
+def test_run_recovery_action_recover_from_detail_editor_returns_immediately(monkeypatch):
+    import agents.executor as executor_module
+
+    agent = ExecutorAgent()
+    agent._locator = SimpleNamespace()
+    agent._logger = SimpleNamespace()
+
+    monkeypatch.setattr("actions.form._return_from_advanced_detail_editor", lambda **kwargs: True)
+    monkeypatch.setattr(executor_module.ExecutorAgent, "_detect_local_page_state", lambda self, action_name="": "product_info_page")
+
+    result = agent._run_recovery_action(
+        {"type": "recover_from_detail_editor", "page": "publish", "target_action": "fill_product_info"},
+        step_index=5,
+    )
+
+    assert result["success"] is True
+    assert result["method"] == "return_to_merchant_backend"
+    assert result["page_state"] == "product_info_page"
+
+
+def test_run_recovery_action_recover_from_detail_editor_falls_back_to_navigate(monkeypatch):
+    import actions.window as window_module
+    import agents.executor as executor_module
+
+    agent = ExecutorAgent()
+    agent._locator = SimpleNamespace()
+    agent._logger = SimpleNamespace()
+
+    page_states = iter(["description_page", "category_page"])
+    monkeypatch.setattr("actions.form._return_from_advanced_detail_editor", lambda **kwargs: False)
+    monkeypatch.setattr(
+        executor_module.ExecutorAgent,
+        "_detect_local_page_state",
+        lambda self, action_name="": next(page_states),
+    )
+    monkeypatch.setattr(window_module, "navigate_to", lambda **kwargs: {"success": True, "page": kwargs.get("page")})
+    monkeypatch.setattr(
+        executor_module.ActionRegistry,
+        "execute",
+        lambda action_type, **kwargs: {"success": action_type == "select_category", "action_type": action_type, "search_text": kwargs.get("search_text")},
+    )
+
+    result = agent._run_recovery_action(
+        {
+            "type": "recover_from_detail_editor",
+            "page": "publish",
+            "search_text": "电脑、办公 > 外设产品 > 插座/转换器",
+            "target_action": "fill_product_info",
+        },
+        step_index=5,
+    )
+
+    assert result["success"] is True
+    assert result["method"] == "return_then_navigate"
+    assert result["navigate_success"] is True
+    assert result["select_success"] is True
+    assert result["page_state"] == "category_page"
+
+
 def test_ensure_basic_info_page_skips_unsafe_click_on_category_page(monkeypatch):
     import actions.form as form_module
 

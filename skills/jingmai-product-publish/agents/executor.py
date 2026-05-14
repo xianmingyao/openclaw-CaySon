@@ -507,7 +507,11 @@ class ExecutorAgent(BaseAgent):
                             last_act_result["recovery"] = recovery
                         continue
 
-                    act_result = self.act(action_name, params)
+                    action_params = dict(params)
+                    if action_name == "fill_product_info":
+                        action_params["_precheck_observation"] = precheck_observation
+                        action_params["_precheck_screenshot"] = precheck_screenshot or ""
+                    act_result = self.act(action_name, action_params)
                 except Exception as e:
                     act_result = {"success": False, "error": str(e)}
                     self._log("error", f"步骤 {i+1} 执行异常: {e}")
@@ -975,7 +979,10 @@ class ExecutorAgent(BaseAgent):
         suggested_action = str((observation or {}).get("suggested_action", "") or "")
         action_error = str((act_result or {}).get("error", "") or "")
         combined = "\n".join([reason, current_state, suggested_action, action_error]).lower()
-        page_state = self._detect_page_state(observation, action_name=action_name)
+        page_state = str((observation or {}).get("page_state", "") or "").strip() or self._detect_page_state(
+            observation,
+            action_name=action_name,
+        )
 
         hard_stop_markers = ("扫码登录", "登录失效", "系统错误", "404", "网络异常", "白屏")
         if any(marker in combined for marker in hard_stop_markers):
@@ -986,6 +993,9 @@ class ExecutorAgent(BaseAgent):
             or any(field in {"hwnd", "title", "window_presence"} for field in window_diff.get("fields", []))
         ):
             return {"type": "window_context_lost", "reason": window_diff.get("risk_hint", "window-shift"), "page_state": page_state}
+
+        if page_state == "debug_code_page":
+            return {"type": "precheck_blocked", "reason": reason or current_state or "debug-code-page", "page_state": page_state}
 
         if failure_stage in {"precheck", "postcheck"} and page_state in {"product_list_page", "category_page"}:
             return {"type": "wrong_page_publish_flow", "reason": reason or current_state, "page_state": page_state}
@@ -1029,6 +1039,18 @@ class ExecutorAgent(BaseAgent):
 
         if deviation_type == "window_context_lost":
             return [window_action, {"type": "refresh_page", "mode": "soft"}]
+
+        if page_state == "debug_code_page":
+            actions = [
+                window_action,
+                {"type": "refresh_page", "mode": "hard"},
+                {"type": "opencli_state_probe", "reason": "debug_code_page"},
+            ]
+            if action_name not in {"find_window", "activate_window"}:
+                actions.append({"type": "navigate_to", "page": "publish"})
+            if action_name in {"select_category", "fill_product_info", "fill_product_description", "publish_product", "verify_result"} and category:
+                actions.append({"type": "select_category", "search_text": category})
+            return actions
 
         if page_state == "product_list_page":
             actions = [window_action, {"type": "refresh_page", "mode": "soft"}]
@@ -1148,6 +1170,18 @@ class ExecutorAgent(BaseAgent):
         category = self._extract_recovery_category(step)
         params = dict((step or {}).get("params") or {})
         stronger_reset = retry_index >= 1
+        page_state = str(deviation.get("page_state", "") or "").strip()
+        if action_name == "fill_product_info" and deviation_type == "precheck_blocked":
+            actions: List[Dict[str, Any]] = [
+                {"type": "force_relocate" if stronger_reset else "recover_locator"},
+                {"type": "refresh_page", "mode": "hard" if stronger_reset else "soft"},
+                {"type": "opencli_state_probe", "reason": page_state or deviation_type},
+            ]
+            if action_name not in {"find_window", "activate_window"}:
+                actions.append({"type": "navigate_to", "page": "publish"})
+            if action_name in {"select_category", "fill_product_info", "fill_product_description", "publish_product", "verify_result"} and category:
+                actions.append({"type": "select_category", "search_text": category})
+            return actions
         actions: List[Dict[str, Any]] = []
         for item in sequence:
             action = dict(item)
@@ -1163,6 +1197,20 @@ class ExecutorAgent(BaseAgent):
                     if key in params and key not in action:
                         action[key] = params.get(key)
             actions.append(action)
+
+        if page_state in {"debug_code_page", "unknown"}:
+            action_types = [str(item.get("type", "") or "") for item in actions]
+            if "opencli_state_probe" not in action_types:
+                actions.append({"type": "opencli_state_probe", "reason": page_state or deviation_type})
+            if action_name not in {"find_window", "activate_window", "navigate_to"} and "navigate_to" not in action_types:
+                actions.append({"type": "navigate_to", "page": "publish"})
+            action_types = [str(item.get("type", "") or "") for item in actions]
+            if (
+                action_name in {"select_category", "fill_product_info", "fill_product_description", "publish_product", "verify_result"}
+                and category
+                and "select_category" not in action_types
+            ):
+                actions.append({"type": "select_category", "search_text": category})
         return actions
 
     def _run_recovery_action(self, action: Dict[str, Any], step_index: int) -> Dict[str, Any]:
@@ -1324,6 +1372,7 @@ class ExecutorAgent(BaseAgent):
         suggested_action = str((observation or {}).get("suggested_action", "") or "")
         text = "\n".join([reason, current_state, suggested_action]).lower()
         current_state_lower = current_state.lower()
+        raw_text = "\n".join([reason, current_state, suggested_action])
 
         if any(marker in text for marker in ("扫码登录", "登录失效", "重新登录", "登录页")):
             return "login_page"
@@ -1362,6 +1411,8 @@ class ExecutorAgent(BaseAgent):
             return "publish_confirm_page"
         if any(marker in text for marker in ("商品标题", "品牌", "价格", "商品信息", "发布商品", "商品基本信息")):
             return "product_info_page"
+        if any(marker in raw_text for marker in ("商品详情页", "详情编辑页", "高级编辑模式", "图文编辑", "代码编辑", "返回商家后台")):
+            return "description_page"
         if action_name == "fill_product_description":
             return "description_page"
         return "unknown"
@@ -1401,6 +1452,8 @@ class ExecutorAgent(BaseAgent):
             "高级编辑模式",
             "空白且可能已跳转至详情页",
         )
+        if any(marker in joined for marker in ("商品详情页", "详情编辑页", "高级编辑模式", "图文编辑", "代码编辑", "返回商家后台")):
+            return True
         return any(marker in joined for marker in markers)
 
     def _vision_query(self, prompt: str, screenshot_path: str) -> Optional[Dict[str, Any]]:
@@ -1496,6 +1549,26 @@ class ExecutorAgent(BaseAgent):
         current_state = str(result.get("current_state", "") or "")
         suggested_action = str(result.get("suggested_action", "") or "")
         joined = f"{reason}\n{current_state}\n{suggested_action}"
+        observation = result
+        lowered_joined = joined.lower()
+
+        if any(marker in lowered_joined for marker in ("代码调试", "monkeypatch", "lambda", "pytest", "traceback")):
+            normalized = dict(observation)
+            normalized["status"] = "error"
+            normalized["suggested_action"] = "recover"
+            normalized["page_state"] = "debug_code_page"
+            normalized["reason"] = "debug code page detected during publish flow precheck; recover publish workflow instead of stopping"
+            return normalized
+        lowered_joined = joined.lower()
+        observation = result
+
+        if any(marker in lowered_joined for marker in ("代码调试", "monkeypatch", "lambda", "pytest", "traceback")):
+            normalized = dict(observation)
+            normalized["status"] = "error"
+            normalized["suggested_action"] = "recover"
+            normalized["page_state"] = "debug_code_page"
+            normalized["reason"] = "debug code page detected during publish flow precheck; recover publish workflow instead of stopping"
+            return normalized
 
         ad_markers = ("余额已用完", "请尽快充值", "京准通")
         publish_markers = ("商品发布", "商品基本信息", "类目", "商品标题", "品牌", "价格")
@@ -1554,7 +1627,7 @@ class ExecutorAgent(BaseAgent):
         acceptable = {
             "navigate_to": {"category_page", "product_info_page", "sku_table_page", "description_page", "publish_confirm_page"},
             "select_category": {"category_page", "product_info_page", "sku_table_page", "description_page"},
-            "fill_product_info": {"product_info_page", "sku_table_page", "publish_confirm_page"},
+            "fill_product_info": {"product_info_page", "sku_table_page", "description_page", "publish_confirm_page"},
             "publish_product": {"product_info_page", "description_page", "publish_confirm_page"},
         }
         return page_state in acceptable.get(action_name, set())
@@ -1675,6 +1748,14 @@ class ExecutorAgent(BaseAgent):
         joined = f"{reason}\n{current_state}\n{suggested_action}"
 
         hard_stop_markers = ("扫码登录", "登录失效", "系统错误", "404", "网络异常")
+        lowered_joined = joined.lower()
+        if any(marker in lowered_joined for marker in ("代码调试", "monkeypatch", "lambda", "pytest", "traceback")):
+            normalized = dict(observation)
+            normalized["status"] = "error"
+            normalized["suggested_action"] = "recover"
+            normalized["page_state"] = "debug_code_page"
+            normalized["reason"] = "debug code page detected during publish flow precheck; recover publish workflow instead of stopping"
+            return normalized
         if any(marker in joined for marker in hard_stop_markers):
             return observation
 
@@ -1842,7 +1923,7 @@ class ExecutorAgent(BaseAgent):
 
         if action_name == "select_category":
             action_steps = [str(item or "").strip() for item in ((act_result or {}).get("steps") or []) if str(item or "").strip()]
-            if any(marker in action_steps for marker in ("already_past_category", "product_info_ready", "next", "next_retry")):
+            if any(marker in action_steps for marker in ("already_past_category", "product_info_ready")):
                 normalized = dict(observation)
                 normalized["status"] = "ok"
                 normalized["suggested_action"] = "proceed"
@@ -1876,32 +1957,6 @@ class ExecutorAgent(BaseAgent):
                 normalized["suggested_action"] = "proceed"
                 normalized["reason"] = "select_category postcheck accepted product info page"
                 return normalized
-            category_completion_markers = (
-                "已选中目标类目路径",
-                "等待完善其他商品信息",
-                "类目已选",
-                "可继续下一步",
-                "准备进入商品信息",
-                "商品信息完善步骤",
-                "类目已选择",
-                "已成功定位至商品类目选择页",
-                "category confirmed",
-                "selected target category",
-                "符合步骤目标要求",
-                "符合流程正常状态",
-                "页面内容完整且可操作",
-                "继续后续操作",
-                "可以继续",
-            )
-            if str(observation.get("page_state", "") or "") == "category_page" and any(
-                marker in joined for marker in category_completion_markers
-            ):
-                normalized = dict(observation)
-                normalized["status"] = "ok"
-                normalized["suggested_action"] = "proceed"
-                normalized["reason"] = "select_category postcheck accepted confirmed category page"
-                return normalized
-
         if action_name == "fill_product_info":
             filled_markers = (
                 "鍟嗗搧鏍囬",
@@ -2099,6 +2154,76 @@ class ExecutorAgent(BaseAgent):
             return
         self._log("info", f"续跑预检恢复: 在重跑 {next_action_name} 前先恢复窗口上下文")
         self._recover_locator(reason="resume-preflight", step_index=target_step)
+        self._enforce_resume_phase_gate(next_action_name, target_step=target_step)
+
+    def _enforce_resume_phase_gate(self, next_action_name: str, target_step: int = 0) -> bool:
+        if next_action_name != "fill_product_info" or self._locator is None:
+            return True
+
+        try:
+            from actions.form import _ensure_basic_info_page, _is_category_selection_page
+        except Exception:
+            return True
+
+        current_state = self._detect_local_page_state(action_name=next_action_name)
+        if current_state in {"product_info_page", "sku_table_page"}:
+            self._log("info", f"resume phase gate passed: state={current_state}")
+            return True
+
+        if _ensure_basic_info_page(locator=self._locator, log=self._logger):
+            self._log("info", "resume phase gate passed after basic-info scroll review")
+            return True
+
+        actual_step = target_step or self.state.step_index or 0
+        category_page = current_state == "category_page" or _is_category_selection_page(locator=self._locator, log=self._logger)
+        if not category_page:
+            self._record_recovery_attempt(
+                actual_step,
+                "phase_mismatch",
+                False,
+                f"expected product_info_ready but actual page_state={current_state}",
+                details={
+                    "expected_phase": "product_info_ready",
+                    "actual_page_state": current_state,
+                    "recovery_action": "none",
+                },
+            )
+            self._log("warning", f"resume phase gate unresolved: expected product_info_ready but actual page_state={current_state}")
+            return False
+
+        step = {}
+        if self._plan and actual_step > 0 and actual_step - 1 < len(self._plan):
+            step = self._plan[actual_step - 1] or {}
+        category = self._extract_recovery_category(step)
+        self._log(
+            "warning",
+            "resume phase gate mismatch: expected product_info_ready, actual category_page; "
+            "replaying select_category before fill_product_info",
+        )
+        recovery = self._run_recovery_action(
+            {"type": "select_category", "search_text": category},
+            step_index=actual_step,
+        )
+        final_state = self._detect_local_page_state(action_name=next_action_name)
+        success = final_state in {"product_info_page", "sku_table_page"}
+        self._record_recovery_attempt(
+            actual_step,
+            "phase_mismatch",
+            success,
+            "" if success else f"select_category replay did not reach product info page; final_state={final_state}",
+            details={
+                "expected_phase": "product_info_ready",
+                "actual_page_state": current_state,
+                "recovery_action": "select_category",
+                "recovery_result": recovery,
+                "final_page_state": final_state,
+            },
+        )
+        if success:
+            self._log("info", f"resume phase gate recovered to {final_state}")
+        else:
+            self._log("warning", f"resume phase gate failed to recover: final_state={final_state}")
+        return success
 
     def _recover_locator(self, reason: str, clear_cache: bool = False, step_index: int = 0) -> bool:
         """本地恢复窗口上下文：find_window → activate_window。"""
@@ -2567,6 +2692,7 @@ class ExecutorAgent(BaseAgent):
             "product_list_page",
             "category_page",
             "product_info_page",
+            "sku_table_page",
             "description_page",
             "publish_confirm_page",
         } else "unknown"

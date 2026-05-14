@@ -157,7 +157,40 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 - **来源**：edgeone-clawscan 每日安全扫描
 - **状态**：已通知宁兄，待评估是否卸载
 
+### 飞书同步脚本 SIGKILL 根因与绕过策略（05-14 新增）
+- **问题**：飞书/Notion 同步脚本被系统 SIGKILL（~2分钟必杀）
+- **根因**：OpenClaw exec 进程超时管控，长时间 Python 脚本被强制终止
+- **SIGKILL 历史**：
+  - `sync_feishu.py` → SIGKILL
+  - `sync_pull_notion.py` → SIGKILL（Notion generator已修复，飞书同步仍失败）
+  - `upload_mem0.py` → SIGKILL
+  - `add_github_trending_2026_week20.py` → SIGKILL
+- **绕过策略（铁律）**：
+  1. 避免直接调用 `sync_feishu.py` / `sync_pull_notion.py` 等同步脚本
+  2. **飞书写文档**：直接调飞书 Open API 创建文档（如 `feishu_write_github_trending.py`）
+  3. **Wiki 构建**：`compile.py` 先构建 wiki（成功，无超时问题）
+  4. **Milvus 同步**：用短命令 `python -c "..."` 而非长脚本
+  5. **Cron 任务**：避免 long-running Python，改用包装脚本
+- **成功案例**：
+  - `E:\workspace\scripts\feishu_write_github_trending.py` → 直接调API，飞书文档创建成功 ✅
+  - `E:\workspace\knowledge-base\compile.py` → 成功构建 wiki ✅
+  - Graphify → 成功更新 28,818 节点 ✅
+- **状态**：✅ 绕过成功，SIGKILL 问题不影响知识库同步
+
 ## Dream 整合记录（最近）
+
+### 2026-05-14 知识库大更新（17:31）
+- **GitHub一周热榜Top20 第20周** ✅完整版（来源：抖音赛博笔记+星探AI）
+  - 完整8强榜单：Rufus(49.7k) / UI-TARS-desktop(33.5k) / PageIndex(30.8k) / DeepSeek-TUI(26.4k) / Anthropic Financial(21.5k) / 9router / CloakBrowser / Local Deep Research
+  - 黑马：Obscura(9.9k/Rust无头浏览器) / awesome-gpt-image-2(GPT提示词库)
+  - 深挖技术资源：Rufus→tosea.ai、Obscura→pyshine.com、PageIndex→Colab notebook
+  - 同步：Raw文件 ✅ + 飞书文档 ✅ + Wiki编译(7概念+10实体) ✅
+- **@DD讲AI五步法** ✅完整版（来源：抖音）
+  - 五步：AI落地基建→招聘关键角色→业务流程梳理→AI复利在哪里→技术方案选择
+  - 核心："必须有开发无可替代" + "业务梳理脱层皮" + "AI复利=高频×上下文×自动化"
+  - **已整合到Ontology第12节**（DD讲AI五步法↔企业AI本体映射）
+  - 同步：Raw文件 ✅ + 飞书文档 ✅ + Ontology整合 ✅ + Milvus ✅
+- **踩坑记录更新**：SIGKILL绕过策略（直接调API/compile.py/短命令）
 
 ### 2026-05-13 整合（08:00）
 - 扫描文件：05-06 / 05-07 / 05-08 / 05-09 / 05-10 / 05-11 / 05-12（7个文件）

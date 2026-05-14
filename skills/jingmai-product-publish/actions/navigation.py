@@ -140,6 +140,18 @@ def _has_product_info_markers(locator=None, log=None) -> bool:
     return False
 
 
+def _has_product_info_ready_state(locator=None, log=None) -> bool:
+    if _has_product_info_markers(locator=locator, log=log):
+        return True
+    try:
+        from actions.form import _classify_fill_page_state
+
+        page_state = _classify_fill_page_state(locator=_get_locator(locator, log), log=log)
+        return page_state in {"product_info_page", "sku_table_page"}
+    except Exception:
+        return False
+
+
 def _read_selected_category_texts(locator=None, log=None) -> list[str]:
     window = find_jingmai_uia_window(locator=_get_locator(locator, log), log=log)
     if not window:
@@ -837,11 +849,11 @@ def select_category(
     locator = _get_locator(locator, log)
     results = []
 
-    if _has_product_info_markers(locator=locator, log=log) and not _has_category_page_markers(locator=locator, log=log):
+    if _has_product_info_ready_state(locator=locator, log=log) and not _has_category_page_markers(locator=locator, log=log):
         return {"success": True, "steps": ["already_past_category"]}
 
     if search_text and _selected_category_matches(search_text, locator=locator, log=log):
-        if _has_product_info_markers(locator=locator, log=log):
+        if _has_product_info_ready_state(locator=locator, log=log):
             return {"success": True, "steps": ["already_past_category"]}
         if _is_category_next_enabled(locator=locator, log=log):
             results.append("selected_category_reused")
@@ -920,7 +932,7 @@ def select_category(
                     "steps": results,
                 }
 
-        if _has_product_info_markers(locator=locator, log=log):
+        if _has_product_info_ready_state(locator=locator, log=log):
             return {"success": True, "steps": results + ["product_info_ready"]}
 
     if level3_coords:
@@ -955,9 +967,7 @@ def select_category(
     time.sleep(1.2)
 
     for _ in range(4):
-        if _has_product_info_markers(locator=locator, log=log):
-            return {"success": True, "steps": results}
-        if not _has_category_page_markers(locator=locator, log=log) and not _is_category_next_enabled(locator=locator, log=log):
+        if _has_product_info_ready_state(locator=locator, log=log):
             return {"success": True, "steps": results}
         time.sleep(0.8)
 
@@ -966,7 +976,7 @@ def select_category(
         if second_next.get("success"):
             results.append("next_retry")
             time.sleep(1.5)
-            if _has_product_info_markers(locator=locator, log=log):
+            if _has_product_info_ready_state(locator=locator, log=log):
                 return {"success": True, "steps": results}
 
     if _is_category_next_enabled(locator=locator, log=log):
@@ -974,6 +984,13 @@ def select_category(
 
     if _page_contains_text("类目选择发品", locator=locator, log=log):
         return {"success": False, "message": "still on category page after clicking next", "steps": results}
+
+    if not _has_product_info_ready_state(locator=locator, log=log):
+        return {
+            "success": False,
+            "message": "left category page but product info page was not confirmed",
+            "steps": results,
+        }
 
     return {"success": True, "steps": results}
 

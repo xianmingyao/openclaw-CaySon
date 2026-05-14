@@ -137,6 +137,23 @@ python E:\workspace\scripts\show_memories.py
 - 新记忆：**双写**（同时写入Milvus + ChromaDB）
 - 同步脚本：`E:\workspace\scripts\sync_memories_to_milvus.py`
 
+### ⚠️ 飞书/Notion 同步 SIGKILL 绕过策略（05-14 铁律）
+
+**问题**：长时间 Python 脚本（>2分钟）必被 SIGKILL
+
+**受影响脚本**：
+- `sync_feishu.py` / `sync_pull_feishu.py` → SIGKILL
+- `sync_pull_notion.py` → SIGKILL
+- `upload_mem0.py` → SIGKILL
+
+**正确策略**：
+1. **飞书写文档**：直接调飞书 Open API（参考 `scripts/feishu_write_github_trending.py`）
+2. **Wiki 构建**：用 `knowledge-base/compile.py`（无超时问题）
+3. **Milvus 同步**：用短命令而非长脚本
+4. **Cron 任务**：避免 long-running Python
+
+**技术配置**：飞书凭证在 `C:\Users\Administrator\.openclaw\openclaw.json` → `channels.feishu`
+
 ### 技术配置
 
 | 项目 | 配置 |

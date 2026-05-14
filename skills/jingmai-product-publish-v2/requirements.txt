@@ -1,0 +1,5 @@
+# `mock` 模式仅依赖标准库。
+# 进入真实浏览器阶段需要安装 playwright，并执行：
+# python -m playwright install chromium
+playwright>=1.52,<2.0
+pytest>=8.0,<9.0

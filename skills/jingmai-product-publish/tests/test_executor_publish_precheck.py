@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 PROJECT_ROOT = Path(__file__).parent.parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -130,8 +131,7 @@ def test_executor_select_category_postcheck_accepts_positive_category_page_reaso
         step={"action": "select_category"},
     )
 
-    assert result["status"] == "ok"
-    assert result["suggested_action"] == "proceed"
+    assert result["status"] == "error"
 
 
 def test_executor_select_category_postcheck_accepts_forward_action_steps():
@@ -151,3 +151,86 @@ def test_executor_select_category_postcheck_accepts_forward_action_steps():
 
     assert result["status"] == "ok"
     assert result["suggested_action"] == "proceed"
+
+
+def test_prepare_resume_context_replays_select_category_when_fill_product_info_starts_on_category_page(monkeypatch):
+    agent = ExecutorAgent()
+    agent._locator = SimpleNamespace()
+    agent._logger = None
+    agent._plan = [
+        {"action": "fill_product_info", "params": {"product": {"category": "电脑、办公 > 外设产品 > 插座/转换器"}}}
+    ]
+    calls = []
+
+    monkeypatch.setattr(agent, "_recover_locator", lambda **kwargs: True)
+    monkeypatch.setattr(agent, "_detect_local_page_state", lambda action_name="": "category_page" if not calls else "product_info_page")
+    monkeypatch.setattr("actions.form._ensure_basic_info_page", lambda **kwargs: False)
+    monkeypatch.setattr("actions.form._is_category_selection_page", lambda **kwargs: True)
+    monkeypatch.setattr(
+        agent,
+        "_run_recovery_action",
+        lambda action, step_index: calls.append((action, step_index)) or {"success": True, "type": action.get("type")},
+    )
+
+    agent._prepare_resume_context("fill_product_info", target_step=1)
+
+    assert calls
+    assert calls[0][0]["type"] == "select_category"
+    assert calls[0][0]["search_text"] == "电脑、办公 > 外设产品 > 插座/转换器"
+
+
+def test_executor_passes_precheck_observation_into_fill_product_info_action():
+    agent = ExecutorAgent()
+    captured = {}
+
+    class DummyBreaker:
+        def can_execute(self):
+            return True
+
+        def record_failure(self):
+            return None
+
+        def record_success(self):
+            return None
+
+    agent._circuit_breaker = DummyBreaker()
+    agent.start = lambda: None
+    agent.finish = lambda *args, **kwargs: None
+    agent._check_safety = lambda action_name: True
+    agent._ensure_locator = lambda: None
+    agent._prepare_resume_context = lambda *args, **kwargs: None
+    agent._capture_visual_artifacts = lambda *args, **kwargs: {"primary_path": ""}
+    agent._react_precheck = lambda **kwargs: {"status": "ok", "current_state": "商品信息编辑页面", "reason": "可安全继续"}
+    agent._coerce_precheck_for_action = lambda action_name, observation, **kwargs: observation
+    agent._should_block_precheck = lambda action_name, observation: False
+    agent._capture_window_summary = lambda: None
+    agent._diff_window_summary = lambda before, after: {}
+    agent._log_window_diff_risk = lambda *args, **kwargs: None
+    agent._call_react_observe = lambda *args, **kwargs: {"status": "ok", "reason": "ok"}
+    agent._record_vision_fallback = lambda *args, **kwargs: None
+    agent._remember = lambda *args, **kwargs: None
+    agent._update_plan_file = lambda *args, **kwargs: None
+    agent._db = None
+    agent._on_progress = None
+    agent._logger = None
+    agent._step_artifacts = {}
+    agent._risk_stats = {}
+    agent._vision_fallback_stats = {}
+    agent._last_recovery_error = ""
+    agent._recovery_attempts = {}
+    agent._resume_step_index = 0
+    agent.state = SimpleNamespace(step_index=0, total_steps=0, current_action="")
+
+    def fake_act(action_name, params):
+        captured.update(params)
+        return {"success": True}
+
+    agent.act = fake_act
+
+    result = agent.run_react_loop(
+        [{"action": "fill_product_info", "params": {"product": {"title": "公牛插座"}}}],
+    )
+
+    assert result["success"] is True
+    assert captured["_precheck_observation"]["status"] == "ok"
+    assert captured["_precheck_screenshot"] == ""

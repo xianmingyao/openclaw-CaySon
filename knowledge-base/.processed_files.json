@@ -178,5 +178,17 @@
     "detected_at": "2026-05-07T15:56:18.480979",
     "processed": true,
     "processed_at": "2026-05-07T15:56:18.480979"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\GitHub-Trending-2026-05-14-Week20.md": {
+    "hash": "b3f7298dea6fb9d4cb3842e739444555",
+    "detected_at": "2026-05-14T08:54:48.732306",
+    "processed": true,
+    "processed_at": "2026-05-14T08:54:48.732306"
+  },
+  "E:\\workspace\\knowledge-base\\raw\\DD讲AI-大厂AI落地五步法-2026-05-14.md": {
+    "hash": "7a83c6f3b28b01e4e204a95c5b20aaf0",
+    "detected_at": "2026-05-14T09:28:31.982053",
+    "processed": true,
+    "processed_at": "2026-05-14T09:28:31.982053"
   }
 }

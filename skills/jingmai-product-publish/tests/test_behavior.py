@@ -1437,13 +1437,32 @@ def test_select_category_fails_when_next_click_does_not_advance(monkeypatch):
     monkeypatch.setattr(navigation_module, "_select_search_result", lambda *args, **kwargs: True)
     monkeypatch.setattr(navigation_module, "_click_category_next", lambda *args, **kwargs: {"success": True})
     monkeypatch.setattr(navigation_module, "_is_category_next_enabled", fake_next_enabled)
-    monkeypatch.setattr(navigation_module, "_has_product_info_markers", lambda *args, **kwargs: False)
+    monkeypatch.setattr(navigation_module, "_has_product_info_ready_state", lambda *args, **kwargs: False)
 
     result = navigation_module.select_category(search_text="插座", locator=Locator())
 
     assert result["success"] is False
     assert "did not advance" in result["message"]
     assert result["steps"] == ["search", "search_select", "next"]
+
+
+def test_select_category_fails_when_category_page_disappears_but_product_form_not_confirmed(monkeypatch):
+    import actions.navigation as navigation_module
+
+    class Locator:
+        def click(self, x, y, delay=0):
+            return True
+
+    monkeypatch.setattr(navigation_module, "_has_product_info_ready_state", lambda *args, **kwargs: False)
+    monkeypatch.setattr(navigation_module, "_has_category_page_markers", lambda *args, **kwargs: False)
+    monkeypatch.setattr(navigation_module, "_is_category_next_enabled", lambda *args, **kwargs: False)
+    monkeypatch.setattr(navigation_module, "_page_contains_text", lambda *args, **kwargs: False)
+    monkeypatch.setattr(navigation_module, "_click_category_next", lambda *args, **kwargs: {"success": True})
+
+    result = navigation_module.select_category(locator=Locator())
+
+    assert result["success"] is False
+    assert "product info page was not confirmed" in result["message"]
 
 
 def test_save_draft_and_publish_propagate_click_failures(monkeypatch):
@@ -3484,6 +3503,41 @@ def test_ensure_basic_info_page_accepts_positive_markers_even_with_category_resi
     assert form_module._ensure_basic_info_page(locator=FakeLocator()) is True
 
 
+def test_ensure_basic_info_page_accepts_scroll_review_before_top_tab_click(monkeypatch):
+    import actions.form as form_module
+
+    monkeypatch.setattr(
+        form_module,
+        "_collect_fill_page_state",
+        lambda **kwargs: {
+            "title_top": False,
+            "product_name_mid": False,
+            "sku_mid": False,
+            "sales_attr_mid": False,
+            "market_mid": False,
+            "jd_mid": False,
+            "category_page": False,
+            "next_button": False,
+            "basic_tab": False,
+        },
+    )
+    monkeypatch.setattr(form_module, "_fill_page_has_positive_markers", lambda *args, **kwargs: False)
+    monkeypatch.setattr(form_module, "_fill_page_has_category_markers", lambda *args, **kwargs: False)
+    monkeypatch.setattr(form_module, "_visible_text_contains", lambda *args, **kwargs: False)
+    monkeypatch.setattr(form_module, "_find_visible_price_edit_row", lambda **kwargs: [])
+    monkeypatch.setattr(
+        form_module,
+        "_review_basic_info_page_by_scroll_scan",
+        lambda **kwargs: {"success": True, "reason": "scroll-review-confirmed-product-info-page"},
+    )
+
+    class FakeLocator:
+        def click(self, *args, **kwargs):
+            raise AssertionError("should not force click top tab when scroll review already confirms the page")
+
+    assert form_module._ensure_basic_info_page(locator=FakeLocator()) is True
+
+
 def test_is_category_selection_page_rejects_residual_category_markers_when_form_visible(monkeypatch):
     import actions.form as form_module
 
@@ -3761,3 +3815,83 @@ def test_fill_sku_pricing_fields_v3_derives_purchase_price_from_jd_price(monkeyp
     assert [item["field"] for item in result] == ["market_price"]
     assert result[0]["method"] == "price-target-guard"
     assert writes == []
+
+
+def test_executor_coerces_debug_code_page_precheck_to_recover():
+    agent = ExecutorAgent()
+
+    result = agent._coerce_precheck_for_action(
+        "fill_product_info",
+        {
+            "status": "error",
+            "reason": "当前屏幕显示的是代码调试界面，包含 monkeypatch 和 lambda 函数",
+            "current_state": "错误界面（代码调试模式）",
+            "suggested_action": "stop",
+        },
+        history=[{"action": "fill_product_info", "success": False}],
+    )
+
+    assert result["status"] == "error"
+    assert result["suggested_action"] == "recover"
+    assert result["page_state"] == "debug_code_page"
+
+
+def test_executor_build_recovery_actions_for_debug_code_page():
+    agent = ExecutorAgent()
+
+    actions = agent._build_recovery_actions(
+        action_name="fill_product_info",
+        step={"params": {"product": {"category": "电脑、办公 > 外设产品 > 插座/转换器"}}},
+        retry_index=1,
+        deviation={"type": "precheck_blocked", "page_state": "debug_code_page", "reason": "debug page"},
+    )
+
+    action_types = [item["type"] for item in actions]
+    assert action_types[:3] == ["force_relocate", "refresh_page", "opencli_state_probe"]
+    assert "navigate_to" in action_types
+    assert "select_category" in action_types
+
+
+def test_executor_classify_deviation_prefers_observation_page_state():
+    agent = ExecutorAgent()
+
+    deviation = agent._classify_deviation(
+        action_name="fill_product_info",
+        step={},
+        failure_stage="precheck",
+        observation={
+            "status": "error",
+            "reason": "debug page",
+            "current_state": "代码调试模式",
+            "suggested_action": "recover",
+            "page_state": "debug_code_page",
+        },
+        act_result={},
+        window_diff={},
+    )
+
+    assert deviation["type"] == "precheck_blocked"
+    assert deviation["page_state"] == "debug_code_page"
+
+
+def test_executor_doc_strict_recovery_actions_append_probe_for_debug_page():
+    agent = ExecutorAgent()
+
+    actions = agent._build_doc_strict_recovery_actions(
+        action_name="fill_product_info",
+        step={
+            "doc_strict": True,
+            "doc_strict_guard": {
+                "recovery_sequence": [
+                    {"type": "recover_locator"},
+                    {"type": "refresh_page", "mode": "soft"},
+                ]
+            },
+            "params": {"product": {"category": "电脑、办公 > 外设产品 > 插座/转换器"}},
+        },
+        retry_index=0,
+        deviation={"type": "precheck_blocked", "page_state": "debug_code_page"},
+    )
+
+    action_types = [item["type"] for item in actions]
+    assert action_types == ["recover_locator", "refresh_page", "opencli_state_probe", "navigate_to", "select_category"]

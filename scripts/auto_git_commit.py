@@ -10,7 +10,10 @@ from datetime import datetime
 def run_git(cmd, cwd):
     """运行 git 命令"""
     print(f"Running: {' '.join(cmd)}")
-    result = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+    result = subprocess.run(
+        cmd, cwd=cwd, capture_output=True,
+        encoding="utf-8", errors="replace"
+    )
     if result.stdout:
         print(result.stdout)
     if result.stderr:
@@ -31,8 +34,11 @@ if __name__ == "__main__":
         sys.exit(1)
     
     # 2. 检查是否有变更
-    status = subprocess.run(["git", "status", "--porcelain"], cwd=workspace, capture_output=True, text=True)
-    if not status.stdout.strip():
+    status = subprocess.run(
+        ["git", "status", "--porcelain"], cwd=workspace,
+        capture_output=True, encoding="utf-8", errors="replace"
+    )
+    if not (status.stdout or "").strip():
         print("No changes to commit")
         sys.exit(0)
     

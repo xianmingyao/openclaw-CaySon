@@ -157,6 +157,18 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 - **来源**：edgeone-clawscan 每日安全扫描
 - **状态**：已通知宁兄，待评估是否卸载
 
+### Feishu 群组高危配置（05-11 安全扫描）
+- **问题**：群组 `groupPolicy=open` + `elevated tools` 同时开启（高危）
+- **来源**：edgeone-clawscan 每日安全扫描
+- **说明**：与插件ID重复问题不同，这是群组权限配置风险
+- **状态**：已通知宁兄
+
+### 6个Skills含child_process代码（05-11 安全扫描）
+- **技能**：browse / ckm:brand / cookie-sync / darwin-skill / make-pdf / web-search
+- **风险**：使用 child_process 模块，理论上可执行任意命令
+- **来源**：edgeone-clawscan 每日安全扫描
+- **状态**：已通知宁兄，持续观察
+
 ### 飞书同步脚本 SIGKILL 根因与绕过策略（05-14 新增）
 - **问题**：飞书/Notion 同步脚本被系统 SIGKILL（~2分钟必杀）
 - **根因**：OpenClaw exec 进程超时管控，长时间 Python 脚本被强制终止
@@ -458,3 +470,35 @@ YYYY.MM.DD(日报)
 - **CaySon职责�?* 跳过调研/无设计稿/无GitHub �?🔴立即暂停 ## SkillHub 技能管�? **CLI路径�?* `~/.skillhub/skills_store_cli.py` **用法�?* `search / install / update <关键�?` **安全流程（铁律）�?* 安装�?edgeone-clawscan 扫描 **已安装：** | 技�?| 版本 | 用�?| |------|------|------| | summarize | 1.0.0 | 总结网页/PDF/YouTube | | nano-banana-pro | 1.0.1 | AI图片生成（Gemini 3 Pro�?| ## Cron 定时任务 | 任务 | ID | 时间 | |------|------|------| | 每日安全扫描 | 5227d14e | 00:30 | ## 知识库文�? - `knowledge/browser-use-cli.md` - `knowledge/webmcp-mcp-browser-automation.md` - `knowledge/github-repos-comparison.md` - `knowledge/kiloclaw.md` - `knowledge/ai-native-workflow-SOP.md` ## Git提交�?1条） 1. docs: add browser-use CLI 2.0 深度研究报告 2. docs: add WebMCP + MCP浏览器自动化深度研究报告 3. docs: add GitHub repos comparison 4. docs: add KiloClaw research report 5. docs: add AI-NATIVE workflow SOP as standard process 6. docs: add SkillHub safety protocol and daily security scan cron 7. docs: compress memory file 8. docs: update MEMORY.md with complete 2026-04-02 summary 9. （其他自动提交） ## 今日人员与项�? - **人员�?* 小刘、小龙虾、京采、小�? - **项目�?* 京麦智能体、知识库、OpenClaw系统 - **异常�?* 付总小龙虾异常（已处理完） [score=0.846 recalls=4 avg=0.813 source=memory/2026-04-02.md:54-97]
 <!-- openclaw-memory-promotion:memory:memory/2026-04-22.md:1216:1229 -->
 - 1. 产品经理Skills完整指南.md - Notion: https://notion.so/34a2bb5417c381c4a07af98f7847330e 2. OpenClaw-24个视频剪辑Skills.md - Notion: https://notion.so/34a2bb5417c3818a9429e50c2c8a9914 3. OpenCode-ClaudeCode-Skills完整指南.md - Notion: https://notion.so/34a2bb5417c381f0a207f56f3d2b9808 **同步状态：** - ✅ 飞书：2篇文档已同步 - ✅ Notion：3篇文档已同步 - ✅ Milvus：3篇文档已上传（8+13+7=28块） - ✅ 本地记忆：已更新 <!-- consolidated to MEMORY.md on 2026-04-23 --> [score=0.805 recalls=3 avg=0.778 source=memory/2026-04-22.md:1216-1229]
+
+
+## 2026-05-15 抖音学习记录
+
+### 知识库归档
+- **文件**: `douyin-knowledge/2026-05-15-FDE与业务访谈深度分析.md`
+- **来源**: 抖音 - 自说自话的江哥（合集：AI与企业软件实战）
+
+### 核心学习内容
+
+**FDE（Forward Deployed Engineer）**
+- 全称：前沿部署工程师/驻场工程师
+- 起源：Palantir 2011年，为中情局和军方开发数据分析软件
+- 核心价值：将AI技术转化为企业实际生产力
+- 为什么需要：模型与落地断层、数据权限合规旧系统、定制化陷阱、快速响应需求
+- 核心能力：技术+业务跨界、深入一线、找到指标/规则/流程
+
+**业务访谈五步法**
+1. 明确目的（找指标/规则/流程，不是聊天）
+2. 避开空泛问题（少问"你想要什么"）
+3. Mom Test追问真实事实（问过去发生的事）
+4. 拆出系统要素（指标/风险/责任人/闭环流程）
+5. 用AI做准备（AI辅助但答案来自真实业务）
+
+**Mom Test**
+- 核心：如何问出连妈妈都无法欺骗的问题
+- 原则：问过去具体事实不问未来假设、少说多听
+- 适合企业AI落地：把抽象需求转化为可验证的具体行为
+
+### 工具学习
+- **opencli-skills**: 已安装，用于抓取抖音视频信息
+- **douyin-transcribe-skill**: 已安装，但需要Groq API Key才能语音转文字

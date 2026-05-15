@@ -1,34 +1,39 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-05-14 17:33:36
+Date: 2026-05-15 17:20:18
 --- GIT COMMITS ---
-  2d0d7e5e docs: 鏃ユ姤+鐭ヨ瘑搴?DD璁睞I浜旀娉?GitHub-Trending-Week20
+  76c60dcf docs: update MEMORY.md with Agent orchestration learning
+  3b0bdece docs: add Agent orchestration deep analysis (鎶栭煶鑷鑷瘽鐨勬睙鍝?
+  b75c3e3c docs: update MEMORY.md with FDE and Mom Test learning
+  f1ef9c72 docs: add FDE涓庝笟鍔¤璋堟繁搴﹀垎鏋?(鎶栭煶鑷鑷瘽鐨勬睙鍝?
 --- FILES MODIFIED ---
-  17:33 | .git\logs\refs\remotes\origin\auto-optimize-20260420-1453
-  17:33 | .git\refs\remotes\origin\auto-optimize-20260420-1453
-  17:33 | next-ai-draw-io\.next\dev\cache\turbopack\23c46498\LOG
-  17:33 | next-ai-draw-io\.next\dev\cache\turbopack\23c46498\CURRENT
-  17:33 | next-ai-draw-io\.next\dev\cache\turbopack\23c46498\00000238.meta
-  17:33 | next-ai-draw-io\.next\dev\cache\turbopack\23c46498\00000237.meta
-  17:33 | next-ai-draw-io\.next\dev\cache\turbopack\23c46498\00000236.meta
-  17:33 | next-ai-draw-io\.next\dev\cache\turbopack\23c46498\00000235.sst
-  17:33 | next-ai-draw-io\.next\dev\cache\turbopack\23c46498\00000233.sst
-  17:33 | next-ai-draw-io\.next\dev\cache\turbopack\23c46498\00000234.sst
-  17:33 | .git\refs\heads\auto-optimize-20260420-1453
-  17:33 | .git\logs\HEAD
-  17:33 | .git\logs\refs\heads\auto-optimize-20260420-1453
-  17:33 | .git\objects\2d\0d7e5edc364a69391bb2e1919d3abb0fd97c50
-  17:33 | .git\COMMIT_EDITMSG
-  17:33 | .git\index
-  17:33 | .git\objects\3b\2a9ae6c102f00592669f494b2f5efbfa4808a9
-  17:33 | .git\objects\0d\843ada6bcad9ff66caae35d57fad2c9f766984
-  17:33 | .git\objects\2b\598fdf8a768da868a1f425a8aa70dc789fe4f1
-  17:33 | .git\objects\b2\c62a8126ac3dff788ea3d20fb32dc9b8e9465e
+  17:18 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-171848-342965.png
+  17:18 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-171825-976078.png
+  17:18 | .git\FETCH_HEAD
+  17:18 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-171803-960995.png
+  17:17 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-171733-192532.png
+  17:17 | skills\jingmai-product-publish-v2\.pytest_cache\v\cache\nodeids
+  17:17 | skills\jingmai-product-publish-v2\tests\__pycache__\test_t6_t8_workflow.cpython-312-pytest-8.4.2.pyc
+  17:17 | skills\jingmai-product-publish-v2\jingmai_publish\services\__pycache__\jingmai_workflow.cpython-312.pyc
+  17:17 | skills\jingmai-product-publish-v2\jingmai_publish\desktop\__pycache__\uia_adapter.cpython-312.pyc
+  17:17 | skills\jingmai-product-publish-v2\jingmai_publish\desktop\__pycache__\adapter.cpython-312.pyc
+  17:17 | skills\jingmai-product-publish-v2\tests\test_t6_t8_workflow.py
+  17:17 | skills\jingmai-product-publish-v2\jingmai_publish\services\jingmai_workflow.py
+  17:16 | skills\jingmai-product-publish-v2\jingmai_publish\desktop\uia_adapter.py
+  17:16 | skills\jingmai-product-publish-v2\jingmai_publish\desktop\adapter.py
+  17:08 | knowledge-base\.notion_sync_state.json
+  17:08 | knowledge-base\.sync_state.json
+  17:01 | skills\jingmai-product-publish-v2\aaa.py
+  16:57 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-165710-054899.png
+  16:56 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-165640-712151.png
+  16:56 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-165611-300011.png
 --- SESSIONS ---
-  Count: 325
-  - 0072d625-3d80-4a31-a3bd-e1bddc42e8a5.jsonl [00:05]
-  - 0072d625-3d80-4a31-a3bd-e1bddc42e8a5.trajectory.jsonl [00:05]
-  - 043f1a48-a01f-4c0d-b05b-5745c0242504.jsonl [00:15]
+  Count: 136
+  - 0033a64d-bc70-4c7f-a75c-97333b6379f7.jsonl [02:15]
+  - 0033a64d-bc70-4c7f-a75c-97333b6379f7.trajectory.jsonl [02:15]
+  - 04f6db2c-63ef-4b81-a4cd-7814a0c0b468.jsonl [17:10]
 --- SKILLS ---
+  + douyin-transcribe-skill
   + jingmai-product-publish-v2
+  + opencli-skills
 --- STRUCTURED ---
-{"skillsUpdated":["jingmai-product-publish-v2"],"dayOfWeek":"Thursday","sessionCount":325,"modifiedFiles":["E:\\workspace\\.git\\logs\\refs\\remotes\\origin\\auto-optimize-20260420-1453","E:\\workspace\\.git\\refs\\remotes\\origin\\auto-optimize-20260420-1453","E:\\workspace\\next-ai-draw-io\\.next\\dev\\cache\\turbopack\\23c46498\\LOG","E:\\workspace\\next-ai-draw-io\\.next\\dev\\cache\\turbopack\\23c46498\\CURRENT","E:\\workspace\\next-ai-draw-io\\.next\\dev\\cache\\turbopack\\23c46498\\00000238.meta","E:\\workspace\\next-ai-draw-io\\.next\\dev\\cache\\turbopack\\23c46498\\00000237.meta","E:\\workspace\\next-ai-draw-io\\.next\\dev\\cache\\turbopack\\23c46498\\00000236.meta","E:\\workspace\\next-ai-draw-io\\.next\\dev\\cache\\turbopack\\23c46498\\00000235.sst","E:\\workspace\\next-ai-draw-io\\.next\\dev\\cache\\turbopack\\23c46498\\00000233.sst","E:\\workspace\\next-ai-draw-io\\.next\\dev\\cache\\turbopack\\23c46498\\00000234.sst","E:\\workspace\\.git\\refs\\heads\\auto-optimize-20260420-1453","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\logs\\refs\\heads\\auto-optimize-20260420-1453","E:\\workspace\\.git\\objects\\2d\\0d7e5edc364a69391bb2e1919d3abb0fd97c50","E:\\workspace\\.git\\COMMIT_EDITMSG","E:\\workspace\\.git\\index","E:\\workspace\\.git\\objects\\3b\\2a9ae6c102f00592669f494b2f5efbfa4808a9","E:\\workspace\\.git\\objects\\0d\\843ada6bcad9ff66caae35d57fad2c9f766984","E:\\workspace\\.git\\objects\\2b\\598fdf8a768da868a1f425a8aa70dc789fe4f1","E:\\workspace\\.git\\objects\\b2\\c62a8126ac3dff788ea3d20fb32dc9b8e9465e"],"gitCommits":"2d0d7e5e docs: 鏃ユ姤+鐭ヨ瘑搴?DD璁睞I浜旀娉?GitHub-Trending-Week20","date":"2026.05.14"}
+{"skillsUpdated":["douyin-transcribe-skill","jingmai-product-publish-v2","opencli-skills"],"dayOfWeek":"Friday","sessionCount":136,"modifiedFiles":["E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-171848-342965.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-171825-976078.png","E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-171803-960995.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-171733-192532.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\.pytest_cache\\v\\cache\\nodeids","E:\\workspace\\skills\\jingmai-product-publish-v2\\tests\\__pycache__\\test_t6_t8_workflow.cpython-312-pytest-8.4.2.pyc","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\services\\__pycache__\\jingmai_workflow.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\desktop\\__pycache__\\uia_adapter.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\desktop\\__pycache__\\adapter.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish-v2\\tests\\test_t6_t8_workflow.py","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\services\\jingmai_workflow.py","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\desktop\\uia_adapter.py","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\desktop\\adapter.py","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\skills\\jingmai-product-publish-v2\\aaa.py","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-165710-054899.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-165640-712151.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-165611-300011.png"],"gitCommits":["76c60dcf docs: update MEMORY.md with Agent orchestration learning","3b0bdece docs: add Agent orchestration deep analysis (鎶栭煶鑷鑷瘽鐨勬睙鍝?","b75c3e3c docs: update MEMORY.md with FDE and Mom Test learning","f1ef9c72 docs: add FDE涓庝笟鍔¤璋堟繁搴﹀垎鏋?(鎶栭煶鑷鑷瘽鐨勬睙鍝?"],"date":"2026.05.15"}

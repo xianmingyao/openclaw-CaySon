@@ -9,6 +9,8 @@ class DummyAdapter:
         self.clicked = []
         self.filled = []
         self.selected = []
+        self.label_filled = []
+        self.label_selected = []
 
     def list_windows(self):
         return [
@@ -28,7 +30,12 @@ class DummyAdapter:
         return f"logs/screenshots/{handle}.png"
 
     def read_document_text(self, handle: str) -> str:
-        values = [item[2] for item in self.filled] + [item[2] for item in self.selected]
+        values = (
+            [item[2] for item in self.filled]
+            + [item[2] for item in self.selected]
+            + [item[2] for item in self.label_filled]
+            + [item[2] for item in self.label_selected]
+        )
         return "商品类目 工业品 > 中低压配电 > 插座 修改 商品信息 商品标题 " + " ".join(values)
 
     def fill_edit_by_automation_id(self, handle: str, automation_id: str, value: str) -> bool:
@@ -37,6 +44,14 @@ class DummyAdapter:
 
     def select_combobox_by_automation_id(self, handle: str, automation_id: str, value: str) -> bool:
         self.selected.append((handle, automation_id, value))
+        return True
+
+    def fill_edit_by_label(self, handle: str, label: str, value: str) -> bool:
+        self.label_filled.append((handle, label, value))
+        return True
+
+    def select_combobox_by_label(self, handle: str, label: str, value: str) -> bool:
+        self.label_selected.append((handle, label, value))
         return True
 
 
@@ -104,3 +119,38 @@ def test_workflow_t4_fill_base_info():
     assert any(item[1] == workflow.MODEL_AUTOMATION_ID for item in adapter.filled)
     assert any(item[1] == workflow.REQUIRED_ATTR_AUTOMATION_ID for item in adapter.filled)
     assert any(item[1] == workflow.BRAND_AUTOMATION_ID for item in adapter.selected)
+
+
+def test_workflow_t4_fill_additional_required_fields():
+    adapter = DummyAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+    result = workflow.run_t4_fill_additional_required_fields(
+        "2002",
+        brand="公牛",
+        rated_voltage="220V",
+        cable_length="1.8m",
+        weight="125",
+    )
+    assert result.step_id == "T4-EXTRA"
+    assert result.success is True
+    assert any(item[1] == "额定电压" for item in adapter.label_selected)
+    assert any(item[1] == "电缆长度" for item in adapter.label_selected)
+    assert any(item[1] == "重量" for item in adapter.label_filled)
+
+
+def test_workflow_t7_fill_logistics_fields():
+    adapter = DummyAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+    result = workflow.run_t7_fill_logistics_fields(
+        "2002",
+        sale_unit="个",
+        package_type="盒装",
+        delivery_mark="现货",
+        package_list="插座*1",
+        warranty_period="12个月",
+    )
+    assert result.step_id == "T7"
+    assert result.success is True
+    assert any(item[1] == "销售单位" for item in adapter.label_selected)
+    assert any(item[1] == "商品包装" for item in adapter.label_selected)
+    assert any(item[1] == "包装清单" for item in adapter.label_filled)

@@ -48,3 +48,83 @@ def test_expand_target_texts_merges_aliases_without_duplicates():
         screenshot_dir="logs/screenshots",
     )
     assert adapter._expand_target_texts("发布商品") == ["发布商品", "发布"]
+
+
+def test_is_image_upload_slot_candidate_matches_real_empty_slot_controls():
+    assert RealWindowsUIAAdapter._is_image_upload_slot_candidate(
+        "DataItem",
+        "请上传图片",
+        1011,
+        226,
+        1795,
+        336,
+    ) is True
+    assert RealWindowsUIAAdapter._is_image_upload_slot_candidate(
+        "Image",
+        "",
+        1051,
+        263,
+        1068,
+        280,
+    ) is True
+
+
+def test_is_image_upload_slot_candidate_excludes_header_icon():
+    assert RealWindowsUIAAdapter._is_image_upload_slot_candidate(
+        "Image",
+        "",
+        1066,
+        197,
+        1081,
+        211,
+    ) is False
+
+
+def test_normalize_image_upload_slot_snapshot_ignores_small_plus_icon():
+    snapshot = {
+        "class_name": "Image",
+        "text": "",
+        "bounds": {"left": 1051, "top": 263, "right": 1068, "bottom": 280},
+    }
+    assert RealWindowsUIAAdapter._normalize_image_upload_slot_snapshot(snapshot) is None
+
+
+def test_normalize_image_upload_slot_snapshot_marks_empty_list_item_as_empty_slot():
+    snapshot = {
+        "class_name": "ListItem",
+        "text": "",
+        "bounds": {"left": 1000, "top": 226, "right": 1128, "bottom": 336},
+    }
+    normalized = RealWindowsUIAAdapter._normalize_image_upload_slot_snapshot(snapshot)
+    assert normalized == {
+        "class_name": "DataItem",
+        "text": "请上传图片",
+        "status": "empty",
+        "bounds": {"left": 1000, "top": 226, "right": 1128, "bottom": 336},
+    }
+
+
+def test_merge_image_upload_slot_snapshot_prefers_empty_over_filled_for_same_slot():
+    snapshots = [
+        {
+            "class_name": "DataItem",
+            "text": "请上传图片",
+            "status": "empty",
+            "bounds": {"left": 1000, "top": 226, "right": 1128, "bottom": 336},
+        }
+    ]
+    candidate = {
+        "class_name": "Image",
+        "text": "",
+        "status": "filled",
+        "bounds": {"left": 1048, "top": 262, "right": 1069, "bottom": 281},
+    }
+    RealWindowsUIAAdapter._merge_image_upload_slot_snapshot(snapshots, candidate)
+    assert snapshots == [
+        {
+            "class_name": "DataItem",
+            "text": "请上传图片",
+            "status": "empty",
+            "bounds": {"left": 1000, "top": 226, "right": 1128, "bottom": 336},
+        }
+    ]

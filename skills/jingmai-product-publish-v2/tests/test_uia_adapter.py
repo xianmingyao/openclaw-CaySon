@@ -216,6 +216,52 @@ def test_is_picker_image_candidate_accepts_thumbnail_without_text():
     assert RealWindowsUIAAdapter._is_picker_image_candidate("DataItem", "请上传图片", 500, 260, 620, 380) is False
 
 
+def test_click_picker_file_card_by_name_clicks_thumbnail_above_label(monkeypatch):
+    adapter = RealWindowsUIAAdapter(screenshot_dir="logs/screenshots")
+    clicked: list[tuple[int, int]] = []
+    selected = {"count": 0}
+
+    class Rect:
+        def __init__(self, left: int, top: int, right: int, bottom: int) -> None:
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    class FakeControl:
+        def window_text(self) -> str:
+            return "main-probe.png"
+
+        def rectangle(self) -> Rect:
+            return Rect(486, 480, 620, 505)
+
+    class FakeWindow:
+        def descendants(self):
+            return [FakeControl()]
+
+    def fake_click(coords):
+        clicked.append(coords)
+        selected["count"] = 1
+
+    fake_pywinauto = types.ModuleType("pywinauto")
+    fake_pywinauto.mouse = types.SimpleNamespace(click=fake_click)
+    monkeypatch.setitem(sys.modules, "pywinauto", fake_pywinauto)
+    monkeypatch.setattr(adapter, "_get_window", lambda handle: FakeWindow())
+    monkeypatch.setattr(adapter, "read_document_text", lambda handle: f"已选{selected['count']}个，可选10个")
+
+    assert adapter._click_picker_file_card_by_name("1187102", "main-probe.png", "main-probe") is True
+    assert clicked == [(553, 400)]
+
+
+def test_picker_selected_count_reads_zero_and_positive(monkeypatch):
+    adapter = RealWindowsUIAAdapter(screenshot_dir="logs/screenshots")
+    monkeypatch.setattr(adapter, "read_document_text", lambda handle: "共10000条 已选0个，可选10个 确定")
+    assert adapter._picker_selected_count("1187102") == 0
+
+    monkeypatch.setattr(adapter, "read_document_text", lambda handle: "已选 3 个，可选10个")
+    assert adapter._picker_selected_count("1187102") == 3
+
+
 def test_image_upload_slot_sort_key_keeps_main_image_before_transparent_image():
     slots = [
         {"class_name": "DataItem", "bounds": {"left": 1887, "top": 343, "right": 2278, "bottom": 453}},

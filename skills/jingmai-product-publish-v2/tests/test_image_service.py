@@ -1,7 +1,9 @@
 from pathlib import Path
 
 from PIL import Image
+import pytest
 
+from jingmai_publish.security import UnsafeUrlError
 from jingmai_publish.services.image_service import ProductImageService
 
 
@@ -81,3 +83,10 @@ def test_process_image_converts_transparent_role_to_png(tmp_path: Path):
     assert result.converted is True
     assert result.image_format == "png"
     assert repo.created_records[0].is_valid is True
+
+
+def test_download_to_cache_rejects_untrusted_image_host(tmp_path: Path):
+    service = ProductImageService(DummyImageRepo(), image_root=tmp_path)
+
+    with pytest.raises(UnsafeUrlError, match="白名单"):
+        service.download_to_cache("https://example.com/a.png")

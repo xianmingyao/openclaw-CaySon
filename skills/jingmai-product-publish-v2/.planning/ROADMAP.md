@@ -1,5 +1,16 @@
 # Roadmap: 京麦桌面商品上架系统补完计划
 
+## Current Sync - 2026-05-17
+
+The previous 55/100 baseline in this document is stale. The current conservative delivery baseline is `90/100`: Phase B and Phase C core architecture are implemented, audit tables are implemented, and DX/security P0 hardening has been added. The score is not raised further until BL-086A screenshot evidence is physically present or recaptured.
+
+Authoritative current evidence index: `.planning/BL-086A_SCREENSHOT_EVIDENCE.md`.
+
+Immediate gate:
+- `BL-086A`: `IN_PROGRESS`
+- Evidence problem: runtime logs reference screenshots, but the referenced PNG files are missing from `resources/screenshots/` and `logs/screenshots/`.
+- Next action: restore or recapture P0 screenshots, then re-evaluate the 92+ score gate.
+
 ## Overview
 
 当前项目基线为 `55/100`。后续路线不再按旧的 `95/100` 乐观状态推进，而是围绕“真实完成一次京麦商品上架”反推架构和工程缺口。

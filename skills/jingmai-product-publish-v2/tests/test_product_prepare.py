@@ -1,6 +1,9 @@
 import json
 from decimal import Decimal
 
+import pytest
+
+from jingmai_publish.security import UnsafeUrlError
 from jingmai_publish.services.jd_fetch import JDProductFetchService
 from jingmai_publish.services.product_prepare import ProductDataPrepareService
 
@@ -137,6 +140,12 @@ class FallbackFetchJDProductFetchService(JDProductFetchService):
 
 def test_extract_jd_item_id():
     assert JDProductFetchService.extract_jd_item_id("https://item.jd.com/16793098028.html") == "16793098028"
+
+
+def test_fetch_product_payload_rejects_untrusted_host():
+    service = LiveFetchJDProductFetchService(None, None, None)
+    with pytest.raises(UnsafeUrlError, match="白名单"):
+        service.fetch_product_payload("https://example.com/16793098028.html")
 
 
 def test_build_snapshot_for_job_item():

@@ -112,19 +112,21 @@ def test_desktop_verification_service_t8_publish_product():
 
     service = DesktopVerificationService.__new__(DesktopVerificationService)
     service.workflow_service = fake_workflow
-    result = service.run("t8-publish-product", debug=False)
+    result = service.run("t8-publish-product", debug=False, confirm_publish=True)
 
     assert result["t8_publish_product"]["step_id"] == "T8-PUBLISH-PRODUCT"
     assert result["t8_publish_product"]["success"] is True
+    fake_workflow.run_t8_publish_product.assert_called_once_with("2002", confirm_publish=True)
 
 
 def test_cli_parser_supports_new_t6_t8_steps():
     parser = cli.build_parser()
     t6_args = parser.parse_args(["run-desktop-check", "--step", "t6-detail-editor", "--detail-content", "<p>1</p>"])
     t8_args = parser.parse_args(["run-desktop-check", "--step", "t8-save-draft"])
-    publish_args = parser.parse_args(["run-desktop-check", "--step", "t8-publish-product"])
+    publish_args = parser.parse_args(["run-desktop-check", "--step", "t8-publish-product", "--confirm-publish"])
 
     assert t6_args.step == "t6-detail-editor"
     assert t6_args.detail_content == "<p>1</p>"
     assert t8_args.step == "t8-save-draft"
     assert publish_args.step == "t8-publish-product"
+    assert publish_args.confirm_publish is True

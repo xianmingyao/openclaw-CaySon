@@ -158,6 +158,7 @@ class JingmaiWorkflowService:
         model: str,
         required_attribute: str,
         brand: str | None = None,
+        input_mode: str | None = None,
     ) -> WorkflowStepResult:
         adapter = self.window_manager.adapter
         if hasattr(adapter, "prepare_publish_form_view"):
@@ -253,12 +254,9 @@ class JingmaiWorkflowService:
             for option in option_texts
             if brand in option or (short_brand and short_brand in option)
         ]
-        ordered = matched or option_texts
-        for value in ordered:
+        for value in matched:
             if value not in candidates:
                 candidates.append(value)
-        if not matched:
-            candidates = option_texts + [brand]
         return candidates
 
     def _fill_t4_required_attribute(self, window_handle: str, required_attribute: str) -> tuple[bool, str]:
@@ -764,7 +762,12 @@ class JingmaiWorkflowService:
             message=message,
         )
 
-    def run_t6_upload_main_image(self, window_handle: str, file_path: str) -> WorkflowStepResult:
+    def run_t6_upload_main_image(
+        self,
+        window_handle: str,
+        file_path: str,
+        upload_strategy: str | None = None,
+    ) -> WorkflowStepResult:
         return self._run_t6_upload_slot(
             window_handle,
             file_path=file_path,
@@ -773,6 +776,7 @@ class JingmaiWorkflowService:
             success_state="main_image_uploaded",
             pending_state="main_image_empty_slot_pending",
             replacement_state="main_image_replacement_pending",
+            upload_strategy=upload_strategy,
         )
 
     def run_t6_upload_transparent_image(self, window_handle: str, file_path: str) -> WorkflowStepResult:
@@ -909,7 +913,7 @@ class JingmaiWorkflowService:
             message=message,
         )
 
-    def run_t8_save_draft(self, window_handle: str) -> WorkflowStepResult:
+    def run_t8_save_draft(self, window_handle: str, click_mode: str | None = None) -> WorkflowStepResult:
         adapter = self.window_manager.adapter
         document_before = adapter.read_document_text(window_handle)
         if self._is_draft_list_document(document_before):
@@ -923,7 +927,8 @@ class JingmaiWorkflowService:
                 message="草稿列表已可见；触发模式=already_saved",
             )
 
-        clicked = self._click_first_available_texts(window_handle, ["保存草稿"])
+        save_texts = ["保存草稿"]
+        clicked = self._click_first_available_texts(window_handle, save_texts)
         document_after = document_before
         draft_state = "not_clicked"
         poll_count = 0
@@ -977,8 +982,18 @@ class JingmaiWorkflowService:
             message=message,
         )
 
-    def run_t8_publish_product(self, window_handle: str) -> WorkflowStepResult:
+    def run_t8_publish_product(self, window_handle: str, confirm_publish: bool = False) -> WorkflowStepResult:
         adapter = self.window_manager.adapter
+        if not confirm_publish:
+            screenshot_path = adapter.capture_window(window_handle)
+            return WorkflowStepResult(
+                step_id="T8-PUBLISH-PRODUCT",
+                success=False,
+                page_state="publish_guard_required",
+                window_handle=window_handle,
+                screenshot_path=screenshot_path,
+                message="正式发布被守卫拦截：必须显式传入 confirm_publish=True 或 CLI 参数 --confirm-publish。",
+            )
         document_before = adapter.read_document_text(window_handle)
         publish_clicked = self._click_first_available_texts(window_handle, ["发布商品"])
         continue_clicked = False
@@ -1022,6 +1037,7 @@ class JingmaiWorkflowService:
         success_state: str,
         pending_state: str,
         replacement_state: str,
+        upload_strategy: str | None = None,
     ) -> WorkflowStepResult:
         adapter = self.window_manager.adapter
         preflight = self._validate_upload_image_file(file_path)
@@ -1044,6 +1060,7 @@ class JingmaiWorkflowService:
             1 for slot in before_slots if slot.get("status") == "filled" or slot.get("class_name") == "Image"
         )
         before_empty_slot_count = self._count_t6_empty_slots(before_slots)
+        empty_slot_action_index = self._resolve_t6_empty_slot_action_index(before_slots, slot_index=slot_index)
         if self._is_t6_target_slot_filled(before_slots, slot_index=slot_index):
             screenshot_path = adapter.capture_window(window_handle)
             message = "；".join(
@@ -1069,50 +1086,66 @@ class JingmaiWorkflowService:
             )
 
         trigger_ok = False
-        trigger_mode = "empty_slot"
+        trigger_mode = upload_strategy or "empty_slot"
         upload_result = {"success": False, "error": "upload_bridge_unavailable"}
 
-        if before_empty_slot_count > slot_index:
-            if self._open_hover_local_upload(window_handle, slot_index):
+        upload_attempts: list[str]
+        if upload_strategy == "direct_click":
+            upload_attempts = ["empty_slot_modal", "hover_local_upload", "hover_text_local_upload", "text_index_fallback", "text_fallback"]
+        elif upload_strategy == "text_fallback":
+            upload_attempts = ["hover_text_local_upload", "text_index_fallback", "text_fallback", "empty_slot_modal", "hover_local_upload"]
+        else:
+            upload_attempts = ["hover_local_upload", "hover_text_local_upload", "empty_slot_modal", "occupied_slot_replace", "text_index_fallback", "text_fallback"]
+
+        for attempt in upload_attempts:
+            if upload_result.get("success"):
+                break
+
+            if attempt == "hover_local_upload" and empty_slot_action_index is not None and self._open_hover_local_upload(window_handle, empty_slot_action_index):
                 trigger_ok = True
                 trigger_mode = "hover_local_upload"
-                upload_result = self._complete_local_upload(window_handle, file_path)
+                upload_result = self._complete_local_upload(window_handle, file_path, slot_index=empty_slot_action_index)
+                continue
 
-        if not upload_result.get("success"):
-            if self._open_hover_local_upload_by_text(window_handle, slot_index):
+            if attempt == "hover_text_local_upload" and empty_slot_action_index is not None and self._open_hover_local_upload_by_text(window_handle, empty_slot_action_index):
                 trigger_ok = True
                 trigger_mode = "hover_text_local_upload"
-                upload_result = self._complete_local_upload(window_handle, file_path)
-
-        if (not upload_result.get("success")) and before_empty_slot_count > slot_index and hasattr(adapter, "click_image_upload_slot"):
-            trigger_ok = adapter.click_image_upload_slot(window_handle, slot_index)
-            if trigger_ok:
-                trigger_mode = "empty_slot_modal"
-                upload_result = self._complete_local_upload(window_handle, file_path)
-
-        if (not upload_result.get("success")) and before_image_count > slot_index and hasattr(adapter, "click_existing_image_slot"):
-            trigger_ok = adapter.click_existing_image_slot(window_handle, slot_index)
-            if trigger_ok:
-                trigger_mode = "occupied_slot_replace"
-                upload_result = self._complete_local_upload(window_handle, file_path)
-
-        if (not upload_result.get("success")) and hasattr(adapter, "click_text_by_index"):
-            for text in self._t6_upload_trigger_texts(slot_index):
-                text_index = slot_index if text == "请上传图片" else 0
-                trigger_ok = adapter.click_text_by_index(window_handle, text, text_index)
+                upload_result = self._complete_local_upload(window_handle, file_path, slot_index=empty_slot_action_index)
                 if trigger_ok:
-                    trigger_mode = f"text_index_fallback:{text}"
-                    upload_result = self._complete_local_upload(window_handle, file_path)
-                    break
+                    continue
 
-        if (not upload_result.get("success")):
-            trigger_ok = self._click_first_available_texts(
-                window_handle,
-                ["去设置", *self._t6_upload_trigger_texts(slot_index), "图片设置"],
-            )
-            if trigger_ok:
-                trigger_mode = "text_fallback"
-                upload_result = self._complete_local_upload(window_handle, file_path)
+            if attempt == "empty_slot_modal" and empty_slot_action_index is not None and hasattr(adapter, "click_image_upload_slot"):
+                trigger_ok = adapter.click_image_upload_slot(window_handle, empty_slot_action_index)
+                if trigger_ok:
+                    trigger_mode = "empty_slot_modal"
+                    upload_result = self._complete_local_upload(window_handle, file_path, slot_index=empty_slot_action_index)
+                    continue
+
+            if attempt == "occupied_slot_replace" and before_image_count > slot_index and hasattr(adapter, "click_existing_image_slot"):
+                trigger_ok = adapter.click_existing_image_slot(window_handle, slot_index)
+                if trigger_ok:
+                    trigger_mode = "occupied_slot_replace"
+                    upload_result = self._complete_local_upload(window_handle, file_path, slot_index=slot_index)
+                    continue
+
+            if attempt == "text_index_fallback" and hasattr(adapter, "click_text_by_index"):
+                for text in self._t6_upload_trigger_texts(slot_index):
+                    text_index = empty_slot_action_index if text == "请上传图片" and empty_slot_action_index is not None else 0
+                    trigger_ok = adapter.click_text_by_index(window_handle, text, text_index)
+                    if trigger_ok:
+                        trigger_mode = f"text_index_fallback:{text}"
+                        upload_result = self._complete_local_upload(window_handle, file_path, slot_index=empty_slot_action_index or 0)
+                        break
+                continue
+
+            if attempt == "text_fallback":
+                trigger_ok = self._click_first_available_texts(
+                    window_handle,
+                    ["去设置", *self._t6_upload_trigger_texts(slot_index), "图片设置"],
+                )
+                if trigger_ok:
+                    trigger_mode = "text_fallback"
+                    upload_result = self._complete_local_upload(window_handle, file_path, slot_index=empty_slot_action_index or 0)
 
         slot_probe = self._wait_for_upload_slot_update(
             window_handle,
@@ -1231,6 +1264,15 @@ class JingmaiWorkflowService:
     def _count_t6_empty_slots(cls, slots: list[dict[str, object]]) -> int:
         return sum(1 for slot in slots if slot.get("status") == "empty" or slot.get("text") in cls.T6_EMPTY_SLOT_TEXTS)
 
+    @classmethod
+    def _resolve_t6_empty_slot_action_index(cls, slots: list[dict[str, object]], *, slot_index: int) -> int | None:
+        empty_slots = [slot for slot in slots if slot.get("status") == "empty" or slot.get("text") in cls.T6_EMPTY_SLOT_TEXTS]
+        if not empty_slots:
+            return None
+        if slot_index < len(empty_slots):
+            return slot_index
+        return len(empty_slots) - 1
+
     @staticmethod
     def _t6_upload_trigger_texts(slot_index: int) -> list[str]:
         if slot_index == 1:
@@ -1341,7 +1383,7 @@ class JingmaiWorkflowService:
                 return True
         return False
 
-    def _complete_local_upload(self, window_handle: str, file_path: str) -> dict[str, object]:
+    def _complete_local_upload(self, window_handle: str, file_path: str, *, slot_index: int = 0) -> dict[str, object]:
         """完成本地文件上传的完整流程。
 
         正确顺序（用户反馈验证）：
@@ -1355,7 +1397,7 @@ class JingmaiWorkflowService:
         # -- 阶段一：点击"本地上传"触发文件对话框 --
         upload_clicked = False
         if hasattr(adapter, "click_local_upload_entry"):
-            upload_clicked = adapter.click_local_upload_entry(window_handle, 0)
+            upload_clicked = adapter.click_local_upload_entry(window_handle, slot_index)
         if not upload_clicked and hasattr(adapter, "click_text_in_region"):
             upload_clicked = adapter.click_text_in_region(
                 window_handle,
@@ -1377,6 +1419,23 @@ class JingmaiWorkflowService:
         if upload_clicked:
             # 等待文件对话框出现（Windows 资源管理器对话框需要时间渲染）
             time.sleep(0.4)
+
+        # 若图片空间弹层已经包含目标文件，说明之前的上传已完成但尚未选中回填。
+        # 此时直接复用现有上传结果，比继续等待系统文件对话框更可靠。
+        try:
+            picker_text = adapter.read_document_text(window_handle)
+        except Exception:
+            picker_text = ""
+        target_file_name = Path(file_path).name
+        target_file_stem = Path(file_path).stem
+        if target_file_name in picker_text or target_file_stem in picker_text:
+            picker_result = self._finalize_picker_selection(
+                window_handle,
+                file_path,
+                {"success": True, "file_path": file_path, "reused_picker_result": True},
+            )
+            if picker_result.get("picker_selection_confirmed"):
+                return picker_result
 
         # -- 阶段二：与文件对话框交互（Alt+D 地址栏导航 → 选文件 → 打开）--
         if hasattr(adapter, "upload_file_from_active_dialog"):

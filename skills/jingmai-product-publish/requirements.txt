@@ -1,32 +1,18 @@
-# 京麦商品发布自动化 v2.0 依赖
+# 真实浏览器执行层
+playwright>=1.52,<2.0
 
-# CLI 框架
-click>=8.0.0
+# 数据库与 ORM
+SQLAlchemy>=2.0,<3.0
+PyMySQL>=1.1,<2.0
 
-# ORM + 数据库
-sqlalchemy>=2.0.0
-pymysql>=1.1.0
-openpyxl>=3.1.0
-playwright>=1.52.0
+# Windows 桌面自动化
+pywinauto>=0.6.8,<1.0
 
-# Windows 自动化
-pywinauto>=0.6.8
-pywin32>=306
-pyautogui>=0.9.54
-Pillow>=10.0.0
+# Excel 解析
+openpyxl>=3.1,<4.0
+Pillow>=10.0,<12.0
+requests>=2.31,<3.0
+beautifulsoup4>=4.12,<5.0
 
-# 剪贴板
-pyperclip>=1.8.2
-
-# LLM
-requests>=2.28.0
-ollama>=0.1.0
-
-# 向量数据库（长期记忆）
-pymilvus>=2.3.0
-
-# CDP (Chrome DevTools Protocol) — CEF 窗口控制
-websocket-client>=1.6.0
-
-vllm>=0.20.0
-openpyxl==3.1.5
+# 测试
+pytest>=8.0,<9.0

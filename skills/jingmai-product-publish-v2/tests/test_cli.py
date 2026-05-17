@@ -10,6 +10,11 @@ from jingmai_publish import cli
 def test_build_parser_contains_new_commands_and_steps():
     parser = cli.build_parser()
 
+    config_args = parser.parse_args(["check-config", "--verbose", "--log-file", "logs/cli.log"])
+    assert config_args.command == "check-config"
+    assert config_args.verbose is True
+    assert config_args.log_file == "logs/cli.log"
+
     import_args = parser.parse_args(["run-import", "--excel", "demo.xlsx"])
     assert import_args.command == "run-import"
     assert import_args.mode == "draft"
@@ -24,6 +29,10 @@ def test_build_parser_contains_new_commands_and_steps():
 
     cleanup_args = parser.parse_args(["cleanup-runtime-logs"])
     assert cleanup_args.command == "cleanup-runtime-logs"
+
+    evidence_args = parser.parse_args(["check-evidence", "--root", "."])
+    assert evidence_args.command == "check-evidence"
+    assert evidence_args.root == "."
 
     draft_args = parser.parse_args(
         [
@@ -71,8 +80,9 @@ def test_build_parser_contains_new_commands_and_steps():
     assert desktop_args.detail_content == "<p>demo</p>"
     assert desktop_args.debug is True
 
-    publish_args = parser.parse_args(["run-desktop-check", "--step", "t8-publish-product"])
+    publish_args = parser.parse_args(["run-desktop-check", "--step", "t8-publish-product", "--confirm-publish"])
     assert publish_args.step == "t8-publish-product"
+    assert publish_args.confirm_publish is True
 
 
 def test_parse_click_aliases():
@@ -92,6 +102,22 @@ def test_handle_init_db(monkeypatch):
 
     assert cli.handle_init_db(".") == 0
     assert called["engine"] is fake_engine
+
+
+def test_handle_check_config(monkeypatch, capsys):
+    fake_settings = MagicMock()
+    fake_settings.app_name = "demo"
+    fake_settings.app_version = "v1"
+    fake_settings.log_dir = "logs"
+    fake_settings.memory_dir = "logs/memory"
+    fake_settings.screenshot_dir = "resources/screenshots"
+
+    monkeypatch.setattr(cli, "load_settings", lambda root: fake_settings)
+    monkeypatch.setattr(cli, "validate_settings", lambda settings: [])
+
+    assert cli.handle_check_config(".") == 0
+    output = capsys.readouterr().out
+    assert '"success": true' in output
 
 
 def test_handle_run_import(monkeypatch):
@@ -202,6 +228,17 @@ def test_handle_cleanup_runtime_logs(monkeypatch):
 
     assert cli.handle_cleanup_runtime_logs(".") == 0
     fake_service.cleanup.assert_called_once()
+
+
+def test_handle_check_evidence(monkeypatch, capsys):
+    fake_service = MagicMock()
+    fake_service.collect.return_value = {"success": False, "artifact_count": 1, "missing_count": 1}
+    monkeypatch.setattr(cli, "ScreenshotEvidenceService", lambda root: fake_service)
+
+    assert cli.handle_check_evidence(".") == 1
+    output = capsys.readouterr().out
+    assert '"artifact_count": 1' in output
+    fake_service.collect.assert_called_once()
 
 
 def test_handle_run_draft_e2e(monkeypatch):

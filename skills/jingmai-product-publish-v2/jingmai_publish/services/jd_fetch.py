@@ -11,6 +11,8 @@ import requests
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
+from jingmai_publish.security import validate_http_url
+
 
 class JDProductFetchService:
     """抓取京东商品页并构建快照。"""
@@ -23,6 +25,7 @@ class JDProductFetchService:
         "京东(JD.COM)-正品低价、品质保障、配送及时、轻松购物！",
         "京东登录注册",
     }
+    ALLOWED_JD_HOSTS = ("item.jd.com", "item.m.jd.com")
 
     def __init__(self, upload_job_repo, snapshot_repo, runtime_log_repo) -> None:
         self.upload_job_repo = upload_job_repo
@@ -98,6 +101,11 @@ class JDProductFetchService:
     def fetch_product_payload(self, jd_item_url: str, fallback_price: Decimal | None = None) -> dict[str, object]:
         """抓取并解析京东商品页面。"""
 
+        jd_item_url = validate_http_url(
+            jd_item_url,
+            allowed_hosts=self.ALLOWED_JD_HOSTS,
+            purpose="京东商品抓取",
+        )
         html = self._fetch_page_html(jd_item_url)
         payload = self._parse_product_page(jd_item_url, html)
         if payload.get("price") is None and fallback_price is not None:

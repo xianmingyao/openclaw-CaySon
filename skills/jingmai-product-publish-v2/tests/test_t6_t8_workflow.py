@@ -184,6 +184,17 @@ def test_workflow_t6_upload_main_image_prefers_hover_local_upload(tmp_path):
     assert ("2002", "near:本地上传:1") in adapter.clicked
 
 
+def test_workflow_t6_upload_main_image_accepts_retry_lane_strategy(tmp_path):
+    adapter = DummyT6T8Adapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+    file_path = _create_probe_image(tmp_path, "main-lane.png")
+
+    result = workflow.run_t6_upload_main_image("2002", file_path, upload_strategy="hover_modal")
+
+    assert result.success is True
+    assert result.page_state == "main_image_uploaded"
+
+
 def test_workflow_t6_upload_main_image_supports_product_main_image_text(tmp_path):
     class ProductMainImageAdapter(DummyT6T8Adapter):
         def inspect_image_upload_slots(self, handle: str) -> list[dict[str, object]]:
@@ -306,6 +317,38 @@ def test_workflow_t6_upload_retries_until_file_dialog_ready(tmp_path, monkeypatc
     assert adapter.dialog_attempts == 3
 
 
+def test_workflow_t6_upload_reuses_visible_picker_uploaded_file(tmp_path, monkeypatch):
+    class ExistingPickerAdapter(DummyT6T8Adapter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.dialog_attempts = 0
+            self.uploaded_file_name = "existing-picker.png"
+            self.document_text = (
+                "图片空间 本地上传 800*800 existing-picker.png 共 10000 条 "
+                "已选0个，可选10个 确定 取消"
+            )
+
+        def upload_file_from_active_dialog(self, file_path: str) -> dict[str, object]:
+            self.dialog_attempts += 1
+            return {"success": False, "error": "active_file_dialog_not_found"}
+
+        def select_uploaded_image_and_confirm(self, handle: str, file_path: str) -> dict[str, object]:
+            self.uploaded = True
+            self.document_text = "图片空间 已选1个，可选10个 确定"
+            return {"success": True, "selected_by": "file_card"}
+
+    monkeypatch.setattr("jingmai_publish.services.jingmai_workflow.time.sleep", lambda _: None)
+    adapter = ExistingPickerAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+    file_path = _create_probe_image(tmp_path, "existing-picker.png")
+
+    result = workflow.run_t6_upload_main_image("2002", file_path)
+
+    assert result.success is True
+    assert adapter.dialog_attempts == 0
+    assert "选择确认重试=not_required" in (result.message or "")
+
+
 def test_workflow_t6_upload_transparent_image(tmp_path):
     workflow = JingmaiWorkflowService(WindowManager(DummyT6T8Adapter()))
     file_path = _create_probe_image(tmp_path, "transparent.png")
@@ -343,6 +386,7 @@ def test_workflow_t6_upload_transparent_image_enters_sku_image_surface(tmp_path)
     assert result.page_state == "transparent_image_uploaded"
     assert ("2002", "SKU图片信息") in adapter.clicked
     assert adapter.hovered_slots == [1]
+    assert ("2002", "local-upload:1") in adapter.clicked
 
 
 def test_workflow_t6_upload_transparent_image_is_idempotent_when_slot_filled(tmp_path):
@@ -365,6 +409,51 @@ def test_workflow_t6_upload_transparent_image_is_idempotent_when_slot_filled(tmp
     assert result.success is True
     assert result.page_state == "transparent_image_uploaded"
     assert "触发模式=already_filled" in (result.message or "")
+
+
+def test_workflow_t6_upload_transparent_image_uses_remaining_empty_slot_after_main_filled(tmp_path):
+    class MainFilledTransparentEmptyAdapter(DummyT6T8Adapter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.transparent_uploaded = False
+
+        def upload_file_from_active_dialog(self, file_path: str) -> dict[str, object]:
+            self.uploaded_file_name = Path(file_path).name
+            return {"success": True, "file_path": file_path}
+
+        def select_uploaded_image_and_confirm(self, handle: str, file_path: str) -> dict[str, object]:
+            self.transparent_uploaded = True
+            return {"success": True}
+
+        def inspect_image_upload_slots(self, handle: str) -> list[dict[str, object]]:
+            if self.transparent_uploaded:
+                return [
+                    {"status": "filled", "class_name": "Image", "text": "", "bounds": {"left": 632, "top": 304, "right": 712, "bottom": 384}},
+                    {"status": "filled", "class_name": "Image", "text": "", "bounds": {"left": 722, "top": 304, "right": 812, "bottom": 388}},
+                ]
+            return [
+                {"status": "filled", "class_name": "Image", "text": "", "bounds": {"left": 632, "top": 304, "right": 712, "bottom": 384}},
+                {"status": "empty", "class_name": "DataItem", "text": "请上传图片", "bounds": {"left": 722, "top": 304, "right": 812, "bottom": 388}},
+            ]
+
+    adapter = MainFilledTransparentEmptyAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+    file_path = _create_probe_image(tmp_path, "transparent-after-main.png")
+
+    result = workflow.run_t6_upload_transparent_image("2002", file_path)
+
+    assert result.success is True
+    assert adapter.hovered_slots == [0]
+    assert ("2002", "local-upload:0") in adapter.clicked
+
+
+def test_resolve_t6_empty_slot_action_index_maps_transparent_to_remaining_empty_slot():
+    slots = [
+        {"status": "filled", "class_name": "Image", "text": "", "bounds": {"left": 632}},
+        {"status": "empty", "class_name": "DataItem", "text": "请上传图片", "bounds": {"left": 722}},
+    ]
+
+    assert JingmaiWorkflowService._resolve_t6_empty_slot_action_index(slots, slot_index=1) == 0
 
 
 def test_workflow_t6_upload_rejects_small_image(tmp_path):
@@ -551,6 +640,14 @@ def test_workflow_t8_save_draft():
     assert result.page_state == "draft_saved"
 
 
+def test_workflow_t8_save_draft_accepts_retry_lane_click_mode():
+    workflow = JingmaiWorkflowService(WindowManager(DummyT6T8Adapter()))
+    result = workflow.run_t8_save_draft("2002", click_mode="direct")
+    assert result.step_id == "T8-SAVE-DRAFT"
+    assert result.success is True
+    assert result.page_state == "draft_saved"
+
+
 def test_workflow_t8_save_draft_waits_for_draft_list(monkeypatch):
     class DelayedDraftAdapter(DummyT6T8Adapter):
         def __init__(self) -> None:
@@ -692,9 +789,18 @@ def test_workflow_t8_save_draft_does_not_accept_loading_only(monkeypatch):
     assert "草稿确认=失败" in (result.message or "")
 
 
-def test_workflow_t8_publish_product():
+def test_workflow_t8_publish_product_requires_confirmation():
     workflow = JingmaiWorkflowService(WindowManager(DummyT6T8Adapter()))
     result = workflow.run_t8_publish_product("2002")
+    assert result.step_id == "T8-PUBLISH-PRODUCT"
+    assert result.success is False
+    assert result.page_state == "publish_guard_required"
+    assert "守卫拦截" in (result.message or "")
+
+
+def test_workflow_t8_publish_product_with_confirmation():
+    workflow = JingmaiWorkflowService(WindowManager(DummyT6T8Adapter()))
+    result = workflow.run_t8_publish_product("2002", confirm_publish=True)
     assert result.step_id == "T8-PUBLISH-PRODUCT"
     assert result.success is True
     assert result.page_state == "publish_submitted"

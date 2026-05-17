@@ -246,6 +246,22 @@ def test_workflow_t4_fill_base_info():
     assert ("2002", "品牌", "公牛") in adapter.label_selected
 
 
+def test_workflow_t4_fill_base_info_accepts_retry_lane_input_mode():
+    adapter = DummyAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+    result = workflow.run_t4_fill_base_info(
+        "2002",
+        title="测试商品标题",
+        model="XH-001",
+        required_attribute="10A",
+        brand="公牛",
+        input_mode="text_fallback",
+    )
+    assert result.step_id == "T4"
+    assert result.success is True
+    assert result.page_state == "base_info_completed"
+
+
 def test_brand_validation_accepts_selected_value_with_residual_placeholder():
     document_text = (
         "商品标题 * 公牛插座 标题书写规范 品牌 * 公牛 请选择品牌 "
@@ -264,7 +280,7 @@ def test_brand_validation_rejects_title_only_brand_with_placeholder():
     assert JingmaiWorkflowService._brand_value_selected("公牛", document_text) is False
 
 
-def test_workflow_t4_falls_back_to_available_brand_option():
+def test_workflow_t4_rejects_unmatched_brand_option():
     class BrandOptionAdapter(DummyAdapter):
         def probe_select_options_by_label(self, handle: str, label: str) -> dict[str, object]:
             self.probed.append((handle, label))
@@ -272,6 +288,22 @@ def test_workflow_t4_falls_back_to_available_brand_option():
                 "success": True,
                 "options": [{"text": "志倍（ZHIBEI）-长沙飞戈电子技术有限公司"}],
             }
+
+        def select_combobox_by_label(self, handle: str, label: str, value: str) -> bool:
+            if label == "品牌":
+                if value == "志倍（ZHIBEI）-长沙飞戈电子技术有限公司":
+                    self.label_selected.append((handle, label, value))
+                    return True
+                return False
+            return super().select_combobox_by_label(handle, label, value)
+
+        def select_combobox_by_automation_id(self, handle: str, automation_id: str, value: str) -> bool:
+            if automation_id == JingmaiWorkflowService.BRAND_AUTOMATION_ID:
+                if value == "志倍（ZHIBEI）-长沙飞戈电子技术有限公司":
+                    self.selected.append((handle, automation_id, value))
+                    return True
+                return False
+            return super().select_combobox_by_automation_id(handle, automation_id, value)
 
     adapter = BrandOptionAdapter()
     workflow = JingmaiWorkflowService(WindowManager(adapter))
@@ -284,9 +316,10 @@ def test_workflow_t4_falls_back_to_available_brand_option():
         brand="公牛",
     )
 
-    assert result.success is True
-    assert ("2002", "品牌", "志倍（ZHIBEI）-长沙飞戈电子技术有限公司") in adapter.label_selected
-    assert "品牌值=志倍（ZHIBEI）-长沙飞戈电子技术有限公司" in result.message
+    assert result.success is False
+    assert result.page_state == "publish_entry"
+    assert ("2002", "品牌", "志倍（ZHIBEI）-长沙飞戈电子技术有限公司") not in adapter.label_selected
+    assert "品牌值=公牛" in result.message
 
 
 def test_workflow_t4_fill_additional_required_fields():

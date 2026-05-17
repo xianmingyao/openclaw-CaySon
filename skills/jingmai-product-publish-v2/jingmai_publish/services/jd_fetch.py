@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 from decimal import Decimal
+from html import escape
 
 import requests
 from bs4 import BeautifulSoup
@@ -151,6 +152,9 @@ class JDProductFetchService:
         price = self._extract_price(html, body_text)
         images = self._extract_images(soup)
         detail_text = self._extract_detail_text(body_text)
+        detail_html = self._extract_detail_html(soup)
+        if detail_html is None:
+            detail_html = self._build_detail_html_from_images(images, title, detail_text)
         attributes = self._extract_attributes(body_text)
 
         fetch_notes: list[str] = []
@@ -169,9 +173,27 @@ class JDProductFetchService:
             "images": images,
             "attributes": attributes,
             "detail_text": detail_text,
-            "detail_html": self._extract_detail_html(soup),
+            "detail_html": detail_html,
             "fetch_notes": fetch_notes,
         }
+
+    @classmethod
+    def build_detail_editor_content(cls, payload: dict[str, object]) -> str | None:
+        """从京东抓取 payload 构建可写入京麦详情编辑器的图文内容。"""
+
+        detail_html = payload.get("detail_html")
+        if isinstance(detail_html, str) and detail_html.strip():
+            return detail_html.strip()
+
+        images = payload.get("images")
+        title = payload.get("title")
+        detail_text = payload.get("detail_text")
+        image_urls = [item for item in images if isinstance(item, str)] if isinstance(images, list) else []
+        return cls._build_detail_html_from_images(
+            image_urls,
+            title if isinstance(title, str) else None,
+            detail_text if isinstance(detail_text, str) else None,
+        )
 
     def _extract_title(self, soup: BeautifulSoup) -> str | None:
         title_text = soup.title.get_text(" ", strip=True) if soup.title else None
@@ -260,6 +282,30 @@ class JDProductFetchService:
             if node:
                 return str(node)
         return None
+
+    @staticmethod
+    def _build_detail_html_from_images(
+        image_urls: list[str],
+        title: str | None,
+        detail_text: str | None,
+    ) -> str | None:
+        blocks: list[str] = ['<section class="jd-product-detail">']
+        if title:
+            blocks.append(f"<h2>{escape(title.strip())}</h2>")
+        if detail_text:
+            for line in detail_text.splitlines()[:20]:
+                normalized = line.strip()
+                if normalized:
+                    blocks.append(f"<p>{escape(normalized)}</p>")
+        for image_url in image_urls[:20]:
+            normalized_url = image_url.strip()
+            if not normalized_url:
+                continue
+            blocks.append(f'<p><img src="{escape(normalized_url, quote=True)}" /></p>')
+        blocks.append("</section>")
+        if len(blocks) <= 2:
+            return None
+        return "\n".join(blocks)
 
     @staticmethod
     def _extract_attributes(body_text: str) -> dict[str, str]:

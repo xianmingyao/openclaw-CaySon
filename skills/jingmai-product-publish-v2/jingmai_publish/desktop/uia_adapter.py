@@ -14,6 +14,9 @@ from PIL import ImageGrab
 from jingmai_publish.desktop.adapter import WindowInfo
 
 
+IMAGE_UPLOAD_EMPTY_TEXTS = {"请上传图片", "请上传主图", "请上传透图"}
+
+
 @dataclass(slots=True)
 class UIATuningConfig:
     """UIA 命中调优配置。"""
@@ -89,7 +92,11 @@ class RealWindowsUIAAdapter:
         seen_handles: set[str] = set()
 
         for desktop in self._iter_desktops():
-            for window in desktop.windows():
+            try:
+                desktop_windows = desktop.windows()
+            except Exception:
+                continue
+            for window in desktop_windows:
                 try:
                     title = window.window_text()
                     handle = window.handle
@@ -317,10 +324,28 @@ class RealWindowsUIAAdapter:
         return Desktop(backend=self.backend).window(handle=self._normalize_handle(handle))
 
     def _get_control(self, handle: str, automation_id: str, control_type: str) -> Any:
-        """按 automation_id 和控件类型定位子控件。"""
+        """按 automation_id 和控件类型定位子控件。
+
+        京麦 WebView 会把 `jd-id-<动态前缀>-<字段序号>` 的前缀重新生成。
+        这里先尝试精确命中，再按末尾字段序号兜底找当前可见控件。
+        """
 
         window = self._get_window(handle)
-        return window.child_window(auto_id=automation_id, control_type=control_type)
+        exact = window.child_window(auto_id=automation_id, control_type=control_type)
+        try:
+            if exact.exists(timeout=0.1):
+                return exact
+        except Exception:
+            pass
+
+        suffix = automation_id.rsplit("-", 1)[-1]
+        if not suffix:
+            return exact
+
+        candidates = self._iter_controls_by_automation_id_suffix(window, suffix, control_type)
+        if candidates:
+            return candidates[0]
+        return exact
 
     def click_text(self, handle: str, text: str) -> bool:
         """按候选评分结果点击最优控件。
@@ -409,6 +434,33 @@ class RealWindowsUIAAdapter:
         except Exception:
             return False
 
+        for control in descendants:
+            try:
+                control_text = (control.window_text() or "").strip()
+            except Exception:
+                continue
+            if control_text == text:
+                exact_matches.append(control)
+
+        if not exact_matches or index < 0 or index >= len(exact_matches):
+            return False
+
+        exact_matches.sort(key=lambda item: (item.rectangle().top, item.rectangle().left))
+        target = exact_matches[index]
+        try:
+            rect = target.rectangle()
+            x = (rect.left + rect.right) // 2
+            y = (rect.top + rect.bottom) // 2
+            if x <= 0 or y <= 0:
+                return False
+            from pywinauto import mouse
+
+            mouse.move(coords=(x, y))
+            time.sleep(0.25)
+            return True
+        except Exception:
+            return False
+
     def click_text_in_region(
         self,
         handle: str,
@@ -447,6 +499,25 @@ class RealWindowsUIAAdapter:
         filtered.sort(key=lambda item: (item["score"], item["bounds"]["top"], item["bounds"]["left"]), reverse=True)
         return self._click_candidate_snapshot(handle, filtered[0])
 
+    def click_window_ratio(self, handle: str, x_ratio: float, y_ratio: float) -> bool:
+        """按窗口相对坐标点击。"""
+
+        window = self._get_window(handle)
+        try:
+            rect = window.rectangle()
+            width = max(1, rect.right - rect.left)
+            height = max(1, rect.bottom - rect.top)
+            x = int(rect.left + width * x_ratio)
+            y = int(rect.top + height * y_ratio)
+            if x <= 0 or y <= 0:
+                return False
+            from pywinauto import mouse
+
+            mouse.click(button="left", coords=(x, y))
+            return True
+        except Exception:
+            return False
+
     def click_text_near_bounds(
         self,
         handle: str,
@@ -479,33 +550,6 @@ class RealWindowsUIAAdapter:
         filtered.sort(key=lambda item: item[0])
         return self._click_candidate_snapshot(handle, filtered[0][1])
 
-        for control in descendants:
-            try:
-                control_text = (control.window_text() or "").strip()
-            except Exception:
-                continue
-            if control_text == text:
-                exact_matches.append(control)
-
-        if not exact_matches or index < 0 or index >= len(exact_matches):
-            return False
-
-        exact_matches.sort(key=lambda item: (item.rectangle().top, item.rectangle().left))
-        target = exact_matches[index]
-        try:
-            rect = target.rectangle()
-            x = (rect.left + rect.right) // 2
-            y = (rect.top + rect.bottom) // 2
-            if x <= 0 or y <= 0:
-                return False
-            from pywinauto import mouse
-
-            mouse.move(coords=(x, y))
-            time.sleep(0.25)
-            return True
-        except Exception:
-            return False
-
     def click_image_upload_slot(self, handle: str, index: int = 0) -> bool:
         """点击 SKU 图片上传槽位。
 
@@ -528,7 +572,7 @@ class RealWindowsUIAAdapter:
             except Exception:
                 continue
 
-            if control_text != "请上传图片":
+            if control_text not in IMAGE_UPLOAD_EMPTY_TEXTS:
                 continue
             if class_name not in {"DataItem", "ListItem", "Button", "Pane"}:
                 continue
@@ -647,6 +691,16 @@ class RealWindowsUIAAdapter:
         ):
             return True
 
+        if self.click_text_in_region(
+            handle,
+            "本地上传",
+            min_x_ratio=0.75,
+            max_x_ratio=0.95,
+            min_y_ratio=0.60,
+            max_y_ratio=0.82,
+        ):
+            return True
+
         slots = self.inspect_image_upload_slots(handle)
         empty_slots = [slot for slot in slots if slot.get("status") == "empty"]
         if 0 <= index < len(empty_slots):
@@ -675,16 +729,92 @@ class RealWindowsUIAAdapter:
             return True
         return self.click_text(handle, "上传图片")
 
+    def close_image_preview_overlay(self, handle: str) -> bool:
+        """关闭图片预览遮罩。
+
+        京麦点击已上传图片时会打开预览层，右上角只有一个无文本叉号；该遮罩会挡住
+        后续上传入口。这里先用 `100%` 缩放工具条作为轻量可见性信号，再点击页面右上
+        角的关闭控件或坐标。
+        """
+
+        document_text = self.read_document_text(handle)
+        if "100%" not in document_text:
+            return False
+
+        window = self._get_window(handle)
+        try:
+            window_rect = window.rectangle()
+            descendants = window.descendants()
+        except Exception:
+            return False
+
+        candidates: list[Any] = []
+        min_left = window_rect.right - 140
+        max_bottom = window_rect.top + 140
+        for control in descendants:
+            try:
+                class_name = control.friendly_class_name()
+                text = (control.window_text() or "").strip()
+                rect = control.rectangle()
+            except Exception:
+                continue
+            if rect.left < min_left or rect.top > max_bottom:
+                continue
+            width = rect.right - rect.left
+            height = rect.bottom - rect.top
+            if width <= 0 or height <= 0 or width > 90 or height > 90:
+                continue
+            if class_name in {"Button", "Image", "Custom", "Pane"} and text in {"", "关闭", "×", "x", "X"}:
+                candidates.append(control)
+
+        candidates.sort(key=lambda item: (item.rectangle().left, item.rectangle().top), reverse=True)
+        for candidate in candidates:
+            if self._click_control_with_fallback(candidate):
+                time.sleep(0.3)
+                return True
+
+        try:
+            from pywinauto import mouse
+
+            mouse.click(coords=(window_rect.right - 55, window_rect.top + 55))
+            time.sleep(0.3)
+            return True
+        except Exception:
+            return False
+
+    def prepare_publish_form_view(self, handle: str, *, home: bool = False) -> bool:
+        """关闭残留弹层，并按需把发布表单滚回顶部。"""
+
+        try:
+            window = self._get_window(handle)
+            window.set_focus()
+            from pywinauto.keyboard import send_keys
+
+            send_keys("{ESC}", pause=0.02)
+            if home:
+                time.sleep(0.05)
+                send_keys("{HOME}", pause=0.02)
+            time.sleep(0.1)
+            return True
+        except Exception:
+            return False
+
     def select_uploaded_image_and_confirm(self, handle: str, file_path: str) -> dict[str, object]:
         """在图片管理弹层内选中上传结果并点击确认。"""
 
         file_name = Path(file_path).name
         file_stem = Path(file_path).stem
         selected = False
+        selected_by = ""
 
         for _ in range(12):
             if self.click_text(handle, file_name) or self.click_text(handle, file_stem):
                 selected = True
+                selected_by = "file_name"
+                break
+            if self._click_first_picker_image_candidate(handle):
+                selected = True
+                selected_by = "first_image_candidate"
                 break
             time.sleep(0.25)
 
@@ -700,12 +830,64 @@ class RealWindowsUIAAdapter:
                 min_y_ratio=0.86,
                 max_y_ratio=1.0,
             ):
-                return {"success": True, "selected": file_name}
+                return {"success": True, "selected": file_name, "selected_by": selected_by}
             if self.click_text(handle, "确定"):
-                return {"success": True, "selected": file_name}
+                return {"success": True, "selected": file_name, "selected_by": selected_by}
             time.sleep(0.2)
 
         return {"success": False, "error": "picker_confirm_button_not_clicked"}
+
+    def _click_first_picker_image_candidate(self, handle: str) -> bool:
+        """图片空间常只暴露缩略图，不暴露文件名；回退点击首个缩略图候选。"""
+
+        window = self._get_window(handle)
+        candidates: list[tuple[int, int, Any]] = []
+        try:
+            descendants = window.descendants()
+        except Exception:
+            return False
+
+        for control in descendants:
+            try:
+                class_name = control.friendly_class_name()
+                text = (control.window_text() or "").strip()
+                rect = control.rectangle()
+            except Exception:
+                continue
+            if not self._is_picker_image_candidate(class_name, text, rect.left, rect.top, rect.right, rect.bottom):
+                continue
+            candidates.append((rect.top, rect.left, control))
+
+        if not candidates:
+            return False
+
+        candidates.sort(key=lambda item: (item[0], item[1]))
+        return self._click_control_with_fallback(candidates[0][2])
+
+    @staticmethod
+    def _is_picker_image_candidate(
+        class_name: str,
+        text: str,
+        left: int,
+        top: int,
+        right: int,
+        bottom: int,
+    ) -> bool:
+        """判断控件是否像图片空间里的可选图片缩略图。"""
+
+        width = right - left
+        height = bottom - top
+        if left <= 0 or top <= 0 or width < 56 or height < 56:
+            return False
+        if width > 420 or height > 420:
+            return False
+        if text in {"请上传图片", "本地上传", "上传图片", "确定", "取消"}:
+            return False
+        if class_name == "Image":
+            return True
+        if class_name in {"ListItem", "DataItem", "Pane"} and not text:
+            return True
+        return False
 
     def read_document_text(self, handle: str) -> str:
         """读取窗口中最长的 Document 文本。"""
@@ -795,6 +977,24 @@ class RealWindowsUIAAdapter:
         """对已经定位到的输入控件执行写值。"""
 
         try:
+            rect = control.rectangle()
+            if rect.right > rect.left and rect.bottom > rect.top:
+                from pywinauto import mouse
+                from pywinauto.keyboard import send_keys
+
+                mouse.click(coords=((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2))
+                time.sleep(0.1)
+                send_keys("^a{BACKSPACE}", pause=0.02)
+                if self._should_paste_text(value):
+                    self._paste_text(value)
+                else:
+                    send_keys(value, with_spaces=True, pause=0.02)
+                send_keys("{TAB}", pause=0.02)
+                return True
+        except Exception:
+            pass
+
+        try:
             wrapper = control.wrapper_object()
             control.set_focus()
         except Exception:
@@ -827,38 +1027,49 @@ class RealWindowsUIAAdapter:
 
         try:
             wrapper = control.wrapper_object()
+        except Exception:
+            wrapper = None
+        try:
             control.set_focus()
         except Exception:
-            return False
-
+            pass
         try:
-            wrapper.select(value)
-            return True
+            from pywinauto.keyboard import send_keys
+
+            send_keys("{ESC}", pause=0.02)
+            time.sleep(0.1)
+            control.set_focus()
         except Exception:
+            pass
+
+        for open_method in ("center_click", "center_click_retry"):
             try:
-                wrapper.click_input()
+                if not self._click_control_center(control):
+                    continue
+                time.sleep(0.25)
                 options = self._collect_popup_options(control)
                 if self._click_option_from_popup(control, value, options):
                     return True
                 nearby_options = self._collect_nearby_text_options(control)
                 if self._click_option_from_popup(control, value, nearby_options):
                     return True
-                try:
-                    top_level = control.top_level_parent()
-                    if self.click_text(str(top_level.handle), value):
-                        return True
-                except Exception:
-                    pass
-                self._activate_control_with_fallback(control)
-                self._type_text_and_submit(value)
-                return True
             except Exception:
-                return False
+                continue
+
+        try:
+            self._activate_control_with_fallback(control)
+            self._type_text_and_submit(value)
+            return True
+        except Exception:
+            return False
 
     def _find_control_near_label(self, handle: str, label: str, target_class: str) -> Any | None:
         """按标签文本就近定位输入框或下拉框。"""
 
         window = self._get_window(handle)
+        window_rect = window.rectangle()
+        window_width = max(window_rect.right - window_rect.left, 1)
+        form_left_boundary = window_rect.left + int(window_width * 0.20)
         label_controls: list[Any] = []
         target_candidates: list[Any] = []
         direct_target_matches: list[Any] = []
@@ -872,7 +1083,7 @@ class RealWindowsUIAAdapter:
             except Exception:
                 continue
 
-            if target_class == class_name:
+            if target_class == class_name and rect.left >= form_left_boundary:
                 target_candidates.append(control)
                 if (
                     control_text
@@ -889,8 +1100,24 @@ class RealWindowsUIAAdapter:
                 and class_name != "Document"
                 and class_name != target_class
                 and len(control_text) <= 40
+                and rect.left >= form_left_boundary
             ):
                 label_controls.append(control)
+
+        strong_direct_matches = [
+            control
+            for control in direct_target_matches
+            if self._normalize_label_text((control.window_text() or "").strip()).startswith(normalized_label)
+        ]
+        if strong_direct_matches:
+            return sorted(
+                strong_direct_matches,
+                key=lambda item: (
+                    item.rectangle().top,
+                    item.rectangle().left,
+                    len((item.window_text() or "").strip()),
+                ),
+            )[0]
 
         if not label_controls or not target_candidates:
             if direct_target_matches:
@@ -903,16 +1130,6 @@ class RealWindowsUIAAdapter:
                     ),
                 )[0]
             return None
-
-        if direct_target_matches:
-            return sorted(
-                direct_target_matches,
-                key=lambda item: (
-                    item.rectangle().top,
-                    item.rectangle().left,
-                    len((item.window_text() or "").strip()),
-                ),
-            )[0]
 
         best_control: Any | None = None
         best_score: tuple[int, int, int] | None = None
@@ -957,55 +1174,48 @@ class RealWindowsUIAAdapter:
         anchor_width = max(anchor_rect.right - anchor_rect.left, 1)
         anchor_center_x = int((anchor_rect.left + anchor_rect.right) / 2)
 
-        for desktop in self._iter_desktops():
+        try:
+            descendants = anchor_control.top_level_parent().descendants()
+        except Exception:
+            descendants = []
+
+        for control in descendants:
             try:
-                windows = desktop.windows()
+                class_name = control.friendly_class_name()
+                text = (control.window_text() or "").strip()
+                rect = control.rectangle()
             except Exception:
                 continue
 
-            for window in windows:
-                try:
-                    descendants = window.descendants()
-                except Exception:
-                    continue
+            if class_name not in option_classes or not text:
+                continue
+            if "\n" in text or len(text) > 80:
+                continue
+            if rect.left == rect.right or rect.top == rect.bottom:
+                continue
+            if rect.top < anchor_rect.top - 360 or rect.top > anchor_rect.bottom + 360:
+                continue
+            option_width = rect.right - rect.left
+            option_center_x = int((rect.left + rect.right) / 2)
+            if option_width > max(int(anchor_width * 1.6), 420):
+                continue
+            if abs(option_center_x - anchor_center_x) > max(int(anchor_width * 0.8), 120):
+                continue
+            horizontal_overlap = min(rect.right, anchor_rect.right) - max(rect.left, anchor_rect.left)
+            if horizontal_overlap < 40 and abs(rect.left - anchor_rect.left) > 120:
+                continue
 
-                for control in descendants:
-                    try:
-                        class_name = control.friendly_class_name()
-                        text = (control.window_text() or "").strip()
-                        rect = control.rectangle()
-                    except Exception:
-                        continue
-
-                    if class_name not in option_classes or not text:
-                        continue
-                    if "\n" in text or len(text) > 80:
-                        continue
-                    if rect.left == rect.right or rect.top == rect.bottom:
-                        continue
-                    if rect.top < anchor_rect.top - 8 or rect.top > anchor_rect.bottom + 360:
-                        continue
-                    option_width = rect.right - rect.left
-                    option_center_x = int((rect.left + rect.right) / 2)
-                    if option_width > max(int(anchor_width * 1.6), 420):
-                        continue
-                    if abs(option_center_x - anchor_center_x) > max(int(anchor_width * 0.8), 120):
-                        continue
-                    horizontal_overlap = min(rect.right, anchor_rect.right) - max(rect.left, anchor_rect.left)
-                    if horizontal_overlap < 40 and abs(rect.left - anchor_rect.left) > 120:
-                        continue
-
-                    key = (text, class_name, rect.left, rect.top)
-                    collected[key] = {
-                        "text": text,
-                        "class_name": class_name,
-                        "bounds": {
-                            "left": rect.left,
-                            "top": rect.top,
-                            "right": rect.right,
-                            "bottom": rect.bottom,
-                        },
-                    }
+            key = (text, class_name, rect.left, rect.top)
+            collected[key] = {
+                "text": text,
+                "class_name": class_name,
+                "bounds": {
+                    "left": rect.left,
+                    "top": rect.top,
+                    "right": rect.right,
+                    "bottom": rect.bottom,
+                },
+            }
 
         return sorted(
             collected.values(),
@@ -1284,7 +1494,7 @@ class RealWindowsUIAAdapter:
 
         try:
             send_keys("^a{BACKSPACE}", pause=0.02)
-            if any(symbol in value for symbol in [".", "-", "/"]):
+            if self._should_paste_text(value):
                 self._paste_text(value)
             else:
                 send_keys(value, with_spaces=True, pause=0.02)
@@ -1309,6 +1519,134 @@ class RealWindowsUIAAdapter:
             "before_contains": value in before_text,
             "after_contains": value in after_text,
         }
+
+    def type_into_detail_editor(self, handle: str, value: str) -> dict[str, object]:
+        """定位商品详情编辑区并写入内容。
+
+        京麦详情区是 WebView 富文本区，不能只依赖“当前焦点”。这里先点击
+        `商详/代码编辑/高级编辑` 下方的编辑画布，再通过剪贴板粘贴写入。
+        """
+
+        before_text = self.read_document_text(handle)
+        focus_result = self._focus_detail_editor_body(handle)
+        if not focus_result.get("success"):
+            focus_result.update({"value": value, "after_contains": False})
+            return focus_result
+
+        typing_result = self.type_into_focused_control(handle, value, submit=False)
+        typing_result["focus_method"] = focus_result.get("method")
+        typing_result["focus_point"] = focus_result.get("point")
+        typing_result["before_contains"] = value in before_text
+        return typing_result
+
+
+    def _focus_detail_editor_body(self, handle: str) -> dict[str, object]:
+        """点击真实详情编辑画布区域，避免输入落到导航或资源弹层。"""
+
+        window = self._get_window(handle)
+        try:
+            from pywinauto import mouse
+
+            window.set_focus()
+            window_rect = window.rectangle()
+            descendants = window.descendants()
+        except Exception as exc:
+            return {"success": False, "method": "detail_editor_body", "error": str(exc)}
+
+        width = max(window_rect.right - window_rect.left, 1)
+        height = max(window_rect.bottom - window_rect.top, 1)
+
+        for control in descendants:
+            try:
+                text = (control.window_text() or "").strip()
+                rect = control.rectangle()
+            except Exception:
+                continue
+            if text not in {"请输入正文", "请补充商品描述"}:
+                continue
+            center_x = (rect.left + rect.right) // 2
+            center_y = (rect.top + rect.bottom) // 2
+            x_ratio = (center_x - window_rect.left) / width
+            y_ratio = (center_y - window_rect.top) / height
+            if not (0.35 <= x_ratio <= 0.95 and 0.65 <= y_ratio <= 0.98):
+                continue
+            try:
+                canvas_x = min(center_x + 260, window_rect.right - 180)
+                canvas_y = max(center_y - 60, window_rect.top + int(height * 0.45))
+                mouse.click(coords=(canvas_x, canvas_y))
+                time.sleep(0.25)
+                return {
+                    "success": True,
+                    "method": "placeholder_canvas",
+                    "point": {"x": canvas_x, "y": canvas_y},
+                }
+            except Exception:
+                continue
+
+        anchors: list[tuple[int, int, int, Any]] = []
+        anchor_keywords = ["商详", "代码编辑", "高级编辑", "图文编辑", "详情预览", "商品详情"]
+        for control in descendants:
+            try:
+                text = (control.window_text() or "").strip()
+                rect = control.rectangle()
+            except Exception:
+                continue
+            if not text:
+                continue
+            if any(keyword in text for keyword in anchor_keywords):
+                if "代码编辑" in text:
+                    priority = 0
+                elif "高级编辑" in text:
+                    priority = 1
+                elif "图文编辑" in text:
+                    priority = 2
+                elif "商详" in text:
+                    priority = 3
+                elif "详情预览" in text:
+                    priority = 4
+                else:
+                    priority = 5
+                anchors.append((priority, rect.top, rect.left, control))
+
+        click_points: list[tuple[int, int, str]] = [
+            (window_rect.left + int(width * 0.405), window_rect.top + int(height * 0.323), "ratio_code_body_top"),
+        ]
+        for _, _, _, control in sorted(anchors, key=lambda item: (item[0], item[1], item[2])):
+            try:
+                rect = control.rectangle()
+                text = (control.window_text() or "").strip()
+            except Exception:
+                continue
+            if "详情预览" in text:
+                click_points.append((rect.right + 120, rect.bottom + 120, "preview_anchor"))
+            elif "商详" in text:
+                click_points.append((rect.left + 20, rect.bottom + 120, "detail_anchor"))
+            elif any(keyword in text for keyword in ["代码编辑", "高级编辑", "图文编辑"]):
+                click_points.append((rect.left - 140, rect.bottom + 90, "mode_anchor"))
+            elif "商品详情" in text:
+                click_points.append((rect.left + 360, rect.bottom + 160, "section_anchor"))
+
+        click_points.extend(
+            [
+                (window_rect.left + int(width * 0.405), window_rect.top + int(height * 0.815), "ratio_code_body_bottom"),
+                (window_rect.left + int(width * 0.62), window_rect.top + int(height * 0.72), "ratio_body_primary"),
+                (window_rect.left + int(width * 0.52), window_rect.top + int(height * 0.68), "ratio_body_secondary"),
+            ]
+        )
+
+        for raw_x, raw_y, method in click_points:
+            x = max(window_rect.left + int(width * 0.38), min(raw_x, window_rect.right - 120))
+            y = max(window_rect.top + int(height * 0.45), min(raw_y, window_rect.bottom - 120))
+            if x <= 0 or y <= 0:
+                continue
+            try:
+                mouse.click(coords=(x, y))
+                time.sleep(0.25)
+                return {"success": True, "method": method, "point": {"x": x, "y": y}}
+            except Exception:
+                continue
+
+        return {"success": False, "method": "detail_editor_body", "error": "no_click_point_succeeded"}
 
     def _paste_text(self, value: str) -> None:
         """通过剪贴板粘贴文本，避免小数点在键盘注入时丢失。"""
@@ -1393,8 +1731,17 @@ class RealWindowsUIAAdapter:
                 continue
             self._merge_image_upload_slot_snapshot(snapshots, normalized_snapshot)
 
-        snapshots.sort(key=lambda item: (item["bounds"]["top"], item["bounds"]["left"], item["class_name"]))
+        snapshots.sort(key=self._image_upload_slot_sort_key)
         return snapshots
+
+    @staticmethod
+    def _image_upload_slot_sort_key(item: dict[str, object]) -> tuple[int, int, int, str]:
+        """同一 SKU 行内按从左到右排序，避免方图/透图因控件 top 差异颠倒。"""
+
+        bounds = item["bounds"]
+        top = int(bounds["top"])
+        left = int(bounds["left"])
+        return (top // 150, left, top, str(item.get("class_name") or ""))
 
     @staticmethod
     def _is_image_upload_slot_candidate(
@@ -1407,23 +1754,23 @@ class RealWindowsUIAAdapter:
     ) -> bool:
         """判断控件是否属于京麦 SKU 图片上传槽区域。"""
 
-        if left < 950 or right <= left or bottom <= top:
+        if left < 600 or right <= left or bottom <= top:
             return False
 
-        # 真实页面中上传槽可能出现在 220~340，也可能在页面下方旧布局的 650~850。
-        in_primary_band = 180 <= top <= 420 and 180 <= bottom <= 420
+        # 真实页面中上传槽可能出现在 300~460，也可能在页面下方旧布局的 650~850。
+        in_primary_band = 280 <= top <= 470 and 280 <= bottom <= 470
         in_legacy_band = 650 <= top <= 850 and 650 <= bottom <= 850
         if not (in_primary_band or in_legacy_band):
             return False
 
-        if class_name == "DataItem" and text == "请上传图片":
+        if class_name == "DataItem" and text in IMAGE_UPLOAD_EMPTY_TEXTS:
             return True
         if class_name in {"ListItem", "ListBox"}:
             return True
         if class_name == "Image":
             # 顶部标题旁的小提示 icon 不应算上传槽。
             return top >= 220
-        if class_name == "Button" and text in {"请上传图片", "+"}:
+        if class_name == "Button" and text in IMAGE_UPLOAD_EMPTY_TEXTS | {"+"}:
             return True
         return False
 
@@ -1448,13 +1795,13 @@ class RealWindowsUIAAdapter:
         normalized_class_name = class_name
         normalized_text = text
 
-        if text == "请上传图片":
+        if text in IMAGE_UPLOAD_EMPTY_TEXTS:
             # 过宽的 DataItem 往往是整行容器，不直接作为单个槽位返回。
             if class_name == "DataItem" and width > 450:
                 return None
             status = "empty"
             normalized_class_name = "DataItem"
-            normalized_text = "请上传图片"
+            normalized_text = text
         elif class_name in {"ListItem", "ListBox", "Button", "Pane"}:
             # 京麦空槽常暴露为 ListItem/ListBox，文本可能为空。
             if width < 60 or height < 60:
@@ -1522,9 +1869,15 @@ class RealWindowsUIAAdapter:
             snapshot_area = (right - left) * (bottom - top)
             candidate_area = candidate_width * candidate_height
 
-            # 同槽位里若出现 empty 与 filled 冲突，优先保留 empty，
-            # 因为这通常意味着空槽容器 + 内部加号/占位图标并存。
+            # 同槽位里若出现 empty 与 filled 冲突，小图标仍按空槽处理；
+            # 大图则更可能是上传后缩略图，应升级为 filled。
+            if snapshot_status == "empty" and candidate_status == "filled" and candidate_area <= 48 * 48:
+                return
             if snapshot_status == "empty" and candidate_status == "filled":
+                snapshot["class_name"] = candidate["class_name"]
+                snapshot["text"] = candidate["text"]
+                snapshot["status"] = candidate_status
+                snapshot["bounds"] = candidate["bounds"]
                 return
             if snapshot_status == "filled" and candidate_status == "empty":
                 snapshot["class_name"] = candidate["class_name"]
@@ -1611,15 +1964,15 @@ class RealWindowsUIAAdapter:
             except Exception:
                 pass
 
-            direct_result = self._try_fill_dialog_filename(dialog, resolved_path, handle)
-            if direct_result.get("success"):
-                direct_result.update({"backend": backend, "title": title, "class_name": candidate["class_name"]})
-                return direct_result
-
             shortcut_result = self._try_navigate_dialog_via_shortcuts(dialog, resolved_path, handle)
             if shortcut_result.get("success"):
                 shortcut_result.update({"backend": backend, "title": title, "class_name": candidate["class_name"]})
                 return shortcut_result
+
+            direct_result = self._try_fill_dialog_filename(dialog, resolved_path, handle)
+            if direct_result.get("success"):
+                direct_result.update({"backend": backend, "title": title, "class_name": candidate["class_name"]})
+                return direct_result
 
         return {
             "success": False,
@@ -1888,7 +2241,8 @@ class RealWindowsUIAAdapter:
         """显式点击目标文件项并再次提交，处理仅进入目录但未真正选中文件的情况。"""
 
         candidates: list[tuple[int, int, Any]] = []
-        file_stem = Path(file_name).stem.lower()
+        expected_name = self._normalize_dialog_file_item_text(file_name)
+        expected_stem = self._normalize_dialog_file_item_text(Path(file_name).stem)
 
         for control in dialog.descendants():
             try:
@@ -1900,8 +2254,12 @@ class RealWindowsUIAAdapter:
 
             if not text:
                 continue
-            normalized_text = text.lower()
-            if normalized_text != file_name.lower() and normalized_text != file_stem and not normalized_text.startswith(file_stem):
+            normalized_text = self._normalize_dialog_file_item_text(text)
+            if (
+                normalized_text != expected_name
+                and normalized_text != expected_stem
+                and not normalized_text.startswith(expected_stem)
+            ):
                 continue
             if class_name not in {"ListItem", "DataItem", "Text", "TreeItem"}:
                 continue
@@ -1928,6 +2286,16 @@ class RealWindowsUIAAdapter:
                 return True
 
         return False
+
+    @staticmethod
+    def _normalize_dialog_file_item_text(value: str) -> str:
+        """归一化资源管理器图标视图里的文件名文本。
+
+        大图标模式会把 `transparent-probe.png` 拆成多行展示，UIA 暴露出来的文本
+        可能包含换行或空白。匹配前去掉空白，避免文件已可见却无法点击提交。
+        """
+
+        return re.sub(r"\s+", "", value).lower()
 
     def inspect_controls_by_automation_id(self, handle: str, automation_id: str) -> list[dict[str, object]]:
         """读取指定 automation_id 的当前控件快照。"""
@@ -1965,7 +2333,50 @@ class RealWindowsUIAAdapter:
                 continue
             if current_id == automation_id:
                 matches.append(control)
+        if matches:
+            return self._sort_controls_visible_first(matches)
+
+        suffix = automation_id.rsplit("-", 1)[-1]
+        if suffix:
+            return self._iter_controls_by_automation_id_suffix(window, suffix, None)
         return matches
+
+    def _iter_controls_by_automation_id_suffix(
+        self,
+        window: Any,
+        suffix: str,
+        control_type: str | None,
+    ) -> list[Any]:
+        """按动态 automation_id 后缀枚举候选控件。"""
+
+        matches: list[Any] = []
+        for control in window.descendants():
+            try:
+                current_id = control.element_info.automation_id or ""
+                class_name = control.friendly_class_name()
+                rect = control.rectangle()
+            except Exception:
+                continue
+            if not current_id.endswith(f"-{suffix}"):
+                continue
+            if control_type is not None and class_name != control_type:
+                continue
+            if rect.right <= rect.left or rect.bottom <= rect.top:
+                continue
+            matches.append(control)
+        return self._sort_controls_visible_first(matches)
+
+    @staticmethod
+    def _sort_controls_visible_first(controls: list[Any]) -> list[Any]:
+        def sort_key(control: Any) -> tuple[int, int, int]:
+            try:
+                rect = control.rectangle()
+                visible = rect.right > rect.left and rect.bottom > rect.top
+                return (0 if visible else 1, rect.top, rect.left)
+            except Exception:
+                return (1, 0, 0)
+
+        return sorted(controls, key=sort_key)
 
     def _activate_control_with_fallback(self, control: Any) -> dict[str, object]:
         """激活目标控件并返回成功方法。"""
@@ -2008,6 +2419,20 @@ class RealWindowsUIAAdapter:
             return {"success": True, "method": "mouse.click"}
         except Exception:
             return {"success": False, "method": "all_failed"}
+
+    def _click_control_center(self, control: Any) -> bool:
+        """直接点击控件可见矩形中心，避开 WebView wrapper 阻塞。"""
+
+        try:
+            rect = control.rectangle()
+            if rect.right <= rect.left or rect.bottom <= rect.top:
+                return False
+            from pywinauto import mouse
+
+            mouse.click(coords=((rect.left + rect.right) // 2, (rect.top + rect.bottom) // 2))
+            return True
+        except Exception:
+            return False
 
     def _click_control_with_fallback(self, control: Any) -> bool:
         """对单个控件执行多级点击回退。"""

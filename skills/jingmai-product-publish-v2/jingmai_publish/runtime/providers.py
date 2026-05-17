@@ -44,6 +44,41 @@ class MemoryProvider(Protocol):
         """Return matching memory items."""
 
 
+class VisionProvider(Protocol):
+    """Phase C: 视觉分析能力 — 截图分析、元素定位、前后对比。
+
+    对应 BL-092 OllamaVisionProvider，但协议层与具体实现解耦。
+    """
+
+    def analyze_screenshot(self, image_path: str, prompt: str | None = None) -> Any:
+        """分析单张截图，返回 VisionAnalysis 等价结构。"""
+
+    def locate_element(self, image_path: str, description: str) -> Any:
+        """在截图中定位指定元素，返回 VisionAnalysis 含 bbox/point。"""
+
+    def compare_screenshots(
+        self, before_path: str, after_path: str, prompt: str | None = None
+    ) -> Any:
+        """对比两张截图，识别变化。"""
+
+
+class GroundingProvider(Protocol):
+    """Phase C: 三路元素定位仲裁 — UIA/Vision/Anchor 候选融合。
+
+    对应 BL-095 ThreeWayGroundingProvider。
+    """
+
+    def ground(
+        self,
+        target: str,
+        window_handle: str = "",
+        screenshot_path: str | None = None,
+        page_text: str = "",
+        target_type: str = "automation_id",
+    ) -> Any:
+        """执行三路 grounding 仲裁，返回 GroundingResult。"""
+
+
 @dataclass(slots=True)
 class ProviderRegistry:
     """Lightweight provider registry for the host runtime."""
@@ -53,6 +88,8 @@ class ProviderRegistry:
     persistence: PersistenceProvider | None = None
     channel: ChannelProvider | None = None
     memory: MemoryProvider | None = None
+    vision: VisionProvider | None = None
+    grounding: GroundingProvider | None = None
     extras: dict[str, Any] = field(default_factory=dict)
 
     def snapshot(self) -> dict[str, Any]:
@@ -64,5 +101,7 @@ class ProviderRegistry:
             "persistence": type(self.persistence).__name__ if self.persistence is not None else None,
             "channel": type(self.channel).__name__ if self.channel is not None else None,
             "memory": type(self.memory).__name__ if self.memory is not None else None,
+            "vision": type(self.vision).__name__ if self.vision is not None else None,
+            "grounding": type(self.grounding).__name__ if self.grounding is not None else None,
             "extras": sorted(self.extras.keys()),
         }

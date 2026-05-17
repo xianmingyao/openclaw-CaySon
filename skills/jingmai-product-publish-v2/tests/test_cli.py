@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from jingmai_publish import cli
 
 
@@ -22,6 +24,31 @@ def test_build_parser_contains_new_commands_and_steps():
 
     cleanup_args = parser.parse_args(["cleanup-runtime-logs"])
     assert cleanup_args.command == "cleanup-runtime-logs"
+
+    draft_args = parser.parse_args(
+        [
+            "run-draft-e2e",
+            "--excel",
+            "demo.xlsx",
+            "--main-image-path",
+            "main.png",
+            "--transparent-image-path",
+            "transparent.png",
+            "--required-attr",
+            "五孔",
+            "--current",
+            "10A",
+            "--factory-inventory",
+            "10",
+        ]
+    )
+    assert draft_args.command == "run-draft-e2e"
+    assert draft_args.excel == "demo.xlsx"
+    assert draft_args.main_image_path == "main.png"
+    assert draft_args.transparent_image_path == "transparent.png"
+    assert draft_args.required_attr == "五孔"
+    assert draft_args.current == "10A"
+    assert draft_args.factory_inventory == "10"
 
     desktop_args = parser.parse_args(
         [
@@ -175,6 +202,126 @@ def test_handle_cleanup_runtime_logs(monkeypatch):
 
     assert cli.handle_cleanup_runtime_logs(".") == 0
     fake_service.cleanup.assert_called_once()
+
+
+def test_handle_run_draft_e2e(monkeypatch):
+    fake_settings = MagicMock()
+    fake_settings.screenshot_dir = "logs/screenshots"
+    fake_engine = MagicMock()
+    fake_session = MagicMock()
+    fake_orchestrator = MagicMock()
+    fake_orchestrator.run.return_value = {"success": True, "mode": "draft"}
+    captured = {}
+
+    class DummySessionFactory:
+        def __call__(self):
+            return self
+
+        def __enter__(self):
+            return fake_session
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    def fake_orchestrator_factory(session, screenshot_dir, tuning):
+        captured["session"] = session
+        captured["screenshot_dir"] = screenshot_dir
+        captured["tuning"] = tuning
+        return fake_orchestrator
+
+    monkeypatch.setattr(cli, "load_settings", lambda root: fake_settings)
+    monkeypatch.setattr(cli, "create_engine_from_settings", lambda settings: fake_engine)
+    monkeypatch.setattr(cli, "create_session_factory", lambda engine: DummySessionFactory())
+    monkeypatch.setattr(cli, "DraftE2EOrchestrator", fake_orchestrator_factory)
+
+    exit_code = cli.handle_run_draft_e2e(
+        excel="demo.xlsx",
+        item_index=0,
+        store_id="store-a",
+        required_attr="五孔",
+        current="10A",
+        factory_inventory="10",
+        main_image_path="main.png",
+        transparent_image_path="transparent.png",
+        detail_content="<p>详情</p>",
+        detail_content_file=None,
+        rated_voltage="220V",
+        cable_length="1.8m",
+        sale_unit="件",
+        package_type="普通商品",
+        delivery_mark="普通品",
+        package_list="插座*1",
+        warranty_period="365",
+        debug=True,
+        window_keywords=["jd_"],
+        preferred_classes=["Button"],
+        click_aliases={"发布商品": ["发布"]},
+        root=".",
+    )
+
+    assert exit_code == 0
+    assert captured["session"] is fake_session
+    assert captured["screenshot_dir"] == "logs/screenshots"
+    assert captured["tuning"].window_keywords == ["jd_"]
+    options = fake_orchestrator.run.call_args.args[0]
+    assert options.excel_path == "demo.xlsx"
+    assert options.main_image_path == "main.png"
+    assert options.transparent_image_path == "transparent.png"
+    assert options.debug is True
+
+
+def test_handle_run_draft_e2e_reports_database_error(monkeypatch, capsys):
+    fake_settings = MagicMock()
+    fake_settings.screenshot_dir = "logs/screenshots"
+    fake_engine = MagicMock()
+    fake_session = MagicMock()
+    fake_orchestrator = MagicMock()
+    fake_orchestrator.run.side_effect = SQLAlchemyError("missing table")
+
+    class DummySessionFactory:
+        def __call__(self):
+            return self
+
+        def __enter__(self):
+            return fake_session
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    monkeypatch.setattr(cli, "load_settings", lambda root: fake_settings)
+    monkeypatch.setattr(cli, "create_engine_from_settings", lambda settings: fake_engine)
+    monkeypatch.setattr(cli, "create_session_factory", lambda engine: DummySessionFactory())
+    monkeypatch.setattr(cli, "DraftE2EOrchestrator", lambda *args, **kwargs: fake_orchestrator)
+
+    exit_code = cli.handle_run_draft_e2e(
+        excel="demo.xlsx",
+        item_index=0,
+        store_id=None,
+        required_attr=None,
+        current=None,
+        factory_inventory=None,
+        main_image_path="main.png",
+        transparent_image_path="transparent.png",
+        detail_content=None,
+        detail_content_file=None,
+        rated_voltage=None,
+        cable_length=None,
+        sale_unit=None,
+        package_type="普通商品",
+        delivery_mark="普通品",
+        package_list=None,
+        warranty_period="365",
+        debug=False,
+        window_keywords=[],
+        preferred_classes=[],
+        click_aliases={},
+        root=".",
+    )
+
+    assert exit_code == 1
+    output = capsys.readouterr().out
+    assert '"code": "database_error"' in output
+    assert "init-db" in output
 
 
 def test_handle_run_desktop_check(monkeypatch):

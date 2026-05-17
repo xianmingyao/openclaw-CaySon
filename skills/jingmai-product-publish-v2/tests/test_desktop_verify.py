@@ -103,7 +103,7 @@ def test_desktop_verification_service_t4_requires_fields():
         service.run("t4", debug=False, title="标题")
         assert False, "应当抛出 ValueError"
     except ValueError as exc:
-        assert "required_attribute" in str(exc)
+        assert "requires" in str(exc)
 
 
 def test_desktop_verification_service_t5_probe():
@@ -191,6 +191,94 @@ def test_desktop_verification_service_t5_input_probe():
     assert result["t5_input_probe"]["typing"]["after_contains"] is True
     assert result["t5_input_probe"]["before_snapshot"][0]["text"] == "请输入"
     assert result["t5_input_probe"]["after_snapshot"][0]["text"] == "12.50"
+
+
+def test_desktop_verification_service_t5_input_probe_resolves_dynamic_id():
+    fake_workflow = MagicMock()
+    fake_adapter = MagicMock()
+    fake_adapter.build_sku_probe.return_value = {
+        "dynamic_controls": [
+            {
+                "automation_id": "jd-id-9983-328",
+                "class_name": "Edit",
+                "texts": ["电流"],
+                "rects": [(713, 713, 918, 746)],
+                "seen_count": 3,
+            }
+        ]
+    }
+    fake_adapter.inspect_controls_by_automation_id.side_effect = [
+        [{"automation_id": "jd-id-9983-328", "text": "电流"}],
+        [{"automation_id": "jd-id-9983-328", "text": "10A"}],
+    ]
+    fake_adapter.activate_cell_by_automation_id.return_value = {"success": True}
+    fake_adapter.type_into_focused_control.return_value = {"success": True, "after_contains": True}
+    fake_workflow.window_manager.adapter = fake_adapter
+    fake_workflow.run_t1_attach_window.return_value = WorkflowStepResult(
+        step_id="T1",
+        success=True,
+        page_state="jingmai_home",
+        window_handle="2002",
+        screenshot_path="a.png",
+        message="ok",
+    )
+
+    service = DesktopVerificationService.__new__(DesktopVerificationService)
+    service.workflow_service = fake_workflow
+    result = service.run("t5-input-probe", debug=False, sku_cell_id="jd-id-8403-328", sku_value="10A")
+
+    assert result["t5_input_probe"]["success"] is True
+    assert result["t5_input_probe"]["resolved_automation_id"] == "jd-id-9983-328"
+    fake_adapter.activate_cell_by_automation_id.assert_called_with("2002", "jd-id-9983-328")
+
+
+def test_desktop_verification_service_t5_required_fields():
+    fake_workflow = MagicMock()
+    fake_adapter = MagicMock()
+    fake_adapter.build_sku_probe.return_value = {"dynamic_controls": []}
+    fake_adapter.inspect_controls_by_automation_id.side_effect = [
+        [{"automation_id": "jd-id-8403-328", "text": "电流"}],
+        [{"automation_id": "jd-id-8403-328", "text": "10A"}],
+        [{"automation_id": "jd-id-8403-319", "text": "请输入"}],
+        [{"automation_id": "jd-id-8403-319", "text": "0.5"}],
+    ]
+    fake_adapter.activate_cell_by_automation_id.return_value = {"success": True}
+    fake_adapter.type_into_focused_control.return_value = {"success": True, "after_contains": True}
+    fake_workflow.window_manager.adapter = fake_adapter
+    fake_workflow.run_t1_attach_window.return_value = WorkflowStepResult(
+        step_id="T1",
+        success=True,
+        page_state="jingmai_home",
+        window_handle="2002",
+        screenshot_path="a.png",
+        message="ok",
+    )
+    fake_workflow.run_t5_fill_required_fields.return_value = WorkflowStepResult(
+        step_id="T5-REQUIRED-FIELDS",
+        success=True,
+        page_state="required_fields_completed",
+        window_handle="2002",
+        screenshot_path="b.png",
+        message="ok",
+    )
+
+    service = DesktopVerificationService.__new__(DesktopVerificationService)
+    service.workflow_service = fake_workflow
+    result = service.run("t5-required-fields", debug=False, current="10A", weight="0.5")
+
+    assert result["t5_required_fields"]["success"] is True
+    fake_workflow.run_t5_fill_required_fields.assert_called_once_with(
+        "2002",
+        market_price=None,
+        purchase_price=None,
+        jd_price=None,
+        current="10A",
+        weight="0.5",
+        length_mm=None,
+        width_mm=None,
+        height_mm=None,
+        factory_inventory=None,
+    )
 
 
 def test_desktop_verification_service_t5_row_probe():

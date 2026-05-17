@@ -51,6 +51,9 @@ class DesktopAutomationAdapter(Protocol):
     ) -> bool:
         """在窗口相对区域内点击指定文本控件。"""
 
+    def click_window_ratio(self, handle: str, x_ratio: float, y_ratio: float) -> bool:
+        """按窗口相对坐标点击。"""
+
     def click_text_near_bounds(
         self,
         handle: str,

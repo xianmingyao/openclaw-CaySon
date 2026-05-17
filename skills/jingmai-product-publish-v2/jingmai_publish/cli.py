@@ -6,12 +6,16 @@ import argparse
 import json
 from pathlib import Path
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from jingmai_publish.bootstrap import init_database
 from jingmai_publish.config import load_settings
 from jingmai_publish.db.session import create_engine_from_settings, create_session_factory
 from jingmai_publish.desktop import UIATuningConfig
 from jingmai_publish.services import (
     DesktopVerificationService,
+    DraftE2EOptions,
+    DraftE2EOrchestrator,
     FeishuPathChannelService,
     ImportPipelineService,
     LocalPathChannelService,
@@ -31,6 +35,7 @@ DESKTOP_STEPS = [
     "t5-row-probe",
     "t5-market-probe",
     "t5-first-row",
+    "t5-required-fields",
     "t5-dimension-probe",
     "t5-weight-probe",
     "t6-probe",
@@ -75,6 +80,35 @@ def build_parser() -> argparse.ArgumentParser:
     cleanup_parser = subparsers.add_parser("cleanup-runtime-logs", help="清理过期日志与截图")
     cleanup_parser.add_argument("--root", default=".", help="项目根目录")
 
+    draft_e2e_parser = subparsers.add_parser("run-draft-e2e", help="从 Excel 单行执行到京麦保存草稿")
+    draft_e2e_parser.add_argument("--excel", required=True, help="本地 Excel 文件路径")
+    draft_e2e_parser.add_argument("--item-index", type=int, default=0, help="导入结果中的商品索引，默认第一条")
+    draft_e2e_parser.add_argument("--store-id", default=None, help="店铺标识")
+    draft_e2e_parser.add_argument("--required-attr", default=None, help="T4 最小必填属性值")
+    draft_e2e_parser.add_argument("--current", default=None, help="T5 SKU 电流")
+    draft_e2e_parser.add_argument("--factory-inventory", default=None, help="T5 厂直库存")
+    draft_e2e_parser.add_argument("--main-image-path", required=True, help="T6 主图本地路径")
+    draft_e2e_parser.add_argument("--transparent-image-path", required=True, help="T6 透图本地路径")
+    draft_e2e_parser.add_argument("--detail-content", default=None, help="T6 详情内容")
+    draft_e2e_parser.add_argument("--detail-content-file", default=None, help="T6 详情内容文件")
+    draft_e2e_parser.add_argument("--rated-voltage", default=None, help="T4 扩展项：额定电压")
+    draft_e2e_parser.add_argument("--cable-length", default=None, help="T4 扩展项：电缆长度")
+    draft_e2e_parser.add_argument("--sale-unit", default=None, help="T7 销售单位")
+    draft_e2e_parser.add_argument("--package-type", default="普通商品", help="T7 商品包装")
+    draft_e2e_parser.add_argument("--delivery-mark", default="普通品", help="T7 特殊发货时效标记")
+    draft_e2e_parser.add_argument("--package-list", default=None, help="T7 包装清单")
+    draft_e2e_parser.add_argument("--warranty-period", default="365", help="T7 质保期")
+    draft_e2e_parser.add_argument("--debug", action="store_true", help="输出调试信息")
+    draft_e2e_parser.add_argument("--window-keyword", action="append", default=[], help="窗口标题关键词")
+    draft_e2e_parser.add_argument("--preferred-class", action="append", default=[], help="控件类优先级")
+    draft_e2e_parser.add_argument(
+        "--click-alias",
+        action="append",
+        default=[],
+        help="点击文本别名，格式：目标文本=别名1,别名2",
+    )
+    draft_e2e_parser.add_argument("--root", default=".", help="项目根目录")
+
     desktop_check_parser = subparsers.add_parser("run-desktop-check", help="执行 T1~T8 实机探针/闭环")
     desktop_check_parser.add_argument("--step", default="both", choices=DESKTOP_STEPS, help="验证步骤")
     desktop_check_parser.add_argument("--debug", action="store_true", help="输出调试信息")
@@ -98,10 +132,13 @@ def build_parser() -> argparse.ArgumentParser:
     desktop_check_parser.add_argument("--market-price", default=None, help="T5 市场价")
     desktop_check_parser.add_argument("--purchase-price", default=None, help="T5 采购价")
     desktop_check_parser.add_argument("--jd-price", default=None, help="T5 京东价")
+    desktop_check_parser.add_argument("--current", default=None, help="T5 SKU 电流")
     desktop_check_parser.add_argument("--weight", default=None, help="T5/T7 重量")
+    desktop_check_parser.add_argument("--stock", default=None, help="T5 SKU 库存")
     desktop_check_parser.add_argument("--length-mm", default=None, help="T5 长度")
     desktop_check_parser.add_argument("--width-mm", default=None, help="T5 宽度")
     desktop_check_parser.add_argument("--height-mm", default=None, help="T5 高度")
+    desktop_check_parser.add_argument("--factory-inventory", default=None, help="T5 厂直库存")
     desktop_check_parser.add_argument("--rated-voltage", default=None, help="T4 扩展项：额定电压")
     desktop_check_parser.add_argument("--cable-length", default=None, help="T4 扩展项：电缆长度")
     desktop_check_parser.add_argument("--sale-unit", default=None, help="T7 销售单位")
@@ -112,6 +149,9 @@ def build_parser() -> argparse.ArgumentParser:
     desktop_check_parser.add_argument("--image-path", default=None, help="T6 主图或通用图片路径")
     desktop_check_parser.add_argument("--transparent-image-path", default=None, help="T6 透图路径")
     desktop_check_parser.add_argument("--detail-content", default=None, help="T6 详情内容")
+    desktop_check_parser.add_argument("--detail-html", default=None, help="T6 详情 HTML 内容")
+    desktop_check_parser.add_argument("--detail-content-file", default=None, help="T6 详情 HTML/文本文件")
+    desktop_check_parser.add_argument("--jd-item-url", default=None, help="T6 从京东商品链接抓取图文详情")
     desktop_check_parser.add_argument("--root", default=".", help="项目根目录")
 
     return parser
@@ -185,6 +225,78 @@ def handle_cleanup_runtime_logs(root: str) -> int:
     return 0
 
 
+def handle_run_draft_e2e(
+    *,
+    excel: str,
+    item_index: int,
+    store_id: str | None,
+    required_attr: str | None,
+    current: str | None,
+    factory_inventory: str | None,
+    main_image_path: str,
+    transparent_image_path: str,
+    detail_content: str | None,
+    detail_content_file: str | None,
+    rated_voltage: str | None,
+    cable_length: str | None,
+    sale_unit: str | None,
+    package_type: str,
+    delivery_mark: str,
+    package_list: str | None,
+    warranty_period: str,
+    debug: bool,
+    window_keywords: list[str],
+    preferred_classes: list[str],
+    click_aliases: dict[str, list[str]],
+    root: str,
+) -> int:
+    settings = load_settings(root)
+    engine = create_engine_from_settings(settings)
+    session_factory = create_session_factory(engine)
+    tuning = UIATuningConfig(
+        window_keywords=window_keywords or ["京麦", "Jingmai"],
+        preferred_classes=preferred_classes or ["Button", "MenuItem", "Hyperlink", "SplitButton"],
+        click_text_aliases=click_aliases,
+    )
+    with session_factory() as session:
+        orchestrator = DraftE2EOrchestrator(session, screenshot_dir=str(settings.screenshot_dir), tuning=tuning)
+        try:
+            result = orchestrator.run(
+                DraftE2EOptions(
+                    excel_path=excel,
+                    item_index=item_index,
+                    store_id=store_id,
+                    required_attr=required_attr,
+                    current=current,
+                    factory_inventory=factory_inventory,
+                    main_image_path=main_image_path,
+                    transparent_image_path=transparent_image_path,
+                    detail_content=detail_content,
+                    detail_content_file=detail_content_file,
+                    rated_voltage=rated_voltage,
+                    cable_length=cable_length,
+                    sale_unit=sale_unit,
+                    package_type=package_type,
+                    delivery_mark=delivery_mark,
+                    package_list=package_list,
+                    warranty_period=warranty_period,
+                    debug=debug,
+                )
+            )
+        except SQLAlchemyError as exc:
+            result = {
+                "success": False,
+                "mode": "draft",
+                "error": {
+                    "code": "database_error",
+                    "message": str(exc),
+                    "hint": "请先确认数据库已初始化；开发环境可运行 `python cli.py init-db --root .`。",
+                },
+            }
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0 if result.get("success") else 1
+
+
 def _parse_click_aliases(raw_aliases: list[str]) -> dict[str, list[str]]:
     mapping: dict[str, list[str]] = {}
     for raw in raw_aliases:
@@ -228,6 +340,31 @@ def main(argv: list[str] | None = None) -> int:
         return handle_run_feishu_path_task(args.payload_file, args.mode, args.store_id, args.root)
     if args.command == "cleanup-runtime-logs":
         return handle_cleanup_runtime_logs(args.root)
+    if args.command == "run-draft-e2e":
+        return handle_run_draft_e2e(
+            excel=args.excel,
+            item_index=args.item_index,
+            store_id=args.store_id,
+            required_attr=args.required_attr,
+            current=args.current,
+            factory_inventory=args.factory_inventory,
+            main_image_path=args.main_image_path,
+            transparent_image_path=args.transparent_image_path,
+            detail_content=args.detail_content,
+            detail_content_file=args.detail_content_file,
+            rated_voltage=args.rated_voltage,
+            cable_length=args.cable_length,
+            sale_unit=args.sale_unit,
+            package_type=args.package_type,
+            delivery_mark=args.delivery_mark,
+            package_list=args.package_list,
+            warranty_period=args.warranty_period,
+            debug=args.debug,
+            window_keywords=args.window_keyword,
+            preferred_classes=args.preferred_class,
+            click_aliases=_parse_click_aliases(args.click_alias),
+            root=args.root,
+        )
     if args.command == "run-desktop-check":
         return handle_run_desktop_check(
             args.step,
@@ -248,10 +385,13 @@ def main(argv: list[str] | None = None) -> int:
             market_price=args.market_price,
             purchase_price=args.purchase_price,
             jd_price=args.jd_price,
+            current=args.current,
             weight=args.weight,
+            stock=args.stock,
             length_mm=args.length_mm,
             width_mm=args.width_mm,
             height_mm=args.height_mm,
+            factory_inventory=args.factory_inventory,
             rated_voltage=args.rated_voltage,
             cable_length=args.cable_length,
             sale_unit=args.sale_unit,
@@ -262,6 +402,9 @@ def main(argv: list[str] | None = None) -> int:
             image_path=args.image_path,
             transparent_image_path=args.transparent_image_path,
             detail_content=args.detail_content,
+            detail_html=args.detail_html,
+            detail_content_file=args.detail_content_file,
+            jd_item_url=args.jd_item_url,
         )
 
     parser.error(f"unsupported command: {args.command}")

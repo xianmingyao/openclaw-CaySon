@@ -77,6 +77,13 @@ class Settings:
     log_retention_days: int
     screenshot_dir: Path
     screenshot_enabled: bool
+    # ── Phase C: Ollama Vision 配置 ──
+    ollama_base_url: str
+    ollama_model: str
+    vision_enabled: bool
+    vision_timeout: int
+    vllm_base_url: str | None
+    vllm_model: str | None
 
     @property
     def mysql_url(self) -> str:
@@ -129,4 +136,11 @@ def load_settings(root_dir: str | Path | None = None) -> Settings:
         log_retention_days=3,
         screenshot_dir=screenshot_dir,
         screenshot_enabled=_get_bool("SCREENSHOT_ENABLED", True),
+        # Phase C: Ollama Vision
+        ollama_base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+        ollama_model=os.getenv("OLLAMA_MODEL", "qwen3-vl:8b"),
+        vision_enabled=_get_bool("VISION_ENABLED", True),
+        vision_timeout=_get_int("LLM_TIMEOUT", 120),
+        vllm_base_url=os.getenv("VLLM_BASE_URL"),
+        vllm_model=os.getenv("VLLM_MODEL"),
     )

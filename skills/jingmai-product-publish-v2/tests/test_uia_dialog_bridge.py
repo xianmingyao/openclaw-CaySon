@@ -79,6 +79,47 @@ def test_try_navigate_dialog_via_shortcuts_navigates_directory_then_selects_file
     assert "select:sample.png" in calls
 
 
+def test_upload_dialog_candidate_prefers_address_bar_directory_navigation(monkeypatch):
+    adapter = RealWindowsUIAAdapter(screenshot_dir="logs/screenshots")
+    calls: list[str] = []
+
+    class FakeDialog:
+        def wait(self, state: str, timeout: int):
+            calls.append(f"wait:{state}:{timeout}")
+
+        def set_focus(self):
+            calls.append("focus")
+
+    class FakeDesktop:
+        def __init__(self, backend: str):
+            self.backend = backend
+
+        def window(self, handle: int):
+            calls.append(f"window:{self.backend}:{handle}")
+            return FakeDialog()
+
+    def fake_navigate(dialog, resolved_path: str, dialog_handle=None):
+        calls.append(f"navigate:{resolved_path}:{dialog_handle}")
+        return {"success": True, "file_path": resolved_path, "method": "alt_d_directory_then_select"}
+
+    def fake_fill(dialog, resolved_path: str, dialog_handle=None):
+        raise AssertionError("should prefer address-bar directory navigation before filename edit")
+
+    monkeypatch.setattr(adapter, "_import_pywinauto", lambda: (FakeDesktop, None))
+    monkeypatch.setattr(adapter, "_try_navigate_dialog_via_shortcuts", fake_navigate)
+    monkeypatch.setattr(adapter, "_try_fill_dialog_filename", fake_fill)
+
+    result = adapter._upload_file_via_dialog_candidate(
+        {"handle": 123, "title": "打开", "class_name": "#32770"},
+        r"E:\workspace\skills\jingmai-product-publish-v2\resources\probe-images\main-probe.png",
+    )
+
+    assert result["success"] is True
+    assert result["method"] == "alt_d_directory_then_select"
+    assert result["backend"] == "win32"
+    assert "navigate:E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\probe-images\\main-probe.png:123" in calls
+
+
 def test_try_fill_dialog_filename_falls_back_to_click_file_item_when_dialog_stays_open(monkeypatch):
     adapter = RealWindowsUIAAdapter(screenshot_dir="logs/screenshots")
 
@@ -131,3 +172,37 @@ def test_try_select_file_after_navigation_returns_failure_when_dialog_stays_open
 
     assert result["success"] is False
     assert result["error"] == "dialog_still_open_after_filename_submit"
+
+
+def test_try_click_dialog_file_item_matches_wrapped_icon_text(monkeypatch):
+    adapter = RealWindowsUIAAdapter(screenshot_dir="logs/screenshots")
+    clicked: list[str] = []
+
+    monkeypatch.setattr(adapter, "_is_dialog_still_open", lambda handle: False)
+
+    class FakeRect:
+        left = 300
+        top = 120
+
+    class FakeFileItem:
+        def window_text(self):
+            return "transparent-pr\nobe.png"
+
+        def friendly_class_name(self):
+            return "ListItem"
+
+        def rectangle(self):
+            return FakeRect()
+
+        def set_focus(self):
+            clicked.append("focus")
+
+        def click_input(self, double: bool = False):
+            clicked.append(f"click:{double}")
+
+    class FakeDialog:
+        def descendants(self):
+            return [FakeFileItem()]
+
+    assert adapter._try_click_dialog_file_item_and_submit(FakeDialog(), "transparent-probe.png", None, 123) is True
+    assert clicked == ["focus", "click:True"]

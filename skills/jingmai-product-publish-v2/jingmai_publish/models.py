@@ -176,6 +176,9 @@ class PublishTask(Base):
     job_item: Mapped["UploadJobItem"] = relationship(back_populates="publish_tasks")
     steps: Mapped[list["PublishTaskStep"]] = relationship(back_populates="task", cascade="all, delete-orphan")
     logs: Mapped[list["RuntimeLog"]] = relationship(back_populates="task")
+    ui_artifacts: Mapped[list["UiArtifact"]] = relationship(back_populates="task", cascade="all, delete-orphan")
+    action_events: Mapped[list["ActionEvent"]] = relationship(back_populates="task", cascade="all, delete-orphan")
+    reflection_cases: Mapped[list["ReflectionCase"]] = relationship(back_populates="task", cascade="all, delete-orphan")
 
 
 class PublishTaskStep(Base):
@@ -231,3 +234,101 @@ class RuntimeLog(Base):
         """计算日志默认过期时间。"""
 
         return (now or datetime.now()) + timedelta(days=3)
+
+
+# ── BL-102: 审计表（Phase D）──────────────────────────────────────────
+
+
+class UiArtifact(Base):
+    """UIA/DOM 界面元素观测记录。
+
+    每次自动化观察到窗口、控件、文本时写入。
+    """
+
+    __tablename__ = "ui_artifacts"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    task_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("publish_tasks.task_id", ondelete="SET NULL", onupdate="CASCADE")
+    )
+    session_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    step_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    artifact_type: Mapped[str] = mapped_column(String(32), nullable=False)       # window/control/text/tree
+    automation_id: Mapped[Optional[str]] = mapped_column(String(255))
+    control_type: Mapped[Optional[str]] = mapped_column(String(64))
+    class_name: Mapped[Optional[str]] = mapped_column(String(255))
+    name: Mapped[Optional[str]] = mapped_column(String(255))
+    text_value: Mapped[Optional[str]] = mapped_column(Text)
+    rect_left: Mapped[Optional[int]] = mapped_column(Integer)
+    rect_top: Mapped[Optional[int]] = mapped_column(Integer)
+    rect_right: Mapped[Optional[int]] = mapped_column(Integer)
+    rect_bottom: Mapped[Optional[int]] = mapped_column(Integer)
+    properties_json: Mapped[Optional[dict]] = mapped_column(JSON)
+    screenshot_path: Mapped[Optional[str]] = mapped_column(String(1024))
+    observed_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), nullable=False)
+
+    task: Mapped[Optional["PublishTask"]] = relationship(back_populates="ui_artifacts", foreign_keys=[task_id])
+
+
+class ActionEvent(Base):
+    """自动化动作事件记录。
+
+    每次执行 click/fill/upload/select/navigate 时写入，
+    记录目标元素、参数、耗时和结果。
+    """
+
+    __tablename__ = "action_events"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    task_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("publish_tasks.task_id", ondelete="SET NULL", onupdate="CASCADE")
+    )
+    session_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    step_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    action_type: Mapped[str] = mapped_column(String(32), nullable=False)          # click/fill/upload/select/navigate
+    target_element: Mapped[Optional[str]] = mapped_column(String(255))
+    lane_name: Mapped[Optional[str]] = mapped_column(String(32))
+    action_params_json: Mapped[Optional[str]] = mapped_column(LONGTEXT)
+    outcome: Mapped[str] = mapped_column(String(16), default="success", nullable=False)  # success/failure/error
+    duration_ms: Mapped[Optional[int]] = mapped_column(Integer)
+    retry_attempt: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    screenshot_before: Mapped[Optional[str]] = mapped_column(String(1024))
+    screenshot_after: Mapped[Optional[str]] = mapped_column(String(1024))
+    error_message: Mapped[Optional[str]] = mapped_column(Text)
+    timestamp: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), nullable=False)
+
+    task: Mapped[Optional["PublishTask"]] = relationship(back_populates="action_events", foreign_keys=[task_id])
+
+
+class ReflectionCase(Base):
+    """反思/校验案例记录。
+
+    每次 AgentReflection 做出决策时写入，
+    记录 before/after 截图对比、视觉分析、决策和原因。
+    """
+
+    __tablename__ = "reflection_cases"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    task_id: Mapped[Optional[str]] = mapped_column(
+        ForeignKey("publish_tasks.task_id", ondelete="SET NULL", onupdate="CASCADE")
+    )
+    session_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    step_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    decision: Mapped[str] = mapped_column(String(16), nullable=False)              # continue/retry/skip/abort
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    attempt_no: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+    lane_index: Mapped[Optional[int]] = mapped_column(Integer)
+    lane_count: Mapped[Optional[int]] = mapped_column(Integer)
+    vision_success: Mapped[Optional[int]] = mapped_column(TINYINT)                 # 0/1
+    vision_confidence: Mapped[Optional[float]] = mapped_column(DECIMAL(5, 4))
+    vision_page_state: Mapped[Optional[str]] = mapped_column(String(128))
+    before_screenshot_path: Mapped[Optional[str]] = mapped_column(String(1024))
+    after_screenshot_path: Mapped[Optional[str]] = mapped_column(String(1024))
+    text_diff: Mapped[Optional[str]] = mapped_column(Text)
+    failure_pattern: Mapped[Optional[str]] = mapped_column(String(255))
+    recorded_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), nullable=False)
+
+    task: Mapped[Optional["PublishTask"]] = relationship(back_populates="reflection_cases", foreign_keys=[task_id])
+
+

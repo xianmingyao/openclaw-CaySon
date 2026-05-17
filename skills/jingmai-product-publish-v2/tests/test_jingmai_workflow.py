@@ -11,6 +11,7 @@ class DummyAdapter:
         self.selected = []
         self.label_filled = []
         self.label_selected = []
+        self.probed = []
 
     def list_windows(self):
         return [
@@ -53,6 +54,10 @@ class DummyAdapter:
     def select_combobox_by_label(self, handle: str, label: str, value: str) -> bool:
         self.label_selected.append((handle, label, value))
         return True
+
+    def probe_select_options_by_label(self, handle: str, label: str) -> dict[str, object]:
+        self.probed.append((handle, label))
+        return {"success": True, "options": []}
 
 
 def test_window_manager_find_jingmai_window():
@@ -102,6 +107,126 @@ def test_workflow_t3_confirm_category():
     assert "工业品" in result.message
 
 
+def test_workflow_t3_enters_publish_entry_from_draft_list(monkeypatch):
+    class DraftListAdapter(DummyAdapter):
+        def __init__(self):
+            super().__init__()
+            self.document_text = "商品草稿仅支持保留30天 草稿箱 商品名称 编辑时间 操作 发布商品"
+            self.region_clicks = []
+
+        def read_document_text(self, handle: str) -> str:
+            return self.document_text
+
+        def click_text_in_region(
+            self,
+            handle: str,
+            text: str,
+            *,
+            min_x_ratio: float,
+            max_x_ratio: float,
+            min_y_ratio: float,
+            max_y_ratio: float,
+        ) -> bool:
+            self.region_clicks.append((text, min_x_ratio, max_x_ratio, min_y_ratio, max_y_ratio))
+            if text == "发布商品":
+                self.document_text = "商品类目 工业品 > 中低压配电 > 插座 修改 商品信息 商品标题 保存草稿"
+                return True
+            return False
+
+    monkeypatch.setattr("jingmai_publish.services.jingmai_workflow.time.sleep", lambda _: None)
+    adapter = DraftListAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+
+    result = workflow.run_t3_confirm_category("2002")
+
+    assert result.success is True
+    assert result.page_state == "category_confirmed"
+    assert adapter.region_clicks == [("发布商品", 0.82, 1.0, 0.04, 0.18)]
+    assert "已从草稿箱进入发布入口" in result.message
+
+
+def test_workflow_t3_advances_category_selection_page(monkeypatch):
+    class CategorySelectionAdapter(DummyAdapter):
+        def __init__(self):
+            super().__init__()
+            self.document_text = (
+                "类目选择发品 近期使用类目： 工业品 >电料辅件 >电气辅材> 电气配件 "
+                "电脑、办公 >电脑组件> 组装电脑 下一步，完善其他商品信息"
+            )
+            self.region_clicks = []
+
+        def read_document_text(self, handle: str) -> str:
+            return self.document_text
+
+        def click_text_in_region(
+            self,
+            handle: str,
+            text: str,
+            *,
+            min_x_ratio: float,
+            max_x_ratio: float,
+            min_y_ratio: float,
+            max_y_ratio: float,
+        ) -> bool:
+            self.region_clicks.append((text, min_x_ratio, max_x_ratio, min_y_ratio, max_y_ratio))
+            return text.startswith("工业品")
+
+        def click_text(self, handle: str, text: str) -> bool:
+            self.clicked.append((handle, text))
+            if text == "下一步，完善其他商品信息":
+                self.document_text = "商品类目 工业品 > 电料辅件 > 电气辅材 > 电气配件 修改 商品信息 商品标题 保存草稿"
+                return True
+            return False
+
+    monkeypatch.setattr("jingmai_publish.services.jingmai_workflow.time.sleep", lambda _: None)
+    adapter = CategorySelectionAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+
+    result = workflow.run_t3_confirm_category("2002")
+
+    assert result.success is True
+    assert result.page_state == "category_confirmed"
+    assert adapter.region_clicks[0][0].startswith("工业品")
+    assert ("2002", "下一步，完善其他商品信息") in adapter.clicked
+    assert "已推进类目选择页" in result.message
+
+
+def test_workflow_t3_prefers_recent_category_shortcut(monkeypatch):
+    class RecentCategoryAdapter(DummyAdapter):
+        def __init__(self):
+            super().__init__()
+            self.document_text = (
+                "类目选择发品 近期使用类目： 工业品 >化学品 >油漆涂料> 防火涂料 "
+                "工业品 >电料辅件 >电气辅材> 电气配件 电脑、办公 >电脑组件> 组装电脑 "
+                "下一步，完善其他商品信息"
+            )
+            self.ratio_clicks = []
+
+        def read_document_text(self, handle: str) -> str:
+            return self.document_text
+
+        def click_window_ratio(self, handle: str, x_ratio: float, y_ratio: float) -> bool:
+            self.ratio_clicks.append((round(x_ratio, 3), y_ratio))
+            if y_ratio == 0.94:
+                self.document_text = (
+                    "商品类目 工业品 > 电料辅件 > 电气辅材 > 电气配件 修改 "
+                    "商品信息 商品标题 保存草稿"
+                )
+            return True
+
+    monkeypatch.setattr("jingmai_publish.services.jingmai_workflow.time.sleep", lambda _: None)
+    adapter = RecentCategoryAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+
+    result = workflow.run_t3_confirm_category("2002")
+
+    assert result.success is True
+    assert result.page_state == "category_confirmed"
+    assert adapter.ratio_clicks[0][1] == 0.202
+    assert adapter.ratio_clicks[1] == (0.5, 0.94)
+    assert "电料辅件" in result.message
+
+
 def test_workflow_t4_fill_base_info():
     adapter = DummyAdapter()
     workflow = JingmaiWorkflowService(WindowManager(adapter))
@@ -115,10 +240,53 @@ def test_workflow_t4_fill_base_info():
     assert result.step_id == "T4"
     assert result.success is True
     assert result.page_state == "base_info_completed"
-    assert any(item[1] == workflow.TITLE_AUTOMATION_ID for item in adapter.filled)
-    assert any(item[1] == workflow.MODEL_AUTOMATION_ID for item in adapter.filled)
-    assert any(item[1] == workflow.REQUIRED_ATTR_AUTOMATION_ID for item in adapter.filled)
-    assert any(item[1] == workflow.BRAND_AUTOMATION_ID for item in adapter.selected)
+    assert ("2002", "商品标题", "测试商品标题") in adapter.label_filled
+    assert ("2002", "型号", "XH-001") in adapter.label_filled
+    assert ("2002", "类型", "10A") in adapter.label_selected
+    assert ("2002", "品牌", "公牛") in adapter.label_selected
+
+
+def test_brand_validation_accepts_selected_value_with_residual_placeholder():
+    document_text = (
+        "商品标题 * 公牛插座 标题书写规范 品牌 * 公牛 请选择品牌 "
+        "短标题 一键生成 型号 * GN-605"
+    )
+
+    assert JingmaiWorkflowService._brand_value_selected("公牛", document_text) is True
+
+
+def test_brand_validation_rejects_title_only_brand_with_placeholder():
+    document_text = (
+        "商品标题 * 公牛插座 标题书写规范 品牌 * 请选择品牌 "
+        "短标题 一键生成 型号 * GN-605"
+    )
+
+    assert JingmaiWorkflowService._brand_value_selected("公牛", document_text) is False
+
+
+def test_workflow_t4_falls_back_to_available_brand_option():
+    class BrandOptionAdapter(DummyAdapter):
+        def probe_select_options_by_label(self, handle: str, label: str) -> dict[str, object]:
+            self.probed.append((handle, label))
+            return {
+                "success": True,
+                "options": [{"text": "志倍（ZHIBEI）-长沙飞戈电子技术有限公司"}],
+            }
+
+    adapter = BrandOptionAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+
+    result = workflow.run_t4_fill_base_info(
+        "2002",
+        title="测试商品标题",
+        model="XH-001",
+        required_attribute="10A",
+        brand="公牛",
+    )
+
+    assert result.success is True
+    assert ("2002", "品牌", "志倍（ZHIBEI）-长沙飞戈电子技术有限公司") in adapter.label_selected
+    assert "品牌值=志倍（ZHIBEI）-长沙飞戈电子技术有限公司" in result.message
 
 
 def test_workflow_t4_fill_additional_required_fields():
@@ -151,6 +319,8 @@ def test_workflow_t7_fill_logistics_fields():
     )
     assert result.step_id == "T7"
     assert result.success is True
-    assert any(item[1] == "销售单位" for item in adapter.label_selected)
-    assert any(item[1] == "商品包装" for item in adapter.label_selected)
-    assert any(item[1] == "包装清单" for item in adapter.label_filled)
+    selected_targets = [item[1] for item in adapter.selected + adapter.label_selected]
+    filled_targets = [item[1] for item in adapter.filled + adapter.label_filled]
+    assert "销售单位" in selected_targets or workflow.LOGISTICS_AUTOMATION_IDS["sale_unit"] in selected_targets
+    assert "商品包装" in selected_targets or workflow.LOGISTICS_AUTOMATION_IDS["package_type"] in selected_targets
+    assert "包装清单" in filled_targets or workflow.LOGISTICS_AUTOMATION_IDS["package_list"] in filled_targets

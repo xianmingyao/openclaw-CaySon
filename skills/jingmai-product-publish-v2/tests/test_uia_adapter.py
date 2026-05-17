@@ -1,3 +1,6 @@
+import sys
+import types
+
 import pytest
 
 from jingmai_publish.desktop.uia_adapter import RealWindowsUIAAdapter, UIATuningConfig
@@ -21,6 +24,18 @@ def test_import_pywinauto_error_message(monkeypatch, tmp_path):
     monkeypatch.setattr("builtins.__import__", fake_import)
     with pytest.raises(RuntimeError, match="pywinauto"):
         adapter._import_pywinauto()
+
+
+def test_list_windows_skips_backend_enumeration_errors(monkeypatch):
+    adapter = RealWindowsUIAAdapter(screenshot_dir="logs/screenshots")
+
+    class BrokenDesktop:
+        def windows(self):
+            raise RuntimeError("invalid transient handle")
+
+    monkeypatch.setattr(adapter, "_iter_desktops", lambda: [BrokenDesktop()])
+
+    assert adapter.list_windows() == []
 
 
 def test_score_candidate_prefers_exact_button_match():
@@ -54,18 +69,42 @@ def test_is_image_upload_slot_candidate_matches_real_empty_slot_controls():
     assert RealWindowsUIAAdapter._is_image_upload_slot_candidate(
         "DataItem",
         "请上传图片",
-        1011,
-        226,
-        1795,
-        336,
+        649,
+        343,
+        1888,
+        453,
     ) is True
     assert RealWindowsUIAAdapter._is_image_upload_slot_candidate(
-        "Image",
+        "Button",
+        "请上传主图",
+        650,
+        660,
+        780,
+        780,
+    ) is True
+    assert RealWindowsUIAAdapter._is_image_upload_slot_candidate(
+        "DataItem",
+        "请上传透图",
+        1887,
+        660,
+        2020,
+        780,
+    ) is True
+    assert RealWindowsUIAAdapter._is_image_upload_slot_candidate(
+        "ListItem",
         "",
-        1051,
-        263,
-        1068,
-        280,
+        665,
+        356,
+        730,
+        421,
+    ) is True
+    assert RealWindowsUIAAdapter._is_image_upload_slot_candidate(
+        "DataItem",
+        "请上传图片",
+        1887,
+        343,
+        2278,
+        453,
     ) is True
 
 
@@ -104,6 +143,21 @@ def test_normalize_image_upload_slot_snapshot_marks_empty_list_item_as_empty_slo
     }
 
 
+def test_normalize_image_upload_slot_snapshot_preserves_product_image_slot_text():
+    snapshot = {
+        "class_name": "Button",
+        "text": "请上传主图",
+        "bounds": {"left": 1000, "top": 666, "right": 1128, "bottom": 786},
+    }
+    normalized = RealWindowsUIAAdapter._normalize_image_upload_slot_snapshot(snapshot)
+    assert normalized == {
+        "class_name": "DataItem",
+        "text": "请上传主图",
+        "status": "empty",
+        "bounds": {"left": 1000, "top": 666, "right": 1128, "bottom": 786},
+    }
+
+
 def test_merge_image_upload_slot_snapshot_prefers_empty_over_filled_for_same_slot():
     snapshots = [
         {
@@ -128,3 +182,106 @@ def test_merge_image_upload_slot_snapshot_prefers_empty_over_filled_for_same_slo
             "bounds": {"left": 1000, "top": 226, "right": 1128, "bottom": 336},
         }
     ]
+
+
+def test_merge_image_upload_slot_snapshot_promotes_large_uploaded_image():
+    snapshots = [
+        {
+            "class_name": "DataItem",
+            "text": "请上传图片",
+            "status": "empty",
+            "bounds": {"left": 1000, "top": 226, "right": 1128, "bottom": 336},
+        }
+    ]
+    candidate = {
+        "class_name": "Image",
+        "text": "",
+        "status": "filled",
+        "bounds": {"left": 1004, "top": 230, "right": 1122, "bottom": 334},
+    }
+    RealWindowsUIAAdapter._merge_image_upload_slot_snapshot(snapshots, candidate)
+    assert snapshots == [
+        {
+            "class_name": "Image",
+            "text": "",
+            "status": "filled",
+            "bounds": {"left": 1004, "top": 230, "right": 1122, "bottom": 334},
+        }
+    ]
+
+
+def test_is_picker_image_candidate_accepts_thumbnail_without_text():
+    assert RealWindowsUIAAdapter._is_picker_image_candidate("Image", "", 500, 260, 620, 380) is True
+    assert RealWindowsUIAAdapter._is_picker_image_candidate("ListItem", "", 500, 260, 620, 380) is True
+    assert RealWindowsUIAAdapter._is_picker_image_candidate("DataItem", "请上传图片", 500, 260, 620, 380) is False
+
+
+def test_image_upload_slot_sort_key_keeps_main_image_before_transparent_image():
+    slots = [
+        {"class_name": "DataItem", "bounds": {"left": 1887, "top": 343, "right": 2278, "bottom": 453}},
+        {"class_name": "DataItem", "bounds": {"left": 665, "top": 356, "right": 730, "bottom": 421}},
+    ]
+    slots.sort(key=RealWindowsUIAAdapter._image_upload_slot_sort_key)
+    assert slots[0]["bounds"]["left"] == 665
+    assert slots[1]["bounds"]["left"] == 1887
+
+
+def test_hover_text_by_index_moves_to_indexed_text(monkeypatch):
+    adapter = RealWindowsUIAAdapter(screenshot_dir="logs/screenshots")
+    moved: list[tuple[int, int]] = []
+
+    class Rect:
+        def __init__(self, left: int, top: int, right: int, bottom: int) -> None:
+            self.left = left
+            self.top = top
+            self.right = right
+            self.bottom = bottom
+
+    class FakeControl:
+        def __init__(self, text: str, rect: Rect) -> None:
+            self._text = text
+            self._rect = rect
+
+        def window_text(self) -> str:
+            return self._text
+
+        def rectangle(self) -> Rect:
+            return self._rect
+
+    class FakeWindow:
+        def descendants(self):
+            return [
+                FakeControl("请上传图片", Rect(100, 100, 140, 140)),
+                FakeControl("请上传图片", Rect(300, 200, 360, 260)),
+            ]
+
+    class FakeDesktop:
+        def __init__(self, backend: str) -> None:
+            self.backend = backend
+
+        def window(self, handle: int):
+            return FakeWindow()
+
+    fake_pywinauto = types.ModuleType("pywinauto")
+    fake_pywinauto.mouse = types.SimpleNamespace(move=lambda coords: moved.append(coords))
+    monkeypatch.setitem(sys.modules, "pywinauto", fake_pywinauto)
+    monkeypatch.setattr(adapter, "_import_pywinauto", lambda: (FakeDesktop, None))
+
+    assert adapter.hover_text_by_index("1187102", "请上传图片", 1) is True
+    assert moved == [(330, 230)]
+
+
+def test_click_local_upload_entry_supports_oxygen_vision_panel(monkeypatch):
+    adapter = RealWindowsUIAAdapter(screenshot_dir="logs/screenshots")
+    calls: list[tuple[float, float, float, float]] = []
+
+    def fake_click_text_in_region(handle, text, *, min_x_ratio, max_x_ratio, min_y_ratio, max_y_ratio):
+        calls.append((min_x_ratio, max_x_ratio, min_y_ratio, max_y_ratio))
+        return min_y_ratio == 0.60 and max_y_ratio == 0.82
+
+    monkeypatch.setattr(adapter, "click_text_in_region", fake_click_text_in_region)
+    monkeypatch.setattr(adapter, "inspect_image_upload_slots", lambda handle: [])
+    monkeypatch.setattr(adapter, "click_text", lambda handle, text: False)
+
+    assert adapter.click_local_upload_entry("1187102", 0) is True
+    assert (0.75, 0.95, 0.60, 0.82) in calls

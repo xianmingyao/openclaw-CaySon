@@ -2,6 +2,7 @@
 
 from .channel_ingress import FeishuPathChannelService, LocalPathChannelService
 from .desktop_verify import DesktopVerificationService
+from .draft_e2e import DraftE2EOptions, DraftE2EOrchestrator
 from .excel_ingest import ExcelIngestService
 from .image_service import ProductImageService
 from .import_pipeline import ImportPipelineService
@@ -14,6 +15,8 @@ from .task_service import PublishTaskService
 __all__ = [
     "LocalPathChannelService",
     "DesktopVerificationService",
+    "DraftE2EOptions",
+    "DraftE2EOrchestrator",
     "ExcelIngestService",
     "FeishuPathChannelService",
     "ProductImageService",

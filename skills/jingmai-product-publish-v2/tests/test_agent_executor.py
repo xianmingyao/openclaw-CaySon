@@ -25,6 +25,9 @@ def service():
     svc.run_t2_enter_publish_entry.return_value = WorkflowStepResult(
         step_id="T2", success=True, page_state="publish_entry", window_handle="2002"
     )
+    svc.run_t4_fill_base_info.return_value = WorkflowStepResult(
+        step_id="T4", success=True, page_state="base_info_completed", window_handle="2002"
+    )
     svc.run_t8_publish_product.return_value = WorkflowStepResult(
         step_id="T8", success=True, page_state="published", window_handle="2002"
     )
@@ -102,8 +105,34 @@ def test_execute_t8_publish(service):
     step = REGISTRY.get("t8-publish-product")
     session = FakeSession()
 
-    result = executor.execute(step, session, {})
-    service.run_t8_publish_product.assert_called_once_with("2002")
+    result = executor.execute(step, session, {"confirm_publish": True})
+    service.run_t8_publish_product.assert_called_once_with("2002", confirm_publish=True)
+    assert result.success is True
+
+
+def test_execute_t4_forwards_optional_brand_param(service):
+    executor = AgentExecutor(service)
+    step = REGISTRY.get("t4")
+    session = FakeSession()
+
+    result = executor.execute(
+        step,
+        session,
+        {
+            "title": "测试商品标题",
+            "model": "B5440",
+            "required_attribute": "B5440",
+            "brand": "公牛（BULL）",
+        },
+    )
+
+    service.run_t4_fill_base_info.assert_called_once_with(
+        "2002",
+        title="测试商品标题",
+        model="B5440",
+        required_attribute="B5440",
+        brand="公牛（BULL）",
+    )
     assert result.success is True
 
 

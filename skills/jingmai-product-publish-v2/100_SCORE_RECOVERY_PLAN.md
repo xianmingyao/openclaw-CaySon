@@ -133,6 +133,16 @@
 - 正式发布路径有人工审批和可追溯记录。
 - 评分复核达到 `100/100`，且没有“待验证”冒充“完成”。
 
+## Evidence Correction - 2026-05-17
+
+The Phase A section above is stale where it marks `BL-086A` as complete. Current verification shows:
+
+- Runtime records reference P0 screenshots.
+- The actual `resources/screenshots/window-*.png` files are missing from the current working tree.
+- `BL-086A` must be treated as `IN_PROGRESS`, not complete.
+- Current conservative delivery score remains `90/100` until screenshot evidence is restored or recaptured.
+- Authoritative evidence index: `.planning/BL-086A_SCREENSHOT_EVIDENCE.md`.
+
 ## gstack 使用说明
 
 本轮已尝试调用本机 gstack browse 二进制，但当前安装缺少可解析的 `server.ts` 运行上下文，`browse.exe status` 失败。后续如果需要用 gstack 做 Web/可视化 QA，需要先修复 gstack 安装或设置 `BROWSE_SERVER_SCRIPT`。

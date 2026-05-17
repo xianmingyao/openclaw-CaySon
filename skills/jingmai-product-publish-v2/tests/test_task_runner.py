@@ -221,7 +221,32 @@ def test_task_runner_rejects_bl0883_probe_detail_content():
         runner.run("t6-detail-editor", detail_content="BL-088-3 command final pass 2026-05-16")
 
 
-def test_task_runner_runs_publish_step():
+def test_task_runner_publish_step_requires_confirmation():
+    runner, workflow = _build_runner()
+    workflow.run_t1_attach_window.return_value = WorkflowStepResult(
+        step_id="T1",
+        success=True,
+        page_state="jingmai_home",
+        window_handle="2002",
+        screenshot_path="a.png",
+        message="ok-1",
+    )
+    workflow.run_t8_publish_product.return_value = WorkflowStepResult(
+        step_id="T8-PUBLISH-PRODUCT",
+        success=False,
+        page_state="publish_guard_required",
+        window_handle="2002",
+        screenshot_path="b.png",
+        message="guard",
+    )
+
+    result = runner.run("t8-publish-product")
+
+    assert result["t8_publish_product"]["success"] is False
+    workflow.run_t8_publish_product.assert_called_once_with("2002", confirm_publish=None)
+
+
+def test_task_runner_runs_publish_step_with_confirmation():
     runner, workflow = _build_runner()
     workflow.run_t1_attach_window.return_value = WorkflowStepResult(
         step_id="T1",
@@ -240,10 +265,10 @@ def test_task_runner_runs_publish_step():
         message="ok-2",
     )
 
-    result = runner.run("t8-publish-product")
+    result = runner.run("t8-publish-product", confirm_publish=True)
 
     assert result["t8_publish_product"]["success"] is True
-    workflow.run_t8_publish_product.assert_called_once_with("2002")
+    workflow.run_t8_publish_product.assert_called_once_with("2002", confirm_publish=True)
 
 
 def test_task_runner_retries_until_step_verified():

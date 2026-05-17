@@ -808,11 +808,20 @@ class RealWindowsUIAAdapter:
         selected_by = ""
 
         for _ in range(12):
-            if self.click_text(handle, file_name) or self.click_text(handle, file_stem):
+            if self._click_picker_file_card_by_name(handle, file_name, file_stem):
                 selected = True
-                selected_by = "file_name"
+                selected_by = "file_card"
                 break
+            if self.click_text(handle, file_name) or self.click_text(handle, file_stem):
+                time.sleep(0.15)
+                if self._picker_selected_count(handle) != 0:
+                    selected = True
+                    selected_by = "file_name"
+                    break
             if self._click_first_picker_image_candidate(handle):
+                time.sleep(0.15)
+                if self._picker_selected_count(handle) == 0:
+                    continue
                 selected = True
                 selected_by = "first_image_candidate"
                 break
@@ -820,6 +829,8 @@ class RealWindowsUIAAdapter:
 
         if not selected:
             return {"success": False, "error": "picker_uploaded_image_not_selectable"}
+        if self._picker_selected_count(handle) == 0:
+            return {"success": False, "error": "picker_uploaded_image_not_selected"}
 
         for _ in range(6):
             if self.click_text_in_region(
@@ -836,6 +847,67 @@ class RealWindowsUIAAdapter:
             time.sleep(0.2)
 
         return {"success": False, "error": "picker_confirm_button_not_clicked"}
+
+    def _picker_selected_count(self, handle: str) -> int | None:
+        """读取图片管理弹层底部的“已选N个”计数；读不到时返回 None。"""
+
+        try:
+            document_text = self.read_document_text(handle)
+        except Exception:
+            return None
+
+        match = re.search(r"已选\s*(\d+)\s*个", document_text)
+        if match:
+            return int(match.group(1))
+        return None
+
+    def _click_picker_file_card_by_name(self, handle: str, file_name: str, file_stem: str) -> bool:
+        """按文件名命中图片库卡片，并点击缩略图本体而不是仅点击文件名标签。"""
+
+        window = self._get_window(handle)
+        expected = {file_name, file_stem}
+        candidates: list[tuple[int, int, Any]] = []
+        try:
+            descendants = window.descendants()
+        except Exception:
+            return False
+
+        for control in descendants:
+            try:
+                text = (control.window_text() or "").strip()
+                rect = control.rectangle()
+            except Exception:
+                continue
+            if text not in expected:
+                continue
+            if rect.left <= 0 or rect.top <= 0 or rect.right <= rect.left or rect.bottom <= rect.top:
+                continue
+            candidates.append((rect.top, rect.left, control))
+
+        if not candidates:
+            return False
+
+        candidates.sort()
+        for _, _, control in candidates:
+            try:
+                rect = control.rectangle()
+                x = (rect.left + rect.right) // 2
+                y = max(1, rect.top - 80)
+                from pywinauto import mouse
+
+                mouse.click(coords=(x, y))
+                time.sleep(0.2)
+                selected_count = self._picker_selected_count(handle)
+                if selected_count is None or selected_count > 0:
+                    return True
+            except Exception:
+                pass
+            if self._click_control_with_fallback(control):
+                time.sleep(0.2)
+                selected_count = self._picker_selected_count(handle)
+                if selected_count is None or selected_count > 0:
+                    return True
+        return False
 
     def _click_first_picker_image_candidate(self, handle: str) -> bool:
         """图片空间常只暴露缩略图，不暴露文件名；回退点击首个缩略图候选。"""

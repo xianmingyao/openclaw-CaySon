@@ -1,5 +1,12 @@
 # Delivery Backlog
 
+## Latest Sync - 2026-05-17
+
+- Code readiness update: DX/security P0 hardening completed with `pyproject.toml`, `.env.example`, CLI logging/config validation, SSRF URL validation, and guarded formal publish.
+- Evidence correction: `BL-086A` is `IN_PROGRESS`, not `DONE`. Runtime records contain screenshot paths, but the actual screenshot PNG files are missing in the current checkout.
+- New evidence index: `.planning/BL-086A_SCREENSHOT_EVIDENCE.md`.
+- Current conservative delivery score remains `90/100` until screenshots are restored or recaptured.
+
 ## Latest Completion - 2026-05-16
 
 - [x] `BL-100` Runtime Event Loop — sightflow 风格事件队列、调度、停止、会话状态
@@ -53,9 +60,9 @@
 | BL-088-2 | 透明图上传真实闭环 | DONE | 透明图必填槽位完成真实上传，页面状态可验证；证据截图 `resources/screenshots/window-1187102-20260516-002306-522579.png` |
 | BL-088-3 | 详情编辑器写入闭环 | DONE | 已进入真实详情编辑区并写入详情内容；证据截图 `resources/screenshots/window-1187102-20260516-005034-202135.png` |
 | BL-089 | 保存草稿 / 发布提交 | IN_PROGRESS | 保存草稿已真实闭环，证据截图 `resources/screenshots/window-1187102-20260516-005858-872183.png`；正式发布提交待明确许可 |
-| BL-089A | 草稿模式 E2E | IN_PROGRESS | 数据库初始化、T3/T4 已实机通过；当前阻塞在 T6 主图上传和 T8 草稿确认，仍需草稿箱出现目标商品并归档命令/日志/截图 |
+| BL-089A | 草稿模式 E2E | DONE | Real draft-mode E2E recorded with `job_id=job-d217feeee80a`; target product appeared in draft list. Screenshot path is referenced in docs, but the physical PNG must still be restored/recaptured under BL-086A. |
 | BL-086 | Reflection 截图校验 | TODO | 每个关键动作有 before/after 截图差异或控件状态校验 |
-| BL-086A | P0 截图证据包 | TODO | T1/T2/T4/T5/T6/T7/T8 每个关键步骤都有 before/after 或可替代证据 |
+| BL-086A | P0 截图证据包 | IN_PROGRESS | Evidence index created at `.planning/BL-086A_SCREENSHOT_EVIDENCE.md`; runtime records contain screenshot paths, but actual PNG files are missing and must be restored or recaptured before DONE. |
 | BL-091 | Agent 决策层最小闭环 | DONE | `AgentPipeline` 已接入 `TaskRunner.run()`；7 个 agent/ 模块落地（types/registry/planner/executor/reflection/pipeline/__init__）；24 个 ActionStep 注册；getattr 反射调度 + 重试 + 溯源；规则驱动的 ReflectionDecision（CONTINUE/RETRY/SKIP/ABORT） |
 
 ### P1 - 重要能力缺口
@@ -76,7 +83,7 @@
 | BL-094 | Milvus 长期记忆 | TODO | 失败反思和控件经验写入并可检索 |
 | BL-100 | Runtime Event Loop | DONE | 实现 queue / schedule / stop / session state，替代一次性同步包装式 runtime |
 | BL-101 | Provider Manifest | DONE | 建立 manifest schema、provider 加载器和示例 provider，明确输入输出和能力边界 |
-| BL-102 | Audit Tables | TODO | 补齐 `ui_artifact`、`action_event`、`reflection_case` 表、Repository 和写入点 |
+| BL-102 | Audit Tables | DONE | `UiArtifact`, `ActionEvent`, and `ReflectionCase` models plus `AuditRepository` are implemented and covered by tests. |
 | BL-103 | Retry Lane Switching | DONE | 三级重试策略：14 个测试用例，4 个关键步骤配置 lanes；Pipeline 支持 lane 调度和 trace 记录 |
 | BL-104 | Business Preflight | TODO | 标题、价格、主图、透图、详情、物流售后全量阻断式业务预校验 |
 

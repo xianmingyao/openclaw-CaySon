@@ -14,6 +14,7 @@ from PIL import Image
 
 from jingmai_publish.repositories.product_image import ProductImageRepository
 from jingmai_publish.repositories.runtime_log import RuntimeLogRepository
+from jingmai_publish.security import validate_http_url
 
 
 @dataclass(slots=True)
@@ -35,6 +36,7 @@ class ProductImageService:
 
     MAIN_ALLOWED_FORMATS = {"jpg", "jpeg", "png"}
     TRANSPARENT_ALLOWED_FORMATS = {"png"}
+    ALLOWED_IMAGE_HOSTS = ("360buyimg.com",)
 
     def __init__(
         self,
@@ -95,6 +97,11 @@ class ProductImageService:
     def download_to_cache(self, image_source_url: str) -> Path:
         """下载远程图片到本地缓存目录。"""
 
+        image_source_url = validate_http_url(
+            image_source_url,
+            allowed_hosts=self.ALLOWED_IMAGE_HOSTS,
+            purpose="商品图片下载",
+        )
         extension = self.infer_extension_from_url(image_source_url)
         target_path = self.source_cache_dir / f"tmp-{sha256(image_source_url.encode('utf-8')).hexdigest()[:20]}.{extension}"
 

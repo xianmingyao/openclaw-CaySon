@@ -1,5 +1,13 @@
 # 京麦桌面商品上架系统
 
+## Current Project Baseline - 2026-05-17
+
+- Current conservative delivery score: `90/100`.
+- DX/security readiness improved after packaging metadata, `.env.example`, CLI config check/logging, SSRF URL validation, and formal publish guard.
+- The old `55/100` baseline below is historical context only and must not override `.planning/STATE.md`.
+- `BL-086A` remains `IN_PROGRESS`: screenshot paths exist in runtime/planning records, but the actual PNG evidence files are missing from the current working tree.
+- Current evidence index: `.planning/BL-086A_SCREENSHOT_EVIDENCE.md`.
+
 ## What This Is
 
 这是一个面向京麦桌面端商品发布流程的自动化上架系统。目标不是单点 RPA 脚本，而是把 Excel 导入、京东商品补全、图片本地化、桌面操作、截图校验、失败反思、持久化运维和任务跟踪组织成一个可持续执行的工程化系统。

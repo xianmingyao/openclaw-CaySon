@@ -12,6 +12,10 @@ from pathlib import Path
 import os
 
 
+class ConfigValidationError(ValueError):
+    """配置值不合法。"""
+
+
 def _load_env_file(env_path: Path) -> None:
     """从本地 `.env` 文件加载环境变量。
 
@@ -46,7 +50,10 @@ def _get_int(name: str, default: int) -> int:
     value = os.getenv(name)
     if value is None:
         return default
-    return int(value)
+    try:
+        return int(value)
+    except ValueError as exc:
+        raise ConfigValidationError(f"{name} 必须是整数，当前值: {value!r}") from exc
 
 
 @dataclass(slots=True)
@@ -96,6 +103,29 @@ class Settings:
         )
 
 
+def validate_settings(settings: Settings) -> list[str]:
+    """返回配置问题列表；为空表示配置可用。"""
+
+    errors: list[str] = []
+    if not (1 <= settings.mysql_port <= 65535):
+        errors.append("MYSQL_PORT 必须在 1-65535 范围内")
+    if settings.mysql_pool_size < 1:
+        errors.append("MYSQL_POOL_SIZE 必须大于 0")
+    if settings.mysql_max_overflow < 0:
+        errors.append("MYSQL_MAX_OVERFLOW 不能小于 0")
+    if settings.log_retention_days < 1:
+        errors.append("LOG_RETENTION_DAYS 必须大于 0")
+    if settings.vision_timeout < 1:
+        errors.append("LLM_TIMEOUT 必须大于 0")
+    if not settings.redis_url.startswith(("redis://", "rediss://")):
+        errors.append("REDIS_URL 必须以 redis:// 或 rediss:// 开头")
+    if not settings.ollama_base_url.startswith(("http://", "https://")):
+        errors.append("OLLAMA_BASE_URL 必须以 http:// 或 https:// 开头")
+    if settings.vllm_base_url and not settings.vllm_base_url.startswith(("http://", "https://")):
+        errors.append("VLLM_BASE_URL 必须以 http:// 或 https:// 开头")
+    return errors
+
+
 @lru_cache(maxsize=1)
 def load_settings(root_dir: str | Path | None = None) -> Settings:
     """加载项目配置。
@@ -133,7 +163,7 @@ def load_settings(root_dir: str | Path | None = None) -> Settings:
         feishu_encrypt_key=os.getenv("FEISHU_ENCRYPT_KEY"),
         log_dir=log_dir,
         memory_dir=memory_dir,
-        log_retention_days=3,
+        log_retention_days=_get_int("LOG_RETENTION_DAYS", 3),
         screenshot_dir=screenshot_dir,
         screenshot_enabled=_get_bool("SCREENSHOT_ENABLED", True),
         # Phase C: Ollama Vision

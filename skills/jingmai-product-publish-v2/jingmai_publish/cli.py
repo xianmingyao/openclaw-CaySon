@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 from pathlib import Path
+import sys
 
 from sqlalchemy.exc import SQLAlchemyError
 
 from jingmai_publish.bootstrap import init_database
-from jingmai_publish.config import load_settings
+from jingmai_publish.config import ConfigValidationError, load_settings, validate_settings
 from jingmai_publish.db.session import create_engine_from_settings, create_session_factory
 from jingmai_publish.desktop import UIATuningConfig
 from jingmai_publish.services import (
@@ -20,7 +22,11 @@ from jingmai_publish.services import (
     ImportPipelineService,
     LocalPathChannelService,
     RuntimeRetentionService,
+    ScreenshotEvidenceService,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 DESKTOP_STEPS = [
@@ -51,20 +57,33 @@ DESKTOP_STEPS = [
 ]
 
 
+def _add_common_options(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--verbose", action="store_true", help="输出详细日志")
+    parser.add_argument("--log-file", default=None, help="将日志写入指定文件")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="京麦桌面商品上架系统 CLI")
+    _add_common_options(parser)
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     init_db_parser = subparsers.add_parser("init-db", help="初始化数据库表结构")
+    _add_common_options(init_db_parser)
     init_db_parser.add_argument("--root", default=".", help="项目根目录")
 
+    config_parser = subparsers.add_parser("check-config", help="校验当前配置")
+    _add_common_options(config_parser)
+    config_parser.add_argument("--root", default=".", help="项目根目录")
+
     run_import_parser = subparsers.add_parser("run-import", help="读取 Excel 并创建上架任务")
+    _add_common_options(run_import_parser)
     run_import_parser.add_argument("--excel", required=True, help="本地 Excel 文件路径")
     run_import_parser.add_argument("--mode", default="draft", choices=["draft", "publish"], help="任务模式")
     run_import_parser.add_argument("--store-id", default=None, help="店铺标识")
     run_import_parser.add_argument("--root", default=".", help="项目根目录")
 
     path_task_parser = subparsers.add_parser("run-local-path-task", help="从本地路径消息文件触发任务")
+    _add_common_options(path_task_parser)
     path_task_parser.add_argument("--path-file", required=True, help="包含 Excel 本地路径的消息文件")
     path_task_parser.add_argument("--mode", default="draft", choices=["draft", "publish"], help="任务模式")
     path_task_parser.add_argument("--store-id", default=None, help="店铺标识")
@@ -72,15 +91,22 @@ def build_parser() -> argparse.ArgumentParser:
     path_task_parser.add_argument("--root", default=".", help="项目根目录")
 
     feishu_task_parser = subparsers.add_parser("run-feishu-path-task", help="从飞书事件 payload 触发任务")
+    _add_common_options(feishu_task_parser)
     feishu_task_parser.add_argument("--payload-file", required=True, help="Feishu/Lark 事件 payload JSON 文件")
     feishu_task_parser.add_argument("--mode", default="draft", choices=["draft", "publish"], help="任务模式")
     feishu_task_parser.add_argument("--store-id", default=None, help="店铺标识")
     feishu_task_parser.add_argument("--root", default=".", help="项目根目录")
 
     cleanup_parser = subparsers.add_parser("cleanup-runtime-logs", help="清理过期日志与截图")
+    _add_common_options(cleanup_parser)
     cleanup_parser.add_argument("--root", default=".", help="项目根目录")
 
+    evidence_parser = subparsers.add_parser("check-evidence", help="检查 runtime 截图证据是否存在")
+    _add_common_options(evidence_parser)
+    evidence_parser.add_argument("--root", default=".", help="项目根目录")
+
     draft_e2e_parser = subparsers.add_parser("run-draft-e2e", help="从 Excel 单行执行到京麦保存草稿")
+    _add_common_options(draft_e2e_parser)
     draft_e2e_parser.add_argument("--excel", required=True, help="本地 Excel 文件路径")
     draft_e2e_parser.add_argument("--item-index", type=int, default=0, help="导入结果中的商品索引，默认第一条")
     draft_e2e_parser.add_argument("--store-id", default=None, help="店铺标识")
@@ -110,6 +136,7 @@ def build_parser() -> argparse.ArgumentParser:
     draft_e2e_parser.add_argument("--root", default=".", help="项目根目录")
 
     desktop_check_parser = subparsers.add_parser("run-desktop-check", help="执行 T1~T8 实机探针/闭环")
+    _add_common_options(desktop_check_parser)
     desktop_check_parser.add_argument("--step", default="both", choices=DESKTOP_STEPS, help="验证步骤")
     desktop_check_parser.add_argument("--debug", action="store_true", help="输出调试信息")
     desktop_check_parser.add_argument("--window-keyword", action="append", default=[], help="窗口标题关键词")
@@ -152,9 +179,30 @@ def build_parser() -> argparse.ArgumentParser:
     desktop_check_parser.add_argument("--detail-html", default=None, help="T6 详情 HTML 内容")
     desktop_check_parser.add_argument("--detail-content-file", default=None, help="T6 详情 HTML/文本文件")
     desktop_check_parser.add_argument("--jd-item-url", default=None, help="T6 从京东商品链接抓取图文详情")
+    desktop_check_parser.add_argument(
+        "--confirm-publish",
+        action="store_true",
+        help="明确允许执行正式发布。仅 t8-publish-product 生效；缺省会被发布守卫拦截。",
+    )
     desktop_check_parser.add_argument("--root", default=".", help="项目根目录")
 
     return parser
+
+
+def configure_logging(verbose: bool = False, log_file: str | None = None) -> None:
+    """初始化 CLI 日志输出。"""
+
+    handlers: list[logging.Handler] = [logging.StreamHandler(sys.stderr)]
+    if log_file:
+        log_path = Path(log_file)
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        handlers.append(logging.FileHandler(log_path, encoding="utf-8"))
+    logging.basicConfig(
+        level=logging.DEBUG if verbose else logging.INFO,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+        handlers=handlers,
+        force=True,
+    )
 
 
 def handle_init_db(root: str) -> int:
@@ -163,6 +211,24 @@ def handle_init_db(root: str) -> int:
     init_database(engine)
     print("数据库初始化完成")
     return 0
+
+
+def handle_check_config(root: str) -> int:
+    settings = load_settings(root)
+    errors = validate_settings(settings)
+    result = {
+        "success": not errors,
+        "app_name": settings.app_name,
+        "app_version": settings.app_version,
+        "errors": errors,
+        "paths": {
+            "log_dir": str(settings.log_dir),
+            "memory_dir": str(settings.memory_dir),
+            "screenshot_dir": str(settings.screenshot_dir),
+        },
+    }
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0 if not errors else 1
 
 
 def handle_run_import(excel: str, mode: str, store_id: str | None, root: str) -> int:
@@ -223,6 +289,13 @@ def handle_cleanup_runtime_logs(root: str) -> int:
         result = service.cleanup()
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
+
+
+def handle_check_evidence(root: str) -> int:
+    service = ScreenshotEvidenceService(root)
+    result = service.collect()
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0 if result["success"] else 1
 
 
 def handle_run_draft_e2e(
@@ -329,83 +402,98 @@ def handle_run_desktop_check(
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    configure_logging(bool(getattr(args, "verbose", False)), getattr(args, "log_file", None))
 
-    if args.command == "init-db":
-        return handle_init_db(args.root)
-    if args.command == "run-import":
-        return handle_run_import(args.excel, args.mode, args.store_id, args.root)
-    if args.command == "run-local-path-task":
-        return handle_run_local_path_task(args.path_file, args.mode, args.store_id, args.source_channel, args.root)
-    if args.command == "run-feishu-path-task":
-        return handle_run_feishu_path_task(args.payload_file, args.mode, args.store_id, args.root)
-    if args.command == "cleanup-runtime-logs":
-        return handle_cleanup_runtime_logs(args.root)
-    if args.command == "run-draft-e2e":
-        return handle_run_draft_e2e(
-            excel=args.excel,
-            item_index=args.item_index,
-            store_id=args.store_id,
-            required_attr=args.required_attr,
-            current=args.current,
-            factory_inventory=args.factory_inventory,
-            main_image_path=args.main_image_path,
-            transparent_image_path=args.transparent_image_path,
-            detail_content=args.detail_content,
-            detail_content_file=args.detail_content_file,
-            rated_voltage=args.rated_voltage,
-            cable_length=args.cable_length,
-            sale_unit=args.sale_unit,
-            package_type=args.package_type,
-            delivery_mark=args.delivery_mark,
-            package_list=args.package_list,
-            warranty_period=args.warranty_period,
-            debug=args.debug,
-            window_keywords=args.window_keyword,
-            preferred_classes=args.preferred_class,
-            click_aliases=_parse_click_aliases(args.click_alias),
-            root=args.root,
-        )
-    if args.command == "run-desktop-check":
-        return handle_run_desktop_check(
-            args.step,
-            args.root,
-            args.debug,
-            window_keywords=args.window_keyword,
-            preferred_classes=args.preferred_class,
-            click_aliases=_parse_click_aliases(args.click_alias),
-            title=args.title,
-            model=args.model,
-            required_attribute=args.required_attr,
-            brand=args.brand,
-            sku_cell_id=args.sku_cell_id,
-            sku_value=args.sku_value,
-            sku_submit=args.sku_submit,
-            sku_name=args.sku_name,
-            short_title=args.short_title,
-            market_price=args.market_price,
-            purchase_price=args.purchase_price,
-            jd_price=args.jd_price,
-            current=args.current,
-            weight=args.weight,
-            stock=args.stock,
-            length_mm=args.length_mm,
-            width_mm=args.width_mm,
-            height_mm=args.height_mm,
-            factory_inventory=args.factory_inventory,
-            rated_voltage=args.rated_voltage,
-            cable_length=args.cable_length,
-            sale_unit=args.sale_unit,
-            package_type=args.package_type,
-            delivery_mark=args.delivery_mark,
-            package_list=args.package_list,
-            warranty_period=args.warranty_period,
-            image_path=args.image_path,
-            transparent_image_path=args.transparent_image_path,
-            detail_content=args.detail_content,
-            detail_html=args.detail_html,
-            detail_content_file=args.detail_content_file,
-            jd_item_url=args.jd_item_url,
-        )
+    try:
+        if args.command == "init-db":
+            return handle_init_db(args.root)
+        if args.command == "check-config":
+            return handle_check_config(args.root)
+        if args.command == "run-import":
+            return handle_run_import(args.excel, args.mode, args.store_id, args.root)
+        if args.command == "run-local-path-task":
+            return handle_run_local_path_task(args.path_file, args.mode, args.store_id, args.source_channel, args.root)
+        if args.command == "run-feishu-path-task":
+            return handle_run_feishu_path_task(args.payload_file, args.mode, args.store_id, args.root)
+        if args.command == "cleanup-runtime-logs":
+            return handle_cleanup_runtime_logs(args.root)
+        if args.command == "check-evidence":
+            return handle_check_evidence(args.root)
+        if args.command == "run-draft-e2e":
+            return handle_run_draft_e2e(
+                excel=args.excel,
+                item_index=args.item_index,
+                store_id=args.store_id,
+                required_attr=args.required_attr,
+                current=args.current,
+                factory_inventory=args.factory_inventory,
+                main_image_path=args.main_image_path,
+                transparent_image_path=args.transparent_image_path,
+                detail_content=args.detail_content,
+                detail_content_file=args.detail_content_file,
+                rated_voltage=args.rated_voltage,
+                cable_length=args.cable_length,
+                sale_unit=args.sale_unit,
+                package_type=args.package_type,
+                delivery_mark=args.delivery_mark,
+                package_list=args.package_list,
+                warranty_period=args.warranty_period,
+                debug=args.debug,
+                window_keywords=args.window_keyword,
+                preferred_classes=args.preferred_class,
+                click_aliases=_parse_click_aliases(args.click_alias),
+                root=args.root,
+            )
+        if args.command == "run-desktop-check":
+            return handle_run_desktop_check(
+                args.step,
+                args.root,
+                args.debug,
+                window_keywords=args.window_keyword,
+                preferred_classes=args.preferred_class,
+                click_aliases=_parse_click_aliases(args.click_alias),
+                title=args.title,
+                model=args.model,
+                required_attribute=args.required_attr,
+                brand=args.brand,
+                sku_cell_id=args.sku_cell_id,
+                sku_value=args.sku_value,
+                sku_submit=args.sku_submit,
+                sku_name=args.sku_name,
+                short_title=args.short_title,
+                market_price=args.market_price,
+                purchase_price=args.purchase_price,
+                jd_price=args.jd_price,
+                current=args.current,
+                weight=args.weight,
+                stock=args.stock,
+                length_mm=args.length_mm,
+                width_mm=args.width_mm,
+                height_mm=args.height_mm,
+                factory_inventory=args.factory_inventory,
+                rated_voltage=args.rated_voltage,
+                cable_length=args.cable_length,
+                sale_unit=args.sale_unit,
+                package_type=args.package_type,
+                delivery_mark=args.delivery_mark,
+                package_list=args.package_list,
+                warranty_period=args.warranty_period,
+                image_path=args.image_path,
+                transparent_image_path=args.transparent_image_path,
+                detail_content=args.detail_content,
+                detail_html=args.detail_html,
+                detail_content_file=args.detail_content_file,
+                jd_item_url=args.jd_item_url,
+                confirm_publish=args.confirm_publish,
+            )
+    except ConfigValidationError as exc:
+        logger.error("配置校验失败: %s", exc)
+        print(json.dumps({"success": False, "error": {"code": "config_error", "message": str(exc)}}, ensure_ascii=False, indent=2))
+        return 2
+    except ValueError as exc:
+        logger.error("命令执行失败: %s", exc)
+        print(json.dumps({"success": False, "error": {"code": "validation_error", "message": str(exc)}}, ensure_ascii=False, indent=2))
+        return 2
 
     parser.error(f"unsupported command: {args.command}")
     return 2

@@ -1,5 +1,13 @@
 # Project State
 
+## Documentation Sync - 2026-05-17
+
+- DX/security P0 hardening has been completed in code: packaging metadata, `.env.example`, CLI logging/config check, SSRF URL validation, and formal publish guard.
+- Delivery score remains conservatively `90/100` until `BL-086A` screenshot evidence is restored or recaptured.
+- `BL-086A` is now tracked by `.planning/BL-086A_SCREENSHOT_EVIDENCE.md`.
+- Important correction: runtime JSONL contains screenshot path references, but the actual `resources/screenshots/window-*.png` files are missing from the current working tree. Do not mark screenshot evidence archive as `DONE` from path references alone.
+- Next executable focus: restore or recapture P0 screenshots for T4/T5/T6/T7/T8, then update the score gate.
+
 ## Latest Update - 2026-05-17
 
 - `BL-091` Agent 决策层最小闭环 **已完成**：`AgentPipeline` 接入 `TaskRunner.run()`，7 个 agent/ 模块落地（types/registry/planner/executor/reflection/pipeline/__init__），24 ActionStep 注册，getattr 反射调度 + 重试 + 溯源。

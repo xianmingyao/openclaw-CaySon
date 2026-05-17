@@ -8,6 +8,7 @@ from .image_service import ProductImageService
 from .import_pipeline import ImportPipelineService
 from .jingmai_workflow import JingmaiWorkflowService
 from .retention_service import RuntimeRetentionService
+from .evidence import ScreenshotEvidenceService
 from .task_ingress import TaskIngressService
 from .task_runner import TaskRunner
 from .task_service import PublishTaskService
@@ -23,6 +24,7 @@ __all__ = [
     "ImportPipelineService",
     "JingmaiWorkflowService",
     "RuntimeRetentionService",
+    "ScreenshotEvidenceService",
     "TaskIngressService",
     "TaskRunner",
     "PublishTaskService",

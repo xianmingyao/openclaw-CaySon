@@ -16,62 +16,73 @@ description: |
 - 京麦自动化
 - 批量上架
 
-## 环境要求
+## 环境安装（uv 管理）
 
+本项目使用 uv 管理依赖，一条命令完成安装。
+
+```bash
+# 1. 安装 uv（如果还没有）
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+# 或通过 pip：pip install uv
+
+# 2. 进入项目目录，一条命令安装所有依赖
+cd E:\workspace\skills\jingmai-product-publish
+uv sync --dev
+
+# 3. 安装 Playwright 浏览器
+uv run playwright install chromium
+
+# 4. 验证安装
+uv run jingmai-publish check-config --root .
+```
+
+**环境要求：**
 - Windows 10/11
 - 已安装并登录京麦客户端
 - 建议分辨率 `2560x1392`
-- Python 3.10+ with venv
-- 需要 `pip install -e .[dev]`
-- 需要 `playwright install chromium`
 
 ## CLI 命令
 
 ### 环境检查
 
 ```bash
-python cli.py check-config --root .
-jingmai-publish check-config --root .
+uv run jingmai-publish check-config --root .
 ```
 
 ### 初始化数据库
 
 ```bash
-python cli.py init-db
-jingmai-publish init-db --root .
+uv run jingmai-publish init-db --root .
 ```
 
 ### 导入商品（草稿模式）
 
 ```bash
-python cli.py run-import --excel ".\湖南上架表格.xlsx" --mode draft --root .
-jingmai-publish run-import --excel ".\湖南上架表格.xlsx" --mode draft --root .
+uv run jingmai-publish run-import --excel ".\湖南上架表格.xlsx" --mode draft --root .
 ```
 
 ### 桌面执行检查
 
 ```bash
-python cli.py run-desktop-check --step both --debug --root .
-jingmai-publish run-desktop-check --step both --debug --root .
+uv run jingmai-publish run-desktop-check --step both --debug --root .
 ```
 
 ### 正式发布（有人工守卫）
 
 ```bash
-python cli.py run-desktop-check --step t8-publish-product --confirm-publish --root .
-jingmai-publish run-desktop-check --step t8-publish-product --confirm-publish --root .
+uv run jingmai-publish run-desktop-check --step t8-publish-product --confirm-publish --root .
 ```
 
 ### 检查证据
 
 ```bash
-python cli.py check-evidence --root .
+uv run jingmai-publish check-evidence --root .
 ```
 
 ### 清理运行时日志
 
 ```bash
-python cli.py cleanup-runtime-logs --root .
+uv run jingmai-publish cleanup-runtime-logs --root .
 ```
 
 ## v2 相对于 v1 的改进
@@ -110,7 +121,7 @@ Reflection（递进式重试，最多3次）
 **启动 Helper：**
 ```bash
 cd E:\workspace\skills\jingmai-product-publish-v2
-python session1_helper.py
+uv run python session1_helper.py
 # 或双击 start_helper.bat
 ```
 

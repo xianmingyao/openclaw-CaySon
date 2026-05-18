@@ -1,39 +1,42 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-05-15 17:20:18
+Date: 2026-05-18 17:20:17
 --- GIT COMMITS ---
-  76c60dcf docs: update MEMORY.md with Agent orchestration learning
-  3b0bdece docs: add Agent orchestration deep analysis (鎶栭煶鑷鑷瘽鐨勬睙鍝?
-  b75c3e3c docs: update MEMORY.md with FDE and Mom Test learning
-  f1ef9c72 docs: add FDE涓庝笟鍔¤璋堟繁搴﹀垎鏋?(鎶栭煶鑷鑷瘽鐨勬睙鍝?
+  d965e62d optimize jingmai-product-publish: R4 浼樺寲frontmatter瑙﹀彂璇嶄笌鏁翠綋鏋舵瀯鍚堝苟鍐椾綑
+  93f797f6 optimize jingmai-product-publish: 琛ュ厖杈圭晫鏉′欢銆佹鏌ョ偣鍜岃祫婧愬紩鐢?c07defba optimize jingmai-product-publish: 閲嶇粍瀹夎娴佺▼涓虹嚎鎬ф楠わ紝娣诲姞閰嶇疆璇存槑
+  e87805b5 optimize jingmai-product-publish: 鏇挎崲 pip 涓?uv锛岀粺涓€杩愯鍛戒护
+  be0684c7 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04
+  dd4fc51b 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04
+  a1d235bb 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04
+  d9f86c9f 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04
+  33009257 Merge remote-tracking branch 'origin/auto-optimize-20260420-1453' into auto-optimize-20260420-1453
+  3030bf8c 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04
 --- FILES MODIFIED ---
-  17:18 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-171848-342965.png
-  17:18 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-171825-976078.png
-  17:18 | .git\FETCH_HEAD
-  17:18 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-171803-960995.png
-  17:17 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-171733-192532.png
-  17:17 | skills\jingmai-product-publish-v2\.pytest_cache\v\cache\nodeids
-  17:17 | skills\jingmai-product-publish-v2\tests\__pycache__\test_t6_t8_workflow.cpython-312-pytest-8.4.2.pyc
-  17:17 | skills\jingmai-product-publish-v2\jingmai_publish\services\__pycache__\jingmai_workflow.cpython-312.pyc
-  17:17 | skills\jingmai-product-publish-v2\jingmai_publish\desktop\__pycache__\uia_adapter.cpython-312.pyc
-  17:17 | skills\jingmai-product-publish-v2\jingmai_publish\desktop\__pycache__\adapter.cpython-312.pyc
-  17:17 | skills\jingmai-product-publish-v2\tests\test_t6_t8_workflow.py
-  17:17 | skills\jingmai-product-publish-v2\jingmai_publish\services\jingmai_workflow.py
-  17:16 | skills\jingmai-product-publish-v2\jingmai_publish\desktop\uia_adapter.py
-  17:16 | skills\jingmai-product-publish-v2\jingmai_publish\desktop\adapter.py
-  17:08 | knowledge-base\.notion_sync_state.json
-  17:08 | knowledge-base\.sync_state.json
-  17:01 | skills\jingmai-product-publish-v2\aaa.py
-  16:57 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-165710-054899.png
-  16:56 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-165640-712151.png
-  16:56 | skills\jingmai-product-publish-v2\resources\screenshots\window-1187102-20260515-165611-300011.png
+  17:06 | .git\FETCH_HEAD
+  17:02 | knowledge-base\.notion_sync_state.json
+  17:02 | knowledge-base\.sync_state.json
+  16:50 | skills\jingmai-product-publish\resources\screenshots\window-19271502-20260518-165041-991609.png
+  16:50 | scripts\jingmai_probe_attrs.py
+  16:48 | skills\jingmai-product-publish\resources\memory\runtime-memory.jsonl
+  16:48 | skills\jingmai-product-publish\resources\screenshots\window-19271502-20260518-164856-503858.png
+  16:48 | skills\jingmai-product-publish\resources\screenshots\window-19271502-20260518-164840-557142.png
+  16:48 | skills\jingmai-product-publish\resources\screenshots\window-19271502-20260518-164823-876840.png
+  16:48 | skills\jingmai-product-publish\resources\screenshots\window-19271502-20260518-164822-854021.png
+  16:47 | scripts\jingmai_t3_check.py
+  16:36 | skills\jingmai-product-publish\resources\screenshots\title_click_center.png
+  16:35 | skills\jingmai-product-publish\resources\screenshots\title_x900_y400.png
+  16:35 | skills\jingmai-product-publish\resources\screenshots\title_x900_y380.png
+  16:35 | skills\jingmai-product-publish\resources\screenshots\title_x900_y360.png
+  16:35 | skills\jingmai-product-publish\resources\screenshots\title_x900_y320.png
+  16:35 | skills\jingmai-product-publish\resources\screenshots\title_x900_y300.png
+  16:34 | skills\jingmai-product-publish\resources\screenshots\title_try_1000_340.png
+  16:34 | skills\jingmai-product-publish\resources\screenshots\title_try_900_340.png
+  16:34 | skills\jingmai-product-publish\resources\screenshots\title_try_800_340.png
 --- SESSIONS ---
-  Count: 136
-  - 0033a64d-bc70-4c7f-a75c-97333b6379f7.jsonl [02:15]
-  - 0033a64d-bc70-4c7f-a75c-97333b6379f7.trajectory.jsonl [02:15]
-  - 04f6db2c-63ef-4b81-a4cd-7814a0c0b468.jsonl [17:10]
+  Count: 159
+  - 04d67d21-447f-40e7-97bd-5bd93419d20f.jsonl [09:06]
+  - 04d67d21-447f-40e7-97bd-5bd93419d20f.trajectory.jsonl [09:06]
+  - 04dfa42e-32fc-4731-a992-7b5b4fcc1b48.jsonl [12:05]
 --- SKILLS ---
-  + douyin-transcribe-skill
-  + jingmai-product-publish-v2
-  + opencli-skills
+  + jingmai-product-publish
 --- STRUCTURED ---
-{"skillsUpdated":["douyin-transcribe-skill","jingmai-product-publish-v2","opencli-skills"],"dayOfWeek":"Friday","sessionCount":136,"modifiedFiles":["E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-171848-342965.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-171825-976078.png","E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-171803-960995.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-171733-192532.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\.pytest_cache\\v\\cache\\nodeids","E:\\workspace\\skills\\jingmai-product-publish-v2\\tests\\__pycache__\\test_t6_t8_workflow.cpython-312-pytest-8.4.2.pyc","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\services\\__pycache__\\jingmai_workflow.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\desktop\\__pycache__\\uia_adapter.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\desktop\\__pycache__\\adapter.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish-v2\\tests\\test_t6_t8_workflow.py","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\services\\jingmai_workflow.py","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\desktop\\uia_adapter.py","E:\\workspace\\skills\\jingmai-product-publish-v2\\jingmai_publish\\desktop\\adapter.py","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\skills\\jingmai-product-publish-v2\\aaa.py","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-165710-054899.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-165640-712151.png","E:\\workspace\\skills\\jingmai-product-publish-v2\\resources\\screenshots\\window-1187102-20260515-165611-300011.png"],"gitCommits":["76c60dcf docs: update MEMORY.md with Agent orchestration learning","3b0bdece docs: add Agent orchestration deep analysis (鎶栭煶鑷鑷瘽鐨勬睙鍝?","b75c3e3c docs: update MEMORY.md with FDE and Mom Test learning","f1ef9c72 docs: add FDE涓庝笟鍔¤璋堟繁搴﹀垎鏋?(鎶栭煶鑷鑷瘽鐨勬睙鍝?"],"date":"2026.05.15"}
+{"skillsUpdated":["jingmai-product-publish"],"dayOfWeek":"Monday","sessionCount":159,"modifiedFiles":["E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\window-19271502-20260518-165041-991609.png","E:\\workspace\\scripts\\jingmai_probe_attrs.py","E:\\workspace\\skills\\jingmai-product-publish\\resources\\memory\\runtime-memory.jsonl","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\window-19271502-20260518-164856-503858.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\window-19271502-20260518-164840-557142.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\window-19271502-20260518-164823-876840.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\window-19271502-20260518-164822-854021.png","E:\\workspace\\scripts\\jingmai_t3_check.py","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_click_center.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_x900_y400.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_x900_y380.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_x900_y360.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_x900_y320.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_x900_y300.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_try_1000_340.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_try_900_340.png","E:\\workspace\\skills\\jingmai-product-publish\\resources\\screenshots\\title_try_800_340.png"],"gitCommits":["d965e62d optimize jingmai-product-publish: R4 浼樺寲frontmatter瑙﹀彂璇嶄笌鏁翠綋鏋舵瀯鍚堝苟鍐椾綑","93f797f6 optimize jingmai-product-publish: 琛ュ厖杈圭晫鏉′欢銆佹鏌ョ偣鍜岃祫婧愬紩鐢?c07defba optimize jingmai-product-publish: 閲嶇粍瀹夎娴佺▼涓虹嚎鎬ф楠わ紝娣诲姞閰嶇疆璇存槑","e87805b5 optimize jingmai-product-publish: 鏇挎崲 pip 涓?uv锛岀粺涓€杩愯鍛戒护","be0684c7 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04","dd4fc51b 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04","a1d235bb 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04","d9f86c9f 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04","33009257 Merge remote-tracking branch \u0027origin/auto-optimize-20260420-1453\u0027 into auto-optimize-20260420-1453","3030bf8c 瀹氭椂鑷姩鎻愪氦 - 2026-05-17 22:32:04"],"date":"2026.05.18"}

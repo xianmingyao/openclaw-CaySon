@@ -1,0 +1,2 @@
+[console_scripts]
+jingmai-publish = jingmai_publish.cli:main

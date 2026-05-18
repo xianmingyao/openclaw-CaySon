@@ -18,21 +18,29 @@ description: |
 
 ## 环境安装（uv 管理）
 
-本项目使用 uv 管理依赖，一条命令完成安装。
+本项目使用 uv 管理依赖，4 步完成安装。
+
+| 步骤 | 命令 | 说明 |
+|------|------|------|
+| 1. 安装 uv | `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 \| iex"` | 仅首次需要；已有 uv 则跳过 |
+| 2. 安装依赖 | `uv sync --dev` | 自动创建 `.venv`，安装所有依赖 |
+| 3. 安装浏览器 | `uv run playwright install chromium` | Playwright 需要 Chromium 浏览器 |
+| 4. 验证安装 | `uv run jingmai-publish check-config --root .` | 确认环境配置正确 |
 
 ```bash
-# 1. 安装 uv（如果还没有）
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-# 或通过 pip：pip install uv
-
-# 2. 进入项目目录，一条命令安装所有依赖
+# 完整安装流程（在项目目录执行）
 cd E:\workspace\skills\jingmai-product-publish
+
+# 步骤1：安装 uv（如果还没有）
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# 步骤2：安装所有依赖
 uv sync --dev
 
-# 3. 安装 Playwright 浏览器
+# 步骤3：安装 Playwright 浏览器
 uv run playwright install chromium
 
-# 4. 验证安装
+# 步骤4：验证安装
 uv run jingmai-publish check-config --root .
 ```
 
@@ -41,7 +49,36 @@ uv run jingmai-publish check-config --root .
 - 已安装并登录京麦客户端
 - 建议分辨率 `2560x1392`
 
+## 配置
+
+项目通过 `.env` 文件管理配置。首次使用前需在项目根目录创建 `.env` 文件：
+
+```bash
+# 必填：MySQL 连接（脚本会自动降级到 SQLite，可不填）
+MYSQL_HOST=127.0.0.1
+MYSQL_PORT=3306
+MYSQL_USER=root
+MYSQL_PASSWORD=
+MYSQL_DATABASE=jingmai_agent
+
+# 可选：飞书集成
+# FEISHU_APP_ID=
+# FEISHU_APP_SECRET=
+
+# 可选：Ollama Vision（截图分析用）
+# OLLAMA_BASE_URL=http://localhost:11434
+# OLLAMA_MODEL=qwen3-vl:8b
+```
+
+配置验证通过后，初始化数据库：
+
+```bash
+uv run jingmai-publish init-db --root .
+```
+
 ## CLI 命令
+
+> 所有命令均通过 `uv run jingmai-publish <子命令>` 执行。也可用 `python cli.py <子命令>` 在已激活的 venv 中运行。
 
 ### 环境检查
 

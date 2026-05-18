@@ -1,9 +1,0 @@
-handle 1187102
-START fill shelf 1778868107.9733143
-END fill shelf True dt=1.3618981838226318
-START select sale 1778868109.3352125
-END select sale True dt=6.517571449279785
-START select warranty 1 1778868115.852784
-END select warranty 1 True dt=6.700247526168823
-START select warranty 3 1778868122.5530314
-END select warranty 3 True dt=6.618399620056152

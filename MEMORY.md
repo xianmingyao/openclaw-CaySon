@@ -78,7 +78,7 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 | knowledge-base-sync | 7c7f5f69 | 20:00 | ✅ ok |
 | knowledge-pull | 67e39d09 | 0 * * * * | ✅ ok |
 | daily-skill-security-scan | 5227d14e | 00:30 | ✅ ok |
-| dream-nightly | 421b1f35 | 03:00 | ✅ ok |
+| dream-nightly | 421b1f35 | 03:00 | ✅ ok（本次00:29执行） |
 | MAGMA知识验证报告 | 5026d732 | 23:00 | ⚠️ error（Feishu投递需target） |
 | morning-wechat-login-check | e1f7f495 | 09:00 | ✅ ok |
 | 内容捕手-汇报 | f27317c4 | 18:00 | ✅ ok |
@@ -87,7 +87,7 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 
 | 技能 | 版本 | 日期 | 用途 |
 |------|------|------|------|
-| summarize | 1.0.0→3.0.6 | 2026-04-02 | 网页/PDF/YouTube总结（可更新⚠️） |
+| summarize | 3.0.6 | 2026-04-02 | 网页/PDF/YouTube总结 ✅ |
 | nano-banana-pro | 1.0.1 | 2026-04-02 | AI图片生成 |
 | memory-dream | 1.0.3 | 2026-04-07 | 记忆整合 |
 | huguanjin-libtv-skill | 1.0.4 | 2026-04-29 | LibTV AI视频/图片生成（文生图/视频/短剧/MV/分镜）|
@@ -188,6 +188,9 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
   - `E:\workspace\knowledge-base\compile.py` → 成功构建 wiki ✅
   - Graphify → 成功更新 28,818 节点 ✅
 - **状态**：✅ 绕过成功，SIGKILL 问题不影响知识库同步
+
+## 待处理（Open Issues）
+- [ ] content-hunter cron（f27317c4）未运行（05-15手动执行，定时任务需排查）
 
 ## Dream 整合记录（最近）
 
@@ -298,6 +301,13 @@ YYYY.MM.DD(日报)
 2、事项 + 状态
 ...
 ```
+
+## 2026-05-15 agent-browser 编码问题
+- **问题**：抖音/哔哩哔哩页面抓取时中文显示乱码
+- **根因**：agent-browser 编码识别为 GBK/GB2312 而非 UTF-8
+- **影响**：抖音/B站内容抓取后中文乱码
+- **解决方向**：配置浏览器语言设置 或 使用 web_search 补充数据
+- **状态**：待处理
 
 ## 2026-05-13 今日学习
 

@@ -164,6 +164,29 @@ uv run python session1_helper.py
 
 ## 故障排查
 
-- `check-config` 失败 → 检查 Python 环境、playwright、.env 配置
-- 桌面操作失败 → 确认京麦客户端已登录、Helper 已启动
-- MySQL 连接失败 → 检查 MYSQL_* 环境变量，脚本会自动降级到 SQLite
+| 症状 | 可能原因 | 解决方案 |
+|------|---------|---------|
+| `uv` 命令不存在 | uv 未安装 | 执行步骤1安装 uv，或 `pip install uv` |
+| `uv sync` 失败 | Python < 3.12 | 安装 Python 3.12+，推荐 `winget install Python.Python.3.12` |
+| `playwright install` 失败 | 网络问题或权限不足 | 管理员 PowerShell 重试；配置代理后重试 |
+| `check-config` 输出 `success: false` | 配置缺失或不合法 | 检查 `.env` 文件是否存在、MYSQL_PORT 范围、REDIS_URL/OLLAMA_BASE_URL 格式 |
+| 数据库初始化失败 | MySQL 连接不上 | 检查 `MYSQL_*` 环境变量；脚本会自动降级到 SQLite，可留空 |
+| 桌面操作无响应 | Session1 Helper 未启动 | 双击 `start_helper.bat` 或在 v2 目录运行 `uv run python session1_helper.py` |
+| 京麦窗口未找到 | 京麦未登录或窗口标题不匹配 | 确认京麦客户端已登录并显示在主桌面 |
+| 截图分析超时 | Ollama 未启动或显存不足 | 确认 `ollama serve` 运行中，检查 `OLLAMA_BASE_URL` 配置 |
+
+## 项目文件
+
+| 文件 | 用途 |
+|------|------|
+| `pyproject.toml` | 项目元数据、依赖声明、CLI 入口点 |
+| `.env` | 运行时配置（需自行创建，参考上方「配置」章节） |
+| `uv.lock` | 依赖版本锁定文件（`uv sync` 自动生成） |
+| `jingmai_publish/cli.py` | CLI 命令入口（`jingmai-publish` → `cli:main`） |
+| `jingmai_publish/config.py` | 配置加载与校验逻辑 |
+| `jingmai_publish/bootstrap.py` | 数据库初始化逻辑 |
+| `jingmai_publish/services/` | 核心业务服务（导入、发布、证据等） |
+| `jingmai_publish/agent/` | Agent 执行引擎（Planner/Executor/Reflection） |
+| `jingmai_publish/desktop/` | 桌面自动化适配层（UIA/Win32） |
+| `logs/` | 运行日志（`--log-file` 可指定路径） |
+| `resources/screenshots/` | 截图证据目录 |

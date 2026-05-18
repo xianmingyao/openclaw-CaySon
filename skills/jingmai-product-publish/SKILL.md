@@ -1,24 +1,16 @@
 ---
 name: jingmai-product-publish
 description: |
-  京麦商品发布自动化技能，面向 Windows 环境下的京麦客户端商品发布、草稿保存、批量导入、商品抓取、任务跟踪与记忆管理。
+  京麦商品发布自动化技能。做什么：通过 Windows 桌面自动化完成京麦客户端商品发布、草稿保存、Excel批量导入、京东商品抓取、任务跟踪。何时用：用户提到「京麦发布」「批量上架」「jingmai」时触发。uv 管理依赖，一条命令安装。
 ---
-
-# jingmai-product-publish
-
-京麦商品发布自动化技能，面向 Windows 环境下的京麦客户端商品发布、草稿保存、批量导入、商品抓取、任务跟踪与记忆管理。
 
 ## 触发词
 
-- 京麦发布
-- jingmai publish
-- jingmai
-- 京麦自动化
-- 批量上架
+- 京麦发布 / jingmai publish / jingmai / 京麦自动化 / 批量上架
 
-## 环境安装（uv 管理）
+## 快速开始
 
-本项目使用 uv 管理依赖，4 步完成安装。
+### 环境安装（uv 管理）
 
 | 步骤 | 命令 | 说明 |
 |------|------|------|
@@ -122,16 +114,6 @@ uv run jingmai-publish check-evidence --root .
 uv run jingmai-publish cleanup-runtime-logs --root .
 ```
 
-## v2 相对于 v1 的改进
-
-1. **文档驱动规划**：先解析 `京麦上架流程.docx` 正文段落，再从真实段落生成步骤
-2. **Precheck + Postcheck**：执行前截图预检，执行后截图复核
-3. **偏差恢复矩阵**：按偏差类型执行恢复动作（recover_locator / force_relocate / navigate_to / select_category / wait）
-4. **页面态细分恢复策略**：覆盖登录页 / 商品列表页 / 类目页 / 商品信息页 / 规格描述页 / 发布确认页
-5. **Session1 Helper**：在用户桌面 Session 运行 Win32 操作，解决 Session 0 无法操作京麦的问题
-6. **MySQL 持久化**：支持 `MYSQL_HOST / MYSQL_PORT / MYSQL_USER / MYSQL_PASSWORD / MYSQL_DATABASE` 自动拼接连接
-7. **批量场景分治**：通过 `publish_mode` 区分 single / batch
-
 ## 执行模型
 
 ```
@@ -143,6 +125,12 @@ ReAct（每步完整循环）
         ↓
 Reflection（递进式重试，最多3次）
 ```
+
+**关键设计：**
+- **Precheck + Postcheck** — 执行前后截图对比，偏差自动恢复
+- **页面态恢复策略** — 覆盖登录/商品列表/类目/商品信息/规格/发布确认 6 种页面
+- **发布守卫** — `t8-publish-product` 步骤需 `--confirm-publish` 明确授权，防止误发布
+- **自动降级** — MySQL 连接失败自动切换到 SQLite
 
 ## 调试选项
 

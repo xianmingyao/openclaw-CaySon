@@ -145,13 +145,15 @@ for merge_range in list(ws.merged_cells.ranges):
         for c in range(merge_range.min_col, merge_range.max_col + 1):
             ws.cell(r, c).value = top_left
 
-# 2.3 删除表头上方的所有行
+# 2.3 清空表头上方的所有行（不清除行号，保持表头在原位置，因为 excel_ingest 硬编码从第3行读取表头）
 if header_row > 1:
-    ws.delete_rows(1, header_row - 1)
+    for r in range(1, header_row):
+        for c in range(1, ws.max_column + 1):
+            ws.cell(r, c).value = None
 
 # 2.4 删除模板示例行（第1列包含非数字如「模板」的行）
 rows_to_delete = []
-for row in ws.iter_rows(min_row=2, max_row=ws.max_row):  # row 1 is now headers
+for row in ws.iter_rows(min_row=header_row + 1, max_row=ws.max_row):
     val_a = row[0].value
     if val_a is not None:
         try:
@@ -176,7 +178,7 @@ uv run jingmai-publish run-import --excel "D:\path\to\file_cleaned.xlsx" --mode 
 **预处理做了什么：**
 1. 扫描前10行找到含「商品名称」+「京东挂网价」的真实表头行
 2. 解除所有合并单元格（取左上角值填充）
-3. 删除表头上方的标题行、提示行
+3. 清空表头上方的标题行、提示行（保留行号，避免表头位置偏移，因为导入代码硬编码从第3行读取）
 4. 删除第1列（A列）非纯数字的模板示例行
 5. 保存为 `原文件名_cleaned.xlsx`
 

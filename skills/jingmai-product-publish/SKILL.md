@@ -77,23 +77,38 @@ uv run jingmai-publish check-config --root .
 
 | 要求 | 说明 |
 |------|------|
-| 数据位置 | 第一个工作表（sheet）必须是商品数据 |
-| 表头行 | 代码硬编码读取第3行为表头、第4行起为数据。**导入前必须预处理**，将真实表头对齐到第1行（见下方预处理脚本） |
+| 工作表名称 | **必须命名为 `上架模板`**（代码硬编码 `sheet_name="上架模板"`，名称不匹配会导致 `KeyError`）。预处理脚本也需确保处理后 sheet 名为 `上架模板` |
+| 表头行 | 代码硬编码读取第3行为表头、第4行起为数据。**导入前必须预处理**，将真实表头对齐到第3行（见下方预处理脚本） |
 | 第1列（A列） | 必须是**纯数字**上架序号（1, 2, 3…），含"模板"等文字会导致 `int('模板')` 崩溃 |
 | 无合并单元格 | 数据区域内禁止合并单元格，否则 openpyxl 读到的值为 None |
 | 无空行 | 数据之间不允许有空行，遇到空行即停止解析 |
-| 单 sheet 数据 | 其他 sheet（如"资质要求""参考链接"）不会自动导入 |
+| 其他 sheet | 其他 sheet（如"资质要求""参考链接"）不会自动导入，但不会影响主 sheet 解析 |
 
 > **实测案例**：`4.28机械臂上架.xlsx` 第1行标题+第2行提示+第3行表头+第4行模板示例，直接导入报错 `invalid literal for int() with base 10: '模板'`。经预处理脚本清理后导入成功。
 
-### 必填列
+### 字段→列映射（硬编码）
 
-| 列名 | 说明 | 缺失时 |
-|------|------|--------|
-| 商品名称 | 对应京东开票内容 | **阻断**—无法导入 |
-| 京东挂网价 | 下单金额，纯数字 | **阻断**—无法导入 |
-| 京东链接 | `https://item.jd.com/` 格式 | **阻断**—无法导入 |
-| 商品资质 | PDF/图片，嵌入单元格 | ⚠️ 警告—可导入但京麦审核不通过 |
+导入代码按列索引读取（`raw_row[0]`…`raw_row[14]`），列位置固定不可调：
+
+| Excel 列 | 索引 | 字段名 | 说明 | 缺失时 |
+|------|------|------|------|--------|
+| A | `[0]` | 上架序号 | **纯数字**（1, 2, 3…） | **阻断**—`int()` 崩溃 |
+| B | `[1]` | 适用业务 | 可选文本 | 无影响 |
+| C | `[2]` | **商品名称** | 对应京东开票内容 | **阻断**—无法导入 |
+| D | `[3]` | 品牌 | 可选 | 无影响 |
+| E | `[4]` | 型号 | 可选 | 无影响 |
+| F | `[5]` | 长度(mm) | 数字或空 | 无影响 |
+| G | `[6]` | 宽度(mm) | 数字或空 | 无影响 |
+| H | `[7]` | 高度(mm) | 数字或空 | 无影响 |
+| I | `[8]` | 重量(kg) | 数字或空 | 无影响 |
+| J | `[9]` | 单位 | 可选文本（默认"个"） | 无影响 |
+| K | `[10]` | **京东挂网价** | 纯数字，下单金额 | **阻断**—无法导入 |
+| L | `[11]` | **京东链接** | `https://item.jd.com/` 格式 | **阻断**—无法导入 |
+| M | `[12]` | 商品资质 | PDF/图片路径，嵌入单元格 | ⚠️ 警告—可导入但京麦审核不通过 |
+| N | `[13]` | 商品摘要 | 可选文本 | 无影响 |
+| O | `[14]` | 备注 | 可选文本 | 无影响 |
+
+> **关键规则**：A列必须纯数字、C列+J列+L列不可为空。其他列可为空。
 
 ### 格式预处理（导入前必须执行）
 
@@ -107,7 +122,8 @@ uv run python -c "
 import openpyxl, sys
 wb = openpyxl.load_workbook(sys.argv[1], read_only=True, data_only=True)
 ws = wb.active
-print(f'Sheet: {ws.title}, Rows: {ws.max_row}, Cols: {ws.max_column}')
+print(f'Sheet: {ws.title} (requires: 上架模板), Rows: {ws.max_row}, Cols: {ws.max_column}')
+print(f'All sheets: {wb.sheetnames}')
 for i, row in enumerate(ws.iter_rows(min_row=1, max_row=min(6, ws.max_row), values_only=True), 1):
     vals = [str(v)[:40] if v else '-' for v in row[:15]]
     print(f'Row {i}: {vals}')
@@ -122,6 +138,17 @@ src = sys.argv[1]
 dst = src.replace('.xlsx', '_cleaned.xlsx')
 wb = openpyxl.load_workbook(src)
 ws = wb.active
+
+# 2.0 确保 sheet 名为「上架模板」（excel_ingest 硬编码 sheet_name='上架模板'）
+target_name = '上架模板'
+if ws.title != target_name:
+    # 如果已存在同名 sheet，先删除（保留当前 ws，只删旧的）
+    if target_name in wb.sheetnames:
+        del wb[target_name]
+    ws.title = target_name
+    print(f'Sheet renamed: \"{wb.active.title}\" -> \"{target_name}\"')
+else:
+    print(f'Sheet name OK: \"{ws.title}\"')
 
 # 2.1 找到真实表头行（含「商品名称」+「京东挂网价」的行）
 # 注意：不用 values_only=True，因为需要 Cell.row 属性获取行号
@@ -167,8 +194,9 @@ for r in reversed(rows_to_delete):
 
 wb.save(dst)
 print(f'Cleaned: {dst}')
-print(f'Header row (now row 1): {[c.value for c in ws[1]][:5]}')
-print(f'Data rows: {ws.max_row - 1}')
+print(f'Sheet name: {ws.title}')
+print(f'Header row: {header_row}')
+print(f'Data rows: {ws.max_row - header_row}')
 " "D:\path\to\file.xlsx"
 
 # Step 3: 用清理后的文件导入
@@ -176,11 +204,12 @@ uv run jingmai-publish run-import --excel "D:\path\to\file_cleaned.xlsx" --mode 
 ```
 
 **预处理做了什么：**
-1. 扫描前10行找到含「商品名称」+「京东挂网价」的真实表头行
-2. 解除所有合并单元格（取左上角值填充）
-3. 清空表头上方的标题行、提示行（保留行号，避免表头位置偏移，因为导入代码硬编码从第3行读取）
-4. 删除第1列（A列）非纯数字的模板示例行
-5. 保存为 `原文件名_cleaned.xlsx`
+1. 重命名 sheet 为 `上架模板`（代码硬编码读取此名称，否则导入报 `KeyError`）
+2. 扫描前10行找到含「商品名称」+「京东挂网价」的真实表头行
+3. 解除所有合并单元格（取左上角值填充）
+4. 清空表头上方的标题行、提示行（保留行号，避免表头位置偏移，因为导入代码硬编码从第3行读取）
+5. 删除第1列（A列）非纯数字的模板示例行
+6. 保存为 `原文件名_cleaned.xlsx`
 
 ### 解析摘要模板
 
@@ -206,20 +235,44 @@ uv run jingmai-publish run-import --excel "D:\path\to\file_cleaned.xlsx" --mode 
 项目通过 `.env` 文件管理配置。首次使用前需在项目根目录创建 `.env` 文件：
 
 ```bash
-# 必填：MySQL 连接（脚本会自动降级到 SQLite，可不填）
+# ── 数据库（MySQL 连接失败自动降级到 SQLite，可不填）──
 MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
 MYSQL_USER=root
 MYSQL_PASSWORD=
 MYSQL_DATABASE=jingmai_agent
+# MYSQL_CHARSET=utf8mb4        # 可选，默认 utf8mb4
+# MYSQL_POOL_SIZE=10            # 可选，连接池大小
+# MYSQL_MAX_OVERFLOW=20         # 可选，连接池溢出上限
 
-# 可选：飞书集成
+# ── Redis（用于任务队列缓存）──
+# REDIS_URL=redis://127.0.0.1:6379/0    # 可选，有默认值
+
+# ── 飞书集成 ──
 # FEISHU_APP_ID=
 # FEISHU_APP_SECRET=
+# FEISHU_VERIFY_TOKEN=          # 可选，事件订阅验证
+# FEISHU_ENCRYPT_KEY=           # 可选，消息加密密钥
 
-# 可选：Ollama Vision（截图分析用）
+# ── Ollama Vision（截图分析用）──
 # OLLAMA_BASE_URL=http://localhost:11434
 # OLLAMA_MODEL=qwen3-vl:8b
+# VISION_ENABLED=true            # 可选，默认 true
+# LLM_TIMEOUT=120                # 可选，默认 120s
+
+# ── vLLM（可选替代 Ollama）──
+# VLLM_BASE_URL=http://localhost:8000/v1
+# VLLM_MODEL=qwen3-vl:8b
+
+# ── Milvus 向量数据库（可选，记忆检索用）──
+# MILVUS_HOST=127.0.0.1
+# MILVUS_PORT=19530
+# MILVUS_COLLECTION=jingmai_agent_memory
+
+# ── 其他 ──
+# DEBUG=true                     # 可选，调试模式
+# SCREENSHOT_ENABLED=true        # 可选，默认 true
+# LOG_RETENTION_DAYS=3           # 可选，日志保留天数
 ```
 
 配置验证通过后，初始化数据库：
@@ -272,6 +325,24 @@ uv run jingmai-publish check-evidence --root .
 
 ```bash
 uv run jingmai-publish cleanup-runtime-logs --root .
+```
+
+### E2E 草稿测试（单行→京麦桌面）
+
+```bash
+uv run jingmai-publish run-draft-e2e --excel ".\file_cleaned.xlsx" --item-index 0 --main-image-path ".\img\main.png" --transparent-image-path ".\img\trans.png" --root .
+```
+
+### 本地路径消息触发
+
+```bash
+uv run jingmai-publish run-local-path-task --path-file ".\message.json" --mode draft --root .
+```
+
+### 飞书事件触发
+
+```bash
+uv run jingmai-publish run-feishu-path-task --payload-file ".\feishu_event.json" --mode draft --root .
 ```
 
 ## 执行模型

@@ -8,6 +8,32 @@ description: |
 
 - 京麦发布 / jingmai publish / jingmai / 京麦自动化 / 批量上架
 
+## 对话式工作流
+
+> Agent 根据用户意图匹配执行路径。每个箭头表示一个阶段，完成后暂停等待确认。
+
+```
+用户："帮我设置京麦环境"
+  └─→ [1] 检查 uv → 安装依赖 → 安装 Chromium → check-config
+       → 展示配置摘要 → ⏸ 用户确认
+       → [2] init-db → ⏸ 用户确认数据库类型
+       → ✅ 环境就绪
+
+用户："导入这个 Excel 到京麦草稿"
+  └─→ [1] 确认环境已就绪（否则先走上面流程）
+       → [2] 读取 Excel → 展示商品摘要（数量/类目/耗时）→ ⏸ 用户确认
+       → [3] run-import --mode draft → 实时进度 → ✅ 导入完成
+
+用户："把草稿正式发布"
+  └─→ [1] 展示待发布商品摘要 → ⏸ 用户输入 yes 确认
+       → [2] run-desktop-check --step t8-publish-product --confirm-publish
+       → [3] check-evidence 展示截图证据 → ✅ 发布完成
+
+用户："京麦出问题了 / 报错了 / 没反应"
+  └─→ [1] 收集症状 → 匹配「故障排查」表
+       → [2] 按优先级尝试解决方案 → 每步验证 → ✅ 问题解决或升级
+```
+
 ## 快速开始
 
 ### 环境安装（uv 管理）
@@ -132,6 +158,18 @@ Reflection（递进式重试，最多3次）
 - **发布守卫** — `t8-publish-product` 步骤需 `--confirm-publish` 明确授权，防止误发布
 - **自动降级** — MySQL 连接失败自动切换到 SQLite
 
+## 检查点（Checkpoints）
+
+> 每个关键操作前 Agent 必须暂停，等待用户确认后再继续。不可自主跳过。
+
+| 阶段 | 检查点 | 确认方式 | 不通过时 |
+|------|--------|---------|---------|
+| 环境初始化 | `check-config` 通过后，展示配置摘要 | 用户确认"环境OK" | 修正 `.env` 后重新验证 |
+| 数据库初始化 | `init-db` 执行前，确认数据库类型（MySQL/SQLite） | 用户确认"初始化" | 检查数据库连接后重试 |
+| Excel 导入 | 读取 Excel 后展示：商品数量、类目分布、预计耗时 | 用户确认"开始导入" | 修正 Excel 数据后重新读取 |
+| 正式发布 | 展示待发布商品摘要（数量/类目/价格区间） | 用户输入 `yes` 或传 `--confirm-publish` | 返回草稿模式，不执行发布 |
+| 批量操作 | 展示操作计划（步骤数/预计耗时/风险点） | 用户确认"执行" | 调整参数后重新规划 |
+
 ## 调试选项
 
 ```bash
@@ -141,13 +179,24 @@ Reflection（递进式重试，最多3次）
 
 ## Session1 Helper
 
-京麦客户端运行在 Session 1，而脚本运行在 Session 0。Session 0 发出的操作无法传递到 Session 1 的京麦窗口。
+京麦客户端运行在 Session 1（用户桌面会话），而脚本运行在 Session 0（服务会话）或其他非交互会话时，发出的操作无法传递到京麦窗口。
+
+> **为什么有两个目录？** `jingmai-product-publish`（本目录）是发布主流程，`jingmai-product-publish-v2`（Session1 Helper 所在目录）负责桌面自动化桥接。两个项目配合使用，缺一不可。
 
 **启动 Helper：**
 ```bash
+# 在 Session1 Helper 项目目录执行（注意：是 v2 目录）
 cd E:\workspace\skills\jingmai-product-publish-v2
 uv run python session1_helper.py
 # 或双击 start_helper.bat
+```
+
+**验证 Helper 是否运行：**
+```bash
+# 回到主项目目录
+cd E:\workspace\skills\jingmai-product-publish
+uv run jingmai-publish run-desktop-check --step t1-login-check --root .
+# 如果能截到京麦窗口 → Helper 正常工作
 ```
 
 ## 故障排查
@@ -162,6 +211,13 @@ uv run python session1_helper.py
 | 桌面操作无响应 | Session1 Helper 未启动 | 双击 `start_helper.bat` 或在 v2 目录运行 `uv run python session1_helper.py` |
 | 京麦窗口未找到 | 京麦未登录或窗口标题不匹配 | 确认京麦客户端已登录并显示在主桌面 |
 | 截图分析超时 | Ollama 未启动或显存不足 | 确认 `ollama serve` 运行中，检查 `OLLAMA_BASE_URL` 配置 |
+| Excel 导入报错 | 表头不匹配或数据格式异常 | 对照模板检查列名（商品名称/价格/库存/类目/规格/图片）；确保无合并单元格 |
+| Excel 导入0条 | 工作表为空或数据不在第一个 sheet | 确认数据在第一个工作表，且从第2行开始（第1行为表头） |
+| UIA 元素找不到 | 京麦版本更新导致元素路径变化 | 运行 `run-desktop-check --step t1-login-check --debug` 生成最新截图，比对元素定位 |
+| 发布后商品未显示 | 京东审核延迟 | 等待 5-10 分钟刷新；检查「待审核」tab；非报错，属正常流程 |
+| 批量导入中途卡住 | 某个商品数据异常导致流程中断 | 查看 `logs/` 目录下的错误日志，定位失败商品行号，修正后单独导入 |
+| 京麦客户端闪退 | 京麦自身稳定性问题 | 重新登录京麦；运行 `check-config` 确认环境；从断点续传（已导入商品不会重复） |
+| 分辨率不匹配 | 非 2560×1392 导致坐标偏移 | 调整分辨率至推荐值；或在 `.env` 中设置 `SCREEN_WIDTH`/`SCREEN_HEIGHT` 覆盖默认坐标 |
 
 ## 项目文件
 

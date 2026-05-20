@@ -513,6 +513,58 @@ YYYY.MM.DD(日报)
 - **6大事件**: Gemini Intelligence / Gemini Cursor / Veo 4 / Thinking Machines / MiniCPM-V 4.6 / Sakana Conductor
 - **归档**: `douyin-knowledge/2026-05-18-AI一周大事-MiniCPM-V4.6-Gemini系列.md`
 
+## 2026-05-19 抖音学习记录
+
+### GitHub AI Skills榜单（第3集）
+- **来源**: 抖音 - 完全AI
+- **主题**: GitHub AI Skills黑马上榜
+- **核心内容**:
+  - hermes agent成为最大黑马（15.2万Stars），冲到第二
+  - financial services和deepseatrade新晋上榜
+  - mattpocock/skills稳居第一（91.8k Stars）
+- **归档**: `douyin-knowledge/2026-05-19-GitHub-AI-Skills榜单与OpenHuman分析.md`
+- **深挖报告**: `douyin-knowledge/2026-05-19-GitHub-AI-Skills深挖报告.md`
+
+### OpenHuman 强势登顶
+- **来源**: 抖音 - AI有点聊
+- **主题**: 打破冷启动，无需"教"即可了解用户
+- **核心内容**:
+  - 三步原理：一键连接→20分钟无感抓取→生成记忆树
+  - TokenJuice：记住10亿Token信息
+  - 潜意识循环：Agent自主决策待办事项
+  - 选型：OpenClaw(网关) / HermesAgent(成长) / OpenHuman(助理)
+  - Agent发展方向：执行力+学习力+记忆力
+
+### 港大开源万物皆可RAG：RAG-Anything
+- **来源**: 抖音 - 骋风算力（第196集）
+- **团队**: HKUDS（香港大学数据科学团队）
+- **Stars**: 20.3k ⭐
+- **定位**: All-in-One Multimodal RAG Framework
+- **arXiv**: 2510.12323
+- **核心**: 5阶段多模态RAG架构，支持文本/图片/表格/公式统一处理
+- **飞书**: https://feishu.cn/docx/CStWdgshnov5Mrx4f7MchsSGnNc
+
+### Workflow vs Agent 本质区别
+- **来源**: 抖音 - 自说自话的 Erin（合集74集）
+- **核心区分**:
+  - Workflow:人来定流程 AI执行 → 线性流程/高阶任务
+  - Agent: AI定流程 AI执行 → 复杂决策/多选项情况
+- **核心原则**：没有事务程序单，就不需要强到Agent
+- **LangGraph**: 两者核心范式，Graph+State支持循环判断
+- **飞书**: https://feishu.cn/docx/KynzdR7h7ok51Lx8HR0cUiRNnQc
+
+### 字节Agent面试深度分析
+- **来源**: 抖音 - 面试聊产品（5集）
+- **核心知识点**:
+  - MCP生态：工具调用/参数校验/权限/超时/熔断
+  - 模板写法：模板+变量+示例+任务熔断
+  - Agent工作模式: ReAct/Plan+Execute/Workflow
+  - RAG全链路: 接收→清洗→切片→Embedding→向量检索→rerank
+  - 记忆系统：企业知识主体
+- **文件**: `douyin-knowledge/2026-05-19-字节Agent面试深度分析.md`（39KB）
+- **飞书**: https://feishu.cn/docx/C6ord4GH5ooegKxV5iCcQ11gnNP
+- **内容**: MCP/RAG全链路/记忆系统/模型分层/熔断机制/面试题库15道
+
 ## 2026-05-15 抖音学习记录
 
 ### 知识库归档

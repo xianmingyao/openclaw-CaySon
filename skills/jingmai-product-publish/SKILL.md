@@ -21,8 +21,10 @@ description: |
 
 用户："导入这个 Excel 到京麦草稿"
   └─→ [1] 确认环境已就绪（否则先走上面流程）
-       → [2] 读取 Excel → 展示商品摘要（数量/类目/耗时）→ ⏸ 用户确认
-       → [3] run-import --mode draft → 实时进度 → ✅ 导入完成
+       → [2] 扫描 Excel 结构（表头行号/合并单元格/模板行）
+       → [3] **执行预处理脚本**（必做！）→ 生成 _cleaned.xlsx
+       → [4] 展示商品摘要（数量/类目/耗时/缺失字段）→ ⏸ 用户确认
+       → [5] run-import --mode draft → 实时进度 → ✅ 导入完成
 
 用户："把草稿正式发布"
   └─→ [1] 展示待发布商品摘要 → ⏸ 用户输入 yes 确认
@@ -76,10 +78,13 @@ uv run jingmai-publish check-config --root .
 | 要求 | 说明 |
 |------|------|
 | 数据位置 | 第一个工作表（sheet）必须是商品数据 |
-| 表头行 | 第1行为列名，第2行起为数据（不允许表头上方有空行/标题行/提示行） |
+| 表头行 | 代码硬编码读取第3行为表头、第4行起为数据。**导入前必须预处理**，将真实表头对齐到第1行（见下方预处理脚本） |
+| 第1列（A列） | 必须是**纯数字**上架序号（1, 2, 3…），含"模板"等文字会导致 `int('模板')` 崩溃 |
 | 无合并单元格 | 数据区域内禁止合并单元格，否则 openpyxl 读到的值为 None |
 | 无空行 | 数据之间不允许有空行，遇到空行即停止解析 |
 | 单 sheet 数据 | 其他 sheet（如"资质要求""参考链接"）不会自动导入 |
+
+> **实测案例**：`4.28机械臂上架.xlsx` 第1行标题+第2行提示+第3行表头+第4行模板示例，直接导入报错 `invalid literal for int() with base 10: '模板'`。经预处理脚本清理后导入成功。
 
 ### 必填列
 
@@ -90,17 +95,89 @@ uv run jingmai-publish check-config --root .
 | 京东链接 | `https://item.jd.com/` 格式 | **阻断**—无法导入 |
 | 商品资质 | PDF/图片，嵌入单元格 | ⚠️ 警告—可导入但京麦审核不通过 |
 
-### 格式预处理
+### 格式预处理（导入前必须执行）
 
-如果 Excel 不符合上述规范（常见于微信接收的文件），Agent 应自动完成预处理：
+> **重要**：导入工具硬编码读取第3行为表头、第4行起为数据。微信/邮件传输的 Excel 几乎都有标题行和提示行，**必须先执行以下预处理脚本再导入**。
 
+**Agent 执行流程：**
+
+```bash
+# Step 1: 扫描 Excel 结构（只读，不修改）
+uv run python -c "
+import openpyxl, sys
+wb = openpyxl.load_workbook(sys.argv[1], read_only=True, data_only=True)
+ws = wb.active
+print(f'Sheet: {ws.title}, Rows: {ws.max_row}, Cols: {ws.max_column}')
+for i, row in enumerate(ws.iter_rows(min_row=1, max_row=min(6, ws.max_row), values_only=True), 1):
+    vals = [str(v)[:40] if v else '-' for v in row[:15]]
+    print(f'Row {i}: {vals}')
+" "D:\path\to\file.xlsx"
 ```
-1. 检测表头位置 — 扫描前5行，找到包含"商品名称"+"京东挂网价"的行作为真实表头
-2. 跳过提示行 — 标题行、模板示例行（含"模板""每一项必填"等关键词）自动跳过
-3. 解除合并 — 检测 merged_cells，展开为普通单元格（取左上角值填充）
-4. 裁剪空行 — 从真实表头+1行开始，遇到连续空行停止
-5. 展示解析摘要 — 表头映射、有效行数、缺失字段清单
+
+```bash
+# Step 2: 执行预处理（生成清理后的文件）
+uv run python -c "
+import openpyxl, sys
+src = sys.argv[1]
+dst = src.replace('.xlsx', '_cleaned.xlsx')
+wb = openpyxl.load_workbook(src)
+ws = wb.active
+
+# 2.1 找到真实表头行（含「商品名称」+「京东挂网价」的行）
+header_row = None
+for row in ws.iter_rows(min_row=1, max_row=min(10, ws.max_row), values_only=True):
+    vals = [str(v) if v else '' for v in row]
+    if any('商品名称' in v for v in vals) and any('京东挂网价' in v for v in vals):
+        header_row = row[0].row if hasattr(row[0], 'row') else ws.cell(row=[r for r in ws.iter_rows(min_row=1, max_row=10)][0][0].row, column=1).row
+        break
+
+# Fallback: 找不到则用硬编码行号
+if header_row is None:
+    # 手动指定：常见模板表头在第3行
+    header_row = 3  # 可调整
+
+# 2.2 解除所有合并单元格（取左上角值填充）
+for merge_range in list(ws.merged_cells.ranges):
+    top_left = ws.cell(merge_range.min_row, merge_range.min_col).value
+    ws.unmerge_cells(str(merge_range))
+    for r in range(merge_range.min_row, merge_range.max_row + 1):
+        for c in range(merge_range.min_col, merge_range.max_col + 1):
+            ws.cell(r, c).value = top_left
+
+# 2.3 删除表头上方的所有行
+if header_row > 1:
+    ws.delete_rows(1, header_row - 1)
+
+# 2.4 删除模板示例行（第1列包含非数字如「模板」的行）
+rows_to_delete = []
+for row in ws.iter_rows(min_row=2, max_row=ws.max_row):  # row 1 is now headers
+    val_a = row[0].value
+    if val_a is not None:
+        try:
+            int(val_a)
+        except (ValueError, TypeError):
+            rows_to_delete.append(row[0].row)
+
+# 从下往上删除，避免行号偏移
+for r in reversed(rows_to_delete):
+    ws.delete_rows(r, 1)
+
+wb.save(dst)
+print(f'Cleaned: {dst}')
+print(f'Header row (now row 1): {[c.value for c in ws[1]][:5]}')
+print(f'Data rows: {ws.max_row - 1}')
+" "D:\path\to\file.xlsx"
+
+# Step 3: 用清理后的文件导入
+uv run jingmai-publish run-import --excel "D:\path\to\file_cleaned.xlsx" --mode draft --root .
 ```
+
+**预处理做了什么：**
+1. 扫描前10行找到含「商品名称」+「京东挂网价」的真实表头行
+2. 解除所有合并单元格（取左上角值填充）
+3. 删除表头上方的标题行、提示行
+4. 删除第1列（A列）非纯数字的模板示例行
+5. 保存为 `原文件名_cleaned.xlsx`
 
 ### 解析摘要模板
 
@@ -220,6 +297,7 @@ Reflection（递进式重试，最多3次）
 |------|--------|---------|---------|
 | 环境初始化 | `check-config` 通过后，展示配置摘要 | 用户确认"环境OK" | 修正 `.env` 后重新验证 |
 | 数据库初始化 | `init-db` 执行前，确认数据库类型（MySQL/SQLite） | 用户确认"初始化" | 检查数据库连接后重试 |
+| Excel 预处理 | **导入前必做**：扫描 Excel 结构 → 执行预处理脚本 → 生成 `_cleaned.xlsx` | 展示预处理日志（删除行数/表头位置/数据行数） | 检查原始 Excel 格式，调整脚本参数后重新预处理 |
 | Excel 导入 | 解析后展示：商品数量、类目分布、预计耗时、**缺失字段清单**（必填项为空→阻断，可选项为空→警告） | 用户确认"开始导入" | 补全缺失字段或修正 Excel 格式后重新解析 |
 | 正式发布 | 展示待发布商品摘要（数量/类目/价格区间），**含资质完整性检查** | 用户输入 `yes` 或传 `--confirm-publish` | 返回草稿模式，不执行发布 |
 | 批量操作 | 展示操作计划（步骤数/预计耗时/风险点）+ **依赖项就绪检查** | 用户确认"执行" | 调整参数或补全依赖后重新规划 |
@@ -266,9 +344,11 @@ uv run jingmai-publish run-desktop-check --step t1-login-check --root .
 | 京麦窗口未找到 | 京麦未登录或窗口标题不匹配 | 确认京麦客户端已登录并显示在主桌面 |
 | 截图分析超时 | Ollama 未启动或显存不足 | 确认 `ollama serve` 运行中，检查 `OLLAMA_BASE_URL` 配置 |
 | Excel 导入报错 | 表头不匹配或数据格式异常 | 对照模板检查列名（商品名称/价格/库存/类目/规格/图片）；确保无合并单元格 |
-| Excel 导入0条 | 工作表为空或数据不在第一个 sheet | 确认数据在第一个工作表，且从第2行开始（第1行为表头） |
+| `invalid literal for int() with base 10: '模板'` | Excel 第4行是模板示例行（第1列="模板"），代码 `int('模板')` 崩溃 | **必须执行预处理脚本**（见上方「格式预处理」章节），删除模板行后再导入 |
+| `invalid literal for int()` 其他值 | Excel 第1列（A列）包含非数字内容 | 检查 A 列所有值是否为纯数字序号（1,2,3…）；删除模板行、标题行、空行 |
+| Excel 导入0条 | 代码从第4行开始读数据，表头上方有行导致第4行是空的 | 执行预处理脚本清理表头上方行；或手动删除前N行使表头对齐到第3行、数据从第4行开始 |
 | Excel 解析到空值 | 合并单元格导致 openpyxl 读取为 None | 先执行 `uv run python -c "import openpyxl; wb=openpyxl.load_workbook('文件'); print(wb.active.merged_cells.ranges)"` 确认合并区域，手动取消合并后重新导入 |
-| Excel 表头不在第1行 | 微信/邮件传输的 Excel 有标题行和提示行 | 检查前 5 行，找到含"商品名称"+"京东挂网价"行作为真实表头；手动删除表头上方所有行后重新导入 |
+| Excel 表头不在第1行 | 微信/邮件传输的 Excel 有标题行和提示行（代码硬编码读第3行表头，不兼容非标准格式） | **必须执行预处理脚本**（见上方「格式预处理」章节），自动检测表头+删除上方行+清理模板行+解除合并；不可手动删除（容易出错） |
 | Excel 有多个 sheet | 其他 sheet 含资质要求/参考链接等辅助信息 | 只导入第一个 sheet；确保第一个 sheet 是商品数据，辅助信息移到其他 sheet |
 | 商品资质列为空 | Excel 中未嵌入资质图片/PDF | 可导入草稿但京麦审核不通过；建议补全资质文件后重新导入；如紧急先导入草稿再补资质 |
 | 必填字段缺失 | 商品名称/京东挂网价/京东链接为空 | 展示缺失字段清单（字段名+行号），用户补全后重新导入；不允许跳过必填字段导入 |

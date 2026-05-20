@@ -124,16 +124,17 @@ wb = openpyxl.load_workbook(src)
 ws = wb.active
 
 # 2.1 找到真实表头行（含「商品名称」+「京东挂网价」的行）
+# 注意：不用 values_only=True，因为需要 Cell.row 属性获取行号
 header_row = None
-for row in ws.iter_rows(min_row=1, max_row=min(10, ws.max_row), values_only=True):
-    vals = [str(v) if v else '' for v in row]
+for row in ws.iter_rows(min_row=1, max_row=min(10, ws.max_row)):
+    vals = [str(cell.value) if cell.value else '' for cell in row]
     if any('商品名称' in v for v in vals) and any('京东挂网价' in v for v in vals):
-        header_row = row[0].row if hasattr(row[0], 'row') else ws.cell(row=[r for r in ws.iter_rows(min_row=1, max_row=10)][0][0].row, column=1).row
+        header_row = row[0].row
         break
 
 # Fallback: 找不到则用硬编码行号
 if header_row is None:
-    # 手动指定：常见模板表头在第3行
+    print('WARNING: 未检测到表头行，使用默认值第3行')
     header_row = 3  # 可调整
 
 # 2.2 解除所有合并单元格（取左上角值填充）

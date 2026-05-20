@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-14T00:57:22.964Z",
+  "updatedAt": "2026-05-19T05:41:40.624Z",
   "entries": {
     "memory:memory/2026-04-13.md:6:9": {
       "key": "memory:memory/2026-04-13.md:6:9",
@@ -519958,6 +519958,99 @@
         "82/100",
         "windows-control",
         "结论"
+      ]
+    },
+    "memory:memory/2026-05-12.md:81:113": {
+      "key": "memory:memory/2026-05-12.md:81:113",
+      "path": "memory/2026-05-12.md",
+      "startLine": 81,
+      "endLine": 113,
+      "source": "memory",
+      "snippet": "## 11:50 知识库整合完成 - 新文件: 企业AI本体化闭环流程-从工具到Agent的完整指南.md - 整合内容: 1. Zilliz-Cloud企业知识库完整指南.md 2. Zilliz-Cloud从零搭建企业知识库实操指南.md 3. 企业AI本体Ontology-从工具到Agent的关键.md - 核心逻辑: 工具→知识库→RAG→本体化→Agent (五阶段闭环) - Milvus: 12 sections synced ## 11:50 Cron - continuous_ingest - 任务: python E:\\workspace\\knowledge-base\\continuous_ingest.py - 结果: 扫描 0 个新/变更文件，无新文件需要处理（正常） - 状态: ✅ 完成 ## 11:55 企业AI本体Ontology V2.0 整合完成 - 文件: 企业AI本体Ontology-从工具到Agent的关键.md (完整闭环版) - 整合内容: 1. Zilliz企业知识库完整指南 (阶段2) 2. Zilliz从零搭建实操指南 (阶段2) 3. 企业AI本体Ontology (阶段4) - 五阶段闭环: 工具→知识库→RAG→本体化→Agent - Milvus: 15 sections synced ## 12:05 企业AI本体Ontology V2.1融合版完成 - 文件: 企业AI本体Ontology-从工具到Agent的关键 - v2.md (融合版) - 融合内容: 1. v2五阶段闭环流程",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T05:41:40.624Z",
+      "lastRecalledAt": "2026-05-19T05:41:40.624Z",
+      "queryHashes": [
+        "7153e659caaf"
+      ],
+      "recallDays": [
+        "2026-05-19"
+      ],
+      "conceptTags": [
+        "企业ai本体化闭环流程-从工具到agent的完整指南.md",
+        "zilliz-cloud企业知识库完整指南.md",
+        "zilliz-cloud从零搭建企业知识库实操指南.md",
+        "企业ai本体ontology-从工具到agent的关键.md",
+        "continuous-ingest",
+        "knowledge-base",
+        "continuous-ingest.py",
+        "个新/变更文件"
+      ]
+    },
+    "memory:memory/2026-04-18.md:54:77": {
+      "key": "memory:memory/2026-04-18.md:54:77",
+      "path": "memory/2026-04-18.md",
+      "startLine": 54,
+      "endLine": 77,
+      "source": "memory",
+      "snippet": "- confidence: 0.00 - evidence: memory/2026-04-15.md:27-30 - recalls: 0 - status: staged - Candidate: AI黑科技 - OpenClaw vs Hermes深度对比: **五维对比**：工程重心/Skill/记忆/安全/场景 - confidence: 0.00 - evidence: memory/2026-04-15.md:31-31 - recalls: 0 - status: staged - Candidate: Cron Session 故障: **Session**: knowledge-base-sync (Cron ID: 7c7f5f69-f412-4694-b41b-c480692c9927); **问题**: Cron Agent 所有工具调用均被 Abort，系统性故障; **时间**: 20:00 左右; **状态**: ❌ 同步任务失败 - confidence: 0.00 - evidence: memory/2026-04-13.md:7-10 - recalls: 0 - status: staged - Candidate: 异步任务完成记录: **Session**: tidal-gl (SIGKILL 终止); **内容**: AI文章抓取 (hermes-agent-ai, karpathy-rag-critique-aidianliao 等); **进度**: 163/395 blocks",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T05:41:40.624Z",
+      "lastRecalledAt": "2026-05-19T05:41:40.624Z",
+      "queryHashes": [
+        "7153e659caaf"
+      ],
+      "recallDays": [
+        "2026-05-19"
+      ],
+      "conceptTags": [
+        "0.00",
+        "memory/2026-04-15.md",
+        "27-30",
+        "工程重心/skill/记忆/安全/场景",
+        "31-31",
+        "knowledge-base-sync",
+        "memory/2026-04-13.md",
+        "7-10"
+      ]
+    },
+    "memory:memory/2026-04-19.md:66:89": {
+      "key": "memory:memory/2026-04-19.md:66:89",
+      "path": "memory/2026-04-19.md",
+      "startLine": 66,
+      "endLine": 89,
+      "source": "memory",
+      "snippet": "- confidence: 0.00 - evidence: memory/2026-04-15.md:27-30 - recalls: 0 - status: staged - Candidate: AI黑科技 - OpenClaw vs Hermes深度对比: **五维对比**：工程重心/Skill/记忆/安全/场景 - confidence: 0.00 - evidence: memory/2026-04-15.md:31-31 - recalls: 0 - status: staged - Candidate: Cron Session 故障: **Session**: knowledge-base-sync (Cron ID: 7c7f5f69-f412-4694-b41b-c480692c9927); **问题**: Cron Agent 所有工具调用均被 Abort，系统性故障; **时间**: 20:00 左右; **状态**: ❌ 同步任务失败 - confidence: 0.00 - evidence: memory/2026-04-13.md:7-10 - recalls: 0 - status: staged - Candidate: 异步任务完成记录: **Session**: tidal-gl (SIGKILL 终止); **内容**: AI文章抓取 (hermes-agent-ai, karpathy-rag-critique-aidianliao 等); **进度**: 163/395 blocks",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-19T05:41:40.624Z",
+      "lastRecalledAt": "2026-05-19T05:41:40.624Z",
+      "queryHashes": [
+        "7153e659caaf"
+      ],
+      "recallDays": [
+        "2026-05-19"
+      ],
+      "conceptTags": [
+        "0.00",
+        "memory/2026-04-15.md",
+        "27-30",
+        "工程重心/skill/记忆/安全/场景",
+        "31-31",
+        "knowledge-base-sync",
+        "memory/2026-04-13.md",
+        "7-10"
       ]
     }
   }

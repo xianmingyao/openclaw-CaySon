@@ -482,6 +482,37 @@ YYYY.MM.DD(日报)
 - 1. 产品经理Skills完整指南.md - Notion: https://notion.so/34a2bb5417c381c4a07af98f7847330e 2. OpenClaw-24个视频剪辑Skills.md - Notion: https://notion.so/34a2bb5417c3818a9429e50c2c8a9914 3. OpenCode-ClaudeCode-Skills完整指南.md - Notion: https://notion.so/34a2bb5417c381f0a207f56f3d2b9808 **同步状态：** - ✅ 飞书：2篇文档已同步 - ✅ Notion：3篇文档已同步 - ✅ Milvus：3篇文档已上传（8+13+7=28块） - ✅ 本地记忆：已更新 <!-- consolidated to MEMORY.md on 2026-04-23 --> [score=0.805 recalls=3 avg=0.778 source=memory/2026-04-22.md:1216-1229]
 
 
+## 2026-05-18 抖音学习记录
+
+### Omni-SimpleMem 多模态智能体记忆框架
+- **来源**: 抖音 - Agent创世纪 / AutoResearch
+- **核心问题**: AI处理大规模历史数据的存储冗余与检索混乱
+- **技术框架**:
+  1. 新颖性过滤器 - 剔除无用信息
+  2. MAU（多模态原子单元）- 冷热记忆解耦
+  3. 金字塔式渐进检索 - 按需加载
+- **效果（LoCoMo基准）**: 准确率+411%，速度3.5倍
+- **归档**: `douyin-knowledge/2026-05-18-Omni-SimpleMem多模态记忆框架.md`
+
+### Crawl4AI — GitHub 63K Star AI爬虫
+- **来源**: 抖音 - @IT小圈
+- **项目**: unclecode/crawl4ai, 63.6K stars
+- **特点**: LLM Friendly网页爬虫，一行Python代码搞定
+- **适用**: RAG系统构建、AI Agent网页获取、数据采集
+- **归档**: `douyin-knowledge/2026-05-18-Crawl4AI-GitHub63KStar爬虫.md`
+
+### supersplat - 3D场景编辑器
+- **来源**: 抖音 - @不露声色
+- **项目**: playcanvas/supersplat
+- **特点**: 高斯泼溅3D重建，手机拍照生成3D场景
+- **适用**: 数字孪生、元宇宙
+- **归档**: `douyin-knowledge/2026-05-18-supersplat-3D场景编辑器.md`
+
+### 一周AI大事（5月17日）
+- **来源**: 抖音 - 产品君
+- **6大事件**: Gemini Intelligence / Gemini Cursor / Veo 4 / Thinking Machines / MiniCPM-V 4.6 / Sakana Conductor
+- **归档**: `douyin-knowledge/2026-05-18-AI一周大事-MiniCPM-V4.6-Gemini系列.md`
+
 ## 2026-05-15 抖音学习记录
 
 ### 知识库归档

@@ -15,9 +15,22 @@ class AgentPlanner:
     """Generates an ordered execution plan from a requested step.
 
     Resolves preconditions transitively and produces a topologically
-    sorted list of ActionSteps. The "both" pseudo-step expands to
-    ["t1", "t2"].
+    sorted list of ActionSteps. The "both" pseudo-step expands to the
+    full publish draft flow, not only the entry smoke test.
     """
+
+    FULL_PUBLISH_FLOW = (
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5-required-fields",
+        "t6-main-image",
+        "t6-transparent-image",
+        "t6-detail-editor",
+        "t7",
+        "t8-save-draft",
+    )
 
     def __init__(self, registry: ActionRegistry) -> None:
         self.registry = registry
@@ -33,11 +46,12 @@ class AgentPlanner:
 
         # "both" 复合步骤特殊处理
         if requested_step == "both":
-            steps = [
-                self.registry.get("t1"),
-                self.registry.get("t2"),
-            ]
-            return Plan(target_step=requested_step, steps=steps)
+            steps = [self.registry.get(step_name) for step_name in self.FULL_PUBLISH_FLOW]
+            return Plan(
+                target_step=requested_step,
+                steps=steps,
+                metadata={"total_steps": len(steps), "flow": "full_publish_draft"},
+            )
 
         # 收集所有需要的步骤（目标 + 传递依赖）
         step_set: dict[str, ActionStep] = {}

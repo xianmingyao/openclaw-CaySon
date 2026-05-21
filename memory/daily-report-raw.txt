@@ -1,43 +1,35 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-05-19 17:20:20
+Date: 2026-05-20 17:20:24
 --- GIT COMMITS ---
-  c5672e79 chore: 鏇存柊memory 2026-05-19
-  de42555b feat: 瀛楄妭Agent闈㈣瘯娣卞害鍒嗘瀽 - MCP/RAG/璁板繂/鐔旀柇/妯″瀷鍒嗗眰
-  50a646a5 docs: add ByteDance Agent interview deep dive (59KB MCP RAG circuit breaker)
-  f224623f docs: add ByteDance Agent interview high-frequency questions (MCP RAG circuit breaker)
-  492e4f2a docs: add Workflow Agent hybrid mode deep dive (Jiangge #74) + Ontology Section 20
-  090a58f3 docs: add GitHub AI Skills deep dive + RAG-Anything + full sync 2026-05-19
-  af41a799 docs: add HKUDS RAG-Anything (涓囩墿鐨嗗彲RAG, 20.3k Stars)
-  eea5263d docs: add GitHub AI Skills deep dive report (hermes-agent/OpenHuman/agentmemory)
-  f8aa33f9 memory: 2026-05-19 GitHub AI Skills涓嶰penHuman鐭ヨ瘑鍚屾
-  fd9c38d9 docs: add GitHub AI Skills姒滃崟涓嶰penHuman鍒嗘瀽 (2026-05-19)
+  1805c36b docs: Dream鏁村悎 - 05-19鐭ヨ瘑娌夋穩鍒癕EMORY.md
+  e5a56478 瀹氭椂鑷姩鎻愪氦 - 2026-05-20 08:11:10
 --- FILES MODIFIED ---
-  17:07 | .git\FETCH_HEAD
-  17:02 | knowledge-base\.notion_sync_state.json
-  17:02 | knowledge-base\.sync_state.json
-  15:02 | memory\2026-05-19.md
-  13:53 | skills\jingmai-product-publish\.idea\workspace.xml
-  13:43 | 项目报价-AI标书助手.md
-  13:41 | memory\.dreams\events.jsonl
-  13:41 | memory\.dreams\short-term-recall.json
-  09:44 | .git\refs\heads\auto-optimize-20260420-1453
-  09:44 | .git\logs\HEAD
-  09:44 | .git\logs\refs\heads\auto-optimize-20260420-1453
-  09:44 | .git\objects\c5\672e79697457dd9212d4b4c548eb71143bbb26
-  09:44 | .git\COMMIT_EDITMSG
-  09:44 | .git\index
-  09:44 | .git\objects\79\cf5fa4a423d5ca13bf8b7e43ac57fcc5e4d7cc
-  09:44 | .git\objects\55\503e0ef51a77b66195f9f4c88b0dc68e6f1f93
-  09:44 | .git\objects\f8\20e7e6b6c1a4efa4e14bb557959d8703d52215
-  09:44 | .git\objects\de\42555bc3edaa1d96aad53aa8de9742d3e1a44e
-  09:44 | .git\objects\a1\d9f853aa5ef55f62e0701687bb673cefc4ae4e
-  09:44 | .git\objects\ab\bc56d463c20a0c05060da5af188addf75e67ac
+  17:17 | skills\jingmai-product-publish\graphify-out\graph.html
+  17:17 | skills\jingmai-product-publish\graphify-out\graph.json
+  17:17 | skills\jingmai-product-publish\graphify-out\GRAPH_REPORT.md
+  17:17 | skills\jingmai-product-publish\graphify-out\cache\21587d4b50ade2846122b6d12edf50b1cc4205792fbe85475ec5d9a361f42221.json
+  17:17 | skills\jingmai-product-publish\graphify-out\cache\0be4e8037ffd6f8db496a0407269d2b4337bb45d00ade8a4472263587df50662.json
+  17:17 | skills\jingmai-product-publish\graphify-out\converted\湖南上架表格_fa911bf6.md
+  17:17 | skills\jingmai-product-publish\graphify-out\converted\京麦上架流程_95edbbf7.md
+  17:17 | skills\jingmai-product-publish\.pytest_cache\v\cache\nodeids
+  17:17 | skills\jingmai-product-publish\logs\memory\runtime-memory.jsonl
+  17:16 | skills\jingmai-product-publish\tests\__pycache__\test_t6_t8_workflow.cpython-312-pytest-8.4.2.pyc
+  17:16 | skills\jingmai-product-publish\jingmai_publish\desktop\__pycache__\uia_adapter.cpython-312.pyc
+  17:16 | skills\jingmai-product-publish\jingmai_publish\services\__pycache__\jingmai_workflow.cpython-312.pyc
+  17:16 | skills\jingmai-product-publish\tests\test_t6_t8_workflow.py
+  17:15 | skills\jingmai-product-publish\jingmai_publish\services\jingmai_workflow.py
+  17:14 | .git\FETCH_HEAD
+  17:03 | knowledge-base\.notion_sync_state.json
+  17:03 | knowledge-base\.sync_state.json
+  16:40 | memory\2026-05-20.md
+  15:08 | 华人清洗-BU分润小程序-报价清单.xlsx
+  14:58 | skills\jingmai-product-publish\.idea\workspace.xml
 --- SESSIONS ---
-  Count: 348
-  - 009f70d6-d0ea-4032-8b5c-60655a668271.jsonl [03:20]
-  - 009f70d6-d0ea-4032-8b5c-60655a668271.trajectory.jsonl [03:20]
-  - 00c62742-fd50-42a6-a2a5-0346c251c0d0.jsonl [16:00]
+  Count: 252
+  - 034dd935-0fc2-4233-95e0-d7bcded06538.jsonl [11:03]
+  - 034dd935-0fc2-4233-95e0-d7bcded06538.trajectory.jsonl [11:03]
+  - 1051ea85-72e0-4288-87db-69e2d0b49e5d.jsonl [13:03]
 --- SKILLS ---
   (none today)
 --- STRUCTURED ---
-{"skillsUpdated":[],"dayOfWeek":"Tuesday","sessionCount":348,"modifiedFiles":["E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\memory\\2026-05-19.md","E:\\workspace\\skills\\jingmai-product-publish\\.idea\\workspace.xml","E:\\workspace\\项目报价-AI标书助手.md","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\.git\\refs\\heads\\auto-optimize-20260420-1453","E:\\workspace\\.git\\logs\\HEAD","E:\\workspace\\.git\\logs\\refs\\heads\\auto-optimize-20260420-1453","E:\\workspace\\.git\\objects\\c5\\672e79697457dd9212d4b4c548eb71143bbb26","E:\\workspace\\.git\\COMMIT_EDITMSG","E:\\workspace\\.git\\index","E:\\workspace\\.git\\objects\\79\\cf5fa4a423d5ca13bf8b7e43ac57fcc5e4d7cc","E:\\workspace\\.git\\objects\\55\\503e0ef51a77b66195f9f4c88b0dc68e6f1f93","E:\\workspace\\.git\\objects\\f8\\20e7e6b6c1a4efa4e14bb557959d8703d52215","E:\\workspace\\.git\\objects\\de\\42555bc3edaa1d96aad53aa8de9742d3e1a44e","E:\\workspace\\.git\\objects\\a1\\d9f853aa5ef55f62e0701687bb673cefc4ae4e","E:\\workspace\\.git\\objects\\ab\\bc56d463c20a0c05060da5af188addf75e67ac"],"gitCommits":["c5672e79 chore: 鏇存柊memory 2026-05-19","de42555b feat: 瀛楄妭Agent闈㈣瘯娣卞害鍒嗘瀽 - MCP/RAG/璁板繂/鐔旀柇/妯″瀷鍒嗗眰","50a646a5 docs: add ByteDance Agent interview deep dive (59KB MCP RAG circuit breaker)","f224623f docs: add ByteDance Agent interview high-frequency questions (MCP RAG circuit breaker)","492e4f2a docs: add Workflow Agent hybrid mode deep dive (Jiangge #74) + Ontology Section 20","090a58f3 docs: add GitHub AI Skills deep dive + RAG-Anything + full sync 2026-05-19","af41a799 docs: add HKUDS RAG-Anything (涓囩墿鐨嗗彲RAG, 20.3k Stars)","eea5263d docs: add GitHub AI Skills deep dive report (hermes-agent/OpenHuman/agentmemory)","f8aa33f9 memory: 2026-05-19 GitHub AI Skills涓嶰penHuman鐭ヨ瘑鍚屾","fd9c38d9 docs: add GitHub AI Skills姒滃崟涓嶰penHuman鍒嗘瀽 (2026-05-19)"],"date":"2026.05.19"}
+{"skillsUpdated":[],"dayOfWeek":"Wednesday","sessionCount":252,"modifiedFiles":["E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\graph.html","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\graph.json","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\GRAPH_REPORT.md","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\cache\\21587d4b50ade2846122b6d12edf50b1cc4205792fbe85475ec5d9a361f42221.json","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\cache\\0be4e8037ffd6f8db496a0407269d2b4337bb45d00ade8a4472263587df50662.json","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\converted\\湖南上架表格_fa911bf6.md","E:\\workspace\\skills\\jingmai-product-publish\\graphify-out\\converted\\京麦上架流程_95edbbf7.md","E:\\workspace\\skills\\jingmai-product-publish\\.pytest_cache\\v\\cache\\nodeids","E:\\workspace\\skills\\jingmai-product-publish\\logs\\memory\\runtime-memory.jsonl","E:\\workspace\\skills\\jingmai-product-publish\\tests\\__pycache__\\test_t6_t8_workflow.cpython-312-pytest-8.4.2.pyc","E:\\workspace\\skills\\jingmai-product-publish\\jingmai_publish\\desktop\\__pycache__\\uia_adapter.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\jingmai_publish\\services\\__pycache__\\jingmai_workflow.cpython-312.pyc","E:\\workspace\\skills\\jingmai-product-publish\\tests\\test_t6_t8_workflow.py","E:\\workspace\\skills\\jingmai-product-publish\\jingmai_publish\\services\\jingmai_workflow.py","E:\\workspace\\.git\\FETCH_HEAD","E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\memory\\2026-05-20.md","E:\\workspace\\华人清洗-BU分润小程序-报价清单.xlsx","E:\\workspace\\skills\\jingmai-product-publish\\.idea\\workspace.xml"],"gitCommits":["1805c36b docs: Dream鏁村悎 - 05-19鐭ヨ瘑娌夋穩鍒癕EMORY.md","e5a56478 瀹氭椂鑷姩鎻愪氦 - 2026-05-20 08:11:10"],"date":"2026.05.20"}

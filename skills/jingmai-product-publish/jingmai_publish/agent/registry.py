@@ -252,7 +252,7 @@ REGISTRY_ENTRIES: list[ActionStep] = [
     ActionStep(
         step_name="both",
         method_name="",
-        description="复合步骤：T1 + T2 最小验证环",
+        description="复合步骤：T1-T8 完整发布草稿流程",
         category=StepCategory.COMPOSITE,
     ),
 ]

@@ -608,3 +608,75 @@ YYYY.MM.DD(日报)
 2. **第70集**：怎么做一次有效的业务访谈？（Mom Test五步法）
 3. **第71集**：企业AI落地离不开Agent的编排（四层架构）
 4. **第72集**：企业AI落地为什么越来越需要FDE（前沿部署工程师）
+
+## 2026-05-20 抖音学习记录
+
+### 别把学习外包 — Addy Osmani 认知债务理论
+- **来源**: 抖音@慢学AI（07:35，68赞）
+- **核心**: Google技术总监Addy Osmani《Don't Outsource the Learning》
+- **核心观点**:
+  - AI写代码最危险的情况：不是它写错了，而是它写对了（Bug没了，mental model没动）
+  - AI默认优化的是交付，不是学习
+  - 放弃主动理解 = 欠下认知债务
+- **六个动作把学习塞回工作流**:
+  1. 形成假说（先自己想一遍再问AI）
+  2. 解释后要代码（"我来解释我想做什么，你来写"）
+  3. 打开学习模式（"不要只给代码，给我讲原理"）
+  4. 评审AI输出（"这段代码在做什么？为什么这样设计？"）
+  5. 手写重推（理解后合上AI，自己写一遍）
+  6. 让模型解释（"为什么这个Bug这样修？背后的原因是什么？"）
+- **可交给AI**: 样板代码、胶水代码、格式化、简单CRUD
+- **不能委托**: 系统架构、核心业务逻辑、安全关键代码
+- **金句**: "交付和学习是两张账，不要把学习外包给AI" / "学习藏在摩擦中"
+- **理论支撑**: Addy Osmani + Anthropic + MIT + CHI研究
+- **关联**: Matt Pocock Skills(正确用AI) / Vibe Coding(交付vs成长) / 京麦智能体(哪些逻辑可委托)
+- **归档**: `douyin-knowledge/2026-05-20-别把学习外包-认知债务-慢学AI.md`
+- **飞书**: https://feishu.cn/docx/Yrs8dFvDRo2PnbxktQac3w2knhg
+- **Milvus**: ID 17792383682270 ✅
+
+### 生产级AI Agent架构详解（第140集）
+- **来源**: 抖音@AI大模型学习（16:03，258赞）
+- **核心内容**:
+  - **MCP危机与定位**：成本高/上下文多/协议臃肿 → Anthropic定位于云端环境
+  - **降低成本方法**：Tool Search（减少TOKEN）+ 程序化工具调用（减少数据搬运）
+  - **内部大脑四大核心**：记忆与上下文管理 / 工作流编排 / 工具权限切分 / 确定性自动化
+  - **未来生态蓝图**：CLI+Skills（轻量）vs MCP+Skills（企业）/ 十二大Agent模式
+  - **Cloud Fail真实案例**：MCP暴露2个工具，高效API调用
+- **关联**: 第139集Agent三大概念 / Claude Code上下文 / Matt Pocock Skills / 京麦智能体架构
+- **归档**: `douyin-knowledge/2026-05-20-生产级AI-Agent架构详解-AI大模型学习.md`
+- **飞书**: https://feishu.cn/docx/YJ6Bdgqm3oJEcGx4swVc6zAonWh
+- **Milvus**: ID 17792386150800 ✅
+
+### GitHub周趋势：DeepSeek-TUI黑马登顶
+- **来源**: 抖音@Ai工具实战派（图文，329赞，2026-05-17）
+- **本周最大黑马**: DeepSeek-TUI（+21,752 stars，Rust终端界面）
+- **Anthropic官方金融仓库**: +12,088 stars，Claude金融合规应用受机构关注
+- **Redis创始人antirez**: ds4本地推理引擎（纯C，HN 497赞/157评论）
+- **趋势**: AI原生项目压制传统基础设施，AI Agent工具链主导排行榜
+- **归档**: `douyin-knowledge/2026-05-20-GitHub周趋势DeepSeek黑马-Ai工具实战派.md`
+- **飞书**: https://feishu.cn/docx/OReZdypsEoWxwcxBTwEcYaCYn0c
+- **Milvus**: ID 17792387765620 ✅
+
+### 产品经理AI工具清单
+- **来源**: 抖音@吃土说AI（32秒短视频，5410赞，6649转发，2026-03-03）
+- **核心工具**:
+  - **Loable** — AI原型神器（"除了贵都是优点"）
+  - **Stitch** — Loable平替方案
+  - **Figma Make** — Figma官方AI，设计到原型一体化
+  - **Claude Code** — 技术PM瑞士军刀（"用Claude一把梭"）
+  - **龙虾** — 评论区提及，待深挖
+- **PM工作流AI应用**: 需求分析(Claude/ChatGPT) → 原型设计(Loable/Stitch/Figma) → 文档(Claude/Notion) → 项目管理(Cursor/GitHub Copilot)
+- **归档**: `douyin-knowledge/2026-05-20-产品经理AI工具清单-吃土说AI.md`
+- **飞书**: https://feishu.cn/docx/TScRdFisQoDr0FxcSnjc6x90ngh
+- **Milvus**: ID 17792389957440 ✅
+
+### OpenViking — 字节跳动Agent开源记忆系统
+- **来源**: 抖音@每日AI评论（第36集，08:59，1113赞，2026-05-19）
+- **核心**: 虚拟文件系统+层级结构解决Agent记忆五大问题
+- **五大问题**: 记忆量有限/检索无探索/记忆无结构/Token无控制/经验不沉淀
+- **核心技术**: 三层分级加载 + 目录递归检索 + 检索可视化 + 自动记忆提取
+- **效果**: 任务完成率+43%~49% / TOKEN成本-83%~96%
+- **未解决**: 级联更新问题（仍依赖Agent推理能力）
+- **归档**: `douyin-knowledge/2026-05-20-OpenViking字节跳动Agent开源记忆系统-每日AI评论.md`
+- **飞书**: https://feishu.cn/docx/Hq1UdAO6oone21xK5qEciKAmn6g
+- **Milvus**: ID 17792391835550 ✅

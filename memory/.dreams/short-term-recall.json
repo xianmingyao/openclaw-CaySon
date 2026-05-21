@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-19T05:41:40.624Z",
+  "updatedAt": "2026-05-20T01:07:08.913Z",
   "entries": {
     "memory:memory/2026-04-13.md:6:9": {
       "key": "memory:memory/2026-04-13.md:6:9",
@@ -58806,21 +58806,23 @@
       "endLine": 654,
       "source": "memory",
       "snippet": "- 无需管理员权限 --- ## 记忆检索行为准则（铁律） 检索优先级：云端Milvus > 本地ChromaDB（Milvus失败时） `\bash # 优先Milvus检索 python scripts/mem0_dual_write.py search query # 仅本地检索 python scripts/show_memories.py ` --- ## Mem0配置完成（2026-03-28） | 存储 | 地址 | 状态 | |------|------|------| | 本地ChromaDB | ~/.mem0/chroma | 运行中 | | 云端Milvus | 8.137.122.11:19530 | 运行中 | | 脚本 | 功能 | |------|------| | mem0_dual_write.py | 双写（添加+搜索） | | sync_memories_to_milvus.py | 本地到云端同步 | | show_memories.py | 查看本地记忆 | --- ## 补充记录（2026-03-28） ### claude-code-action 新项目 - 作者：程序员Sunday - GitHub：6.5k stars - 功能：Claude Code的CI/CD集成工具 - 用途：将Claude Code集成到GitHub Actions工作流 ### Milvus同步完成 - 9条记忆全部同步到云端 - 搜索测",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1.6659272573777817,
-      "maxScore": 0.8647108086008976,
+      "totalScore": 2.6659272573777817,
+      "maxScore": 1,
       "firstRecalledAt": "2026-04-17T00:14:35.774Z",
-      "lastRecalledAt": "2026-04-29T18:19:19.378Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
       "queryHashes": [
         "165071cf4b75",
-        "000c3f186087"
+        "000c3f186087",
+        "6b88c0ceaaa6"
       ],
       "recallDays": [
         "2026-04-17",
         "2026-04-30",
-        "2026-04-29"
+        "2026-04-29",
+        "2026-05-20"
       ],
       "conceptTags": [
         "scripts/mem0-dual-write.py",
@@ -62418,18 +62420,20 @@
       "endLine": 64,
       "source": "memory",
       "snippet": "| WebMCP | 🔍 研究�?| Chrome官方2026-02-10，趋�?| **browser-use 避坑�?* Windows需设置 `$env:PYTHONIOENCODING=\"utf-8\"` ### 2. GitHub Claude Code仓库对比 | 仓库 | Stars | 定位 | 推荐�?| |------|-------|------|--------| | instructkr/claw-code | 48,000+ | Clean-room重写，合法安�?| ⭐⭐⭐⭐�?| | sanbuphy/cc-source-code | Fork 41,500 | ⚠️法律风险，仅研究 | �?| | unohee/OpenSwarm | 232 | 多Agent编排�?| ⭐⭐ | ### 3. GStack 角色映射 用AI Agent模拟软件团队：CEO规划 / Staff工程师找bug / QA测试 / 安全护栏 ### 4. KiloClaw OpenClaw全托管云服务�?0秒一键部署，企业版解�?影子AI\"安全 ## AI-NATIVE 开发工作流 SOP（宁兄标准流程） ``` 阶段1：知识获�?�?Google/GitHub/知网 �?CodeWiki 阶段2：想法原�?�?产品方向 �?Idea确定 阶段3：UI设计 �?shadcn/ui �?Midjourney/Stitch �?Figma精修 阶段4：知识库 �?Puppeteer/NotebookLM/Obsid",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.8213576008850741,
-      "maxScore": 0.8213576008850741,
+      "totalScore": 1.821357600885074,
+      "maxScore": 1,
       "firstRecalledAt": "2026-04-17T04:44:35.201Z",
-      "lastRecalledAt": "2026-04-17T04:44:35.201Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
       "queryHashes": [
-        "e800e0cb9cbc"
+        "e800e0cb9cbc",
+        "6b88c0ceaaa6"
       ],
       "recallDays": [
-        "2026-04-17"
+        "2026-04-17",
+        "2026-05-20"
       ],
       "conceptTags": [
         "chrome官方2026-02-10",
@@ -206773,20 +206777,23 @@
       "endLine": 38,
       "source": "memory",
       "snippet": "<!-- consolidated to MEMORY.md on 2026-04-15 --> # 2026-04-10 日记 ## 今日完成工作 ### 1. 抖音AI资讯研究（上午） #### Hermes Agent - 33.3k Stars 自进化AI Agent - 视频来源：抖音 @AI真用法 - Nous Research出品，MIT协议 - 核心：内置闭环学习系统，自动创建Skills，跨会话记忆 - 文档：`knowledge/Hermes-Agent-深度研究报告.md` - Wiki：`knowledge-base/wiki/实体/Hermes-Agent.md` - Milvus同步：✅ #### GitNexus - Graph RAG可视化代码工具 - 视频来源：抖音 @阿甘探AI - 核心：预防AI瞎改，可视化代码结构/依赖/调用链 - 文档：`knowledge/GitNexus-编程救星预防AI瞎改.md` - Wiki：`knowledge-base/wiki/实体/GitNexus.md` - Milvus同步：✅ #### OpenMAIC - 清华多智能体课堂 - 视频来源：抖音 @大阳AI测评君 - 清华THU-MAIC团队，13.6k Stars，Vivi 2.0 - 核心：PDF转课堂，AI教师，白板互动 - 文档：`knowledge/openmaic.md`（更新） - Wiki：`knowledge-base/wiki/实体/OpenMAIC.md` -",
-      "recallCount": 3,
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2.0512805614240213,
-      "maxScore": 0.70529368810494,
+      "totalScore": 4.051280561424021,
+      "maxScore": 1,
       "firstRecalledAt": "2026-04-23T01:40:13.535Z",
-      "lastRecalledAt": "2026-05-01T10:40:27.910Z",
+      "lastRecalledAt": "2026-05-20T00:40:53.989Z",
       "queryHashes": [
         "420973576782",
-        "50df93bffd4a"
+        "50df93bffd4a",
+        "4696f10dc7fb",
+        "6a8a4dea3581"
       ],
       "recallDays": [
         "2026-04-23",
-        "2026-05-01"
+        "2026-05-01",
+        "2026-05-20"
       ],
       "conceptTags": [
         "memory.md",
@@ -332090,18 +332097,20 @@
       "endLine": 386,
       "source": "memory",
       "snippet": "- │ ├── 来源/ ← 来源摘要 │ └── 实体/ ← 人/公司/产品 ├── comparisons/ ← 对比分析（3篇） └── sync_*.py ← 同步脚本 ``` **同步结果：** - 飞书：114文档 ✅ - Notion：114文档 ✅ - Milvus云端：114条记忆 ✅ - Git提交：417 files changed ✅ **飞书Database ID：** 33d2bb5417c380f6baaff3467dea91c8 **Notion已配置：** API Token + Database ID ### 新增知识库内容 1. **Alchemy（清华AI科研自动化框架）** - 清华大学AI科研自动化框架 - algorithm.py + yaml 交付模式 - 飞书：U6QJdZaDBo1syPxApoocoUUznif 2. **Harness Engineering（驾驭工程）** - 2026年工程范式转移 - Prompt → Context → Harness 三阶段 - Constraint/Feedback/Control三大组件 3. **GitHub TOP20 2026第9周** - GitNexus（7371 stars） - Claude Code生态爆发 - 端侧推理+知识图谱趋势 4. **截图整理总结** - MemPalace（23.6k stars）- AI记忆系统 [confidence=0.61 evidence=memory/2026-04-09.md:79-128] - - [25ca375d]",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.8138956600764341,
-      "maxScore": 0.8138956600764341,
+      "totalScore": 1.813895660076434,
+      "maxScore": 1,
       "firstRecalledAt": "2026-04-28T04:18:56.770Z",
-      "lastRecalledAt": "2026-04-28T04:18:56.770Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
       "queryHashes": [
-        "1e9447646477"
+        "1e9447646477",
+        "6b88c0ceaaa6"
       ],
       "recallDays": [
-        "2026-04-28"
+        "2026-04-28",
+        "2026-05-20"
       ],
       "conceptTags": [
         "人/公司/产品",
@@ -332400,18 +332409,20 @@
       "endLine": 1106,
       "source": "memory",
       "snippet": "**来源：** 抖音 @沉默聊科技 (04/15) **视频：** AI编程的\"紧箍咒\"真的来了！大神Karpathy提出的四大原则被封装成CLAUDE.md **核心内容：** - Karpathy 提出的 AI 编程四大原则被封装成 `CLAUDE.md` - GitHub 7天暴涨 4.4万 Star，总 Star 突破 7万 - 7万+ 程序员主动\"抄作业\" **四大原则：** 1. Think Before Coding - 不要假设，暴露权衡 2. Simplicity First - 最小化代码，只解决当前问题 3. Surgical Changes - 只碰必须碰的，只清理自己造成的烂摊子 4. Goal-Driven Execution - 定义成功标准，循环验证 **成果：** - 创建 `E:\\workspace\\CLAUDE.md` (融合版，3184 bytes) - 同步到 Notion: https://notion.so/34a2bb5417c38075b7b1ca3767ae6c60 - 同步到知识库: `knowledge-base/wiki/来源/CLAUDE.md` - 同步到 Milvus: 9条记忆上传成功 ### 2. GitHub 爆款 Top 5 (04/17) **来源：** 抖音 @红豆虫 (06/21) | 排名 | 项目 | Stars | 简介 | |:---:|------|-------|------| | 1 | chrome-devtools-mcp | 36,617 | Chrome DevToo",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.8414326376210873,
-      "maxScore": 0.8414326376210873,
+      "totalScore": 1.8414326376210872,
+      "maxScore": 1,
       "firstRecalledAt": "2026-04-28T12:24:49.554Z",
-      "lastRecalledAt": "2026-04-28T12:24:49.554Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
       "queryHashes": [
-        "e43bb4338a8a"
+        "e43bb4338a8a",
+        "6b88c0ceaaa6"
       ],
       "recallDays": [
-        "2026-04-28"
+        "2026-04-28",
+        "2026-05-20"
       ],
       "conceptTags": [
         "04/15",
@@ -332431,18 +332442,20 @@
       "endLine": 37,
       "source": "memory",
       "snippet": "<!-- consolidated to MEMORY.md on 2026-04-14 --> # 2026-04-03 Daily Memory ## 今日完成事项 ### 抖音视频扒取研究�?个项目） 1. **jianying-editor-skill** - 剪映AI剪辑Skill（抖音@艾伦2077v�? - 一键安装：`irm is.gd/rpb65M | iex` - 依赖：Python + 剪映专业�?�?.9) + playwright - 文档：`knowledge/jianying-editor-skill.md` 2. **remotion-video-toolkit** - React视频生成Skill（抖音@艾伦2077v�? - 安装：`openclaw skill install github:Arxchibobo/openclaw-remotion-video-toolkit` - 依赖：Node.js 18+ / React 18+ / FFmpeg - 文档：`knowledge/remotion-video-toolkit.md` 3. **CLI vs MCP 专题**（抖音@技术爬爬虾�? - CLI-Anything：港大开源，自动为软件生成CLI - OpenCLI�?.6k Stars，任意网站→CLI - 文档：`knowledge/cli-vs-mcp-short.md` / `knowledge/cli-quick-start.m",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.8395606019965761,
-      "maxScore": 0.8395606019965761,
+      "totalScore": 1.8395606019965762,
+      "maxScore": 1,
       "firstRecalledAt": "2026-04-28T12:24:49.554Z",
-      "lastRecalledAt": "2026-04-28T12:24:49.554Z",
+      "lastRecalledAt": "2026-05-20T00:40:53.989Z",
       "queryHashes": [
-        "e43bb4338a8a"
+        "e43bb4338a8a",
+        "6a8a4dea3581"
       ],
       "recallDays": [
-        "2026-04-28"
+        "2026-04-28",
+        "2026-05-20"
       ],
       "conceptTags": [
         "memory.md",
@@ -505074,18 +505087,20 @@
       "endLine": 77,
       "source": "memory",
       "snippet": "- [25ca375d](https://github.com/xianmingyao/openclaw-CaySon/commit/25ca375d) - docs: add Claude Code Chinese ecosystem and Shopify AI Agent 2026 research reports ## Dream整合记录 - 🌙 08:38 - 执行dream skill首次整合 - MEMORY.md 更新：添加2026-04-07 section、Dream System section - 新增已安装技能：memory-dream@1.0.3 - 新增Cron：dream-nightly（每天03:00） ## Git提交记录 - [95c5a71a](https://github.com/xianmingyao/openclaw-CaySon/commit/95c5a71a) - docs: add OpenClaw 4.5 dreaming memory system research report - [49a4b6bd](https://github.com/xianmingyao/openclaw-CaySon/commit/49a4b6bd) - docs: add HKUDS OpenSpace and OpenHarness reports - [0c145a33](https://github.com/xianmingyao/openclaw-CaySon/commit/0c145a33) - doc",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 0.8509167324819886,
-      "maxScore": 0.8509167324819886,
+      "totalScore": 1.8509167324819886,
+      "maxScore": 1,
       "firstRecalledAt": "2026-05-03T02:18:42.471Z",
-      "lastRecalledAt": "2026-05-03T02:18:42.471Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
       "queryHashes": [
-        "26bb76fd3a51"
+        "26bb76fd3a51",
+        "6b88c0ceaaa6"
       ],
       "recallDays": [
-        "2026-05-03"
+        "2026-05-03",
+        "2026-05-20"
       ],
       "conceptTags": [
         "memory.md",
@@ -519903,19 +519918,21 @@
       "endLine": 85,
       "source": "memory",
       "snippet": "- **GitHub**：`yizhiyanhua-ai/fireworks-tech-graph` - **Stars**：2.4k - **功能**：Claude Code Skill，中文描述生成SVG+PNG架构图 - **亮点**：7种风格，14种UML图，AI/Agent专属图 ### 6. AI元知 - Superpowers推荐 - **日期**：2026-02-06 - **发现项目**： - clawflows（1.5k Stars） - openclaw-superpowers（54 Stars） ### 7. 吃土说AI - PRD-Writer Skill - **GitHub**：`FinStep-AI/prd-writer-skill` - **Stars**：15 - **功能**：PRD写作+原型生成 - **亮点**：两步写作法/三视角诊断/五大盲区补全 - **日期**：2026-04-09 ## 🛠️ 安装的Skills | Skill | 版本 | 用途 | |-------|------|------| | web-access | 1.0.0 | 联网增强，CDP Proxy | | prd-writer | 1.0.1 | PRD写作+原型生成 | ## 📚 沉淀到知识库的内容 ### GitHub项目 - `knowledge/github-projects.md` - 新增fireworks-tech-graph - OPC CLI研究报告 ### Skills文档 - `knowledge/skil",
-      "recallCount": 2,
+      "recallCount": 3,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 2,
+      "totalScore": 3,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-14T00:57:18.257Z",
-      "lastRecalledAt": "2026-05-14T00:57:22.964Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
       "queryHashes": [
         "040dc238f7da",
-        "7480c896950b"
+        "7480c896950b",
+        "6b88c0ceaaa6"
       ],
       "recallDays": [
-        "2026-05-14"
+        "2026-05-14",
+        "2026-05-20"
       ],
       "conceptTags": [
         "2.4k",
@@ -519967,18 +519984,20 @@
       "endLine": 113,
       "source": "memory",
       "snippet": "## 11:50 知识库整合完成 - 新文件: 企业AI本体化闭环流程-从工具到Agent的完整指南.md - 整合内容: 1. Zilliz-Cloud企业知识库完整指南.md 2. Zilliz-Cloud从零搭建企业知识库实操指南.md 3. 企业AI本体Ontology-从工具到Agent的关键.md - 核心逻辑: 工具→知识库→RAG→本体化→Agent (五阶段闭环) - Milvus: 12 sections synced ## 11:50 Cron - continuous_ingest - 任务: python E:\\workspace\\knowledge-base\\continuous_ingest.py - 结果: 扫描 0 个新/变更文件，无新文件需要处理（正常） - 状态: ✅ 完成 ## 11:55 企业AI本体Ontology V2.0 整合完成 - 文件: 企业AI本体Ontology-从工具到Agent的关键.md (完整闭环版) - 整合内容: 1. Zilliz企业知识库完整指南 (阶段2) 2. Zilliz从零搭建实操指南 (阶段2) 3. 企业AI本体Ontology (阶段4) - 五阶段闭环: 工具→知识库→RAG→本体化→Agent - Milvus: 15 sections synced ## 12:05 企业AI本体Ontology V2.1融合版完成 - 文件: 企业AI本体Ontology-从工具到Agent的关键 - v2.md (融合版) - 融合内容: 1. v2五阶段闭环流程",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-19T05:41:40.624Z",
-      "lastRecalledAt": "2026-05-19T05:41:40.624Z",
+      "lastRecalledAt": "2026-05-20T00:16:07.246Z",
       "queryHashes": [
-        "7153e659caaf"
+        "7153e659caaf",
+        "61e681241020"
       ],
       "recallDays": [
-        "2026-05-19"
+        "2026-05-19",
+        "2026-05-20"
       ],
       "conceptTags": [
         "企业ai本体化闭环流程-从工具到agent的完整指南.md",
@@ -519998,18 +520017,20 @@
       "endLine": 77,
       "source": "memory",
       "snippet": "- confidence: 0.00 - evidence: memory/2026-04-15.md:27-30 - recalls: 0 - status: staged - Candidate: AI黑科技 - OpenClaw vs Hermes深度对比: **五维对比**：工程重心/Skill/记忆/安全/场景 - confidence: 0.00 - evidence: memory/2026-04-15.md:31-31 - recalls: 0 - status: staged - Candidate: Cron Session 故障: **Session**: knowledge-base-sync (Cron ID: 7c7f5f69-f412-4694-b41b-c480692c9927); **问题**: Cron Agent 所有工具调用均被 Abort，系统性故障; **时间**: 20:00 左右; **状态**: ❌ 同步任务失败 - confidence: 0.00 - evidence: memory/2026-04-13.md:7-10 - recalls: 0 - status: staged - Candidate: 异步任务完成记录: **Session**: tidal-gl (SIGKILL 终止); **内容**: AI文章抓取 (hermes-agent-ai, karpathy-rag-critique-aidianliao 等); **进度**: 163/395 blocks",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-19T05:41:40.624Z",
-      "lastRecalledAt": "2026-05-19T05:41:40.624Z",
+      "lastRecalledAt": "2026-05-20T00:16:07.246Z",
       "queryHashes": [
-        "7153e659caaf"
+        "7153e659caaf",
+        "61e681241020"
       ],
       "recallDays": [
-        "2026-05-19"
+        "2026-05-19",
+        "2026-05-20"
       ],
       "conceptTags": [
         "0.00",
@@ -520029,18 +520050,20 @@
       "endLine": 89,
       "source": "memory",
       "snippet": "- confidence: 0.00 - evidence: memory/2026-04-15.md:27-30 - recalls: 0 - status: staged - Candidate: AI黑科技 - OpenClaw vs Hermes深度对比: **五维对比**：工程重心/Skill/记忆/安全/场景 - confidence: 0.00 - evidence: memory/2026-04-15.md:31-31 - recalls: 0 - status: staged - Candidate: Cron Session 故障: **Session**: knowledge-base-sync (Cron ID: 7c7f5f69-f412-4694-b41b-c480692c9927); **问题**: Cron Agent 所有工具调用均被 Abort，系统性故障; **时间**: 20:00 左右; **状态**: ❌ 同步任务失败 - confidence: 0.00 - evidence: memory/2026-04-13.md:7-10 - recalls: 0 - status: staged - Candidate: 异步任务完成记录: **Session**: tidal-gl (SIGKILL 终止); **内容**: AI文章抓取 (hermes-agent-ai, karpathy-rag-critique-aidianliao 等); **进度**: 163/395 blocks",
-      "recallCount": 1,
+      "recallCount": 2,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 1,
+      "totalScore": 2,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-19T05:41:40.624Z",
-      "lastRecalledAt": "2026-05-19T05:41:40.624Z",
+      "lastRecalledAt": "2026-05-20T00:16:07.246Z",
       "queryHashes": [
-        "7153e659caaf"
+        "7153e659caaf",
+        "61e681241020"
       ],
       "recallDays": [
-        "2026-05-19"
+        "2026-05-19",
+        "2026-05-20"
       ],
       "conceptTags": [
         "0.00",
@@ -520051,6 +520074,538 @@
         "knowledge-base-sync",
         "memory/2026-04-13.md",
         "7-10"
+      ]
+    },
+    "memory:memory/2026-05-18.md:1:29": {
+      "key": "memory:memory/2026-05-18.md:1:29",
+      "path": "memory/2026-05-18.md",
+      "startLine": 1,
+      "endLine": 29,
+      "source": "memory",
+      "snippet": "# 2026-05-18 日志 ## 抖音学习 ### 1. Omni-SimpleMem 多模态智能体记忆框架 - **来源**: 抖音 - Agent创世纪 / AutoResearch - **链接**: https://www.iesdouyin.com/share/video/7627864750147308840/ - **核心问题**: AI处理大规模历史数据时的存储冗余与检索混乱 - **技术框架**: 1. 新颖性过滤器 - 剔除无用信息 2. MAU（多模态原子单元）- 冷热记忆解耦 3. 金字塔式渐进检索 - 按需加载 - **效果（LoCoMo基准）**: 准确率+411%，速度3.5倍 - **归档**: `douyin-knowledge/2026-05-18-Omni-SimpleMem多模态记忆框架.md` ### 2. 一周AI大事（5月17日）- 产品君 - **来源**: 抖音产品君 - **6大事件**: Gemini Intelligence / Gemini Cursor / Veo 4 / Thinking Machines / MiniCPM-V 4.6 / Sakana Conductor - **归档**: `douyin-knowledge/2026-05-18-AI一周大事-MiniCPM-V4.6-Gemini系列.md` ### 3. Crawl4AI - GitHub 63K Star AI爬虫 - **来源**: 抖音@IT小圈 - **项目**: unclecode/crawl4ai, 63.",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
+      "queryHashes": [
+        "6b88c0ceaaa6"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "omni-simplemem",
+        "速度3.5倍",
+        "minicpm-v",
+        "4.6",
+        "unclecode/crawl4ai",
+        "日志",
+        "学习",
+        "omni"
+      ]
+    },
+    "memory:memory/2026-05-18.md:24:42": {
+      "key": "memory:memory/2026-05-18.md:24:42",
+      "path": "memory/2026-05-18.md",
+      "startLine": 24,
+      "endLine": 42,
+      "source": "memory",
+      "snippet": "- **特点**: LLM Friendly网页爬虫，一行Python代码搞定 - **归档**: `douyin-knowledge/2026-05-18-Crawl4AI-GitHub63KStar爬虫.md` ### 4. GitHub周榜汇总（两版本整合） - **来源**: 抖音@赛博笔记 + @不露声色 - **高光**: anthropics/financial-services / RuView / Bun / CloakBrowser / AiToEarn / supersplat - **归档**: `douyin-knowledge/2026-05-18-GitHub周榜汇总-两版本整合.md` ### 5. 一周AI大事（产品君第443集） - **来源**: 抖音@产品君 - **内容**: 14个产品（Google三连发/MiniCPM-V 4.6/Sakana/视频工具等） - **归档**: `douyin-knowledge/2026-05-18-一周AI大事-产品君合集.md` ### 6. supersplat - 3D场景编辑器 - **来源**: 抖音@不露声色 - **项目**: playcanvas/supersplat - **特点**: 高斯泼溅3D重建，手机拍照生成3D场景 - **归档**: `douyin-knowledge/2026-05-18-supersplat-3D场景编辑器.md`",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:40:53.989Z",
+      "queryHashes": [
+        "6b88c0ceaaa6",
+        "6a8a4dea3581"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "anthropics/financial-services",
+        "google三连发/minicpm-v",
+        "4.6/sakana/视频工具等",
+        "playcanvas/supersplat",
+        "特点",
+        "llm",
+        "friendly",
+        "网页"
+      ]
+    },
+    "memory:memory/2026-05-19.md:1:35": {
+      "key": "memory:memory/2026-05-19.md:1:35",
+      "path": "memory/2026-05-19.md",
+      "startLine": 1,
+      "endLine": 35,
+      "source": "memory",
+      "snippet": "# 2026-05-19 日志 ## Dream Log (03:00) - 🌙 dream-nightly 执行 - 扫描文件：05-11 / 05-12 / 05-13 / 05-14 / 05-15 / 05-17 / 05-18（7个文件） - MEMORY.md 更新： 1. **新增**：Omni-SimpleMem 多模态记忆框架（+411%准确率，3.5倍速度） 2. **新增**：Crawl4AI - GitHub 63.6K⭐ LLM友好爬虫 3. **新增**：supersplat - 高斯泼溅3D场景编辑器 4. **新增**：一周AI大事（5月17日）Gemini系列/MiniCPM-V4.6 - 05-11~05-17：已在历史Dream整合中覆盖 ✅ - 05-18：今日新增4个知识条目，已整合到MEMORY.md ## 抖音学习记录 ### GitHub AI Skills榜单（第3集） - **来源**: 完全AI（抖音） - **主题**: GitHub AI Skills黑马上榜 - **核心内容**: - hermes agent成为最大黑马（15.2万Stars），冲到第二 - financial services和deepseatrade新晋上榜 - mattpocock/skills稳居第一（91.8k Stars） - **文件**: `douyin-knowledge/2026-05-19-GitHub-AI-Skills榜单与OpenHuman分析.md` - **同步状态**: -",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:16:07.246Z",
+      "queryHashes": [
+        "6b88c0ceaaa6",
+        "61e681241020"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "dream-nightly",
+        "05-11",
+        "05-12",
+        "05-13",
+        "05-14",
+        "05-15",
+        "05-17",
+        "05-18"
+      ]
+    },
+    "memory:memory/2026-04-14.md:386:391": {
+      "key": "memory:memory/2026-04-14.md:386:391",
+      "path": "memory/2026-04-14.md",
+      "startLine": 386,
+      "endLine": 391,
+      "source": "memory",
+      "snippet": "- - [25ca375d](https://github.com/xianmingyao/openclaw-CaySon/commit/25ca375d) - docs: add Claude Code Chinese ecosystem and Shopify AI Agent 2026 research reports ## Dream整合记录 - 🌙 08:38 - 执行dream skill首次整合 - MEMORY.md 更新：添加2026-04-07 section、Dream System section - 新增已安装技能：memory-dream@1.0.3 - 新增Cron：dream-nightly（每天03:00） ## Git提交记录 - [95c5a71a](https://github.com/xianmingyao/openclaw-CaySon/commit/95c5a71a) - docs: add OpenClaw 4.5 dreaming memory system research report - [49a4b6bd](https://github.com/xianmingyao/openclaw-CaySon/commit/49a4b6bd) - docs: add HKUDS OpenSpace and OpenHarness reports - [0c145a33](https://github.com/xianmingyao/openclaw-CaySon/commit/0c145a33) - doc [confidenc",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
+      "queryHashes": [
+        "6b88c0ceaaa6"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "memory.md",
+        "添加2026-04-07",
+        "memory-dream",
+        "1.0.3",
+        "dream-nightly",
+        "4.5",
+        "25ca375d",
+        "https"
+      ]
+    },
+    "memory:memory/2026-04-14.md:144:167": {
+      "key": "memory:memory/2026-04-14.md:144:167",
+      "path": "memory/2026-04-14.md",
+      "startLine": 144,
+      "endLine": 167,
+      "source": "memory",
+      "snippet": "- confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-14.txt:409-409 - recalls: 0 - status: staged - Candidate: Assistant: 历史已重写，现在强制推送到远程。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-14.txt:410-410 - recalls: 0 - status: staged - Candidate: Assistant: 推送成功！顺手清理 filter-branch 遗留的备份 refs。 - confidence: 0.00 - evidence: memory/.dreams/session-corpus/2026-04-14.txt:411-411 - recalls: 0 - status: staged - Candidate: Assistant: ✅ 定时自动提交完成！ **执行摘要：** - **问题**：`skills/jingmai-cli/jingmai-cli.exe`（149.57 MB）超过 GitHub 100MB 限制 - **处理**：用 `git filter-branch` 重写历史彻底清除该文件 + 加入 `.gitignore` - **结果**：强制推送成功，历史已净化 - confidence: 0.00 - evid",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
+      "queryHashes": [
+        "6b88c0ceaaa6"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "备份",
+        "0.00",
+        "409-409",
+        "410-410",
+        "filter-branch",
+        "411-411",
+        "149.57",
+        "confidence"
+      ]
+    },
+    "memory:memory/2026-04-28.md:155:198": {
+      "key": "memory:memory/2026-04-28.md:155:198",
+      "path": "memory/2026-04-28.md",
+      "startLine": 155,
+      "endLine": 198,
+      "source": "memory",
+      "snippet": "## 20:18/20:23 两个GitHub项目枚举任务SIGKILL ### 事件摘要 - `dawn-rid`: SIGKILL at 20:18:06 - `lucky-gl`: SIGKILL at 20:23:27 ### 任务内容（推断） 根据部分输出，任务正在枚举GitHub项目： ``` ✅ [259] MCP 生态全景图 ✅ [260] Magicoder-OSS-Instruct ✅ [261] LongCat-AudioDiT ✅ [262] LLM训练 ✅ [263] LLM ✅ [264] LiteRT-LM ✅ [265] Karpathy（安德烈·卡帕西） ✅ [266] Karpat… ``` ### 状态 - Session已清理，无法获取完整历史 - 枚举任务约进行到第266项时被终止 - 原因可能是：超时、资源限制、或外部终止 ### 待确认 - 需要宁兄确认这两个任务是什么用途 - 是否需要重新执行 ## 22:21 Cron任务结果 - github-top20-2026-week16 被SIGKILL，week16的未完成 - notion同步：week15, repos-comparison, github-projects全部成功 - 飞书同步：未配置Access Token（跳过） ## 22:35 continuous-ingest 执行完成 - **状态**: ✅ 正常 - **扫描结果**: 0 个新/修改文件，无需 ingest ## 23:05 ��һ��SIGKILL (delta-pi) - ��",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
+      "queryHashes": [
+        "6b88c0ceaaa6"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "18/20",
+        "dawn-rid",
+        "lucky-gl",
+        "magicoder-oss-instruct",
+        "longcat-audiodit",
+        "litert-lm",
+        "github-top20-2026-week16",
+        "repos-comparison"
+      ]
+    },
+    "memory:memory/2026-05-19.md:30:63": {
+      "key": "memory:memory/2026-05-19.md:30:63",
+      "path": "memory/2026-05-19.md",
+      "startLine": 30,
+      "endLine": 63,
+      "source": "memory",
+      "snippet": "- **来源**: AI有点聊（抖音） - **主题**: 龙虾和爱马仕都不香了，OpenHuman强势登顶 - **核心内容**: - OpenHuman打破冷启动，无需\"教\"即可了解用户 - 三步原理：一键连接→20分钟无感抓取→生成记忆树 - TokenJuice：记住10亿Token信息 - 潜意识循环：Agent自主决策待办事项 - 选型：OpenClaw(网关) / HermesAgent(成长) / OpenHuman(助理) - Agent发展方向：执行力+学习力+记忆力 - **同步状态**: 同上 ## Cron 定时任务 ### knowledge-pull 同步（01:03） - 脚本: `E:\\workspace\\knowledge-base\\sync_pull_all.py` - 结果: ✅ 成功 - 飞书: 0 个新文档（无更新） - Notion: 0 个新页面（增量同步，cutoff: 2026-05-19 00:02:53） - 结论: 无新内容需要同步 ### knowledge-pull 同步（08:17） - 脚本: `E:\\workspace\\knowledge-base\\sync_pull_all.py` - 结果: ✅ 成功 - 飞书: 0 个新文档 - Notion: 0 个新页面（增量同步，cutoff: 2026-05-19 03:04:52） - 结论: 无新内容需要同步 ### GitHub AI Skills深挖报告 - **新增深挖内容**: hermes-agent/",
+      "recallCount": 3,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 3,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:16:07.246Z",
+      "queryHashes": [
+        "6b88c0ceaaa6",
+        "4696f10dc7fb",
+        "61e681241020"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "网关",
+        "knowledge-pull",
+        "knowledge-base",
+        "sync-pull-all.py",
+        "hermes-agent",
+        "来源",
+        "有点",
+        "主题"
+      ]
+    },
+    "memory:memory/2026-04-15.md:1:46": {
+      "key": "memory:memory/2026-04-15.md:1:46",
+      "path": "memory/2026-04-15.md",
+      "startLine": 1,
+      "endLine": 46,
+      "source": "memory",
+      "snippet": "<!-- consolidated to MEMORY.md on 2026-04-21 --> # 今日学习总结 2026-04-15 ## 📺 抖音扒取的视频 ### 1. Lewis爱搞事 - Karpathy知识库优化版 - **主题**：13项优化，开源Obsidian插件+可视化前端 - **链接**：评论区求地址，作者未给 - **时间**：2026-04-10 ### 2. 小天fotos - OPC CLI开源 - **GitHub**：`xiaotianfotos/OPC` - **功能**：TTS/ASR/剪口播/特效字幕 - **亮点**：本地多模态模型能力，AI Agent专用 - **时间**：2026-04-13 ### 3. 产品君AI周报第439集 - **日期**：2026-04-12 - **大事件**： - Claude Mythos（Anthropic最强模型） - Claude Managed Agents（Agent包工头） - GLM-5.1（智谱最强开源） - HappyHorse-1.0（阿里视频模型） - ACE-Step-1.5-xl（Ace音乐模型） - Vanast（虚拟试穿模型） ### 4. AI黑科技 - OpenClaw vs Hermes深度对比 - **日期**：2026-04-14 - **核心差异**： - OpenClaw：管入口和秩序 - Hermes：管执行和经验 - **五维对比**：工程重心/Skill/记忆/安全/场景 ### 5. 涛哥AIG",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
+      "queryHashes": [
+        "6b88c0ceaaa6"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "memory.md",
+        "xiaotianfotos/opc",
+        "tts/asr/剪口播/特效字幕",
+        "glm-5.1",
+        "happyhorse-1.0",
+        "ace-step-1.5-xl",
+        "工程重心/skill/记忆/安全/场景",
+        "consolidated"
+      ]
+    },
+    "memory:memory/2026-03-27.md:83:114": {
+      "key": "memory:memory/2026-03-27.md:83:114",
+      "path": "memory/2026-03-27.md",
+      "startLine": 83,
+      "endLine": 114,
+      "source": "memory",
+      "snippet": "- 回调函数中不能定义 ctypes Structure 类（需要先定义再实例化） - 必须用 `try/except` 包裹回调内的所有代码，否则异常会导致 EnumWindows 崩溃 - callback 闭包中引用的变量需要是线程安全的 **jingmai-agent bug**： - `ui_collect_actions.py` 中 `_enum_windows_proc` 的 `results` 是 `LP_c_long` 类型（ctypes 指针），不是 Python list - `CaptureWindowScreenshotAction` 导入了不存在的 `crop_to_active_window` - 都需要在 CLI 层做 workaround ### 3. OpenClaw Skill 调研 - 分析了 @AI干货局 的底座级技能推荐视频 - 收集了 Skill 01-06 的情报（agent-browser、self-improving、skill-vetter、email-management 等） ### 4. GitHub 爆款项目情报（@AI未来·今日增量榜） | 排名 | 项目 | ⭐ | 方向 | |------|------|-----|------| | #1 | deer-flow | 46.2k | 字节SuperAgent | | #2 | litellm | 40.6k | LLM网关 | | #4 | ruview | 42.3k | WiFi感知 | | #6 | Tradi",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:15:50.801Z",
+      "lastRecalledAt": "2026-05-20T00:15:50.801Z",
+      "queryHashes": [
+        "6b88c0ceaaa6"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "网关",
+        "try/except",
+        "jingmai-agent",
+        "ui-collect-actions.py",
+        "enum-windows-proc",
+        "lp-c-long",
+        "crop-to-active-window",
+        "01-06"
+      ]
+    },
+    "memory:memory/2026-05-19.md:58:85": {
+      "key": "memory:memory/2026-05-19.md:58:85",
+      "path": "memory/2026-05-19.md",
+      "startLine": 58,
+      "endLine": 85,
+      "source": "memory",
+      "snippet": "- **新增深挖内容**: hermes-agent/OpenHuman/agentmemory 详细链接和技术分析 - **文件**: douyin-knowledge/2026-05-19-GitHub-AI-Skills深挖报告.md - **Milvus**: 4条记录 (IDs 2026052000-2003) ### 港大开源万物皆可RAG：RAG-Anything - **来源**: 抖音-骋风算力（第196集，25秒） - **团队**: HKUDS（香港大学数据科学团队） - **Stars**: 20.3k ⭐ - **定位**: All-in-One Multimodal RAG Framework - **arXiv**: 2510.12323 - **核心**: 5阶段多模态RAG架构，支持文本/图片/表格/公式统一处理 - **文件**: douyin-knowledge/2026-05-19-港大RAG-Anything万物皆可RAG.md - **Milvus**: 3条记录 (IDs 2026052100-2102) - **飞书**: https://feishu.cn/docx/CStWdgshnov5Mrx4f7MchsSGnNc ### Workflow Agent娴ら泤鎬у厜害 - **婧愯嚜**: 鎶栭煶銆愯嚜璇磋嚜璇濈殑姹熷摜銆戠簿74闆(2026-05-18) - **涓婚**: Workflow涓庣 Agent 鐨勬湰璐ㄥ尯鍒:娴ら泤鎬ф帶鍒舵潈褰? **鏍稿績瑙佸垎**: - Workflow: 浜烘潵瀹氭祦绋",
+      "recallCount": 2,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 2,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:16:00.258Z",
+      "lastRecalledAt": "2026-05-20T00:16:07.246Z",
+      "queryHashes": [
+        "4696f10dc7fb",
+        "61e681241020"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "2026052000-2003",
+        "rag-anything",
+        "抖音-骋风算力",
+        "20.3k",
+        "all-in-one",
+        "2510.12323",
+        "支持文本/图片/表格/公式统一处理",
+        "2026052100-2102"
+      ]
+    },
+    "memory:memory/2026-04-16.md:67:92": {
+      "key": "memory:memory/2026-04-16.md:67:92",
+      "path": "memory/2026-04-16.md",
+      "startLine": 67,
+      "endLine": 92,
+      "source": "memory",
+      "snippet": "- status: staged - Candidate: Dream 整合记录（19:00 第二次）: Seeduplex 2025-JQ03-W1237 已结束归档; 知识库 compile.py SIGKILL 问题（LLM超时）; 内容捕手抖音受阻，B站成功326条 - confidence: 0.00 - evidence: memory/2026-04-12.md:18-20 - recalls: 0 - status: staged - Candidate: Dream 整合记录（03:00 第三次，修复Git大文件问题）: 🌙 执行 dream-nightly 整合任务; Git 问题：jingmai-cli.exe (149MB) 超限，触发 SIGKILL; 修复：git filter-branch 清除历史 + .gitignore 排除 + force push; MEMORY.md：无新增（已在上次整合完毕） - confidence: 0.00 - evidence: memory/2026-04-12.md:23-26 - recalls: 0 - status: staged - Candidate: Dream 整合记录（03:00 第三次，修复Git大文件问题）: Git 状态：✅ 已修复并推送 - confidence: 0.00 - evidence: memory/2026-04-12.md:27-27 - recalls: 0 - status: staged - Candidat",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:16:00.258Z",
+      "lastRecalledAt": "2026-05-20T00:16:00.258Z",
+      "queryHashes": [
+        "4696f10dc7fb"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "2025-jq03-w1237",
+        "compile.py",
+        "0.00",
+        "memory/2026-04-12.md",
+        "18-20",
+        "dream-nightly",
+        "jingmai-cli.exe",
+        "filter-branch"
+      ]
+    },
+    "memory:memory/2026-04-17.md:118:143": {
+      "key": "memory:memory/2026-04-17.md:118:143",
+      "path": "memory/2026-04-17.md",
+      "startLine": 118,
+      "endLine": 143,
+      "source": "memory",
+      "snippet": "- status: staged - Candidate: Dream 整合记录（19:00 第二次）: Seeduplex 2025-JQ03-W1237 已结束归档; 知识库 compile.py SIGKILL 问题（LLM超时）; 内容捕手抖音受阻，B站成功326条 - confidence: 0.00 - evidence: memory/2026-04-12.md:18-20 - recalls: 0 - status: staged - Candidate: Dream 整合记录（03:00 第三次，修复Git大文件问题）: 🌙 执行 dream-nightly 整合任务; Git 问题：jingmai-cli.exe (149MB) 超限，触发 SIGKILL; 修复：git filter-branch 清除历史 + .gitignore 排除 + force push; MEMORY.md：无新增（已在上次整合完毕） - confidence: 0.00 - evidence: memory/2026-04-12.md:23-26 - recalls: 0 - status: staged - Candidate: Dream 整合记录（03:00 第三次，修复Git大文件问题）: Git 状态：✅ 已修复并推送 - confidence: 0.00 - evidence: memory/2026-04-12.md:27-27 - recalls: 0 - status: staged - Candidat",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:16:00.258Z",
+      "lastRecalledAt": "2026-05-20T00:16:00.258Z",
+      "queryHashes": [
+        "4696f10dc7fb"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "2025-jq03-w1237",
+        "compile.py",
+        "0.00",
+        "memory/2026-04-12.md",
+        "18-20",
+        "dream-nightly",
+        "jingmai-cli.exe",
+        "filter-branch"
+      ]
+    },
+    "memory:memory/2026-04-13.md:1:34": {
+      "key": "memory:memory/2026-04-13.md:1:34",
+      "path": "memory/2026-04-13.md",
+      "startLine": 1,
+      "endLine": 34,
+      "source": "memory",
+      "snippet": "<!-- consolidated to MEMORY.md on 2026-04-15 --> # 2026-04-13 日志 ## 知识库同步问题 ### Cron Session 故障 - **Session**: knowledge-base-sync (Cron ID: 7c7f5f69-f412-4694-b41b-c480692c9927) - **问题**: Cron Agent 所有工具调用均被 Abort，系统性故障 - **时间**: 20:00 左右 - **状态**: ❌ 同步任务失败 ### 异步任务完成记录 - **Session**: tidal-gl (SIGKILL 终止) - **内容**: AI文章抓取 (hermes-agent-ai, karpathy-rag-critique-aidianliao 等) - **进度**: 163/395 blocks 完成 - **状态**: ⚠️ 被 SIGKILL 终止，未完成 - **通知时间**: 2026-04-13 22:34 - 已通知（未转达给用户） - **Session**: glow-slu (SIGKILL 终止) - 22:36 无记录上下文 ### 知识库文件更新 (2026-04-13) - `Hermes-Agent-相关分析报告.md` (13,917 bytes) - 08:17:06 - `Hermes-Agent-项目进度报告.md` (10,638 bytes) - 08:12:05 - 其他文件 202",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:16:00.258Z",
+      "lastRecalledAt": "2026-05-20T00:16:00.258Z",
+      "queryHashes": [
+        "4696f10dc7fb"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "memory.md",
+        "knowledge-base-sync",
+        "tidal-gl",
+        "hermes-agent-ai",
+        "karpathy-rag-critique-aidianliao",
+        "163/395",
+        "glow-slu",
+        "hermes-agent-相关分析报告.md"
+      ]
+    },
+    "memory:memory/2026-05-19.md:97:117": {
+      "key": "memory:memory/2026-05-19.md:97:117",
+      "path": "memory/2026-05-19.md",
+      "startLine": 97,
+      "endLine": 117,
+      "source": "memory",
+      "snippet": "- **鏈浣撳姟瑕佺礌娣卞崟**: knowledge-base/wiki/姒嘺/浼佷笟AI鏈浣撳姟瑕佺礌璁-浠庡伐鍏锋捣鍒癆gent鐨勫叧閨.md (绗20鑺?) - **娴ら泤鏂囦欢**: https://feishu.cn/docx/KynzdR7h7ok51Lx8HR0cUiRNnQc - **Milvus**: 3鏉¤祫璁?(IDs 2026052200-2202) ### 字节Agent娴ら泤闈炴姤鎵绱?涓撲笟璇 - **婧愯嚜**: 鎶栭煶灏忮壘璁垜闈?灏忚壊璁?5鐗? - **鏃堕暱**: 3:12 | 23:00 2026-05-11 - **鏍稿績鐭ヨ瘑鐐?: - MCP閺嬫粉灞?娴佷功璋?/鍙傛暟鏍￠獙/鏉冮檺/瓒呮椂/瀹℃牳 - 妯℃澘鍐欐唻绗?妯℃澘璇绘ā + 璇绘ā+绮樿创+浠诲姟瀹℃牳 - Agent宸ヤ綔妯″紡: ReAct/Plan+Execute/Workflow 瓒婃帀杩愰晱涓氬姟瓒婄箼 - RAG閸︽悳: 鎺ユ敹→娓呮磥→鍒囩墖→Embedding→鍙?璇诲惊鐗?rerank - 璁稿﹀惉璁や负: 鐭╅樀璁よタ浼佷笟涓讳綋杩為攣 - 鐭璁よВ涓轰负鍙?涓存椂璁よタ浼?1銆佸疄闄呮ā寮忓崟浠朵负寮傛ā - 鐓у嵎闄愮‖鍔ㄥ喟绛掔‖鍛戒护瓒呮椂+鎬绘ā浠朵负瓒呮椂 - **娴ら泤鏂囦欢**: douyin-knowledge/2026-05-19-瀛ц竟娴ら泤鎺╩CP-RAG-鐒挎崯.md - **娴ら泤鏂囦欢**: https://feishu.cn/docx/MM0ZdofunoiKxaxpXDuc",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:16:07.246Z",
+      "lastRecalledAt": "2026-05-20T00:16:07.246Z",
+      "queryHashes": [
+        "61e681241020"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "embedding",
+        "2026052200-2202",
+        "獙/鏉冮檺/瓒呮椂/瀹",
+        "react/plan",
+        "execute/workflow",
+        "cp-rag-鐒挎崯.md",
+        "knowledge",
+        "base"
+      ]
+    },
+    "memory:memory/2026-05-19.md:112:139": {
+      "key": "memory:memory/2026-05-19.md:112:139",
+      "path": "memory/2026-05-19.md",
+      "startLine": 112,
+      "endLine": 139,
+      "source": "memory",
+      "snippet": "- 鐓у嵎闄愮‖鍔ㄥ喟绛掔‖鍛戒护瓒呮椂+鎬绘ā浠朵负瓒呮椂 - **娴ら泤鏂囦欢**: douyin-knowledge/2026-05-19-瀛ц竟娴ら泤鎺╩CP-RAG-鐒挎崯.md - **娴ら泤鏂囦欢**: https://feishu.cn/docx/MM0ZdofunoiKxaxpXDucHUqjnyb - **Milvus**: 5鏉¤祫璁?(IDs 2026052300-2304) ### 字节Agent面试深度分析（深度挖掘） - **任务**: Subagent深度挖掘字节跳动Agent面试视频 - **文件**: douyin-knowledge/2026-05-19-字节Agent面试深度分析.md（39KB） - **关联**: Ontology文档 + Workflow vs Agent融合文档 - **内容**: MCP/写库/RAG全链路/记忆系统/模型分层/熔断机制/面试题库15道 - **飞书**: https://feishu.cn/docx/C6ord4GH5ooegKxV5iCcQ11gnNP（深度分析版） - **Milvus**: 5条记录 (IDs 3253000-3253004) - **Git**: commit=de42555b ### knowledge-pull 同步（10:03） - **脚本**: `E:\\workspace\\knowledge-base\\sync_pull_all.py` - **飞书**: 0 个新文档（无更新） - **Notion**: 0 个新页面（增量同步，cutof",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T00:16:07.246Z",
+      "lastRecalledAt": "2026-05-20T00:16:07.246Z",
+      "queryHashes": [
+        "61e681241020"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "cp-rag-鐒挎崯.md",
+        "2026052300-2304",
+        "3253000-3253004",
+        "knowledge-pull",
+        "knowledge-base",
+        "sync-pull-all.py",
+        "戒护",
+        "douyin"
+      ]
+    },
+    "memory:memory/2026-05-20.md:21:42": {
+      "key": "memory:memory/2026-05-20.md:21:42",
+      "path": "memory/2026-05-20.md",
+      "startLine": 21,
+      "endLine": 42,
+      "source": "memory",
+      "snippet": "- **六个动作**: 形成假说→解释后要代码→打开学习模式→评审AI输出→手写重推→让模型解释 - **关联**: Matt Pocock Skills / Vibe Coding / 京麦智能体 - **归档**: douyin-knowledge/2026-05-20-别把学习外包-认知债务-慢学AI.md - **飞书**: https://feishu.cn/docx/Yrs8dFvDRo2PnbxktQac3w2knhg ## 2026-05-20 抖音深挖：生产级AI Agent架构详解 - **来源**: 抖音@AI大模型学习（第140集，16:03，258赞） - **核心**: MCP危机与定位 / Tool Search降本 / 内部大脑四大核心 / 十二大Agent模式 - **归档**: douyin-knowledge/2026-05-20-生产级AI-Agent架构详解-AI大模型学习.md - **飞书**: https://feishu.cn/docx/YJ6Bdgqm3oJEcGx4swVc6zAonWh - **Milvus**: ID 17792386150800 ✅ ## 2026-05-20 GitHub周趋势深挖 - **来源**: 抖音@Ai工具实战派（图文，329赞） - **核心**: DeepSeek-TUI黑马(+21752星) / AI Agent主导 / Claude金融应用 / antirez ds4 - **归档**: douyin-knowledge/2026-05-20-GitHub周趋势DeepSee",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T01:07:08.913Z",
+      "lastRecalledAt": "2026-05-20T01:07:08.913Z",
+      "queryHashes": [
+        "d20f01f57788"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "deepseek-tui黑马",
+        "动作",
+        "形成",
+        "假说",
+        "解释",
+        "代码",
+        "打开",
+        "学习"
+      ]
+    },
+    "memory:memory/2026-05-20.md:37:53": {
+      "key": "memory:memory/2026-05-20.md:37:53",
+      "path": "memory/2026-05-20.md",
+      "startLine": 37,
+      "endLine": 53,
+      "source": "memory",
+      "snippet": "- **飞书**: https://feishu.cn/docx/OReZdypsEoWxwcxBTwEcYaCYn0c - **Milvus**: ID 17792387765620 ✅ ## 2026-05-20 产品经理AI工具深挖 - **来源**: 抖音@吃土说AI（32秒，5410赞，6649转发，2026-03-03） - **核心工具**: Loable原型神器 / Stitch平替 / Figma Make / Claude Code / 龙虾待深挖 - **归档**: douyin-knowledge/2026-05-20-产品经理AI工具清单-吃土说AI.md - **飞书**: https://feishu.cn/docx/TScRdFisQoDr0FxcSnjc6x90ngh - **Milvus**: ID 17792389957440 ✅ ## 2026-05-20 OpenViking深挖 - **来源**: 抖音@每日AI评论（第36集，08:59，1113赞，2026-05-19） - **核心**: 字节跳动开源Agent记忆系统 / 虚拟文件系统+层级结构 / 任务完成率+43%/TOKEN-83% - **归档**: douyin-knowledge/2026-05-20-OpenViking字节跳动Agent开源记忆系统-每日AI评论.md - **飞书**: https://feishu.cn/docx/Hq1UdAO6oone21xK5qEciKAmn6g - **Milvus**: ID 17792391835550 ✅",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 1,
+      "maxScore": 1,
+      "firstRecalledAt": "2026-05-20T01:07:08.913Z",
+      "lastRecalledAt": "2026-05-20T01:07:08.913Z",
+      "queryHashes": [
+        "d20f01f57788"
+      ],
+      "recallDays": [
+        "2026-05-20"
+      ],
+      "conceptTags": [
+        "token-83",
+        "https",
+        "feishu.cn",
+        "docx",
+        "orezdypseowxwcxbtwecyacyn0c",
+        "milvus",
+        "产品",
+        "经理"
       ]
     }
   }

@@ -14,6 +14,58 @@ def _build_runner():
     return TaskRunner(workflow), workflow
 
 
+def _full_publish_kwargs():
+    return {
+        "title": "测试商品标题",
+        "model": "XH-001",
+        "required_attribute": "10A",
+        "market_price": "100",
+        "purchase_price": "80",
+        "jd_price": "99",
+        "current": "10A",
+        "weight": "1.2",
+        "length_mm": "100",
+        "width_mm": "80",
+        "height_mm": "60",
+        "factory_inventory": "10",
+        "image_path": "main.png",
+        "transparent_image_path": "transparent.png",
+        "detail_content": "<p>detail</p>",
+        "sale_unit": "个",
+        "package_type": "纸箱",
+        "delivery_mark": "现货",
+        "package_list": "主机*1",
+        "warranty_period": "365",
+    }
+
+
+def _stub_full_publish_success(workflow):
+    workflow.run_t3_confirm_category.return_value = WorkflowStepResult(
+        step_id="T3", success=True, page_state="category_confirmed", window_handle="2002",
+    )
+    workflow.run_t4_fill_base_info.return_value = WorkflowStepResult(
+        step_id="T4", success=True, page_state="base_info_completed", window_handle="2002",
+    )
+    workflow.run_t5_fill_required_fields.return_value = WorkflowStepResult(
+        step_id="T5-REQUIRED-FIELDS", success=True, page_state="required_fields_completed", window_handle="2002",
+    )
+    workflow.run_t6_upload_main_image.return_value = WorkflowStepResult(
+        step_id="T6-MAIN-IMAGE", success=True, page_state="main_image_uploaded", window_handle="2002",
+    )
+    workflow.run_t6_upload_transparent_image.return_value = WorkflowStepResult(
+        step_id="T6-TRANSPARENT-IMAGE", success=True, page_state="transparent_image_uploaded", window_handle="2002",
+    )
+    workflow.run_t6_fill_detail_editor.return_value = WorkflowStepResult(
+        step_id="T6-DETAIL-EDITOR", success=True, page_state="detail_editor_completed", window_handle="2002",
+    )
+    workflow.run_t7_fill_logistics_fields.return_value = WorkflowStepResult(
+        step_id="T7", success=True, page_state="logistics_completed", window_handle="2002",
+    )
+    workflow.run_t8_save_draft.return_value = WorkflowStepResult(
+        step_id="T8-SAVE-DRAFT", success=True, page_state="draft_saved", window_handle="2002",
+    )
+
+
 def test_task_runner_runs_both_as_minimal_loop():
     runner, workflow = _build_runner()
     workflow.run_t1_attach_window.return_value = WorkflowStepResult(
@@ -32,13 +84,15 @@ def test_task_runner_runs_both_as_minimal_loop():
         screenshot_path="b.png",
         message="ok-2",
     )
+    _stub_full_publish_success(workflow)
 
-    result = runner.run("both", debug=False)
+    result = runner.run("both", debug=False, **_full_publish_kwargs())
 
     assert result["t1"]["step_id"] == "T1"
     assert result["t2"]["step_id"] == "T2"
-    assert result["session"]["completed_steps"] == ["T1", "T2"]
-    assert result["session"]["page_state"] == "publish_entry"
+    assert result["t8_save_draft"]["step_id"] == "T8-SAVE-DRAFT"
+    assert result["session"]["completed_steps"][-1] == "T8-SAVE-DRAFT"
+    assert result["session"]["page_state"] == "draft_saved"
     assert result["session"]["halted"] is False
 
 
@@ -178,7 +232,7 @@ def test_task_runner_runs_detail_editor_step_from_jd_url(monkeypatch):
         def build_detail_editor_content(payload: dict[str, object]) -> str | None:
             return payload["detail_html"]
 
-    monkeypatch.setattr("jingmai_publish.services.task_runner.JDProductFetchService", DummyFetchService)
+    monkeypatch.setattr("jingmai_publish.services.task_runner.JDProductFetchService", DummyFetchService, raising=False)
     monkeypatch.setattr("jingmai_publish.services.jd_fetch.JDProductFetchService", DummyFetchService)
     runner, workflow = _build_runner()
     workflow.run_t1_attach_window.return_value = WorkflowStepResult(
@@ -300,7 +354,7 @@ def test_task_runner_retries_until_step_verified():
         ),
     ]
 
-    result = runner.run("both", debug=False)
+    result = runner.run("t2", debug=False)
 
     assert workflow.run_t2_enter_publish_entry.call_count == 2
     assert result["t2"]["success"] is True

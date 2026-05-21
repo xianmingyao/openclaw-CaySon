@@ -29,6 +29,58 @@ def _build_pipeline(service):
     return AgentPipeline(REGISTRY, executor, reflection)
 
 
+def _full_publish_params():
+    return {
+        "title": "测试商品标题",
+        "model": "XH-001",
+        "required_attribute": "10A",
+        "market_price": "100",
+        "purchase_price": "80",
+        "jd_price": "99",
+        "current": "10A",
+        "weight": "1.2",
+        "length_mm": "100",
+        "width_mm": "80",
+        "height_mm": "60",
+        "factory_inventory": "10",
+        "image_path": "main.png",
+        "transparent_image_path": "transparent.png",
+        "detail_content": "<p>detail</p>",
+        "sale_unit": "个",
+        "package_type": "纸箱",
+        "delivery_mark": "现货",
+        "package_list": "主机*1",
+        "warranty_period": "365",
+    }
+
+
+def _stub_full_publish_success(service):
+    service.run_t3_confirm_category.return_value = WorkflowStepResult(
+        step_id="T3", success=True, page_state="category_confirmed", window_handle="2002",
+    )
+    service.run_t4_fill_base_info.return_value = WorkflowStepResult(
+        step_id="T4", success=True, page_state="base_info_completed", window_handle="2002",
+    )
+    service.run_t5_fill_required_fields.return_value = WorkflowStepResult(
+        step_id="T5-REQUIRED-FIELDS", success=True, page_state="required_fields_completed", window_handle="2002",
+    )
+    service.run_t6_upload_main_image.return_value = WorkflowStepResult(
+        step_id="T6-MAIN-IMAGE", success=True, page_state="main_image_uploaded", window_handle="2002",
+    )
+    service.run_t6_upload_transparent_image.return_value = WorkflowStepResult(
+        step_id="T6-TRANSPARENT-IMAGE", success=True, page_state="transparent_image_uploaded", window_handle="2002",
+    )
+    service.run_t6_fill_detail_editor.return_value = WorkflowStepResult(
+        step_id="T6-DETAIL-EDITOR", success=True, page_state="detail_editor_completed", window_handle="2002",
+    )
+    service.run_t7_fill_logistics_fields.return_value = WorkflowStepResult(
+        step_id="T7", success=True, page_state="logistics_completed", window_handle="2002",
+    )
+    service.run_t8_save_draft.return_value = WorkflowStepResult(
+        step_id="T8-SAVE-DRAFT", success=True, page_state="draft_saved", window_handle="2002",
+    )
+
+
 def test_pipeline_both_full_flow():
     """both 全管线：T1 + T2 均成功，结果结构兼容。"""
     service = MagicMock()
@@ -39,16 +91,29 @@ def test_pipeline_both_full_flow():
     service.run_t2_enter_publish_entry.return_value = WorkflowStepResult(
         step_id="T2", success=True, page_state="publish_entry", window_handle="2002",
     )
+    _stub_full_publish_success(service)
 
     pipeline = _build_pipeline(service)
     session = FakeSession()
-    results = pipeline.run("both", session, {})
+    results = pipeline.run("both", session, _full_publish_params())
 
     assert "t1" in results
     assert "t2" in results
     assert results["t1"]["success"] is True
     assert results["t2"]["success"] is True
-    assert session.completed_steps == ["T1", "T2"]
+    assert "t8_save_draft" in results
+    assert session.completed_steps == [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5-REQUIRED-FIELDS",
+        "T6-MAIN-IMAGE",
+        "T6-TRANSPARENT-IMAGE",
+        "T6-DETAIL-EDITOR",
+        "T7",
+        "T8-SAVE-DRAFT",
+    ]
     assert session.halted is False
 
 
@@ -60,7 +125,7 @@ def test_pipeline_t1_failure_stops_plan():
 
     pipeline = _build_pipeline(service)
     session = FakeSession()
-    results = pipeline.run("both", session, {})
+    results = pipeline.run("t2", session, {})
 
     assert results["t1"]["success"] is False
     assert "t2" not in results
@@ -81,7 +146,7 @@ def test_pipeline_retry_on_failure():
 
     pipeline = _build_pipeline(service)
     session = FakeSession()
-    results = pipeline.run("both", session, {})
+    results = pipeline.run("t2", session, {})
 
     assert service.run_t2_enter_publish_entry.call_count == 2
     assert results["t2"]["success"] is True
@@ -138,14 +203,16 @@ def test_pipeline_result_structure_matches_original():
     service.run_t2_enter_publish_entry.return_value = WorkflowStepResult(
         step_id="T2", success=True, page_state="publish_entry", window_handle="2002",
     )
+    _stub_full_publish_success(service)
 
     pipeline = _build_pipeline(service)
     session = FakeSession()
-    results = pipeline.run("both", session, {})
+    results = pipeline.run("both", session, _full_publish_params())
 
     # 原 TaskRunner 返回结构中有 't1' 和 't2' 键
     assert "t1" in results
     assert "t2" in results
+    assert "t8_save_draft" in results
     assert results["t1"]["step_id"] == "T1"
     assert results["t2"]["step_id"] == "T2"
     assert results["t1"]["success"] is True

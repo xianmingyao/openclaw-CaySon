@@ -596,6 +596,9 @@ def test_workflow_t5_fill_required_fields_by_publish_form_labels():
             self.document_text += f" {label} {value}"
             return True
 
+        def activate_cell_by_automation_id(self, handle: str, automation_id: str) -> dict[str, object]:
+            return {"success": False}
+
     adapter = RequiredFieldsAdapter()
     workflow = JingmaiWorkflowService(WindowManager(adapter))
 
@@ -614,6 +617,68 @@ def test_workflow_t5_fill_required_fields_by_publish_form_labels():
     assert result.page_state == "required_fields_completed"
     assert ("市场价(元)", "82.35") in adapter.filled
     assert ("[包装]长(mm)", "250.00") in adapter.filled
+
+
+def test_workflow_t5_fill_success_does_not_halt_on_unreliable_document_validation():
+    class WriteOnlyFieldsAdapter(DummyT6T8Adapter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.filled: list[tuple[str, str]] = []
+            self.document_text = "商品标题 商品信息 采销信息 SKU表格"
+
+        def fill_edit_by_label(self, handle: str, label: str, value: str) -> bool:
+            self.filled.append((label, value))
+            return True
+
+        def activate_cell_by_automation_id(self, handle: str, automation_id: str) -> dict[str, object]:
+            return {"success": False}
+
+    adapter = WriteOnlyFieldsAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+
+    result = workflow.run_t5_fill_required_fields(
+        "2002",
+        market_price="82.35",
+        purchase_price="66.50",
+        jd_price="70.00",
+    )
+
+    assert result.success is True
+    assert result.page_state == "required_fields_completed"
+    assert ("市场价(元)", "82.35") in adapter.filled
+    assert "校验=失败" in result.message
+
+
+def test_workflow_t5_prefers_sku_automation_id_for_price_cells():
+    class AutomationFieldsAdapter(DummyT6T8Adapter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.activated: list[str] = []
+            self.typed: list[tuple[str, bool]] = []
+            self.label_filled: list[tuple[str, str]] = []
+            self.document_text = "商品标题 商品信息 采销信息 SKU表格"
+
+        def activate_cell_by_automation_id(self, handle: str, automation_id: str) -> dict[str, object]:
+            self.activated.append(automation_id)
+            return {"success": automation_id == "jd-id-8403-313"}
+
+        def type_into_focused_control(self, handle: str, value: str, submit: bool = False) -> dict[str, object]:
+            self.typed.append((value, submit))
+            return {"success": True}
+
+        def fill_edit_by_label(self, handle: str, label: str, value: str) -> bool:
+            self.label_filled.append((label, value))
+            return False
+
+    adapter = AutomationFieldsAdapter()
+    workflow = JingmaiWorkflowService(WindowManager(adapter))
+
+    result = workflow.run_t5_fill_required_fields("2002", market_price="82.35")
+
+    assert result.success is True
+    assert adapter.activated == ["jd-id-8403-313"]
+    assert adapter.typed == [("82.35", True)]
+    assert adapter.label_filled == []
 
 
 def test_t5_field_validation_accepts_decimal_variants_in_field_slice():

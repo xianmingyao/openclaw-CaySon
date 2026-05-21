@@ -107,6 +107,20 @@ def test_workflow_t3_confirm_category():
     assert "工业品" in result.message
 
 
+def test_workflow_t3_accepts_manual_category_next_form():
+    class ManualCategoryAdapter(DummyAdapter):
+        def read_document_text(self, handle: str) -> str:
+            return "商品信息 商品标题 型号 采销信息 商品属性 商品图片 市场价 京东价"
+
+    workflow = JingmaiWorkflowService(WindowManager(ManualCategoryAdapter()))
+    result = workflow.run_t3_confirm_category("2002")
+
+    assert result.step_id == "T3"
+    assert result.success is True
+    assert result.page_state == "category_confirmed"
+    assert "发布表单已可见" in result.message
+
+
 def test_workflow_t3_enters_publish_entry_from_draft_list(monkeypatch):
     class DraftListAdapter(DummyAdapter):
         def __init__(self):

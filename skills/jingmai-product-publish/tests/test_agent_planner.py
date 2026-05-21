@@ -15,12 +15,24 @@ def planner():
     return AgentPlanner(REGISTRY)
 
 
-def test_plan_both_returns_t1_t2(planner):
-    """both 复合步骤应展开为 [t1, t2]。"""
+def test_plan_both_returns_full_publish_draft_flow(planner):
+    """both 复合步骤应展开完整 T1-T8 草稿发布链。"""
     plan = planner.plan("both")
     step_names = [s.step_name for s in plan.steps]
-    assert step_names == ["t1", "t2"]
+    assert step_names == [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5-required-fields",
+        "t6-main-image",
+        "t6-transparent-image",
+        "t6-detail-editor",
+        "t7",
+        "t8-save-draft",
+    ]
     assert plan.target_step == "both"
+    assert plan.metadata["flow"] == "full_publish_draft"
 
 
 def test_plan_t2_includes_precondition(planner):

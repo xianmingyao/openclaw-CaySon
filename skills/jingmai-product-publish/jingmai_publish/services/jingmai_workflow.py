@@ -43,6 +43,17 @@ class JingmaiWorkflowService:
         "package_list": "jd-id-8403-293",
         "warranty_period": "jd-id-8403-294",
     }
+    T5_FIELD_AUTOMATION_IDS = {
+        "市场价(元)": ("jd-id-8403-313", "jd-id-8403-312"),
+        "京东价(元)": ("jd-id-8403-315",),
+        "采购价(元)": ("jd-id-8403-314",),
+        "商品毛重(kg)": ("jd-id-8403-319",),
+        "[包装]长(mm)": ("jd-id-8403-320",),
+        "[包装]宽(mm)": ("jd-id-8403-321",),
+        "[包装]高(mm)": ("jd-id-8403-322",),
+        "电流": ("jd-id-8403-328",),
+        "厂直库存": ("jd-id-8403-345",),
+    }
 
     def __init__(
             self,
@@ -481,11 +492,7 @@ class JingmaiWorkflowService:
             if value is None or str(value).strip() == "":
                 continue
             normalized_value = str(value).strip()
-            fill_ok = False
-            for label in labels:
-                if adapter.fill_edit_by_label(window_handle, label, normalized_value):
-                    fill_ok = True
-                    break
+            fill_ok = self._fill_t5_field(window_handle, field_name, labels, normalized_value)
             actions.append((field_name, fill_ok, normalized_value))
 
         if any(value is not None and str(value).strip() for _, _, value in logistics_field_specs):
@@ -495,11 +502,7 @@ class JingmaiWorkflowService:
                 if value is None or str(value).strip() == "":
                     continue
                 normalized_value = str(value).strip()
-                fill_ok = False
-                for label in labels:
-                    if adapter.fill_edit_by_label(window_handle, label, normalized_value):
-                        fill_ok = True
-                        break
+                fill_ok = self._fill_t5_field(window_handle, field_name, labels, normalized_value)
                 actions.append((field_name, fill_ok, normalized_value))
 
         document_text = adapter.read_document_text(window_handle)
@@ -507,7 +510,11 @@ class JingmaiWorkflowService:
             field_name: self._t5_field_value_visible(field_name, value, document_text)
             for field_name, _, value in actions
         }
-        success = bool(actions) and all(validation.values())
+        field_confirmed = {
+            field_name: bool(fill_ok or validation[field_name])
+            for field_name, fill_ok, _ in actions
+        }
+        success = bool(actions) and all(field_confirmed.values())
         screenshot_path = adapter.capture_window(window_handle)
         message = "；".join(
             f"{field_name}填充={'成功' if (fill_ok or validation[field_name]) else '失败'}，校验={'成功' if validation[field_name] else '失败'}"
@@ -521,6 +528,30 @@ class JingmaiWorkflowService:
             screenshot_path=screenshot_path,
             message=message,
         )
+
+    def _fill_t5_field(self, window_handle: str, field_name: str, labels: list[str], value: str) -> bool:
+        adapter = self.window_manager.adapter
+        automation_ids = self.T5_FIELD_AUTOMATION_IDS.get(field_name, ())
+        if automation_ids and hasattr(adapter, "activate_cell_by_automation_id") and hasattr(
+                adapter, "type_into_focused_control"):
+            for automation_id in automation_ids:
+                try:
+                    activation = adapter.activate_cell_by_automation_id(window_handle, automation_id)
+                except Exception:
+                    activation = {"success": False}
+                if not activation.get("success"):
+                    continue
+                try:
+                    typing_result = adapter.type_into_focused_control(window_handle, value, submit=True)
+                except Exception:
+                    typing_result = {"success": False}
+                if typing_result.get("success"):
+                    return True
+
+        for label in labels:
+            if adapter.fill_edit_by_label(window_handle, label, value):
+                return True
+        return False
 
     def _open_top_publish_tab(self, window_handle: str, tab_texts: list[str]) -> bool:
         """点击发布页顶部阶段页签，避开页面正文和左侧报错导航中的同名文本。"""
@@ -1773,4 +1804,18 @@ class JingmaiWorkflowService:
     def _is_publish_form_document(cls, document_text: str) -> bool:
         if cls._is_draft_list_document(document_text):
             return False
-        return "商品标题" in document_text and ("保存草稿" in document_text or "商品类目" in document_text)
+        if "商品标题" not in document_text:
+            return False
+        return cls._document_contains_any(
+            document_text,
+            [
+                "保存草稿",
+                "商品类目",
+                "商品信息",
+                "采销信息",
+                "商品属性",
+                "商品图片",
+                "市场价",
+                "京东价",
+            ],
+        )

@@ -5,6 +5,58 @@ from jingmai_publish.services.desktop_verify import DesktopVerificationService
 from jingmai_publish.services.jingmai_workflow import WorkflowStepResult
 
 
+def _full_publish_kwargs():
+    return {
+        "title": "测试商品标题",
+        "model": "XH-001",
+        "required_attribute": "10A",
+        "market_price": "100",
+        "purchase_price": "80",
+        "jd_price": "99",
+        "current": "10A",
+        "weight": "1.2",
+        "length_mm": "100",
+        "width_mm": "80",
+        "height_mm": "60",
+        "factory_inventory": "10",
+        "image_path": "main.png",
+        "transparent_image_path": "transparent.png",
+        "detail_content": "<p>detail</p>",
+        "sale_unit": "个",
+        "package_type": "纸箱",
+        "delivery_mark": "现货",
+        "package_list": "主机*1",
+        "warranty_period": "365",
+    }
+
+
+def _stub_full_publish_success(workflow):
+    workflow.run_t3_confirm_category.return_value = WorkflowStepResult(
+        step_id="T3", success=True, page_state="category_confirmed", window_handle="2002",
+    )
+    workflow.run_t4_fill_base_info.return_value = WorkflowStepResult(
+        step_id="T4", success=True, page_state="base_info_completed", window_handle="2002",
+    )
+    workflow.run_t5_fill_required_fields.return_value = WorkflowStepResult(
+        step_id="T5-REQUIRED-FIELDS", success=True, page_state="required_fields_completed", window_handle="2002",
+    )
+    workflow.run_t6_upload_main_image.return_value = WorkflowStepResult(
+        step_id="T6-MAIN-IMAGE", success=True, page_state="main_image_uploaded", window_handle="2002",
+    )
+    workflow.run_t6_upload_transparent_image.return_value = WorkflowStepResult(
+        step_id="T6-TRANSPARENT-IMAGE", success=True, page_state="transparent_image_uploaded", window_handle="2002",
+    )
+    workflow.run_t6_fill_detail_editor.return_value = WorkflowStepResult(
+        step_id="T6-DETAIL-EDITOR", success=True, page_state="detail_editor_completed", window_handle="2002",
+    )
+    workflow.run_t7_fill_logistics_fields.return_value = WorkflowStepResult(
+        step_id="T7", success=True, page_state="logistics_completed", window_handle="2002",
+    )
+    workflow.run_t8_save_draft.return_value = WorkflowStepResult(
+        step_id="T8-SAVE-DRAFT", success=True, page_state="draft_saved", window_handle="2002",
+    )
+
+
 def test_desktop_verification_service_run_both():
     fake_workflow = MagicMock()
     fake_adapter = MagicMock()
@@ -28,12 +80,14 @@ def test_desktop_verification_service_run_both():
         screenshot_path="b.png",
         message="ok",
     )
+    _stub_full_publish_success(fake_workflow)
 
     service = DesktopVerificationService.__new__(DesktopVerificationService)
     service.workflow_service = fake_workflow
-    result = service.run("both", debug=True)
+    result = service.run("both", debug=True, **_full_publish_kwargs())
     assert result["t1"]["step_id"] == "T1"
     assert result["t2"]["step_id"] == "T2"
+    assert result["t8_save_draft"]["step_id"] == "T8-SAVE-DRAFT"
     assert result["debug"]["candidate_controls"][0]["text"] == "发布商品"
     assert result["debug"]["click_diagnostics"]["attempts"][0]["strategy"] == "preferred_class_then_alias"
     assert result["runtime"]["providers"]["memory"] is not None

@@ -274,7 +274,7 @@ def test_last_screenshot_propagates_between_steps():
     session = FakeSession()
 
     with patch("pathlib.Path.exists", return_value=True):
-        pipeline.run("both", session, {})
+        pipeline.run("t2", session, {})
 
     # T1 执行时无 before 截图 → 不触发 vision 对比
     # T2 执行时 before = T1 的 after → 触发 1 次 vision 对比

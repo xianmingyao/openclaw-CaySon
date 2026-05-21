@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
+import time
+from contextlib import contextmanager
 from dataclasses import asdict, is_dataclass
 from datetime import datetime
 from jingmai_publish.repositories.runtime_log import RuntimeLogRepository
@@ -37,9 +40,18 @@ class RuntimeLogPersistenceProvider:
 class JsonlMemoryProvider:
     """Store short-term episodic memory in a local JSONL file."""
 
-    def __init__(self, target_file: str | Path) -> None:
+    def __init__(
+            self,
+            target_file: str | Path,
+            *,
+            lock_timeout_seconds: float = 10.0,
+            lock_poll_seconds: float = 0.02,
+    ) -> None:
         self.target_file = Path(target_file)
         self.target_file.parent.mkdir(parents=True, exist_ok=True)
+        self.lock_file = self.target_file.with_name(f"{self.target_file.name}.lock")
+        self.lock_timeout_seconds = lock_timeout_seconds
+        self.lock_poll_seconds = lock_poll_seconds
 
     def remember(self, memory_type: str, payload: dict[str, Any]) -> None:
         record = {
@@ -47,8 +59,31 @@ class JsonlMemoryProvider:
             "created_at": datetime.now().isoformat(timespec="seconds"),
             "payload": self._normalize(payload),
         }
-        with self.target_file.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+        line = json.dumps(record, ensure_ascii=False) + "\n"
+        with self._write_lock():
+            with self.target_file.open("a", encoding="utf-8") as handle:
+                handle.write(line)
+                handle.flush()
+
+    @contextmanager
+    def _write_lock(self):
+        deadline = time.monotonic() + self.lock_timeout_seconds
+        lock_fd: int | None = None
+        while lock_fd is None:
+            try:
+                lock_fd = os.open(str(self.lock_file), os.O_CREAT | os.O_EXCL | os.O_RDWR)
+            except FileExistsError:
+                if time.monotonic() >= deadline:
+                    raise TimeoutError(f"timed out waiting for JSONL memory lock: {self.lock_file}")
+                time.sleep(self.lock_poll_seconds)
+        try:
+            yield
+        finally:
+            os.close(lock_fd)
+            try:
+                self.lock_file.unlink()
+            except FileNotFoundError:
+                pass
 
     def search(self, query: str, limit: int = 5) -> list[dict[str, Any]]:
         if not self.target_file.exists():

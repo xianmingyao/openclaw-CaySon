@@ -164,6 +164,14 @@ python E:\workspace\scripts\show_memories.py
 | Embedding模型 | nomic-embed-text |
 | 维度 | 768 |
 
+### Notion API 配置
+
+| 项目 | 配置 |
+|------|------|
+| NOTION_API_TOKEN | `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` |
+| 用途 | 知识同步到Notion |
+| 配置位置 | `~/.openclaw/openclaw.json` → `channels.notion` |
+
 ---
 
 ## 🔒 SkillHub 技能商店规范（宁兄指令 - 铁律）

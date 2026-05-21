@@ -48,11 +48,18 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 ## 项目状态
 
 ### 京麦智能体
-- **进度**：72%（2026-04-17确认）
+- **进度**：20%（2026-05-20，宁兄日报确认新版本测试阶段）
 - **文档**：`E:\文案\外包\运营\ELUCKY-技术架构设计.md`
 - **Skill**：`E:\workspace\skills\jingmai-product-publish\`
 - **坐标换算**：实际X = 识别X × 2，实际Y = 识别Y × 1.74（截图2560×1392，识别1280×800）
 - **Bug已修复**：import timedelta / setup_file_logger() / aiohttp泄漏 / List未导入
+- **最新动态**：测试版已打包给小蒙，安装部署完毕，进入测试调试阶段
+
+### 华人清洗项目
+- **阶段**：需求分析 + 技术评估 + 报价已完成
+- **报价**：¥14,000 / 25人天
+- **文档**：`E:\workspace\knowledge\华人清洗-BU分润小程序-需求评估报告.md`
+- **报价单**：`E:\workspace\华人清洗-BU分润小程序-报价清单.xlsx`
 
 ### ELUCKY 账号矩阵
 | 平台 | 账号数量 | 定位 |
@@ -68,6 +75,10 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 - **Cron**：每天 20:00 同步 (Job ID: `7c7f5f69-f412-4694-b41b-c480692c9927`)
 - **Milvus**：185,225 条（2026-04-29）
 - **飞书Database ID**：33d2bb5417c380f6baaff3467dea91c8
+
+## Notion API 配置（2026-05-21）
+- **NOTION_API_TOKEN**：`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`
+- **用途**：知识同步到Notion
 
 ## Cron 定时任务
 
@@ -194,6 +205,15 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 
 ## Dream 整合记录（最近）
 
+### 2026-05-20 整合（08:20，cron执行）
+- **扫描文件**：05-19 / 05-20（2个文件）
+- **MEMORY.md 更新**：
+  1. **京麦智能体进度更新**：72%→20%（新版本测试中，已部署给小蒙）
+  2. **新增华人清洗项目**：¥14,000报价，BU分润小程序需求评估完成
+  3. **新增5条05-20抖音知识**：认知债务/生产级Agent/GitHub趋势/PM工具/OpenViking字节记忆
+  4. **新增6条05-19知识**：Workflow vs Agent/LangGraph/字节面试15题/Omni-SimpleMem/Crawl4AI/supersplat/港大RAG-Anything
+- **结论**：本次全面整合新知识，05-18及之前已全面覆盖 ✅
+
 ### 2026-05-14 知识库大更新（17:31）
 - **GitHub一周热榜Top20 第20周** ✅完整版（来源：抖音赛博笔记+星探AI）
   - 完整8强榜单：Rufus(49.7k) / UI-TARS-desktop(33.5k) / PageIndex(30.8k) / DeepSeek-TUI(26.4k) / Anthropic Financial(21.5k) / 9router / CloakBrowser / Local Deep Research
@@ -308,6 +328,82 @@ YYYY.MM.DD(日报)
 - **影响**：抖音/B站内容抓取后中文乱码
 - **解决方向**：配置浏览器语言设置 或 使用 web_search 补充数据
 - **状态**：待处理
+
+## 2026-05-20 今日学习（5条归档）
+
+### 别把学习外包 - 认知债务（Addy Osmani）
+- **来源**: 抖音@慢学AI（68赞）
+- **核心**: AI默认优化交付，不是学习；六个动作把学习塞回工作流
+- **六个动作**: 形成假说→解释后要代码→打开学习模式→评审AI输出→手写重推→让模型解释
+- **关联**: Matt Pocock Skills / Vibe Coding / 京麦智能体
+- **飞书**: https://feishu.cn/docx/Yrs8dFvDRo2PnbxktQac3w2knhg
+
+### 生产级AI Agent架构详解
+- **来源**: 抖音@AI大模型学习（第140集，258赞，16分钟）
+- **核心**: MCP危机与定位 / Tool Search降本 / 内部大脑四大核心 / 十二大Agent模式
+- **Milvus**: ID 17792386150800 ✅
+- **飞书**: https://feishu.cn/docx/YJ6Bdgqm3oJEcGx4swVc6zAonWh
+
+### GitHub周趋势 - DeepSeek-TUI黑马
+- **来源**: 抖音@Ai工具实战派（329赞）
+- **高光**: DeepSeek-TUI黑马(+21752星) / AI Agent主导 / Claude金融应用 / antirez ds4
+- **Milvus**: ID 17792387765620 ✅
+- **飞书**: https://feishu.cn/docx/OReZdypsEoWxwcxBTwEcYaCYn0c
+
+### 产品经理AI工具清单
+- **来源**: 抖音@吃土说AI（5410赞，6649转发）
+- **核心工具**: Loable原型神器 / Stitch平替 / Figma Make / Claude Code / 龙虾
+- **Milvus**: ID 17792389957440 ✅
+- **飞书**: https://feishu.cn/docx/TScRdFisQoDr0FxcSnjc6x90ngh
+
+### OpenViking - 字节跳动Agent开源记忆系统
+- **来源**: 抖音@每日AI评论（第36集，1113赞）
+- **核心**: 虚拟文件系统+层级结构 / 任务完成率+43% / TOKEN-83%
+- **Milvus**: ID 17792391835550 ✅
+- **飞书**: https://feishu.cn/docx/Hq1UdAO6oone21xK5qEciKAmn6g
+
+## 2026-05-19 今日学习
+
+### Workflow vs Agent 本质区别（LangGraph核心范式）
+- **来源**: 抖音@知识博弈
+- **核心区别**:
+  - Workflow: 人定流程 AI执行 → 直线流程/高频任务
+  - Agent: AI定流程 AI执行 → 复杂决策/多叉情况
+- **LangGraph**: Graph+State，每个Node可切换Workflow或Agent模式
+- **文件**: `douyin-knowledge/2026-05-19-Workflow与Agent的本质区别-知识博弈.md`
+- **飞书**: https://feishu.cn/docx/KynzdR7h7ok51Lx8HR0cUiRNnQc
+
+### 字节Agent面试深度分析
+- **来源**: 抖音@小杰爱学习
+- **内容**: MCP/RAG全链路/记忆系统/模型分层/熔断机制/面试题库15道
+- **核心**: 临时记忆→企业级；AI评测→垂直领域
+- **关联**: Ontology文档 + Workflow vs Agent融合文档
+- **飞书**: https://feishu.cn/docx/C6ord4GH5ooegKxV5iCcQ11gnNP
+- **Milvus**: 5条记录 (IDs 3253000-3253004)
+
+### Omni-SimpleMem 多模态记忆框架
+- **来源**: 抖音@Agent创世纪
+- **效果**: 准确率+411%，速度3.5倍（LoCoMo基准）
+- **核心**: 新颖性过滤器 + MAU（多模态原子单元）+ 金字塔渐进检索
+- **文件**: `douyin-knowledge/2026-05-18-Omni-SimpleMem多模态记忆框架.md`
+
+### Crawl4AI - GitHub 63.6K⭐ LLM友好爬虫
+- **项目**: unclecode/crawl4ai
+- **特点**: 一行Python代码搞定，LLM Friendly网页爬虫
+- **文件**: `douyin-knowledge/2026-05-18-Crawl4AI-GitHub63KStar爬虫.md`
+
+### supersplat - 高斯泼溅3D场景编辑器
+- **项目**: playcanvas/supersplat
+- **特点**: 高斯泼溅3D重建，手机拍照生成3D场景
+- **文件**: `douyin-knowledge/2026-05-18-supersplat-3D场景编辑器.md`
+
+### 港大RAG-Anything - HKUDS开源
+- **团队**: 香港大学数据科学团队（HKUDS）
+- **Stars**: 20.3k ⭐
+- **定位**: All-in-One Multimodal RAG Framework，arXiv:2510.12323
+- **核心**: 5阶段多模态RAG架构，支持文本/图片/表格/公式统一处理
+- **Milvus**: 3条记录 (IDs 2026052100-2102)
+- **飞书**: https://feishu.cn/docx/CStWdgshnov5Mrx4f7MchsSGnNc
 
 ## 2026-05-13 今日学习
 

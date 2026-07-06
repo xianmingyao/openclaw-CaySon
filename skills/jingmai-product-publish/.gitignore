@@ -1,0 +1,11 @@
+# Added by code-review-graph
+.code-review-graph/
+
+# Python/runtime artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/
+uv.lock
+graphify-out/cache/

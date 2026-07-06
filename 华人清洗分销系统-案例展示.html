@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>华人清洗分销系统 - 案例展示</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background: #1a1a2e; color: #fff; }
+        
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            page-break-after: always;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        .slide-title {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .slide-title h1 {
+            font-size: 72px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .slide-title .subtitle {
+            font-size: 28px;
+            opacity: 0.9;
+        }
+        
+        .slide-title .date {
+            font-size: 20px;
+            margin-top: 60px;
+            opacity: 0.7;
+        }
+        
+        h2 {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        
+        .content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .card h3 {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .card p, .card li {
+            font-size: 20px;
+            line-height: 1.8;
+        }
+        
+        ul { list-style: none; }
+        li { padding: 10px 0; padding-left: 30px; position: relative; }
+        li::before { content: "✓"; position: absolute; left: 0; color: #667eea; font-weight: bold; }
+        
+        .highlight {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+        
+        .big-number {
+            font-size: 64px;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+        }
+        
+        .big-number span {
+            font-size: 24px;
+            color: #fff;
+            opacity: 0.8;
+        }
+        
+        .flow-chart {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .flow-box {
+            background: rgba(102, 126, 234, 0.3);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .flow-arrow {
+            font-size: 30px;
+            color: #667eea;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 18px;
+        }
+        
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        th {
+            background: rgba(102, 126, 234, 0.3);
+            color: #667eea;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+            opacity: 0.5;
+        }
+        
+        @media print {
+            .slide { page-break-after: always; height: 100vh; }
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #667eea;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        .tag.green { background: #4ade80; color: #000; }
+        .tag.yellow { background: #fbbf24; color: #000; }
+        .tag.red { background: #f87171; }
+    </style>
+</head>
+<body>
+
+<!-- 第1页：封面 -->
+<div class="slide slide-title">
+    <h1>🌊 华人清洗分销系统</h1>
+    <div class="subtitle">案例展示 & 需求分析</div>
+    <div class="date">2026年5月27日 · 客户会议专用</div>
+</div>
+
+<!-- 第2页：目录 -->
+<div class="slide">
+    <h2>📋 目录</h2>
+    <div class="content">
+        <div class="grid-2">
+            <div class="card">
+                <h3>一、系统架构</h3>
+                <ul>
+                    <li>分销角色体系</li>
+                    <li>分销商品规则</li>
+                    <li>关系绑定流程</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>二、奖励体系</h3>
+                <ul>
+                    <li>直推奖机制</li>
+                    <li>对碰奖机制</li>
+                    <li>代数奖 & 滑落奖</li>
+                    <li>职级分红</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>三、API对接</h3>
+                <ul>
+                    <li>对接系统范围</li>
+                    <li>数据交互方式</li>
+                    <li>接口文档准备</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>四、会议目标</h3>
+                <ul>
+                    <li>确认需求细节</li>
+                    <li>解答客户疑问</li>
+                    <li>达成合作共识</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第3页：分销角色 -->
+<div class="slide">
+    <h2>👥 分销角色体系</h2>
+    <div class="content">
+        <div class="grid-2">
+            <div class="card">
+                <h3>对内角色</h3>
+                <ul>
+                    <li><span class="highlight">SU 销售经理</span> - 内部管理人员</li>
+                    <li><span class="highlight">BU 合伙人</span> - 初级合伙人，可发展N级</li>
+                </ul>
+                <p style="margin-top:20px; color:#4ade80;">✓ 内部架构清晰，层级分明</p>
+            </div>
+            <div class="card">
+                <h3>对外角色</h3>
+                <ul>
+                    <li><span class="highlight">BU 合伙人（外部）</span> - 外部合作伙伴</li>
+                    <li><span class="highlight">N级分销商</span> - 无限裂变层级</li>
+                </ul>
+                <p style="margin-top:20px; color:#4ade80;">✓ 外部拓展灵活，快速扩张</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第4页：分销商品 -->
+<div class="slide">
+    <h2>📦 分销商品规则</h2>
+    <div class="content">
+        <div class="card" style="text-align:center; padding:60px;">
+            <div style="font-size:24px; margin-bottom:40px;">分销商品业绩分配流程</div>
+            <div class="flow-chart">
+                <div class="flow-box">后台录入<br>业绩订单</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">系统自动<br>计算规则</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">自动分配<br>业绩给各环节</div>
+            </div>
+            <p style="font-size:20px; margin-top:40px; color:#4ade80;">
+                ✓ 后台统一管理，系统自动分配，确保公平透明
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 第5页：关系绑定 -->
+<div class="slide">
+    <h2>🔗 关系绑定规则（核心机制）</h2>
+    <div class="content">
+        <div class="grid-3">
+            <div class="card">
+                <h3>邀请绑定</h3>
+                <p>通过分享链接或二维码邀请新用户注册，自动绑定上下级关系</p>
+            </div>
+            <div class="card">
+                <h3>主线限制</h3>
+                <p style="color:#fbbf24;">每个用户下方<br><span class="highlight" style="font-size:48px;">仅2条主线</span><br>左线 + 右线</p>
+            </div>
+            <div class="card">
+                <h3>自动滑落</h3>
+                <p>第3个及以上被推荐人<br><span class="highlight">自动滑落</span><br>至最深空位</p>
+            </div>
+        </div>
+        <div class="card" style="margin-top:40px; text-align:center;">
+            <p style="font-size:24px;">
+                <span class="tag green">双重绑定</span>
+                拉新的用户自动绑定 <span class="highlight">"推荐人"</span> 和 <span class="highlight">"安置上线"</span> 用户
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 第6页：直推奖 -->
+<div class="slide">
+    <h2>💰 奖励体系 — 直推奖</h2>
+    <div class="content">
+        <div class="grid-2">
+            <div style="text-align:center;">
+                <div class="big-number">5%<span>首年利润</span></div>
+                <p style="font-size:20px; margin-top:20px;">裂变1个BU，直接获得该用户首年利润的5%</p>
+            </div>
+            <div style="text-align:center;">
+                <div class="big-number">+2%<span>次年收益</span></div>
+                <p style="font-size:20px; margin-top:20px;">首年结束后，次年持续获得2%收益</p>
+            </div>
+        </div>
+        <div class="card" style="margin-top:40px; text-align:center; background:rgba(74, 222, 128, 0.1);">
+            <p style="font-size:24px; color:#4ade80;">
+                ✅ 一次推荐，终身绑定，持续收益
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 第7页：对碰奖 -->
+<div class="slide">
+    <h2>💰 奖励体系 — 对碰奖</h2>
+    <div class="content">
+        <div class="card" style="text-align:center; padding:60px;">
+            <div style="font-size:24px; margin-bottom:40px;">对碰奖计算逻辑</div>
+            <div class="flow-chart">
+                <div class="flow-box">左区业绩<br>10000元</div>
+                <div class="flow-arrow">碰撞</div>
+                <div class="flow-box">右区业绩<br>10000元</div>
+                <div class="flow-arrow">=</div>
+                <div class="flow-box" style="background:rgba(74, 222, 128, 0.3); border-color:#4ade80;">
+                    小区业绩<br>× <span style="font-size:32px; color:#4ade80;">2%</span>
+                </div>
+            </div>
+            <p style="font-size:20px; margin-top:40px;">
+                <span class="tag">受益人</span> 由<span class="highlight">直推人</span>获取该奖励利润
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 第8页：代数奖 -->
+<div class="slide">
+    <h2>💰 奖励体系 — 代数奖（级差奖）</h2>
+    <div class="content">
+        <table>
+            <tr>
+                <th>代数范围</th>
+                <th>奖励比例</th>
+                <th>说明</th>
+            </tr>
+            <tr>
+                <td>1-10 代</td>
+                <td style="color:#667eea; font-size:28px; font-weight:bold;">1%</td>
+                <td>无限代分润的起点</td>
+            </tr>
+            <tr>
+                <td>11-20 代</td>
+                <td style="color:#667eea; font-size:28px; font-weight:bold;">0.5%</td>
+                <td>递减少法</td>
+            </tr>
+            <tr>
+                <td>21 代后</td>
+                <td style="color:#667eea; font-size:28px; font-weight:bold;">0.2%</td>
+                <td>始终留存40%</td>
+            </tr>
+        </table>
+        <div class="grid-3" style="margin-top:40px;">
+            <div class="card" style="text-align:center;">
+                <div class="big-number" style="font-size:48px;">40%</div>
+                <p>始终留存</p>
+            </div>
+            <div class="card" style="text-align:center;">
+                <div class="big-number" style="font-size:48px;">1元</div>
+                <p>最小分润值</p>
+            </div>
+            <div class="card" style="text-align:center; background:rgba(74, 222, 128, 0.1);">
+                <div style="font-size:48px;">✅</div>
+                <p style="color:#4ade80;">永远能分到钱</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第9页：滑落奖 & 职级分红 -->
+<div class="slide">
+    <h2>💰 滑落奖 & 职级分红</h2>
+    <div class="content">
+        <div class="grid-2">
+            <div class="card">
+                <h3>🌊 滑落奖（被动收入）</h3>
+                <ul>
+                    <li>上面掉人也赚钱</li>
+                    <li>识别所有"推荐人是他人但安置在自己树下"的节点</li>
+                    <li>计算其<span class="highlight">首年利润×1%</span></li>
+                </ul>
+                <p style="margin-top:20px; color:#4ade80;">✅ 真正的躺赚被动收入</p>
+            </div>
+            <div class="card">
+                <h3>👑 职级分红（奖金池瓜分）</h3>
+                <table style="font-size:16px;">
+                    <tr><td>🥈 白金</td><td>奖金池 <span class="highlight">10%</span></td></tr>
+                    <tr><td>🥇 钻石</td><td>奖金池 <span class="highlight">20%</span></td></tr>
+                    <tr><td>👑 总统钻石</td><td>奖金池 <span class="highlight">30%</span></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第10页：API对接 -->
+<div class="slide">
+    <h2>🔌 API对接说明</h2>
+    <div class="content">
+        <div class="grid-2">
+            <div class="card">
+                <h3>对接系统</h3>
+                <ul>
+                    <li>项目管理系统</li>
+                    <li>有成报销（付款管理）</li>
+                    <li>单据管理系统</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>交互数据</h3>
+                <ul>
+                    <li>客户信息</li>
+                    <li>项目名称</li>
+                    <li>项目编号</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card" style="margin-top:40px; text-align:center; background:rgba(102, 126, 234, 0.2);">
+            <h3>对接方式</h3>
+            <p style="font-size:28px; margin-top:20px;">
+                <span class="tag">分销系统主动拉取</span>
+                <span class="tag yellow">数据同步</span>
+                <span class="tag green">不影响原系统</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- 第11页：卖点总结 -->
+<div class="slide">
+    <h2>✨ 核心卖点（会议强调重点）</h2>
+    <div class="content">
+        <div class="grid-3">
+            <div class="card" style="border-left:4px solid #667eea;">
+                <h3>🌊 无限代裂变</h3>
+                <p>真正的管道收入，团队越大收益越高</p>
+            </div>
+            <div class="card" style="border-left:4px solid #764ba2;">
+                <h3>⚖️ 两条主线+自动滑落</h3>
+                <p>公平均衡的网络结构，避免一家独大</p>
+            </div>
+            <div class="card" style="border-left:4px solid #4ade80;">
+                <h3>💪 40%留存机制</h3>
+                <p>永远不会被"分不到钱"，最小1元分配</p>
+            </div>
+            <div class="card" style="border-left:4px solid #fbbf24;">
+                <h3>💤 被动收入</h3>
+                <p>滑落奖实现真正躺赚，上面掉人也赚钱</p>
+            </div>
+            <div class="card" style="border-left:4px solid #f87171;">
+                <h3>🔗 API无缝对接</h3>
+                <p>不影响现有系统，数据自动同步</p>
+            </div>
+            <div class="card" style="border-left:4px solid #60a5fa;">
+                <h3>📈 终身绑定收益</h3>
+                <p>首年5%+次年2%，一次推荐终身收益</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 第12页：结束页 -->
+<div class="slide slide-title" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <h1>谢谢观看</h1>
+    <div class="subtitle">华人清洗分销系统 · 案例展示</div>
+    <div class="date" style="margin-top:80px;">
+        📞 了解更多请联系项目负责人<br>
+        📧 文档版本：V1.0 · 2026.05.27
+    </div>
+</div>
+
+<div class="footer">
+    华人清洗分销系统 · 内部会议材料 · 请勿外传
+</div>
+
+</body>
+</html>

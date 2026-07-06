@@ -1,0 +1,5 @@
+Crop area: 900,400 to 1700,1100
+Crop size: 800x700
+X button in crop: (586, 116)
+X button original: (1486, 516)
+White pixels found: 4341

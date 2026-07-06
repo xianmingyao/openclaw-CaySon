@@ -2,7 +2,14 @@
 .env
 .env.local
 .env.*
+!skills/jingmai-product-publish/.env.example
 skills/desktop-control-cli
 skills/cultivating_cli
 skills/jingmai-putaway
+skills\cultivating_cli_2
 *.png
+knowledge-base/memory/knowledge-base.json
+skills/desktop-control-cli.rar
+skills/desktop-control-cli.rar
+knowledge-base/memory/knowledge-base.json
+.gstack/

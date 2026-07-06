@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jingmai-product-publish"
+version = "0.2.0"
+description = "京麦商品上架自动化 v2 基础设施"
+requires-python = ">=3.11"
+dependencies = [
+  "langgraph>=0.2.0",
+  "openpyxl>=3.1.0",
+]
+
+[project.optional-dependencies]
+storage = [
+  "asyncmy>=0.2.9",
+  "redis>=5.0.0",
+  "pymilvus>=2.4.0",
+]
+ocr = [
+  "Pillow>=10.0.0",
+  "pytesseract>=0.3.10",
+]
+rich-ui = [
+  "rich>=13.0.0",
+]
+webview-act = [
+  "pyautogui>=0.9.54",
+  "pyperclip>=1.8.2",
+]
+test = [
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.0",
+]
+all = [
+  "jingmai-product-publish[storage,ocr,rich-ui,webview-act,test]",
+]
+
+[project.scripts]
+jm-ufo-agent = "jm_ufo_agent.cli.command:main"
+
+[tool.setuptools.packages.find]
+include = ["jm_ufo_agent*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+asyncio_mode = "auto"

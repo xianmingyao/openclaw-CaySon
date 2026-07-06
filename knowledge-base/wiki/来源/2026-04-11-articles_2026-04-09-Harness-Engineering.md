@@ -1,4 +1,4 @@
-# 来源摘要：articles\2026-04-09-Harness-Engineering.md
+﻿# 来源摘要：articles\2026-04-09-Harness-Engineering.md
 
 > 原始路径：raw/articles\2026-04-09-Harness-Engineering.md
 > 摄入时间：2026-04-11 20:02
@@ -59,3 +59,4 @@ Harness 是 AI 智能体的"操作系统"，通过以下方式解决问题：
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

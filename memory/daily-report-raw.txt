@@ -1,34 +1,21 @@
 ﻿=== DAILY REPORT DATA ===
-Date: 2026-04-16 17:20:28
+Date: 2026-07-03 17:20:33
 --- GIT COMMITS ---
-  ee0debce '瀹氭椂鑷姩鎻愪氦'
+  (none today)
 --- FILES MODIFIED ---
-  17:20 | skills\desktop-control-cli\desktop-control\.pytest_cache\v\cache\lastfailed
-  17:20 | skills\desktop-control-cli\desktop-control\.pytest_cache\v\cache\nodeids
-  17:17 | skills\desktop-control-cli\desktop-control\logs\bridge_sessions.json
-  17:16 | skills\desktop-control-cli\desktop-control\screenshot.png
-  17:16 | skills\desktop-control-cli\desktop-control\.desktop_control.db
-  17:15 | skills\desktop-control-cli\desktop-control\tests\integration\mcp\__pycache__\test_mcp_integration.cpython-312-pytest-9.0.3.pyc
-  17:15 | skills\desktop-control-cli\desktop-control\README.md
-  17:14 | skills\desktop-control-cli\desktop-control\tests\integration\mcp\test_mcp_integration.py
-  17:14 | skills\desktop-control-cli\.idea\workspace.xml
-  17:13 | DREAMS.md
-  17:13 | memory\.dreams\phase-signals.json
-  17:13 | memory\.dreams\events.jsonl
-  17:13 | memory\2026-04-16.md
-  17:13 | memory\.dreams\session-ingestion.json
-  17:13 | memory\.dreams\short-term-recall.json
-  17:13 | memory\.dreams\session-corpus\2026-04-16.txt
-  17:13 | memory\.dreams\daily-ingestion.json
-  17:10 | skills\desktop-control-cli\test_ufo_commands.py
-  17:10 | skills\desktop-control-cli\desktop-control\app\services\__init__.py
-  17:05 | skills\desktop-control-cli\desktop-control\app\ufo\service\__pycache__\ufo_service.cpython-312.pyc
+  17:00 | knowledge-base\.notion_sync_state.json
+  17:00 | knowledge-base\.sync_state.json
+  09:07 | memory\2026-07-03.md
+  09:07 | memory\weixin_qr_latest.txt
+  09:06 | scripts\weixin_fetch_qr.js
+  07:27 | knowledge-base\memory\knowledge-base.json
+  03:04 | MEMORY.md
 --- SESSIONS ---
-  Count: 33
-  - 07052f11-ed5f-4001-bfba-cfc7846a8fb1.jsonl [17:13]
-  - 07d30ec5-65a1-40b2-b339-48c80342985d.jsonl [16:13]
-  - 0f0bf160-d774-4ad5-a954-db76655bbc06.jsonl [17:20]
+  Count: 6
+  - 1971f0a4-48ec-48ea-bba2-f8ee8d5848ef.jsonl [03:04]
+  - 1971f0a4-48ec-48ea-bba2-f8ee8d5848ef.trajectory.jsonl [03:04]
+  - 78060cdf-a7d6-4135-b68d-6386913c4976.jsonl [09:07]
 --- SKILLS ---
-  + desktop-control-cli
+  (none today)
 --- STRUCTURED ---
-{"skillsUpdated":["desktop-control-cli"],"dayOfWeek":"Thursday","sessionCount":33,"modifiedFiles":["E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.pytest_cache\\v\\cache\\lastfailed","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.pytest_cache\\v\\cache\\nodeids","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\logs\\bridge_sessions.json","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\screenshot.png","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\.desktop_control.db","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\tests\\integration\\mcp\\__pycache__\\test_mcp_integration.cpython-312-pytest-9.0.3.pyc","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\README.md","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\tests\\integration\\mcp\\test_mcp_integration.py","E:\\workspace\\skills\\desktop-control-cli\\.idea\\workspace.xml","E:\\workspace\\DREAMS.md","E:\\workspace\\memory\\.dreams\\phase-signals.json","E:\\workspace\\memory\\.dreams\\events.jsonl","E:\\workspace\\memory\\2026-04-16.md","E:\\workspace\\memory\\.dreams\\session-ingestion.json","E:\\workspace\\memory\\.dreams\\short-term-recall.json","E:\\workspace\\memory\\.dreams\\session-corpus\\2026-04-16.txt","E:\\workspace\\memory\\.dreams\\daily-ingestion.json","E:\\workspace\\skills\\desktop-control-cli\\test_ufo_commands.py","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\services\\__init__.py","E:\\workspace\\skills\\desktop-control-cli\\desktop-control\\app\\ufo\\service\\__pycache__\\ufo_service.cpython-312.pyc"],"gitCommits":"ee0debce \u0027瀹氭椂鑷姩鎻愪氦\u0027","date":"2026.04.16"}
+{"skillsUpdated":[],"dayOfWeek":"Friday","sessionCount":6,"modifiedFiles":["E:\\workspace\\knowledge-base\\.notion_sync_state.json","E:\\workspace\\knowledge-base\\.sync_state.json","E:\\workspace\\memory\\2026-07-03.md","E:\\workspace\\memory\\weixin_qr_latest.txt","E:\\workspace\\scripts\\weixin_fetch_qr.js","E:\\workspace\\knowledge-base\\memory\\knowledge-base.json","E:\\workspace\\MEMORY.md"],"gitCommits":[],"date":"2026.07.03"}

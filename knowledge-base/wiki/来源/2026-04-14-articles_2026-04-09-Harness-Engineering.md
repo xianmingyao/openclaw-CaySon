@@ -1,4 +1,4 @@
-# 来源摘要：articles\2026-04-09-Harness-Engineering.md
+﻿# 来源摘要：articles\2026-04-09-Harness-Engineering.md
 
 > 原始路径：raw/articles\2026-04-09-Harness-Engineering.md
 > 摄入时间：2026-04-14 20:02
@@ -96,3 +96,4 @@ Harness（驾驭系统）
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

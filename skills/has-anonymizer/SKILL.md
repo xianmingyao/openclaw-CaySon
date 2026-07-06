@@ -18,7 +18,7 @@ metadata:
               "required": false
             },
             "HAS_TEXT_MAX_PARALLEL_REQUESTS": {
-              "description": "Maximum parallel inference requests for scan/hide/seek batch operations (default: 4, max: 4)",
+              "description": "Maximum parallel inference requests for scan/hide/restore batch operations (default: 4, max: 4)",
               "required": false
             }
           }
@@ -62,358 +62,367 @@ metadata:
 
 # HaS Privacy
 
-HaS (Hide and Seek) is an on-device privacy protection tool. It provides **text** and **image** anonymization capabilities, both running entirely on-device.
+HaS exposes a single umbrella CLI:
 
-- **Text anonymization** (has-text): Powered by a 0.6B privacy model, supports 8 languages with open-set entity types for anonymization and restoration
-- **Image anonymization** (has-image): Powered by a YOLO11 segmentation model, supports pixel-level detection and masking of 21 privacy categories
+- `has text ...` for text anonymization, restoration, and scanning
+- `has image ...` for image scanning, masking, and category discovery
+
+Use it when you need to remove private data locally before sending content elsewhere, inspect a directory for privacy risks, or mask visual privacy targets in photos and screenshots.
 
 ## Agent Decision Guidelines
 
-- **First introduction**: When users encounter HaS for the first time, demonstrate value through real-world scenarios rather than listing commands. Examples: anonymize contracts/resumes before sharing safely, anonymize before sending to cloud LLMs then restore the response, auto-mask faces/IDs/license plates and 20 other privacy categories in photos before publishing, scan workspace for privacy leak risks, anonymize logs before handing to ops/support
-- **Scanning workspace/directory**: Use has-text scan for text files and has-image scan for image files simultaneously, then provide a consolidated report
-- **Non-plaintext formats**: has-text only processes plaintext. For PDFs, Word documents, scanned images, etc., first convert to text using other available tools before processing
-- **Text in images**: has-image covers most text-in-image scenarios by masking all 21 visual carriers (screens, paper, sticky notes, shipping labels, etc.) as a whole. For further recognition of text content in images, use OCR to extract text first, then run has-text scan for additional detection
-- **Never delete original files**: Anonymization operations should output to new files, **never overwrite or delete the original files**. Image anonymization is irreversible; text anonymization can be restored but the original file should still be preserved as backup
-- **Proactively inform about configurable options**: At appropriate moments, inform users about the following options and help them configure interactively:
-  - **Text**: `--types` can specify any entity type (names, addresses, phone numbers, etc.), not limited to predefined types
-  - **Image**: `--types` can specify which categories to mask (e.g., only faces, or only license plates), defaults to all 21 categories
-  - **Masking method**: `--method` supports mosaic (default), blur, and solid color fill
-  - **Masking strength**: `--strength` adjusts mosaic block size or blur intensity (default 15)
-- **Post-scan report**: After scanning a workspace/directory, generate a consolidated privacy check report including:
-  - Total files scanned (text and image counts separately)
-  - Number and location of each type of sensitive content found
-  - Risk level assessment (flag high-sensitivity items such as ID numbers, faces, etc.)
-  - Recommended next steps (e.g., "Would you like to anonymize the above files?")
-- **Report elapsed time after completion**: After task completion, report processing time to the user so they can perceive on-device inference performance. For single tasks, report individual time (e.g., "On-device inference complete, took 0.3s"); for batch tasks, report a summary (e.g., "Processed 12 texts + 8 images, total time 2.4s"). Do not display technical metrics like tok/s
+- Prefer `has text` for plaintext and `has image` for raster images. For mixed directories, run both and combine the results into one report.
+- For PDFs, Word documents, or scanned pages, extract text first and then use `has text`. For screenshots/photos where the goal is simply to hide visible carriers such as faces, screens, paper, labels, or QR codes, use `has image`. If the goal is to reason about the text content inside an image, run OCR first and then use `has text`.
+- Do not overwrite or delete the original files. Text commands can restore later, image masking is irreversible.
+- Proactively mention configurable knobs when the user intent is clear: `has text` uses repeated `--type`; `has image` uses repeated `--type`, plus `--method` and `--strength`.
+- If the user intent is ambiguous, start with `scan` before `hide`.
+- After batch scans, summarize text file count, image file count, findings by type/category, high-risk items, and the suggested next step.
+- If timing matters to the user, add `--timing` and report the elapsed result in plain language afterward.
+- For `qr_code` and `barcode`, the default mosaic strength is automatically raised based on the detection size to ensure the encoding is destroyed. The agent does not need to manually increase `--strength` for these categories. If a detection output includes `effective_strength`, report it to the user.
+
+## Shared CLI Contract
+
+The current CLI contract is designed for agents first:
+
+- Success returns compact JSON.
+- Failure also returns compact JSON with `error.code` and `error.message`.
+- Returned path fields are absolute.
+  - This includes `file`, `output`, `mapping_output`, and `skipped[].file`.
+- Invalid combinations fail fast instead of silently falling back.
+- Directory mode is non-recursive. Only immediate children are processed.
+- Batch results can include `skipped` and `skipped_count`.
+  - Treat `skipped` entries as unprocessed files, not as clean files.
+
+Shared command layout:
+
+```bash
+{baseDir}/scripts/has.sh <text|image> <command> [options]
+```
+
+Shared options can be placed before or after the subcommand.
 
 ---
 
-# Part 1: Text Anonymization (has-text)
+# Part 1: `has text`
 
-## Core Concepts
+`has text` is the plaintext namespace. It supports:
 
-### Three-Level Semantic Tags
+- `scan`
+- `hide`
+- `restore`
 
-Tag format after anonymization: `<EntityType[ID].Category.Attribute>`
+It runs entirely on-device and uses a local `llama-server` plus the HaS text model when model inference is required.
 
-- **EntityType**: e.g., person name, address, organization
-- **[ID]**: Sequential number for entities of the same type. After coreference resolution, the same entity shares the same number — "CloudGenius Inc.", "CloudGenius", and its Chinese equivalent all map to `<Organization[1].Company.CompanyName>`
-- **Category.Attribute**: Semantic subdivision that helps LLMs understand the context of anonymized data (as opposed to `[REDACTED]`)
+## Core Text Concepts
 
-### Open-Set Types
+### Semantic tags
 
-`--types` is not limited to predefined types — any natural language entity type can be specified (the model was trained on approximately 70,000 types). Parenthetical descriptions can be appended to type names to guide model focus, e.g., `"numeric values (transaction amounts)"`.
+Anonymized text uses semantic tags such as:
 
-### Public/Private Distinction and Multilingual Support
+```text
+<EntityType[ID].Category.Attribute>
+```
 
-- **Public/private distinction**: Achieved by specifying discriminative types — e.g., use `"personal location"` instead of `"location"` to only anonymize private addresses while preserving public place names (tested and reliably stable). ⚠️ Public/private distinction for person names (`"personal name"` vs `"person name"`) is **unstable** on the current 0.6B model and should not be relied upon
-- **Multilingual**: Natively supports 8 languages: Chinese, English, French, German, Spanish, Portuguese, Japanese, and Korean. Cross-lingual text can be processed in mixed form
+This preserves structure better than a flat `[REDACTED]` token and is the reason restored downstream LLM output can remain usable.
 
-### Type Selection Guidelines
+### Open-set types
 
-`--types` is flexibly determined by the Agent based on context:
+Repeated `--type` flags are open-set. They are not limited to a fixed catalog. Natural language type names such as `"person name"`, `"address"`, `"phone number"`, or `"numeric values (transaction amounts)"` are valid.
 
-- **User explicitly specifies** → follow user's request
-- **Intent is clear, types are obvious** (e.g., "anonymize this contract" → names + organizations + amounts + addresses) → Agent decides autonomously
-- **Intent is ambiguous or involves sensitive decisions** → first use `scan` to scan for as many entity types as possible, show discovered entities to the user for confirmation, then use `hide` to anonymize
+### Public/private distinction
 
-## Prerequisites: llama-server (Auto-managed, Local-Only)
+Type wording matters. For example, `"personal location"` is usually safer than `"location"` if you want to preserve public places but hide private addresses. Public/private person-name distinctions remain less stable and should not be trusted without verification.
 
-HaS depends on llama-server to load the privacy model and provide inference. `has-text` auto-reuses or auto-starts a **local loopback** `llama-server` when a command needs the model. Non-loopback server URLs are rejected to ensure all data stays on-device. Same-language `seek` avoids starting the server when deterministic restoration succeeds. **Only stop a server if this task started it. Never terminate a pre-existing server that you merely detected on the same port.**
+### Multilingual support
 
-The model file is downloaded via the OpenClaw install mechanism to `~/.openclaw/tools/has-anonymizer/models/has_text_model.gguf` (639 MB, Q8_0 quantized). Runtime memory usage is approximately 1.4 GB (8K context).
+The text model supports Chinese, English, French, German, Spanish, Portuguese, Japanese, and Korean, including mixed-language text.
 
-**Platform notes**:
-- macOS: OpenClaw can surface bundled install actions for `uv` and `llama.cpp` via Homebrew.
-- Linux / WSL: install `uv` and `llama-server` manually first, then use OpenClaw's download install actions for the HaS model files.
+### Type name language
 
-**Model download mirrors**: OpenClaw's built-in install metadata currently points at HuggingFace. If that download fails or times out, use these ModelScope mirror URLs as a manual fallback instead of assuming automatic retry:
-- Text model: `https://modelscope.cn/models/TencentXuanwu/HaS_Text_0209_0.6B_Q8` → download `has_text_model.gguf` to `~/.openclaw/tools/has-anonymizer/models/`
-- Image model: `https://modelscope.cn/models/TencentXuanwu/HaS_Image_0209_FP32` → download `sensitive_seg_best.pt` to `~/.openclaw/tools/has-anonymizer/models/`
+Match the `--type` language to the source text language:
 
-**Auto-managed local runtime**:
+- **Chinese text** → use Chinese type names: `--type "人名" --type "电话号码" --type "地址"`
+- **Non-Chinese text** (English, French, German, etc.) → use English type names: `--type "person name" --type "phone number" --type "address"`
 
-- Server URL: `http://127.0.0.1:8080` (hardcoded loopback; non-local URLs are rejected)
+## Text Runtime Prerequisites
+
+`has text` auto-starts a local `llama-server` when needed.
+
 - Default model path: `~/.openclaw/tools/has-anonymizer/models/has_text_model.gguf`
-- Override the auto-start model path with env var `HAS_TEXT_MODEL_PATH=/abs/path/to/has_text_model.gguf`
-- Override the parallel request cap with env var `HAS_TEXT_MAX_PARALLEL_REQUESTS` (default 4, max 4)
-- Auto-start slot count is workload-aware: `has-text` only starts as many slots as the current command can actually use, capped by `--max-parallel-requests` and a fixed local ceiling of 4
-- Auto-start keeps each slot at the full 8K context budget by scaling `-c` with `-np` (`np=1 -> c=8192`, `np=2 -> c=16384`, ..., `np=4 -> c=32768`)
-- If a healthy local HaS server is already listening on the requested port, `has-text` reuses it only when it is clearly the HaS model and its `-np`/`-c` combination still preserves the full 8K context per slot; otherwise it starts a new local port instead and only stops the PID it created
+- Override model path: `HAS_TEXT_MODEL_PATH=/abs/path/to/has_text_model.gguf`
+- Override parallel cap: `HAS_TEXT_MAX_PARALLEL_REQUESTS`
+- If HuggingFace downloads fail, see **Model Download Mirrors** below.
 
-**Manual fallback — Start**:
-
-1. Probe the default port (8080): `curl -fsS "http://127.0.0.1:8080/health"`
-2. If health is OK, identify the listening PID and inspect its command line:
+## Text Usage
 
 ```bash
-pid="$(lsof -tiTCP:8080 -sTCP:LISTEN | head -n 1)"
-cmd="$(ps -p "$pid" -o command=)"
+{baseDir}/scripts/has.sh text [--timing] [--verbose] <scan|hide|restore> [options]
 ```
 
-3. Reuse the existing service **only** if the command line clearly shows both `llama-server` and `has_text_model.gguf`. Health alone is not enough; another model may already be using that port.
-4. If the running service is missing, unhealthy, or not the HaS model, leave that process alone and choose another free port (for example `8090`).
-5. Decide the slot budget before starting llama-server. Use `1` for serial `hide`-only work; for chunk-parallel `scan`, model-backed `seek`, or batch `hide --dir`, set it to the number of model work items you expect, capped at `--max-parallel-requests` and 4 local slots. Keep `-c = 8192 * parallel` so each slot retains the full 8K context budget.
-6. Start llama-server in the background and record the PID you started:
-
-```bash
-parallel="${HAS_TEXT_MAX_PARALLEL_REQUESTS:-4}"
-[ "$parallel" -gt 4 ] && parallel=4
-ctx_size=$((8192 * parallel))
-server_pid=""
-llama-server \
-  --host 127.0.0.1 \
-  -m ~/.openclaw/tools/has-anonymizer/models/has_text_model.gguf \
-  -ngl 999 \
-  -c "$ctx_size" \
-  -np "$parallel" \
-  -fa on \
-  -ctk q8_0 \
-  -ctv q8_0 \
-  --port 8080 &
-server_pid=$!
-```
-
-7. Wait for readiness: poll the health endpoint until it returns ok
-
-**After use — Stop**:
-
-If and only if this task set `server_pid`, terminate that PID to free memory:
-
-```bash
-if [ -n "${server_pid:-}" ]; then
-  kill "$server_pid"
-  wait "$server_pid" 2>/dev/null || true
-fi
-```
-
-Do not kill by port, and do not stop a server that you only reused.
-
-## Usage
-
-```bash
-{baseDir}/scripts/has-text.sh [global-options] <command> [options]
-```
-
-Global options:
+Namespace options:
 
 | Option | Description |
 |--------|-------------|
-| `--pretty` | Pretty-print JSON output |
-| `-q, --quiet` | For `hide`/`seek`, output text only without the JSON wrapper. `scan` still returns JSON |
+| `--timing` | Include `elapsed_ms` in the JSON output |
+| `--verbose` | Emit runtime status and progress messages to stderr |
 
-Input methods (common to scan/hide/seek):
+Input methods:
 
 | Method | Description |
 |--------|-------------|
 | `--text '<text>'` | Pass text directly |
 | `--file <path>` | Read text from a file |
-| stdin | Pipe input, e.g., `cat file \| has-text ...` |
+| `--dir <path>` | Process immediate plaintext files in a directory |
+| stdin | For single-text mode when no `--text`, `--file`, or `--dir` is provided |
 
-> `--max-chunk-tokens`: Maximum tokens per chunk (default 3000), available for `scan`, `hide`, and model-backed `seek`.
+Rules:
+
+- `--text`, `--file`, and `--dir` are mutually exclusive.
+- Empty `--type` values are rejected.
+- Directory mode only accepts batch output flags.
+- Single-file `hide` requires `--mapping-output`.
+- Single-file `restore` requires `--mapping`.
+- In text directory mode, `skipped` can include unprocessed files (binary, encoding, or read errors).
+
+## `has text scan`
+
+Finds sensitive entities without replacing them.
+
+```bash
+{baseDir}/scripts/has.sh text scan --type "person name" --type "phone number" --file report.txt
+{baseDir}/scripts/has.sh text scan --type "person name" --type "phone number" --dir ./reports/
+```
+
+Parameters:
+
+| Parameter | Required | Description |
+|-----------|:--------:|-------------|
+| `--type` | yes | Entity type to scan for; repeat to add more |
+| `--text` / `--file` / `--dir` | one input | Input source |
+| `--max-chunk-tokens` | | Max tokens per chunk, default `5000` |
+| `--max-parallel-requests` | | Max scan chunks in parallel, default `4` |
+
+Output:
+
+- Single-text mode returns `{"entities": ...}`
+- Directory mode returns `{"results":[...],"count":N,"summary":{...}}`
+- Batch output may include `skipped` and `skipped_count`
+
+## `has text hide`
+
+Replaces sensitive entities with semantic tags.
+
+```bash
+{baseDir}/scripts/has.sh text hide --type "person name" --type "address" --text "John lives in Brooklyn" --mapping-output ./mapping.json
+{baseDir}/scripts/has.sh text hide --type "person name" --file note.txt --output ./note.anonymized.txt --mapping-output ./note.mapping.json
+{baseDir}/scripts/has.sh text hide --type "person name" --dir ./docs/
+```
+
+Parameters:
+
+| Parameter | Required | Description |
+|-----------|:--------:|-------------|
+| `--type` | yes | Entity type to anonymize; repeat to add more |
+| `--text` / `--file` / `--dir` | one input | Input source |
+| `--mapping-output` | single-file: yes | Output path for generated mapping JSON |
+| `--output` | single-file | Output path for anonymized text |
+| `--mapping` | single-file | Existing mapping JSON file for incremental anonymization |
+| `--output-dir` | batch | Output directory for anonymized files (default: `<dir>/.has/anonymized/`) |
+| `--mapping-dir` | batch | Output directory for per-file mapping JSON files (default: `<output-dir>/mappings/`) |
+| `--max-chunk-tokens` | | Max tokens per chunk, default `3000` |
+| `--max-parallel-requests` | | Max files in parallel for `--dir`, default `4` |
+| `--no-tool-pair` | | Disable diff-based pair extraction; always use Model-Pair (slower but more robust) |
+
+Behavior:
+
+- Single-file mode never emits the mapping table inline.
+- Single-file mode returns either:
+  - `{"text":"...","mapping_output":"/abs/path/to/map.json"}`
+  - `{"output":"/abs/path/to/out.txt","mapping_output":"/abs/path/to/map.json"}`
+- Batch mode does not accept shared `--mapping`.
+- Mapping files are sensitive assets. Protect them.
+
+## `has text restore`
+
+Restores anonymized text using mapping JSON.
+
+```bash
+{baseDir}/scripts/has.sh text restore --mapping mapping.json --text "<person name[1].personal.name> lives in ..."
+{baseDir}/scripts/has.sh text restore --mapping mapping.json --file anonymized.txt --output restored.txt
+{baseDir}/scripts/has.sh text restore --dir ./.has/anonymized/ --output-dir ./.has/restored/
+```
+
+Parameters:
+
+| Parameter | Required | Description |
+|-----------|:--------:|-------------|
+| `--mapping` | single-file: yes | Mapping JSON file path |
+| `--text` / `--file` / `--dir` | one input | Input source |
+| `--output` | single-file | Output path for restored text |
+| `--mapping-dir` | batch | Per-file mapping directory (default: `<dir>/mappings/`) |
+| `--output-dir` | batch | Output directory for restored files (default: sibling `restored/` under `.has/`, or `<dir>/.has/restored/`) |
+| `--max-chunk-tokens` | | Max tokens per chunk when model restore is needed, default `3000` |
+| `--max-parallel-requests` | | Max model-backed restore chunks in parallel |
+
+Behavior:
+
+- Single-file mode returns inline `text` unless `--output` is provided.
+- `restore --dir` uses per-file mapping JSON files. It does not accept a shared `--mapping`.
+- `restore --dir` expects mapping files at `<mapping-dir>/<filename>.mapping.json` (matching the naming convention produced by `hide --dir`).
+
+## Typical Text Workflow
+
+Anonymize text before sending it to a cloud LLM, then restore the answer:
+
+1. `hide` to produce anonymized text plus mapping
+2. send anonymized text to the cloud model **with a tag-format explanation** (see below)
+3. `restore` the model response with the mapping
+
+For multi-line text, prefer file-based intermediates over shell variables.
+
+### Prompting the cloud LLM with anonymized text
+
+When forwarding anonymized text to a cloud LLM, the agent **must** prepend a brief explanation of the tag format so the model understands and preserves the tags. Include wording equivalent to the following (adjust language to match the conversation):
+
+> The text below has been anonymized. Sensitive entities are replaced by tags in the format `<EntityType[ID].Category.Attribute>`:
 >
-> `--max-parallel-requests`: Shared parallel request cap for `scan`, model-backed `seek`, and batch `hide --dir` (default 4, env `HAS_TEXT_MAX_PARALLEL_REQUESTS`). Legacy aliases: `--max-parallel-chunks`, `--max-parallel-files`.
-
-## Command Reference
-
-Directory mode rules for `scan`, `hide`, and `seek`: process only the immediate UTF-8 plaintext files in the target directory, never recurse into subdirectories, skip binary or non-UTF-8 files, and report symlinked files whose realpath escapes the input directory as `symlink_escape`.
-
-### scan (Privacy Scan)
-
-Identifies sensitive entities only, without replacement. Suitable for quick privacy risk assessment of text. Long scans fan out chunk requests in parallel by default and merge them back in original chunk order so the output remains stable. `has-text` only starts llama-server when at least one chunk needs the model.
-
-| Parameter | Required | Description |
-|-----------|:--------:|-------------|
-| `--types` | ✅ | Entity types to identify, JSON array format |
-| `--dir` | | Batch-scan the immediate plaintext files in a directory (non-recursive) |
-| `--max-parallel-requests` | | Maximum scan chunks to run in parallel (default 4, env `HAS_TEXT_MAX_PARALLEL_REQUESTS`). Set to `1` to force serial execution |
-
-```bash
-# Scan text for person names and phone numbers
-{baseDir}/scripts/has-text.sh scan --types '["person name","phone number"]' --text "John's phone number is 13912345678"
-
-# Scan a file for multiple entity types
-{baseDir}/scripts/has-text.sh scan --types '["person name","address","phone number","email","ID number"]' --file /path/to/document.txt
-
-# Batch-scan a directory of plaintext files
-{baseDir}/scripts/has-text.sh scan --types '["person name","phone number"]' --dir ./reports/
-```
-
-**Output** (JSON): Single-file scan returns `{"entities": ...}`. Directory scan returns `{"results":[...],"count":N,"summary":{...}}` and may include `skipped` / `skipped_count`.
-
-### hide (Privacy Anonymization)
-
-Identifies and replaces sensitive entities with semantic tags, outputting anonymized text + mapping table. `--dir` writes anonymized files plus one mapping JSON per source file. Batch mode treats each file independently; it does not accumulate new mappings across files, and `hide --dir` does not accept `--mapping`. If mapping extraction cannot validate the anonymized output, `hide` fails closed instead of returning an untrusted mapping. Empty files do not start llama-server.
-
-| Parameter | Required | Description |
-|-----------|:--------:|-------------|
-| `--types` | ✅ | Entity types to anonymize, JSON array format |
-| `--mapping` | Single-file only | Existing mapping dictionary (file path or inline JSON), for incremental anonymization to maintain cross-session consistency |
-| `--dir` | | Batch-anonymize the immediate plaintext files in a directory (non-recursive) |
-| `--output-dir` | | Batch output directory for anonymized files (default: `anonymized/` under the input directory) |
-| `--mapping-dir` | | Batch output directory for per-file mapping JSON files (default: `mappings/` under the output directory) |
-| `--max-parallel-requests` | | Maximum files to anonymize in parallel when using `--dir` (default 4, env `HAS_TEXT_MAX_PARALLEL_REQUESTS`) |
-
-```bash
-# First-time anonymization
-{baseDir}/scripts/has-text.sh --pretty hide --types '["person name","address","phone number"]' --text "John lives in Brooklyn, New York, phone 13912345678"
-
-# Incremental anonymization (carry previous mapping to maintain consistency)
-{baseDir}/scripts/has-text.sh hide --types '["person name","address"]' --text "John is going to Boston on a business trip next week" --mapping mapping.json
-
-# Batch-anonymize a directory of plaintext files
-{baseDir}/scripts/has-text.sh hide --types '["person name"]' --dir ./docs/ --output-dir ./anonymized/ --mapping-dir ./anonymized/mappings/
-```
-
-**Output** (JSON): Single-file hide returns `{"text": "...", "mapping": {...}}`. Directory hide writes anonymized files and per-file mapping JSON files, then returns `{"results":[{"file":"...","output":"...","mapping":"..."}], ...}` plus optional `chunks`, `skipped`, and `skipped_count`.
-
-> 💡 **mapping is the key**: Save the mapping and you can restore. Lose the mapping, and anonymization becomes irreversible.
+> - **EntityType** — the kind of entity (matches the `--type` value, e.g. `person name`, `address`, `phone number`).
+> - **[ID]** — a numeric identifier. The same type + same ID always refers to the **same** real-world entity (e.g. every `<person name[1]>` is the same person; `<person name[2]>` is a different person).
+> - **.Category.Attribute** — additional semantic classification of the entity.
 >
-> ⚠️ **Security**: Prefer passing mapping via file path (`--mapping mapping.json`) rather than inline JSON. Inline JSON appears in `ps aux` process listings and shell history, exposing the original sensitive data.
+> **Rules:**
+> 1. Preserve every tag exactly as-is in your response — do not modify, translate, paraphrase, omit, or expand any tag.
+> 2. When referring to an anonymized entity, reuse the original tag with the correct ID.
+> 3. Do not attempt to guess the real values behind the tags.
 
-### seek (Privacy Restoration)
+Omitting this explanation may cause the cloud model to strip, rewrite, or misinterpret the tags, which will break the `restore` step.
 
-Restores anonymized tags to original values using the mapping table. Uses pure string replacement for same-language text (very fast), and automatically switches to model inference for cross-language scenarios. Long model-backed `seek` requests are chunked automatically; each chunk only carries the mapping keys that actually appear in that chunk, and model-backed chunks can run in parallel up to `--max-parallel-requests`. If a model-backed seek chunk still contains anonymized tags after one pass, `seek` retries that chunk once with the same mapping and then fails closed if unresolved tags remain. Same-language files and files without surviving tags do not start llama-server. `--dir` writes the results to `restored/` or `--output-dir`. When restoring a directory produced by `hide --dir`, `seek --dir` uses each file's own mapping JSON under `<input-dir>/mappings/` by default, or the per-file directory specified by `--mapping-dir`. `seek --dir` does not accept a shared `--mapping`.
+## Model Download Mirrors
 
-| Parameter | Required | Description |
-|-----------|:--------:|-------------|
-| `--mapping` | Single-file: ✅ | Mapping dictionary (file path or inline JSON) |
-| `--dir` | | Batch-restore the immediate plaintext files in a directory (non-recursive) |
-| `--mapping-dir` | | Batch mapping directory for per-file mapping JSON files (default: `mappings/` under the input directory) |
-| `--output-dir` | | Batch output directory for restored files (default: `restored/` under the input directory) |
-| `--max-parallel-requests` | | Maximum model-backed seek chunks to run in parallel (default 4, env `HAS_TEXT_MAX_PARALLEL_REQUESTS`) |
+If HuggingFace downloads fail, use these ModelScope mirrors:
 
-```bash
-# Restore anonymized text
-{baseDir}/scripts/has-text.sh -q seek --mapping mapping.json --text "<person name[1].personal.name> lives in <address[1].city.name>"
-
-# Restore from file
-{baseDir}/scripts/has-text.sh --pretty seek --mapping mapping.json --file anonymized.txt
-
-# Batch-restore a directory produced by hide --dir (uses ./anonymized/mappings/*.mapping.json by default)
-{baseDir}/scripts/has-text.sh seek --dir ./anonymized/ --output-dir ./restored/
-
-# Batch-restore with an explicit per-file mapping directory
-{baseDir}/scripts/has-text.sh seek --dir ./anonymized/ --mapping-dir ./exported-mappings/ --output-dir ./restored/
-
-```
-
-**Output** (JSON): Single-file seek returns `{"text": ...}`. Directory seek writes restored files and returns `{"results":[{"file":"...","output":"..."}], ...}` plus optional `chunks`, `skipped`, and `skipped_count`.
-
-## Typical Workflow
-
-### Anonymize → Send to Cloud LLM → Restore
-
-1. `hide` to anonymize → obtain anonymized text + mapping
-2. Send anonymized text to cloud LLM (no privacy data included)
-3. `seek` with mapping to restore the LLM response
-
-> ⚠️ For multi-line text, it is recommended to use file intermediation (hide output → write to file → read), to avoid JSON parsing failures caused by shell variable handling.
+- text model: `https://modelscope.cn/models/TencentXuanwu/HaS_Text_0209_0.6B_Q8`
+- image model: `https://modelscope.cn/models/TencentXuanwu/HaS_Image_0209_FP32`
 
 ---
 
-# Part 2: Image Anonymization (has-image)
+# Part 2: `has image`
 
-Performs pixel-level detection and masking of privacy regions in images. Based on a YOLO11 instance segmentation model, supports 21 privacy categories.
+`has image` is the image namespace. It supports:
 
-`has-image` loads its YOLO model directly and does **not** require `llama-server`.
+- `scan`
+- `hide`
+- `categories`
 
-## Usage
+It loads the YOLO segmentation model directly and does not require `llama-server`.
 
-```bash
-{baseDir}/scripts/has-image.sh [global-options] <command> [options]
-```
-
-| Option | Description |
-|--------|-------------|
-| `--model PATH` | Model file path (auto-detected by default, can be set via env var `HAS_IMAGE_MODEL`) |
-| `--pretty` | Pretty-print JSON output |
-
-## Privacy Categories (21 Classes)
-
-| ID | Category | Display Name | Group |
-|----|----------|--------------|-------|
-| 0 | `biometric_face` | Face | Biometric |
-| 1 | `biometric_fingerprint` | Fingerprint | Biometric |
-| 2 | `biometric_palmprint` | Palmprint | Biometric |
-| 3 | `id_card` | ID Card | ID Document |
-| 4 | `hk_macau_permit` | HK/Macau Permit | ID Document |
-| 5 | `passport` | Passport | ID Document |
-| 6 | `employee_badge` | Employee Badge | ID Document |
-| 7 | `license_plate` | License Plate | Transportation |
-| 8 | `bank_card` | Bank Card | Financial |
-| 9 | `physical_key` | Physical Key | Security |
-| 10 | `receipt` | Receipt | Document |
-| 11 | `shipping_label` | Shipping Label | Document |
-| 12 | `official_seal` | Official Seal | Document |
-| 13 | `whiteboard` | Whiteboard | Information Carrier |
-| 14 | `sticky_note` | Sticky Note | Information Carrier |
-| 15 | `mobile_screen` | Mobile Screen | Information Carrier |
-| 16 | `monitor_screen` | Monitor Screen | Information Carrier |
-| 17 | `medical_wristband` | Medical Wristband | Medical |
-| 18 | `qr_code` | QR Code | Encoding |
-| 19 | `barcode` | Barcode | Encoding |
-| 20 | `paper` | Paper | Document |
-
-`--types` accepts English names, Chinese names, or IDs, comma-separated. Short names are also supported via partial matching (e.g. `face` → `biometric_face`, `fingerprint` → `biometric_fingerprint`). If a short name matches multiple categories, the CLI stops with an ambiguity error and asks for a more specific type.
-
-
-## Command Reference
-
-Directory mode rules for `scan` and `hide`: process only the immediate files in the target directory, never recurse into subdirectories, and ignore symlinked files whose realpath escapes the input directory.
-
-### scan (Privacy Scan)
-
-Identifies privacy regions only, **does not modify the image**.
+## Image Usage
 
 ```bash
-# Scan a single image
-{baseDir}/scripts/has-image.sh --pretty scan --image photo.jpg --types face,id_card
-
-# Batch scan a directory
-{baseDir}/scripts/has-image.sh --pretty scan --dir ./photos/ --types face,id_card
+{baseDir}/scripts/has.sh image [--timing] [--model MODEL] <scan|hide|categories> [options]
 ```
+
+Namespace options:
+
+| Option | Applies to | Description |
+|--------|------------|-------------|
+| `--timing` | all image commands | Include `elapsed_ms` in the JSON output |
+| `--model PATH` | `scan`, `hide` | Override the image model path |
+
+
+## Image Privacy Categories
+
+Common categories include `biometric_face`, `id_card`, `passport`, `license_plate`, `qr_code`, `mobile_screen`, and `paper`.
+
+Use `has image categories` when you need the full catalog of 21 supported classes.
+
+`--type` accepts:
+
+- English names
+- Chinese names
+- numeric IDs
+- unique partial matches such as `face`
+
+Rules:
+
+- Empty `--type` values are rejected.
+- Ambiguous partial matches fail fast.
+- Omit `--type` to scan or mask all supported categories.
+- In image directory mode, `skipped` can include unprocessed files.
+
+## `has image scan`
+
+Finds privacy regions without modifying the image.
+
+```bash
+{baseDir}/scripts/has.sh image scan --image photo.jpg --type face --type id_card
+{baseDir}/scripts/has.sh image scan --dir ./photos/ --type face
+```
+
+Parameters:
 
 | Parameter | Required | Description |
 |-----------|:--------:|-------------|
-| `--image` | Either | Input image path |
-| `--dir` | Either | Batch scanning directory |
-| `--types` | | Category filter (comma-separated), defaults to all 21 categories |
-| `--conf` | | Confidence threshold (default 0.25) |
+| `--image` / `--dir` | one input | Single image or batch directory |
+| `--type` | | Category filter; repeat to add more |
+| `--conf` | | Confidence threshold, default `0.25` |
+| `--model` | | Override image model path |
 
-**Output** (JSON): `{"detections": [{"category": "...", "confidence": 0.95, "bbox": [...], "has_mask": true}], "summary": {"biometric_face": 2}}`
+Output:
 
-### hide (Privacy Anonymization)
+- Single-image mode returns `detections` and `summary`
+- Directory mode returns `results`, `count`, `summary`, and optional `skipped`
 
-Detects and masks privacy regions, outputs the anonymized image.
+## `has image hide`
+
+Detects and masks privacy regions in images.
 
 ```bash
-# Mosaic all privacy regions
-{baseDir}/scripts/has-image.sh hide --image photo.jpg
-
-# Specify categories, method, and strength
-{baseDir}/scripts/has-image.sh hide --image photo.jpg --types face,license_plate --method blur --strength 25
-
-# Batch process a directory
-{baseDir}/scripts/has-image.sh hide --dir ./photos/ --output-dir ./masked/
+{baseDir}/scripts/has.sh image hide --image photo.jpg --type face --method blur --strength 25
+{baseDir}/scripts/has.sh image hide --dir ./photos/
 ```
+
+Parameters:
 
 | Parameter | Required | Description |
 |-----------|:--------:|-------------|
-| `--image` | Either | Input image path |
-| `--dir` | Either | Batch processing directory |
-| `--output` | | Output image path (defaults to `masked/` subdirectory under the source directory, preserving original filename) |
-| `--output-dir` | | Batch output directory (defaults to `masked/` subdirectory under the input directory) |
-| `--types` | | Category filter (comma-separated), defaults to all 21 categories |
-| `--method` | | Masking method: `mosaic` (pixelation) / `blur` / `fill` (solid color), default `mosaic` |
-| `--strength` | | Mosaic block size or blur radius (default 15) |
-| `--fill-color` | | Fill color for `fill` method, hex format (default `#000000`) |
-| `--conf` | | Confidence threshold (default 0.25) |
+| `--image` / `--dir` | one input | Single image or batch directory |
+| `--output` | single-image | Output image path |
+| `--output-dir` | batch | Output directory |
+| `--type` | | Category filter; repeat to add more |
+| `--method` | | `mosaic`, `blur`, or `fill`; default `mosaic` |
+| `--strength` | | Mosaic block size or blur radius; default `15` |
+| `--fill-color` | | Fill color for `fill`; default `#000000` |
+| `--conf` | | Confidence threshold; default `0.25` |
+| `--model` | | Override image model path |
 
-### categories
+Behavior:
 
-Lists all 21 supported privacy categories with their IDs and Chinese display names.
+- Refuses to overwrite the source image.
+- Directory mode accepts `--output-dir`, not `--output`.
+- For `qr_code` and `barcode` detections with `--method mosaic`, the block size is automatically raised to `max(strength, bbox_short_side // 10, 20)` to prevent the encoding from surviving pixelation. After masking, a lightweight verification confirms the code is no longer machine-readable; if it is, the strength is escalated further (up to a fill fallback). Each affected detection includes an `effective_strength` field in the output.
+- A cv2-based fallback supplements YOLO detection for QR codes and barcodes. When YOLO misses a code (e.g. large codes on plain backgrounds), `cv2.QRCodeDetector` and `cv2.barcode.BarcodeDetector` provide additional coverage. When YOLO misclassifies a code region as a different category (e.g. `monitor_screen`), cv2 corrects the category before `--type` filtering, so `--type qr_code` catches all QR codes regardless of YOLO's label. Corrected detections include a `"corrected_from"` field; new detections include `"cv2_fallback": true`.
+
+## `has image categories`
+
+Lists all supported image privacy categories.
 
 ```bash
-{baseDir}/scripts/has-image.sh --pretty categories
+{baseDir}/scripts/has.sh image categories
+{baseDir}/scripts/has.sh image categories --timing
 ```
+
+Behavior:
+
+- Returns `{"categories":[...]}`
+- Supports `--timing`
+
+## Suggested Combined Scan
+
+For a mixed workspace:
+
+1. run `has text scan ... --dir <dir>` for plaintext
+2. run `has image scan --dir <dir>` for images
+3. merge the two JSON results into one privacy report
+
+If the user wants masking after that, use `hide` on the specific files or directories you already identified.

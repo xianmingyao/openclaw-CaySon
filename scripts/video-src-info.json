@@ -1,0 +1,29 @@
+{
+  "found": true,
+  "src": "blob:https://www.douyin.com/550ffa83-ae73-44b3-8c51-4f66274a208a",
+  "sources": [],
+  "entries": [
+    {
+      "type": "video",
+      "name": "https://lf-douyin-pc-web.douyinstatic.com/obj/douyin-pc-web/uuu_265.mp4"
+    },
+    {
+      "type": "fetch",
+      "name": "https://v26-web.douyinvod.com/e2bb0e627dec44a3d037be53fba6ba8f/6a1e30e2/video/tos/cn/tos-cn-vd-0026/o8sggCCIoGAvA51Mri0iA6iAWB6KvAANeABfAD/media-video-avc1/?a=6383&br=462&bt=462&btag=80000e00028000&cd=0%7C0%7C0%7C3&ch=0&cquery=100w_100o&cr=8&cs=0&cv=1&dr=0&ds=3&dy_q=1780277009&er=1&l=20260601092329FF6EC1A1B0A53B2F9A0F&lr=default&mime_type=video_mp4&qs=1&rc=PGg5Zmg3ZTVmNjg7Omc8NUBpM2d0ZHQ5cjU8OzMzNGkzM0AvLTQtLzEtNi8xXzQxLzRgYSMzbGxoMmRrc19hLS1kLTBzcw%3D%3D&temp=1"
+    },
+    {
+      "type": "fetch",
+      "name": "https://v26-web.douyinvod.com/e2bb0e627dec44a3d037be53fba6ba8f/6a1e30e2/video/tos/cn/tos-cn-vd-0026/o8sggCCIoGAvA51Mri0iA6iAWB6KvAANeABfAD/media-video-avc1/?a=6383&br=462&bt=462&btag=80000e00028000&cd=0%7C0%7C0%7C3&ch=0&cquery=100w_100o&cr=8&cs=0&cv=1&dr=0&ds=3&dy_q=1780277009&er=1&l=20260601092329FF6EC1A1B0A53B2F9A0F&lr=default&mime_type=video_mp4&qs=1&rc=PGg5Zmg3ZTVmNjg7Omc8NUBpM2d0ZHQ5cjU8OzMzNGkzM0AvLTQtLzEtNi8xXzQxLzRgYSMzbGxoMmRrc19hLS1kLTBzcw%3D%3D&temp=1"
+    },
+    {
+      "type": "fetch",
+      "name": "https://v26-web.douyinvod.com/773f6070d83283aa8cf244405a41bffb/6a1e30e2/video/tos/cn/tos-cn-vd-0026/o8rvHAAM1AA4uNGWB6iigfBiACAeY9AgIovsD0/media-audio-und-mp4a/?a=6383&br=22&bt=22&btag=80000e00028000&cd=0%7C0%7C0%7C3&ch=0&cquery=100w_100o&cr=8&cs=0&cv=1&dr=0&dy_q=1780277009&er=1&l=20260601092329FF6EC1A1B0A53B2F9A0F&lr=default&mime_type=video_mp4&qs=1&rc=NmVkMzc8aTZpMzs3NWY3aEBpM2d0ZHQ5cjU8OzMzNGkzM0AuNWEvYDIzXzQtYjY2NWJgYSMzbGxoMmRrc19hLS1kLTBzcw%3D%3D&temp=1"
+    },
+    {
+      "type": "fetch",
+      "name": "https://v26-web.douyinvod.com/773f6070d83283aa8cf244405a41bffb/6a1e30e2/video/tos/cn/tos-cn-vd-0026/o8rvHAAM1AA4uNGWB6iigfBiACAeY9AgIovsD0/media-audio-und-mp4a/?a=6383&br=22&bt=22&btag=80000e00028000&cd=0%7C0%7C0%7C3&ch=0&cquery=100w_100o&cr=8&cs=0&cv=1&dr=0&dy_q=1780277009&er=1&l=20260601092329FF6EC1A1B0A53B2F9A0F&lr=default&mime_type=video_mp4&qs=1&rc=NmVkMzc8aTZpMzs3NWY3aEBpM2d0ZHQ5cjU8OzMzNGkzM0AuNWEvYDIzXzQtYjY2NWJgYSMzbGxoMmRrc19hLS1kLTBzcw%3D%3D&temp=1"
+    }
+  ],
+  "videoDuration": 81.038,
+  "videoPaused": false
+}

@@ -1,0 +1,1 @@
+continuous_ingest status: 2026-05-03 04:20:42 UTC - All raw files processed, no new files pending

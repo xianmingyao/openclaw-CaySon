@@ -1,0 +1,11 @@
+{
+  "parse_excel": true,
+  "crawl_jd": true,
+  "download_images": true,
+  "transform_images": true,
+  "check_jingmai_login": true,
+  "open_add_product_page": true,
+  "fill_webview_form": true,
+  "save_draft": true,
+  "verify_draft_readback": true
+}

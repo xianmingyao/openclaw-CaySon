@@ -137,6 +137,23 @@ python E:\workspace\scripts\show_memories.py
 - 新记忆：**双写**（同时写入Milvus + ChromaDB）
 - 同步脚本：`E:\workspace\scripts\sync_memories_to_milvus.py`
 
+### ⚠️ 飞书/Notion 同步 SIGKILL 绕过策略（05-14 铁律）
+
+**问题**：长时间 Python 脚本（>2分钟）必被 SIGKILL
+
+**受影响脚本**：
+- `sync_feishu.py` / `sync_pull_feishu.py` → SIGKILL
+- `sync_pull_notion.py` → SIGKILL
+- `upload_mem0.py` → SIGKILL
+
+**正确策略**：
+1. **飞书写文档**：直接调飞书 Open API（参考 `scripts/feishu_write_github_trending.py`）
+2. **Wiki 构建**：用 `knowledge-base/compile.py`（无超时问题）
+3. **Milvus 同步**：用短命令而非长脚本
+4. **Cron 任务**：避免 long-running Python
+
+**技术配置**：飞书凭证在 `C:\Users\Administrator\.openclaw\openclaw.json` → `channels.feishu`
+
 ### 技术配置
 
 | 项目 | 配置 |
@@ -223,6 +240,71 @@ python ~/.skillhub/skills_store_cli.py update <技能名>
 |------|------|---------|------|
 | summarize | 1.0.0 | 2026-04-02 | 网页/PDF/YouTube总结 |
 | nano-banana-pro | 1.0.1 | 2026-04-02 | AI图片生成（Gemini 3 Pro）|
+
+---
+
+## 长时间任务执行准则（铁律 - 2026-06-03）
+
+### 问题背景
+OpenClaw exec工具有timeout限制，长时间运行的进程会被系统SIGKILL。
+VLM调用(qwen3-vl:8b)每次需要15-25秒，多步操作累积会触发超时。
+
+### 指数退避+后台执行策略
+
+**核心原则**：不要一味中断，使用指数退避和后台执行规避SIGKILL
+
+1. **指数退避重试**
+   - 首次执行使用正常timeout
+   - 如果超时，下次使用更长的yieldMs（乘以2的指数）
+   - 示例：30s → 60s → 120s → 240s
+
+2. **后台执行模式**
+   - 对已知长时间任务使用 `background=True`
+   - 使用 `process(poll)` 轮询结果
+   - 示例：`exec --command --background --yieldMs 10000`
+
+3. **分批处理**
+   - 将多步操作拆分为独立的小任务
+   - 每批只做1-2个操作，减少单次执行时间
+   - 完成一批后，再启动下一批
+
+4. **使用sessions_spawn**
+   - 将长时间任务放到子agent执行
+   - 父会话等待completion事件
+   - 适用于需要多步骤且每步都耗时的场景
+
+5. **exec timeout参数**
+   - 对已知长时间任务显式传 `timeout` 参数
+   - 例如：`exec --command --timeout 300` 表示5分钟timeout
+
+### 代码示例
+
+```python
+# 指数退避示例
+def exec_with_backoff(cmd, max_retries=3):
+    yieldMs = 30000  # 首次30秒
+    for i in range(max_retries):
+        result = exec(cmd, yieldMs=yieldMs)
+        if result.success:
+            return result
+        yieldMs *= 2  # 指数退避
+    return result
+
+# 后台执行示例
+task = exec("--long-running-command--", background=True)
+while not task.done:
+    process(poll, sessionId=task.id, timeout=30000)
+result = process(log, sessionId=task.id)
+```
+
+### 京麦自动化特定策略
+
+**问题**：jingmai-desktop-agent每步需要2次VLM调用(act+verify)，每步约30-50秒
+
+**解决策略**：
+1. 使用 `sessions_spawn` 在子会话中执行完整流程
+2. 或者每次只执行1步，用多次独立调用完成
+3. 避免一次性执行3步以上的操作
 
 ---
 

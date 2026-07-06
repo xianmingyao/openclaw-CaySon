@@ -1,0 +1,33 @@
+# @硅基棱镜
+
+> 类型：实体
+
+> 创建时间：2026-04-14 20:03
+
+## 简介
+
+OpenCLI是一款将网站或Electron应用转为CLI的工具，支持多种平台，并通过AI驱动发现和调用工具。
+
+## 相关概念
+
+- [[OpenCLI]]
+
+- [[CLI工具]]
+
+- [[浏览器自动化]]
+
+- [[AI-Agent]]
+
+- [[opencli list]]
+
+- [[AGENT.md]]
+
+- [[.cursorrules]]
+
+## 来源
+
+- [[2026-04-14-github\opencli-douyin-20260410.md]]
+
+---
+
+*由 Karpathy 知识库系统自动生成*

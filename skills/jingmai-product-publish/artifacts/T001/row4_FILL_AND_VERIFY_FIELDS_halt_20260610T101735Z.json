@@ -1,0 +1,136 @@
+{
+  "created_at": "2026-06-10T10:17:35.401835+00:00",
+  "details": {
+    "ocr_summary": {},
+    "page_signature": null,
+    "screenshot_path": "artifacts\\T001\\row4_FILL_AND_VERIFY_FIELDS_halt.png",
+    "window_summary": {
+      "found": true,
+      "html_button_count": 0,
+      "html_combobox_count": 0,
+      "html_edit_count": 0,
+      "main_class_name": "Qt51511QWindowIcon",
+      "main_title": "jd_465d1abd3ee76",
+      "panes": [
+        {
+          "children_count": 2,
+          "class_name": "CefBrowserWindow",
+          "control_type": "",
+          "handle": 269386,
+          "title": ""
+        },
+        {
+          "children_count": 1,
+          "class_name": "Chrome_WidgetWin_0",
+          "control_type": "",
+          "handle": 1448482,
+          "title": ""
+        },
+        {
+          "children_count": 0,
+          "class_name": "Chrome_RenderWidgetHostHWND",
+          "control_type": "",
+          "handle": 858852,
+          "title": "Chrome Legacy Window"
+        },
+        {
+          "children_count": 1,
+          "class_name": "CefBrowserWindow",
+          "control_type": "",
+          "handle": 3020326,
+          "title": ""
+        },
+        {
+          "children_count": 0,
+          "class_name": "Chrome_WidgetWin_0",
+          "control_type": "",
+          "handle": 925134,
+          "title": ""
+        },
+        {
+          "children_count": 1,
+          "class_name": "CefBrowserWindow",
+          "control_type": "",
+          "handle": 663194,
+          "title": ""
+        },
+        {
+          "children_count": 0,
+          "class_name": "Chrome_WidgetWin_0",
+          "control_type": "",
+          "handle": 2169968,
+          "title": ""
+        }
+      ],
+      "qt_child_count": 38,
+      "webview_pane_count": 7
+    }
+  },
+  "log_path": "artifacts\\T001\\row4_FILL_AND_VERIFY_FIELDS_halt_20260610T101735Z.json",
+  "node": "FILL_AND_VERIFY_FIELDS",
+  "ocr_summary": {},
+  "page_signature": null,
+  "reason": "manual_capture",
+  "screenshot_path": "artifacts\\T001\\row4_FILL_AND_VERIFY_FIELDS_halt.png",
+  "window_summary": {
+    "found": true,
+    "html_button_count": 0,
+    "html_combobox_count": 0,
+    "html_edit_count": 0,
+    "main_class_name": "Qt51511QWindowIcon",
+    "main_title": "jd_465d1abd3ee76",
+    "panes": [
+      {
+        "children_count": 2,
+        "class_name": "CefBrowserWindow",
+        "control_type": "",
+        "handle": 269386,
+        "title": ""
+      },
+      {
+        "children_count": 1,
+        "class_name": "Chrome_WidgetWin_0",
+        "control_type": "",
+        "handle": 1448482,
+        "title": ""
+      },
+      {
+        "children_count": 0,
+        "class_name": "Chrome_RenderWidgetHostHWND",
+        "control_type": "",
+        "handle": 858852,
+        "title": "Chrome Legacy Window"
+      },
+      {
+        "children_count": 1,
+        "class_name": "CefBrowserWindow",
+        "control_type": "",
+        "handle": 3020326,
+        "title": ""
+      },
+      {
+        "children_count": 0,
+        "class_name": "Chrome_WidgetWin_0",
+        "control_type": "",
+        "handle": 925134,
+        "title": ""
+      },
+      {
+        "children_count": 1,
+        "class_name": "CefBrowserWindow",
+        "control_type": "",
+        "handle": 663194,
+        "title": ""
+      },
+      {
+        "children_count": 0,
+        "class_name": "Chrome_WidgetWin_0",
+        "control_type": "",
+        "handle": 2169968,
+        "title": ""
+      }
+    ],
+    "qt_child_count": 38,
+    "webview_pane_count": 7
+  }
+}

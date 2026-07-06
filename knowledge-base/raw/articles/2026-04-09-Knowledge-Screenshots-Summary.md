@@ -1,4 +1,4 @@
-# 知识库截图整理总结
+﻿# 知识库截图整理总结
 
 > 来源：E:\workspace\knowledge-base\raw\screenshots
 > 整理日期：2026-04-09
@@ -79,3 +79,4 @@ MCP (Model Context Protocol) 支持的服务生态：
 ## 标签
 
 #截图整理 #知识库 #MCP #MemPalace #ChromeDevTools #DataTool
+

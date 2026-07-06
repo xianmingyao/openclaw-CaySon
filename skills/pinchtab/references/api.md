@@ -4,6 +4,25 @@ Base URL for all examples: `http://localhost:9867`
 
 > **CLI alternative:** All endpoints have CLI equivalents. Use `pinchtab help` for the full list. Examples are shown as `# CLI:` comments below.
 
+## Agent Attribution
+
+If an agent is calling the HTTP API directly, include `X-Agent-Id: <agent-id>` on the requests that should stay attributable to that agent.
+
+Example:
+
+```bash
+curl -X POST /navigate \
+  -H 'X-Agent-Id: agent-crawl-01' \
+  -H 'Content-Type: application/json' \
+  -d '{"url": "https://pinchtab.com"}'
+```
+
+Notes:
+
+- CLI users should prefer `pinchtab --agent-id <agent-id> ...` instead of setting the header manually
+- scheduler-submitted tasks reuse their `agentId` as `X-Agent-Id` when the task is executed
+- omitted `tabId` resolves by caller identity: agent sessions use a session-scoped current tab, `X-Agent-Id` uses an agent-scoped current tab when no session is present, and anonymous requests use the shared global/default tab
+
 ## Navigate
 
 ```bash
@@ -93,6 +112,22 @@ curl -X POST /action -H 'Content-Type: application/json' \
 curl -X POST /action -H 'Content-Type: application/json' \
   -d '{"kind": "hover", "ref": "e8"}'
 
+# Move pointer without clicking
+curl -X POST /action -H 'Content-Type: application/json' \
+  -d '{"kind": "mouse-move", "ref": "e8"}'
+
+# Press and release a mouse button
+curl -X POST /action -H 'Content-Type: application/json' \
+  -d '{"kind": "mouse-down", "button": "left"}'
+curl -X POST /action -H 'Content-Type: application/json' \
+  -d '{"kind": "mouse-up", "button": "left"}'
+
+# Wheel at an element or coordinates
+curl -X POST /action -H 'Content-Type: application/json' \
+  -d '{"kind": "mouse-wheel", "ref": "e8", "deltaY": 240}'
+curl -X POST /action -H 'Content-Type: application/json' \
+  -d '{"kind": "mouse-wheel", "x": 400, "y": 320, "deltaY": -320}'
+
 # Select dropdown option (by value or visible text)
 curl -X POST /action -H 'Content-Type: application/json' \
   -d '{"kind": "select", "ref": "e10", "value": "option2"}'
@@ -108,6 +143,31 @@ curl -X POST /action -H 'Content-Type: application/json' \
 # Click and wait for navigation (link clicks)
 curl -X POST /action -H 'Content-Type: application/json' \
   -d '{"kind": "click", "ref": "e5", "waitNav": true}'
+```
+
+Notes:
+
+- selector-based click and double-click paths resolve through backend node IDs before dispatching pointer events
+- low-level pointer actions accept `ref`, `selector`, `nodeId`, or `x`/`y`
+- `mouse-down` and `mouse-up` accept `button` with `left`, `right`, or `middle`
+- `mouse-wheel` accepts `deltaX` and `deltaY`; when omitted, legacy `scrollX` / `scrollY` still work
+- `mouse-down`, `mouse-up`, and `mouse-wheel` use the current pointer position when you do not pass a fresh target
+
+## Wait for page state
+
+```bash
+# CLI: pinchtab wait 'text:Done' / pinchtab wait --url '**/dashboard'
+curl -X POST /wait -H 'Content-Type: application/json' \
+  -d '{"selector":"text:Done","timeout":15000}'
+
+curl -X POST /wait -H 'Content-Type: application/json' \
+  -d '{"url":"**/dashboard","timeout":15000}'
+
+curl -X POST /wait -H 'Content-Type: application/json' \
+  -d '{"load":"networkidle","timeout":15000}'
+
+curl -X POST /wait -H 'Content-Type: application/json' \
+  -d '{"fn":"document.readyState === \"complete\"","timeout":15000}'
 ```
 
 ## Batch actions
@@ -134,6 +194,8 @@ curl "/text?mode=raw"
 ```
 
 Returns `{url, title, text}`. Cheapest option (~1K tokens for most pages).
+
+Default mode picks the first **visible** `<article>` / `[role="main"]` / `<main>` (skips `display:none`) and strips nav/footer/ads. Use `mode=raw` for full `innerText`, or `/snapshot` for structured UI text like prices and button labels.
 
 ## PDF export
 
@@ -247,12 +309,18 @@ Default to read-only DOM inspection and avoid reading cookies, localStorage, or 
 # CLI: pinchtab eval "document.title"
 curl -X POST /evaluate -H 'Content-Type: application/json' \
   -d '{"expression": "document.title"}'
+
+# Resolve a returned promise before responding
+curl -X POST /evaluate -H 'Content-Type: application/json' \
+  -d '{"expression": "Promise.resolve(document.title)", "awaitPromise": true}'
 ```
+
+Set `awaitPromise: true` when the expression returns a promise and you want the resolved value. If omitted, behavior stays unchanged.
 
 ## Tab management
 
 ```bash
-# CLI: pinchtab tabs / pinchtab tabs new <url> / pinchtab tabs close <id>
+# CLI: pinchtab tabs / pinchtab nav <url> --new-tab / pinchtab tabs close <id>
 # List tabs
 curl /tabs
 
@@ -261,11 +329,16 @@ curl -X POST /tab -H 'Content-Type: application/json' \
   -d '{"action": "new", "url": "https://pinchtab.com"}'
 
 # Close tab
-curl -X POST /tab -H 'Content-Type: application/json' \
-  -d '{"action": "close", "tabId": "TARGET_ID"}'
+curl -X POST /close -H 'Content-Type: application/json' \
+  -d '{"tabId": "TARGET_ID"}'
+# Omit tabId to close the current/default tab.
+curl -X POST /close -H 'Content-Type: application/json' -d '{}'
+
+# Or use the tab-scoped route
+curl -X POST /tabs/TARGET_ID/close
 ```
 
-Multi-tab: pass `?tabId=TARGET_ID` to snapshot/screenshot/text, or `"tabId"` in POST body.
+Multi-tab: pass `?tabId=TARGET_ID` to snapshot/screenshot/text, or `"tabId"` in POST body. Explicit tab IDs always override and update the caller's current-tab scope.
 
 ## Tab-specific endpoints
 
@@ -296,19 +369,37 @@ curl -X POST /tabs/TARGET_ID/action \
 curl -X POST /tabs/TARGET_ID/actions \
   -H 'Content-Type: application/json' \
   -d '{"actions": [{"kind": "click", "ref": "e3"}, {"kind": "type", "ref": "e3", "text": "hello"}]}'
+
+# Wait on a specific tab
+curl -X POST /tabs/TARGET_ID/wait \
+  -H 'Content-Type: application/json' \
+  -d '{"selector":"text:Done","timeout":15000}'
+
+# Pause automation for manual intervention
+curl -X POST /tabs/TARGET_ID/handoff \
+  -H 'Content-Type: application/json' \
+  -d '{"reason":"captcha","timeoutMs":120000}'
+
+# Inspect or resume handoff state
+curl /tabs/TARGET_ID/handoff
+curl -X POST /tabs/TARGET_ID/resume \
+  -H 'Content-Type: application/json' \
+  -d '{"status":"completed"}'
 ```
 
 These are equivalent to using `?tabId=TARGET_ID` on top-level endpoints but follow REST conventions. The tab ID comes from `/tabs` or from the `tabId` field in navigate/tab creation responses.
+
+`GET /tabs/{id}/handoff` returns the current status for that tab. `POST /tabs/{id}/resume` clears `paused_handoff` and can carry resume metadata such as `status` or `resolvedData`.
 
 ## Tab locking (multi-agent)
 
 ```bash
 # Lock a tab (default 30s timeout, max 5min)
-curl -X POST /tab/lock -H 'Content-Type: application/json' \
+curl -X POST /lock -H 'Content-Type: application/json' \
   -d '{"tabId": "TARGET_ID", "owner": "agent-1", "timeoutSec": 60}'
 
 # Unlock
-curl -X POST /tab/unlock -H 'Content-Type: application/json' \
+curl -X POST /unlock -H 'Content-Type: application/json' \
   -d '{"tabId": "TARGET_ID", "owner": "agent-1"}'
 ```
 
@@ -324,6 +415,88 @@ curl /cookies
 curl -X POST /cookies -H 'Content-Type: application/json' \
   -d '{"url":"https://pinchtab.com","cookies":[{"name":"session","value":"abc123"}]}'
 ```
+
+## Solve challenges
+
+PinchTab includes a pluggable solver framework for browser challenges (Cloudflare Turnstile, CAPTCHAs, interstitials). Solvers auto-detect the challenge type and resolve it using human-like interaction.
+
+```bash
+# List available solvers
+curl /solvers
+
+# Auto-detect and solve (tries each solver in order)
+curl -X POST /solve -H 'Content-Type: application/json' \
+  -d '{"maxAttempts": 3, "timeout": 30000}'
+
+# Use a specific solver by name
+curl -X POST /solve/cloudflare -H 'Content-Type: application/json' \
+  -d '{"maxAttempts": 3}'
+
+# Solve on a specific tab
+curl -X POST /tabs/TAB_ID/solve -H 'Content-Type: application/json' \
+  -d '{"solver": "cloudflare"}'
+
+# Solve on a specific tab with path-based solver
+curl -X POST /tabs/TAB_ID/solve/cloudflare -H 'Content-Type: application/json' \
+  -d '{}'
+```
+
+**Request fields:**
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `solver` | string | — | Solver name (omit for auto-detect) |
+| `tabId` | string | — | Target tab (omit for default tab) |
+| `maxAttempts` | int | 3 | Maximum solve attempts |
+| `timeout` | float | 30000 | Overall timeout in ms |
+
+**Response:**
+
+```json
+{
+  "tabId": "DEADBEEF",
+  "solver": "cloudflare",
+  "solved": true,
+  "challengeType": "managed",
+  "attempts": 1,
+  "title": "Example Site"
+}
+```
+
+Returns `solved: true, attempts: 0` when no challenge is detected — safe to call speculatively.
+
+**Built-in solvers:** `cloudflare` (Turnstile/interstitial — detects via page title, clicks checkbox with human-like input).
+
+**Stealth requirement:** Solvers work best with `stealthLevel: "full"`. Cloudflare checks browser fingerprints before and after the checkbox click. Verify stealth is active with `GET /stealth/status`.
+
+## Network Export
+
+```bash
+# Export as HAR 1.2 (stream to response)
+curl /network/export?format=har
+
+# Export as NDJSON (one JSON per line)
+curl /network/export?format=ndjson
+
+# Save to server-side file
+curl "/network/export?format=har&output=file&path=session.har"
+
+# Include response bodies (10 MB cap per entry)
+curl "/network/export?format=har&body=true"
+
+# Include raw sensitive headers (Cookie, Authorization)
+curl "/network/export?format=har&redact=false"
+
+# Live streaming export (entries written to file as they arrive)
+curl -N "/network/export/stream?format=ndjson&path=live.ndjson"
+
+# Tab-scoped
+curl /tabs/TAB_ID/network/export?format=har
+```
+
+All standard network filters apply: `filter`, `method`, `status`, `type`, `limit`.
+
+Formats are pluggable. `GET /network/export?format=unknown` returns `{"available": ["har", "ndjson"]}`.
 
 ## Stealth
 
@@ -341,4 +514,12 @@ curl -X POST /fingerprint/rotate -H 'Content-Type: application/json' \
 
 ```bash
 curl /health
+```
+
+## Session Auth
+
+If the user already gives you an agent session token, send it as:
+
+```bash
+curl -H "Authorization: Session ses_..." /health
 ```

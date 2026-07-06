@@ -46,26 +46,18 @@ def extract_links(content: str) -> list:
 
 def check_orphan_links(pages: dict) -> dict:
     """检查孤儿链接（链接存在但目标页面不存在）"""
+    # 构建页面名索引（一次性，避免对每个链接暴力扫描全量文件）
+    name_index: set = set()
+    for page_data in pages.values():
+        name_index.add(page_data['title'])
+        name_index.add(page_data['title'] + '.md')
+    
     orphans = []
     
     for page_path, page_data in pages.items():
         for link in page_data['links']:
-            # 尝试多种扩展名
-            found = False
-            for ext in ['.md', '/index.md']:
-                # 链接可能是页面名或路径
-                link_path = Path(link.replace('/', os.sep).replace('\\', os.sep))
-                
-                # 搜索所有可能的路径
-                for page_file in WIKI_DIR.rglob("*.md"):
-                    if page_file.stem == link or page_file.name == link + '.md':
-                        found = True
-                        break
-                
-                if found:
-                    break
-            
-            if not found:
+            # 直接查索引 O(1)，而不是暴力扫描
+            if link not in name_index and (link + '.md') not in name_index:
                 orphans.append({
                     'source': page_path,
                     'link': link,

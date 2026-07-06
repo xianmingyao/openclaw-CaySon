@@ -1,4 +1,4 @@
-# wiki 知识库
+﻿# wiki 知识库
 
 > 来源: articles\karpathy-workflow.md
 > 分类: AI
@@ -53,3 +53,4 @@ Karpathy 工作流通过 LLM 将多种格式的原始资料整理成结构化的
 ---
 
 *由 Karpathy 知识库系统自动生成 | 2026-04-09 08:18*
+

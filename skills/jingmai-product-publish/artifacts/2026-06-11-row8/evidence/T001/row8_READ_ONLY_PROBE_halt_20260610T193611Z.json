@@ -1,0 +1,87 @@
+{
+  "created_at": "2026-06-10T19:36:11.723032+00:00",
+  "details": {
+    "capture_errors": [
+      {
+        "error": "tesseract is not installed or it's not in your PATH. See README file for more information.",
+        "error_type": "TesseractNotFoundError",
+        "target": "ocr"
+      }
+    ],
+    "ocr_summary": {},
+    "page_signature": null,
+    "screenshot_path": "artifacts\\2026-06-11-row8\\evidence\\T001\\row8_READ_ONLY_PROBE_halt.png",
+    "window_summary": {
+      "found": true,
+      "html_button_count": 0,
+      "html_combobox_count": 0,
+      "html_edit_count": 0,
+      "main_class_name": "Qt51511QWindowIcon",
+      "main_title": "jd_465d1abd3ee76",
+      "panes": [
+        {
+          "children_count": 2,
+          "class_name": "CefBrowserWindow",
+          "control_type": "",
+          "handle": 29625358,
+          "title": ""
+        },
+        {
+          "children_count": 1,
+          "class_name": "Chrome_WidgetWin_0",
+          "control_type": "",
+          "handle": 339920,
+          "title": ""
+        },
+        {
+          "children_count": 0,
+          "class_name": "Chrome_RenderWidgetHostHWND",
+          "control_type": "",
+          "handle": 10754004,
+          "title": "Chrome Legacy Window"
+        }
+      ],
+      "qt_child_count": 35,
+      "webview_pane_count": 3
+    }
+  },
+  "log_path": "artifacts\\2026-06-11-row8\\evidence\\T001\\row8_READ_ONLY_PROBE_halt_20260610T193611Z.json",
+  "node": "READ_ONLY_PROBE",
+  "ocr_summary": {},
+  "page_signature": null,
+  "reason": "row8_evidence_only",
+  "screenshot_path": "artifacts\\2026-06-11-row8\\evidence\\T001\\row8_READ_ONLY_PROBE_halt.png",
+  "window_summary": {
+    "found": true,
+    "html_button_count": 0,
+    "html_combobox_count": 0,
+    "html_edit_count": 0,
+    "main_class_name": "Qt51511QWindowIcon",
+    "main_title": "jd_465d1abd3ee76",
+    "panes": [
+      {
+        "children_count": 2,
+        "class_name": "CefBrowserWindow",
+        "control_type": "",
+        "handle": 29625358,
+        "title": ""
+      },
+      {
+        "children_count": 1,
+        "class_name": "Chrome_WidgetWin_0",
+        "control_type": "",
+        "handle": 339920,
+        "title": ""
+      },
+      {
+        "children_count": 0,
+        "class_name": "Chrome_RenderWidgetHostHWND",
+        "control_type": "",
+        "handle": 10754004,
+        "title": "Chrome Legacy Window"
+      }
+    ],
+    "qt_child_count": 35,
+    "webview_pane_count": 3
+  }
+}

@@ -1,0 +1,698 @@
+{
+  "scanned_files": [
+    "__init__.py",
+    "admin_client_features.py",
+    "admin_clients.py",
+    "admin_crawler.py",
+    "admin_crawler_errors.py",
+    "admin_crawler_servers.py",
+    "admin_dashboard.py",
+    "admin_data_scope.py",
+    "admin_open_api_keys.py",
+    "admin_operator_open_api_resources.py",
+    "admin_project_analytics.py",
+    "admin_project_phase.py",
+    "admin_projects.py",
+    "admin_published_urls.py",
+    "admin_questions.py",
+    "admin_reference_analysis.py",
+    "admin_reference_analysis_articles.py",
+    "admin_reference_analysis_domains.py",
+    "admin_reference_analysis_features.py",
+    "admin_reference_analysis_stats.py",
+    "admin_settings.py",
+    "admin_temp_crawler.py",
+    "admin_temp_crawler_export_sources.py",
+    "admin_temp_crawler_helpers.py",
+    "admin_temp_crawler_persistence.py",
+    "admin_users.py",
+    "alert_service.py",
+    "auth_runtime.py",
+    "client_access_scope.py",
+    "client_answers.py",
+    "client_api_keys.py",
+    "client_attribution.py",
+    "client_brand_rankings.py",
+    "client_brand_sub.py",
+    "client_brands.py",
+    "client_comparison.py",
+    "client_dashboard.py",
+    "client_dynamic_rankings.py",
+    "client_profile.py",
+    "client_questions.py",
+    "client_references.py",
+    "client_reports.py",
+    "core_analysis.py",
+    "dcp_client.py",
+    "export_service.py",
+    "mail_service.py",
+    "open_api_audit.py",
+    "open_api_downloads.py",
+    "open_api_migration_state.py",
+    "open_api_permissions.py",
+    "open_api_resources.py",
+    "report_generator.py",
+    "report_service.py",
+    "subscription_messages.py",
+    "subscriptions.py",
+    "trial_settings.py",
+    "utils/oss.py",
+    "utils/pagination.py",
+    "utils/security.py"
+  ],
+  "function_issues": [
+    {
+      "file": "client_dashboard.py",
+      "function": "get_overview",
+      "issues": [
+        {"type": "no_cache", "desc": "dashboard 顶部 KPI 卡片 8 次独立 select，每次请求都会触发；同一项目短期内重复请求无缓存"},
+        {"type": "n_plus_one", "desc": "gpower_score / current_gpower / prev_gpower / total_mentions / prev_mentions / avg_ranking / ranking_change / sentiment 等 8 次顺序查询，可合并 CTE 一次返回"},
+        {"type": "no_query_timeout", "desc": "未设置 statement_timeout / pg_advisory_lock，长查询可能拖垮连接池"}
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "function": "get_gpower_trend",
+      "issues": [
+        {"type": "no_cache", "desc": "Gpower 趋势数据按 project_id + days 计算，结果只读不变，可缓存 5-10 分钟减少 DB 压力"}
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "function": "get_mention_trend",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "使用 SELECT func.case 跨平台硬编码（deepseek/doubao/chatgpt/gemini/kimi/yuanbao/qwen/qianwen），新增平台需改代码；可改为 GROUP BY target_platform 让 DB 自带维度"}
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "get_overview",
+      "issues": [
+        {"type": "n_plus_one", "desc": "顶部 8 个 COUNT 查询分别发 SELECT（Clients/Projects/QuestionPool/PlatformConfig），可用 UNION ALL 一次性统计"},
+        {"type": "no_cache", "desc": "运营看板总览每次刷新 8 次查询，运营用户高频访问应缓存 60s"}
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "_get_today_crawl_summary",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "两次 raw SQL（task_daily_stats + task_queue 降级），columns 包含业务字符串可考虑 ORM；但 WHERE 仅用 batch_date 占位安全"},
+        {"type": "missing_bulk_operation", "desc": "若改为批量统计可一次 UNION ALL 拉取两表"}
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "get_client_kpi",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "嵌套 3 层 CTE（client_primary_brands → daily_scores → SELECT）一次返回全部客户全周期数据，7d 时间内可能数万行；运营页面请求会阻塞 event loop"},
+        {"type": "raw_sql_risk", "desc": "f-string 拼接 'CURRENT_DATE - INTERVAL '{interval}''，interval 来自白名单 _TIME_RANGE_MAP，但仍然是字符串拼接，存在误用风险（可改用参数化）"},
+        {"type": "no_cache", "desc": "KPI 趋势数据按天计算，60s 缓存可大幅减少 DB 负载"},
+        {"type": "no_query_timeout", "desc": "巨型 CTE 无 timeout，PG 默认可能挂死"}
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "get_analysis_status",
+      "issues": [
+        {"type": "no_cache", "desc": "分析状态 9 次查询，每次都打 DB；状态可缓存 30s"},
+        {"type": "raw_sql_risk", "desc": "6 处 text() raw SQL 但都用命名参数，相对安全；建议全部迁到 ORM"},
+        {"type": "long_running_blocking", "desc": "reference 待分析查询 COUNT(DISTINCT rs.id) + JOIN 全表扫描会扫 crawler.reference_sources 全量；缺 batch_date 索引时会慢"}
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "function": "get_answer_list",
+      "issues": [
+        {"type": "n_plus_one", "desc": "循环 rows 中每条数据 2 次 await（mention + sentiment），典型 N+1；应 LEFT JOIN 一次性查"},
+        {"type": "no_cache", "desc": "AnswerList 接口高频访问，1小时内的同样 query 无缓存"},
+        {"type": "missing_bulk_operation", "desc": "用 mention_subquery + sentiment_subquery 在 export 中已优化，但 list 接口仍按行查"}
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "function": "get_answer_export_file",
+      "issues": [
+        {"type": "memory_risk", "desc": "result.all() 一次性加载 MAX_EXPORT_ROWS=10000 行到内存构建 xlsx，10k 行 × 多列可能 50MB+；建议 stream writer"},
+        {"type": "long_running_blocking", "desc": "export 大文件生成在 HTTP 请求内，1w 行 + xlsx 写文件耗时长，建议 Celery 异步 + 完成后 OSS 签名 URL 回调"},
+        {"type": "no_cache", "desc": "相同筛选条件 export 短时间内可缓存"}
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "function": "get_answer_detail",
+      "issues": [
+        {"type": "n_plus_one", "desc": "2 次额外 SELECT（mention_row / sentiment_row）可合到主查询 LEFT JOIN"}
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "function": "get_reference_list",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "f-string 拼接 where_clause 条件子句，使用命名参数但条件子句本身字符串拼接；若 platform/start_date 透传前未校验类型可能注入"},
+        {"type": "long_running_blocking", "desc": "引用源列表 GROUP BY reference_source_id/target_platform/question_content 大数据量聚合，分页 LIMIT/OFFSET 容易变慢"}
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "function": "get_reference_export_file",
+      "issues": [
+        {"type": "memory_risk", "desc": "MAX_EXPORT_ROWS=10000 行全量 in-memory xlsx 写入，无 stream"},
+        {"type": "long_running_blocking", "desc": "export 在请求内同步生成 xlsx，10k 行 + 6 列多 JOIN 阻塞 event loop 数十秒"}
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "function": "get_feature_heatmap",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "RAW_ANSWER_FEATURE_PATTERNS 正则 7 个 ~* 操作符 + jsonb 7 个 FILTER，巨大聚合；fallback 路径会全表扫描 crawler.crawl_answers"},
+        {"type": "no_query_timeout", "desc": "无 statement_timeout，PG 默认可能挂死"},
+        {"type": "no_cache", "desc": "特性热力图按日期范围聚合，结果变动慢，应缓存 5 分钟"}
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "function": "get_brand_mentions",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "f-string 拼接 where_clause + LIMIT/OFFSET 子句，参数化完整但 where 部分字符串拼接；platforms 数组经 equivalent_platform_keys 转换相对安全"}
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "function": "get_competitors",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "4 层 CTE 聚合（competitor_brands × current_gpower/previous_gpower/current_mentions + LEFT JOIN × 3）单次查询扫多个表，无 timeout"},
+        {"type": "no_cache", "desc": "竞品对比 30 天数据，可缓存 5-10 分钟"},
+        {"type": "raw_sql_risk", "desc": "f-string 拼接 2 个平台过滤子句"}
+      ]
+    },
+    {
+      "file": "client_brands.py",
+      "function": "get_brand_list",
+      "issues": [
+        {"type": "n_plus_one", "desc": "每个 brand 循环内 2 次 await（monitored_platforms COUNT DISTINCT + question_count），典型 N×2+1；应 LEFT JOIN 一次性聚合"},
+        {"type": "no_cache", "desc": "客户品牌列表，每次刷新都打 DB"}
+      ]
+    },
+    {
+      "file": "client_brands.py",
+      "function": "get_brand_detail",
+      "issues": [
+        {"type": "n_plus_one", "desc": "至少 14 次独立 SELECT（gpower/mentions 4 期/avg_position 2/sentiment 2/recommendation 2/ranking 2）应合并 1-2 个 CTE"},
+        {"type": "long_running_blocking", "desc": "同一函数 14 次顺序查询，每次打 DB 至少 14 次 RTT；并发场景下数据库连接池压力大"},
+        {"type": "no_cache", "desc": "品牌详情数据 7 天聚合，可缓存 5 分钟"},
+        {"type": "raw_sql_risk", "desc": "8 处 text() raw SQL，全部命名参数化安全；但若 platform 透传未校验可能影响 FILTER"}
+      ]
+    },
+    {
+      "file": "client_comparison.py",
+      "function": "get_brand_comparison",
+      "issues": [
+        {"type": "n_plus_one", "desc": "5 次独立 raw SQL（mention_frequency / mention_rate / ranking / sentiment / recommendation）应合 1 个 CTE 一次返回"},
+        {"type": "long_running_blocking", "desc": "5 次独立查询串行触发，每查询带 GROUP BY + brand_name ANY 聚合，30 天数据全表扫描"},
+        {"type": "raw_sql_risk", "desc": "5 处 f-string 拼接 where_clause，参数化安全"},
+        {"type": "no_cache", "desc": "对比图按 project × days 计算，可缓存 10 分钟"}
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "function": "get_citation_stats",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "raw SQL 拼接 + jsonb_array_elements 全量展开 refer_info，引用数据大时性能差；应改用预聚合 reference_source_daily"},
+        {"type": "long_running_blocking", "desc": "3 次 SELECT（daily + rpa + 可能的 answer_refs fallback），引用源全量 jsonb 展开无 timeout"}
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "function": "get_citation_trend",
+      "issues": [
+        {"type": "no_cache", "desc": "引用趋势每日聚合，1 小时缓存可接受"}
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "function": "get_top_domains",
+      "issues": [
+        {"type": "no_cache", "desc": "Top 域名可缓存 5 分钟"}
+      ]
+    },
+    {
+      "file": "client_reports.py",
+      "function": "create_report_for_scope",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "直接调用 report_service.create_report 同步进入生成流程，报表生成是 IO 重活（多表聚合 + xlsx/pdf 写文件），应走 Celery/RQ"}
+      ]
+    },
+    {
+      "file": "report_service.py",
+      "function": "create_report",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "报表生成（含 PDF/xlsx 写 OSS）若在请求线程同步执行，阻塞 event loop 数分钟；建议 BackgroundTasks + 状态查询"},
+        {"type": "missing_bulk_operation", "desc": "sqlalchemy text() 含大量 JOIN 多表聚合，无 bulk helpers"},
+        {"type": "no_cache", "desc": "报表数据按时间段聚合，可短期缓存"}
+      ]
+    },
+    {
+      "file": "report_generator.py",
+      "function": "generate_report",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "matplotlib Agg 后端 + openpyxl + jinja2 + 多周期 SQL 聚合 + write_only=True xlsx 生成，全在请求线程同步执行；应 Celery 异步化"},
+        {"type": "sync_io_in_async", "desc": "create_async_engine pool_size=2 max_overflow=0 + 长报表生成 = 连接池耗尽；同步请求下其他 API 会被阻塞"},
+        {"type": "memory_risk", "desc": "大报表生成可能 OOM，无 stream writer；建议分块写入 OSS"}
+      ]
+    },
+    {
+      "file": "export_service.py",
+      "function": "export_to_xlsx",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "openpyxl Workbook 全量 in-memory 写入，5w 行报表时内存压力大且阻塞 event loop"},
+        {"type": "memory_risk", "desc": "io.BytesIO 全量缓冲 5w 行 xlsx（可能 30MB+）后再返回 StreamingResponse"}
+      ]
+    },
+    {
+      "file": "mail_service.py",
+      "function": "send_email",
+      "issues": [
+        {"type": "sync_io_in_async", "desc": "smtplib.SMTP_SSL 是同步阻塞调用，在 async 函数中会阻塞 event loop 整个连接时长"},
+        {"type": "no_cache", "desc": "无重试 / 熔断，发送失败直接 raise"}
+      ]
+    },
+    {
+      "file": "auth_runtime.py",
+      "function": "authenticate_user",
+      "issues": [
+        {"type": "sync_io_in_async", "desc": "bcrypt 校验密码是 CPU 密集型同步阻塞，登录路径下会让 event loop 阻塞 ~200ms（bcrypt cost=12 时）"},
+        {"type": "no_cache", "desc": "失败登录统计/限流未做缓存，IP 维度暴力破解防护缺失"}
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "get_client_user_list",
+      "issues": [
+        {"type": "n_plus_one", "desc": "for user in users 循环内 await _get_client_name + await _get_client_projects（每用户 2 次 DB），典型 N×2+1；应 batch SELECT IN (...)"},
+        {"type": "no_cache", "desc": "客户用户列表每页查询都打 DB"}
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "create_client_user",
+      "issues": [
+        {"type": "n_plus_one", "desc": "for cid in data.client_ids 循环内每个 client_id 都 await _get_client_projects 再循环写 ClientProjectPermissions，可批量化"},
+        {"type": "missing_bulk_operation", "desc": "ClientProjectPermissions 逐条 db.add()，应 bulk_save_objects/bulk_insert_mappings"}
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "get_client_user_detail",
+      "issues": [
+        {"type": "n_plus_one", "desc": "2 次额外查询（client_name + projects）可 LEFT JOIN 一次返回"}
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "update_client_user_status",
+      "issues": [
+        {"type": "n_plus_one", "desc": "2 次 await（client_name + projects）"}
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "update_user_permissions",
+      "issues": [
+        {"type": "n_plus_one", "desc": "for page_key, is_allowed in permissions.items() 每次都 SELECT 检查存在性，N 次独立 SELECT；应 SELECT 全部已有 + dict 比较再批量 UPSERT"},
+        {"type": "missing_bulk_operation", "desc": "无 bulk_insert_mappings；逐条 db.add 性能差"},
+        {"type": "missing_transaction", "desc": "整个 update 没有显式事务边界（依赖默认 autobegin）"}
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "update_user_projects",
+      "issues": [
+        {"type": "missing_bulk_operation", "desc": "DELETE 后逐条 db.add ClientProjectPermissions；应 bulk_insert_mappings"},
+        {"type": "n_plus_one", "desc": "for pid in project_ids 多次 INSERT，可一次批量"}
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "delete_operator_user",
+      "issues": [
+        {"type": "missing_transaction", "desc": "delete 操作无显式事务（3 次 DELETE + DELETE user 散落在 4 次 flush）"},
+        {"type": "no_cache", "desc": "无缓存层"}
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "function": "list_clients",
+      "issues": [
+        {"type": "n_plus_one", "desc": "循环中 await 加载 project_count / question_count 等统计字段"}
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "function": "create_client",
+      "issues": [
+        {"type": "missing_transaction", "desc": "Clients + Users + Subscription + Project + ClientProjectPermissions 多表创建应显式事务包裹"}
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "function": "trigger_crawl_for_project",
+      "issues": [
+        {"type": "no_query_timeout", "desc": "调度器相关 SQL 无 timeout，长任务可能阻塞"}
+      ]
+    },
+    {
+      "file": "admin_open_api_keys.py",
+      "function": "create_api_key",
+      "issues": [
+        {"type": "missing_transaction", "desc": "ApiKeys + ApiKeyResourcePermissions 多表写入应显式事务"}
+      ]
+    },
+    {
+      "file": "admin_open_api_keys.py",
+      "function": "revoke_api_key",
+      "issues": [
+        {"type": "no_cache", "desc": "revoke 后无缓存失效机制，下游缓存可能继续展示已撤销 key"}
+      ]
+    },
+    {
+      "file": "admin_settings.py",
+      "function": "test_ai_model",
+      "issues": [
+        {"type": "sync_io_in_async", "desc": "httpx.AsyncClient 异步（OK），但未设置严格 timeout 之外无重试/熔断；测试大模型调用可能挂 60s+"}
+      ]
+    },
+    {
+      "file": "admin_settings.py",
+      "function": "save_ai_model_config",
+      "issues": [
+        {"type": "missing_transaction", "desc": "system_settings 多字段 UPSERT 无显式事务"}
+      ]
+    },
+    {
+      "file": "admin_published_urls.py",
+      "function": "list_published_urls",
+      "issues": [
+        {"type": "memory_risk", "desc": "无 LIMIT 时可能全表返回"}
+      ]
+    },
+    {
+      "file": "admin_questions.py",
+      "function": "list_questions",
+      "issues": [
+        {"type": "no_cache", "desc": "运营问题列表高频查询无缓存"}
+      ]
+    },
+    {
+      "file": "admin_reference_analysis.py",
+      "function": "_run_*",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "引用分析调度函数在请求线程同步跑（推测）；应 Celery 异步化"}
+      ]
+    },
+    {
+      "file": "admin_reference_analysis_articles.py",
+      "function": "list_articles",
+      "issues": [
+        {"type": "no_cache", "desc": "引用文章列表无缓存"}
+      ]
+    },
+    {
+      "file": "admin_reference_analysis_domains.py",
+      "function": "list_domains",
+      "issues": [
+        {"type": "no_cache", "desc": "域名列表无缓存"}
+      ]
+    },
+    {
+      "file": "admin_reference_analysis_features.py",
+      "function": "list_features",
+      "issues": [
+        {"type": "no_cache", "desc": "特性列表无缓存"}
+      ]
+    },
+    {
+      "file": "admin_reference_analysis_stats.py",
+      "function": "get_stats",
+      "issues": [
+        {"type": "no_cache", "desc": "引用分析统计无缓存"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler.py",
+      "function": "_trigger_dcp_and_update_status",
+      "issues": [
+        {"type": "sync_io_in_async", "desc": "BackgroundTasks 回调内创建 create_engine(psycopg2) + db.query() 同步查询阻塞事件循环；应使用 async session 或 run_in_executor"},
+        {"type": "missing_transaction", "desc": "sync db 多次 query + commit，无显式事务"},
+        {"type": "session_leak", "desc": "try/finally 中 db.close() 在 engine.dispose() 之前，但若 query 抛错 dispose 不会执行（finally 仅处理 db.close）"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler.py",
+      "function": "_watch_dcp_completion_and_sync_results",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "DCP_COMPLETION_POLL_MAX_ATTEMPTS=60 × INTERVAL 10s = 最长 10 分钟后台轮询；期间持有 sync engine 一直 open"},
+        {"type": "session_leak", "desc": "for 循环内每次 db = SessionLocal() 后 finally db.close()，但若中途 engine.dispose() 之前的 db 异常路径可能不释放"},
+        {"type": "sync_io_in_async", "desc": "轮询 + sync db.execute 在 async 上下文执行，阻塞 event loop"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler.py",
+      "function": "create_temp_crawl_job",
+      "issues": [
+        {"type": "missing_transaction", "desc": "ensure_client + ensure_trial + insert job + insert run + flush + background task 调度，无显式事务包裹"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_helpers.py",
+      "function": "create_pending_task_rows",
+      "issues": [
+        {"type": "missing_bulk_operation", "desc": "question × platform × sample_index 三层循环逐条 db.add(task) + await db.flush()，N 次 flush = N 次 round-trip；应一次性 bulk_insert_mappings 或 COPY"},
+        {"type": "n_plus_one", "desc": "循环内每 task await db.flush()，典型 N+1 写入"},
+        {"type": "missing_transaction", "desc": "批量插入无显式事务"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_helpers.py",
+      "function": "query_result_items",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "f-string 拼接 WHERE 子句 + LIMIT/OFFSET 子句，参数化完整但子句本身字符串拼接，operator 需 review"},
+        {"type": "memory_risk", "desc": "page_size=0 时返回全部 result.all() 无分页保护，单 job 可能有上万行"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_helpers.py",
+      "function": "sync_temp_crawl_results_from_answers_sync",
+      "issues": [
+        {"type": "sync_io_in_async", "desc": "函数名 _sync_xxx 暗示走的是 sync db session，但调用方在 async 上下文"},
+        {"type": "missing_transaction", "desc": "UPSERT + UPDATE temp_crawl_jobs 多次 DML 无显式事务"},
+        {"type": "missing_bulk_operation", "desc": "可改 COPY 或 bulk_insert_mappings 加速大结果同步"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_helpers.py",
+      "function": "build_results_xlsx",
+      "issues": [
+        {"type": "memory_risk", "desc": "items 全量 in-memory 写 xlsx + StringIO/BytesIO 缓冲；大 job 可能 OOM"},
+        {"type": "long_running_blocking", "desc": "openpyxl Workbook 全量构建在请求线程同步执行"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "create_temp_crawl_draft",
+      "issues": [
+        {"type": "missing_transaction", "desc": "TempCrawlJobs INSERT 无显式事务包裹"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "list_temp_crawl_jobs",
+      "issues": [
+        {"type": "n_plus_one", "desc": "rows 中每行构造 TempCrawlJobListItem 时调用 _job_platforms() 纯函数无 DB 开销（OK）但 list 本身 4 表 JOIN 无 LIMIT 风险"},
+        {"type": "no_cache", "desc": "运营高频查询无缓存"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "sync_temp_crawl_results_from_answers",
+      "issues": [
+        {"type": "missing_bulk_operation", "desc": "for item in items 逐条 await db.execute(text(UPSERT))，N 次独立 round-trip；应 batch INSERT VALUES + ON CONFLICT"},
+        {"type": "n_plus_one", "desc": "循环内每条数据 1 次 UPSERT，典型 N+1"},
+        {"type": "memory_risk", "desc": "items 全量加载到内存后逐条 UPSERT，大 job OOM 风险"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "sync_project_temp_crawl_results",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "对项目下每个未删除 job 调一次 sync_temp_crawl_results_from_answers，N 个 job × N 个 answer = O(N²) round-trip"},
+        {"type": "n_plus_one", "desc": "典型双重 N+1"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "count_project_answers",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "f-string 拼接 COUNT SQL + 平台/范围子句；参数化完整但子句字符串拼接"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "build_project_answers_export",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "form + temp 双数据源同步 join 后 openpyxl 写全量 xlsx 阻塞 event loop"},
+        {"type": "memory_risk", "desc": "rows list 全量 in-memory + xlsx BytesIO 缓冲"},
+        {"type": "missing_bulk_operation", "desc": "查询用 text() 可改用 COPY 加速大数据导出"}
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_export_sources.py",
+      "function": "get_question_results_source",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "循环 information_schema.columns 检查，每次都打 DB；可缓存 schema 检查结果"}
+      ]
+    },
+    {
+      "file": "alert_service.py",
+      "function": "create_channel",
+      "issues": [
+        {"type": "missing_transaction", "desc": "INSERT 之后立即 await db.commit()；事务粒度过细应包裹在 begin 块"}
+      ]
+    },
+    {
+      "file": "alert_service.py",
+      "function": "delete_channel",
+      "issues": [
+        {"type": "missing_transaction", "desc": "UPDATE alert_rules + DELETE alert_channels 应事务包裹"},
+        {"type": "raw_sql_risk", "desc": "UPDATE platform.alert_rules SET channel_ids = array_remove(...) 用 UUID 比较但 text() 占位安全"}
+      ]
+    },
+    {
+      "file": "alert_service.py",
+      "function": "test_channel",
+      "issues": [
+        {"type": "sync_io_in_async", "desc": "httpx.AsyncClient.post 异步 OK，但 client.post 失败时 except Exception 捕获后 status 仍写 failed（OK），但如果 channel_id 不存在会泄露 webhook URL"}
+      ]
+    },
+    {
+      "file": "alert_service.py",
+      "function": "get_history_list",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "f-string 拼接动态 WHERE 子句（severity/platform/date 透传）"},
+        {"type": "no_cache", "desc": "告警历史分页无缓存"}
+      ]
+    },
+    {
+      "file": "client_api_keys.py",
+      "function": "enforce_open_api_rate_limit_for_context",
+      "issues": [
+        {"type": "session_leak", "desc": "pg_advisory_xact_lock 在事务内取锁，但 advisory lock 释放依赖事务结束；无显式 begin 块可能不释放"},
+        {"type": "missing_transaction", "desc": "限流检查无显式事务"}
+      ]
+    },
+    {
+      "file": "client_api_keys.py",
+      "function": "list_api_keys",
+      "issues": [
+        {"type": "n_plus_one", "desc": "for row in result.scalars().all() 循环内 await open_api_permissions.list_api_key_resource_keys，N+1；应 batch SELECT WHERE api_key_id IN (...)"},
+        {"type": "no_cache", "desc": "API Key 列表无缓存"}
+      ]
+    },
+    {
+      "file": "client_api_keys.py",
+      "function": "authenticate_open_api_key",
+      "issues": [
+        {"type": "no_cache", "desc": "每次请求都打 DB 校验 key，应 Redis 缓存 key_hash → user 映射 + 短 TTL"}
+      ]
+    },
+    {
+      "file": "client_profile.py",
+      "function": "_get_admin_profile",
+      "issues": [
+        {"type": "n_plus_one", "desc": "for client in all_clients 循环内查 brands + 每个 brand 查 competitors + question_count，N×M+1 DB 查询；可 1 个 CTE 一次返回"},
+        {"type": "no_cache", "desc": "admin profile 全量查询，每次请求都打 DB"}
+      ]
+    },
+    {
+      "file": "client_profile.py",
+      "function": "_build_profile_projects",
+      "issues": [
+        {"type": "n_plus_one", "desc": "每个 project 内 await 查 competitors + question_count，N×2 round-trip"}
+      ]
+    },
+    {
+      "file": "client_dynamic_rankings.py",
+      "function": "get_dynamic_rankings",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "f-string 拼 WHERE + LIMIT 子句，参数化完整"},
+        {"type": "long_running_blocking", "desc": "scoped_answers CTE + mention_stats 二次聚合，全表扫描"},
+        {"type": "no_cache", "desc": "动态排名 30 天聚合可缓存 5 分钟"}
+      ]
+    },
+    {
+      "file": "client_reports.py",
+      "function": "get_report_list",
+      "issues": [
+        {"type": "memory_risk", "desc": "固定 LIMIT 100 无 total 分页，传 page 参数但未用；分页逻辑缺陷"},
+        {"type": "no_cache", "desc": "报表列表无缓存"}
+      ]
+    },
+    {
+      "file": "client_questions.py",
+      "function": "get_question_list",
+      "issues": [
+        {"type": "raw_sql_risk", "desc": "用 2 个相关子查询 (SELECT COUNT ...) 每行扫描，O(N) 子查询，可 LEFT JOIN 优化"},
+        {"type": "no_cache", "desc": "问题列表无缓存"}
+      ]
+    },
+    {
+      "file": "client_questions.py",
+      "function": "create_client_question",
+      "issues": [
+        {"type": "missing_transaction", "desc": "quota 校验 + QuestionPool INSERT 无显式事务"}
+      ]
+    },
+    {
+      "file": "client_brand_rankings.py",
+      "function": "get_rankings",
+      "issues": [
+        {"type": "no_cache", "desc": "排名历史可缓存 5 分钟"}
+      ]
+    },
+    {
+      "file": "core_analysis.py",
+      "function": "trigger_core_analysis",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "httpx.AsyncClient 60s timeout 调用 core engine；core 分析一般 30s+，建议任务队列"},
+        {"type": "no_query_timeout", "desc": "BackgroundTasks 调度后 sync db 操作需 run_in_executor，否则阻塞事件循环"}
+      ]
+    },
+    {
+      "file": "dcp_client.py",
+      "function": "trigger_dcp_crawl",
+      "issues": [
+        {"type": "long_running_blocking", "desc": "DCP 触发使用 httpx.AsyncClient 异步（OK），但 MAX_RETRIES=3 × RETRY_BACKOFF_BASE=2.0 重试可能阻塞 30s+"},
+        {"type": "no_query_timeout", "desc": "DCP 触发后台任务无 statement_timeout 保护"}
+      ]
+    },
+    {
+      "file": "open_api_downloads.py",
+      "function": "create_download_url",
+      "issues": [
+        {"type": "sync_io_in_async", "desc": "path.write_bytes(content) 同步文件 IO 阻塞 event loop；应 aiofiles 或 run_in_executor"},
+        {"type": "memory_risk", "desc": "content 全量 bytes 在内存缓冲；大 export 文件 50MB+ 时 OOM 风险"},
+        {"type": "missing_transaction", "desc": "upload_bytes 调用 OSS 失败后 fallback 路径无事务包裹"}
+      ]
+    },
+    {
+      "file": "open_api_downloads.py",
+      "function": "_store_local_download",
+      "issues": [
+        {"type": "memory_risk", "desc": "_DOWNLOADS dict 仅在内存保存元数据；多 worker 部署下其他 worker 找不到 token，导致下载 404"},
+        {"type": "session_leak", "desc": "本地下载 cleanup 仅按 expires_at 触发，DOWNLOAD_DIR 长期累积可能撑爆 /tmp"},
+        {"type": "no_cache", "desc": "无 Redis 统一存储"}
+      ]
+    },
+    {
+      "file": "open_api_audit.py",
+      "function": "get_api_key_access_logs",
+      "issues": [

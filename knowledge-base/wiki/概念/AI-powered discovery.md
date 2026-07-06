@@ -1,4 +1,4 @@
-# AI-powered discovery
+﻿# AI-powered discovery
 
 > 分类：概念
 > 创建时间：2026-04-13 20:02
@@ -19,3 +19,4 @@ AI-powered discovery是指利用人工智能技术来自动识别、分析并揭
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

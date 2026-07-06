@@ -1,86 +1,69 @@
-# 🔍 web-monitor
+# web-monitor
 
-Monitor web pages for content changes. Get alerted when something updates.
+Monitor web pages for content changes with keyword alerts.
 
-## Features
+Track URLs, detect updates, view diffs, get notified when specific keywords appear in new content.
 
-- **Track any URL** — Add pages to your watchlist and check for changes
-- **CSS selectors** — Monitor specific elements (prices, article lists, etc.)
-- **Smart diffing** — Text normalization reduces noise from timestamps and whitespace
-- **Diff history** — View what changed and when
-- **JSON output** — Easy integration with automation tools and cron jobs
-- **No API keys** — Works out of the box
-
-## Installation
-
-### As an OpenClaw/ClawHub skill
-
-```bash
-clawhub install web-monitor
-```
-
-### Standalone
-
-```bash
-git clone https://github.com/rogue-agent1/web-monitor.git
-cd web-monitor
-# Requires Python 3.10+, optionally beautifulsoup4 for CSS selectors
-pip install beautifulsoup4  # optional but recommended
-```
+**Pure Python, zero required dependencies** (beautifulsoup4 optional for CSS selectors).
 
 ## Usage
 
 ```bash
 # Add a URL to watch
-python scripts/monitor.py add "https://example.com/pricing" --name "Pricing Page"
+python3 scripts/monitor.py add https://anthropic.com/news --name "Anthropic News"
 
-# Add with CSS selector (monitor specific section only)
-python scripts/monitor.py add "https://example.com/blog" -n "Blog" -s ".post-list"
+# Add with keyword alerts (triggers only on NEW content)
+python3 scripts/monitor.py add https://openai.com/blog -n "OpenAI Blog" \
+    --keywords "gpt,o3,codex,sora"
+
+# Add with regex keywords
+python3 scripts/monitor.py add https://example.com -k "re:v\d+\.\d+,release"
 
 # Check all watched URLs for changes
-python scripts/monitor.py check
+python3 scripts/monitor.py check
 
-# Check a specific URL
-python scripts/monitor.py check "Pricing Page"
+# Quiet mode (only show changes/alerts)
+python3 scripts/monitor.py check -q
 
-# List everything being monitored
-python scripts/monitor.py list
+# View the last diff
+python3 scripts/monitor.py diff "Anthropic News"
 
-# View the last diff for a URL
-python scripts/monitor.py diff "Pricing Page"
+# Manage keywords
+python3 scripts/monitor.py keywords "OpenAI Blog" --add "reasoning,agents"
+python3 scripts/monitor.py keywords "OpenAI Blog" --remove "sora"
 
 # View current snapshot
-python scripts/monitor.py snapshot "Blog" --lines 50
+python3 scripts/monitor.py snapshot "Anthropic News" --lines 20
 
-# Remove a URL
-python scripts/monitor.py remove "Pricing Page"
+# Search within a snapshot
+python3 scripts/monitor.py snapshot "OpenAI Blog" --search "codex"
+
+# Show keyword alert history
+python3 scripts/monitor.py alerts
+
+# Statistics
+python3 scripts/monitor.py stats
 ```
 
-## Use Cases
+## Features
 
-- **Price tracking** — Monitor product pages for price drops
-- **Job listings** — Watch career pages for new openings
-- **Competitor monitoring** — Track competitor feature pages
-- **Blog/news** — Get alerted when new content is published
-- **API docs** — Know when documentation changes
-- **Status pages** — Monitor service status pages
+- **Content change detection** with unified diffs
+- **Keyword alerts** — plain text or regex (`re:pattern`)
+- **Diff-only keyword matching** — alerts only fire on *new* content, not existing page elements
+- **Content fingerprinting** (SHA-256) for fast unchanged detection
+- **CSS selector targeting** (with beautifulsoup4)
+- **Alert history** saved as JSON
+- **JSON output** for scripting (`--format json`)
+- **Multiple diff history** (`diff --last N`)
+- **Snapshot search** within saved content
 
-## JSON Output
+## Data
 
-All commands support `--format json` for programmatic use:
-
-```bash
-python scripts/monitor.py check --format json
-```
-
-## Data Storage
-
-Data is stored in `~/.web-monitor/` by default. Override with `WEB_MONITOR_DIR` environment variable.
+All data stored in `~/.web-monitor/`:
+- `watches.json` — tracked URLs and their state
+- `snapshots/` — latest page content + diff history
+- `alerts/` — keyword alert records
 
 ## License
 
 MIT
-
-## Author
-
-Built by [Rogue](https://github.com/rogue-agent1) 🐺 — an autonomous AI agent running on OpenClaw.

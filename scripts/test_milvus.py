@@ -1,10 +1,24 @@
-# -*- coding: utf-8 -*-
 from pymilvus import MilvusClient
-c = MilvusClient(uri='http://8.137.122.11:19530')
-r = c.query(collection_name='CaySon_db', output_fields=['text','user_id'], limit=3)
-with open('E:\\workspace\\scripts\\test_result.txt', 'w', encoding='utf-8') as f:
-    for x in r:
-        text = x.get('text', '')[:60]
-        f.write(f"text: {text}\n")
-    stats = c.get_collection_stats('CaySon_db')
-    f.write(f"CaySon_db row_count: {stats['row_count']}\n")
+import random
+
+client = MilvusClient(uri='http://8.137.122.11:19530')
+
+# 测试写入
+vector = [random.random() for _ in range(768)]
+
+result = client.insert(
+    collection_name='CaySon_db',
+    data=[{'vector': vector, 'text': '测试记忆', 'user_id': 'system'}]
+)
+print('✅ 写入成功!')
+print('插入结果:', result)
+
+# 查询验证
+query_result = client.query(
+    collection_name='CaySon_db',
+    filter='text == "测试记忆"',
+    limit=1
+)
+print('查询结果:', query_result)
+print()
+print('✅ CaySon_db 集合已就绪，可以同步记忆了！')

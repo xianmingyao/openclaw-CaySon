@@ -9,7 +9,7 @@
 - Extracts the page's accessibility tree (for AI agents)
 - Runs screenshots, PDFs, and JavaScript evaluation
 
-High-risk operations such as JavaScript evaluation, local-file upload, and direct file writes should be treated as explicit opt-in actions for the current task, not the default workflow.
+High-risk operations such as JavaScript evaluation, local-file upload, file downloads, cookie access, and network export should be treated as explicit opt-in actions for the current task, not the default workflow. These are gated by security policy and disabled by default.
 
 **All of this stays local.** No telemetry. No external API calls (except to sites you navigate to).
 
@@ -20,6 +20,22 @@ High-risk operations such as JavaScript evaluation, local-file upload, and direc
 - ❌ Doesn't inject ads, malware, or miners
 - ❌ Doesn't track browsing or send analytics
 - ❌ Doesn't modify system files outside its state directory (`~/.pinchtab`)
+
+## Security Policy (Defaults)
+
+High-impact capabilities are **disabled by default** and require explicit configuration:
+
+| Capability | Default | Config Key |
+|---|---|---|
+| JavaScript evaluation | **Disabled** | `security.allowEvaluate` |
+| File downloads | **Disabled** | `security.allowDownloads` |
+| File uploads | **Disabled** | `security.allowUploads` |
+| Network interception | **Disabled** | `security.allowNetworkIntercept` |
+| Challenge solving / stealth | **Disabled** | Requires explicit `/solve` call with user approval |
+| Navigation domains | **All allowed** | `security.allowedDomains` (restrict with allowlist) |
+| Cookie access | **Available** | Use only when task requires it; do not log or expose session tokens |
+
+Agents reusing authenticated browser sessions should use dedicated low-privilege profiles and confirm with the user before performing account-changing actions.
 
 ## Builds & Verification
 
@@ -36,9 +52,8 @@ Binaries are built automatically from tagged commits via GitHub Actions (publicl
 
 - **Source**: https://github.com/pinchtab/pinchtab (MIT)
 - **Releases**: https://github.com/pinchtab/pinchtab/releases
-- **Latest**: v0.8.0 (March 2026)
 
-If you're concerned, audit the source—it's 12MB, zero external dependencies, mostly Go stdlib.
+If you're concerned, audit the source—it's ~15MB, zero external dependencies, mostly Go stdlib.
 
 ## VirusTotal Flag
 
@@ -63,6 +78,18 @@ Pinchtab runs a separate Chrome process with:
 - Standard Chrome security model (site isolation, CSP, etc.)
 
 Use `profiles.baseDir`, `profiles.defaultProfile`, or `PINCHTAB_CONFIG` if you need to control where PinchTab stores browser state.
+
+## Security History
+
+| Advisory | Severity | Fixed In |
+| --- | --- | --- |
+| [GHSA-p8mm-644p-phmh / CVE-2026-33623](https://github.com/advisories/GHSA-p8mm-644p-phmh) | Medium | 0.8.5 |
+| [GHSA-w5pc-m664-r62v / CVE-2026-33622](https://github.com/advisories/GHSA-w5pc-m664-r62v) | Medium | 0.8.5 |
+| [GHSA-j65m-hv65-r264 / CVE-2026-33621](https://github.com/advisories/GHSA-j65m-hv65-r264) | Medium | 0.8.4 |
+| [GHSA-mrqc-3276-74f8 / CVE-2026-33620](https://github.com/advisories/GHSA-mrqc-3276-74f8) | Medium | 0.8.4 |
+| [GHSA-xqq2-4j46-vwp7 / CVE-2026-33619](https://github.com/advisories/GHSA-xqq2-4j46-vwp7) | Medium | 0.8.4 |
+| [GHSA-qwxp-6qf9-wr4m / CVE-2026-33081](https://github.com/advisories/GHSA-qwxp-6qf9-wr4m) | Medium | v0.8.3 |
+| [GHSA-rw8p-c6hf-q3pg / CVE-2026-30834](https://github.com/advisories/GHSA-rw8p-c6hf-q3pg) | High | v0.7.7 |
 
 ## Questions?
 

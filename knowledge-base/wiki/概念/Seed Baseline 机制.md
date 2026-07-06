@@ -1,4 +1,4 @@
-# Seed Baseline 机制
+﻿# Seed Baseline 机制
 
 > 分类：概念
 > 创建时间：2026-04-12 20:04
@@ -24,3 +24,4 @@ Seed Baseline 机制是一种用于软件开发过程中的版本控制策略。
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

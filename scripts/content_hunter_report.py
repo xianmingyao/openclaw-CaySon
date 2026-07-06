@@ -3,7 +3,7 @@
 import re
 from datetime import datetime
 
-DATA_DIR = r"E:\workspace\content-hunter-data\data"
+DATA_DIR = r"E:\workspace\content-hunter-data"
 
 def count_file(filepath, old_pattern, new_pattern):
     with open(filepath, 'r', encoding='utf-8') as f:

@@ -4,16 +4,22 @@
 
 from __future__ import annotations
 
+import argparse
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
 
-from ..chunker import DEFAULT_MAX_CHUNK_TOKENS, chunk_text
-from ..client import HaSClient, estimate_token_count
+from ..chunker import chunk_text
+from ..client import HaSClient
 from ..mapping import parse_json_tolerant
 from ..parallel import DEFAULT_MAX_PARALLEL_REQUESTS, resolve_parallel_workers
 from ..prompts import build_ner_messages
 from ..validation import normalize_entity_map
+
+# scan only produces a small JSON entity list (no full-text rewrite),
+# so chunks can be larger than the 3000 default used by hide/seek.
+DEFAULT_SCAN_MAX_CHUNK_TOKENS = 5000
 
 
 @dataclass(frozen=True)
@@ -73,9 +79,9 @@ def _merge_entities(chunk_results: List[Dict[str, List[str]]]) -> Dict[str, List
 
 def estimate_scan_request_count(
     text: str,
-    max_chunk_tokens: int = DEFAULT_MAX_CHUNK_TOKENS,
+    max_chunk_tokens: int = DEFAULT_SCAN_MAX_CHUNK_TOKENS,
     *,
-    count_tokens: Callable[[str], int] = estimate_token_count,
+    count_tokens: Callable[[str], int],
 ) -> int:
     """Estimate how many model requests scan will issue for one text."""
     if not text or not text.strip():
@@ -85,9 +91,9 @@ def estimate_scan_request_count(
 
 def estimate_scan_batch_request_count(
     documents: List[ScanDocument],
-    max_chunk_tokens: int = DEFAULT_MAX_CHUNK_TOKENS,
+    max_chunk_tokens: int = DEFAULT_SCAN_MAX_CHUNK_TOKENS,
     *,
-    count_tokens: Callable[[str], int] = estimate_token_count,
+    count_tokens: Callable[[str], int],
 ) -> int:
     """Estimate total scan requests across a batch of documents."""
     return sum(
@@ -104,7 +110,7 @@ def run_scan(
     client: HaSClient,
     text: str,
     types: List[str],
-    max_chunk_tokens: int = DEFAULT_MAX_CHUNK_TOKENS,
+    max_chunk_tokens: int = DEFAULT_SCAN_MAX_CHUNK_TOKENS,
     max_parallel_requests: int = DEFAULT_MAX_PARALLEL_REQUESTS,
 ) -> Dict[str, List[str]]:
     """Scan text for sensitive entities.
@@ -161,7 +167,7 @@ def run_scan_batch(
     client: HaSClient,
     documents: List[ScanDocument],
     types: List[str],
-    max_chunk_tokens: int = DEFAULT_MAX_CHUNK_TOKENS,
+    max_chunk_tokens: int = DEFAULT_SCAN_MAX_CHUNK_TOKENS,
     max_parallel_requests: int = DEFAULT_MAX_PARALLEL_REQUESTS,
 ) -> Dict[str, Any]:
     """Scan multiple plaintext documents with a shared global request pool."""
@@ -234,3 +240,93 @@ def run_scan_batch(
         "count": len(results),
         "summary": summary,
     }
+
+
+# ======================================================================
+# CLI handler
+# ======================================================================
+
+
+def cmd_scan(args: argparse.Namespace) -> None:
+    """Execute the scan (NER) command."""
+    from ..cli_utils import (
+        collect_text_documents,
+        estimate_tokens_for_planning,
+        output,
+        parse_types,
+        read_text,
+        required_slots,
+    )
+    from ..client import DEFAULT_SERVER
+    from ..server_runtime import acquire_server
+
+    types = parse_types(args.type)
+    dir_path = getattr(args, "dir", None)
+
+    t0 = time.time()
+    if dir_path:
+        raw_documents, skipped = collect_text_documents(dir_path)
+        documents = [
+            ScanDocument(source=item["file"], text=item["text"])
+            for item in raw_documents
+        ]
+        request_count = estimate_scan_batch_request_count(
+            documents,
+            max_chunk_tokens=args.max_chunk_tokens,
+            count_tokens=estimate_tokens_for_planning,
+        )
+
+        if documents and request_count > 0:
+            with acquire_server(
+                DEFAULT_SERVER,
+                required_slots=required_slots(request_count, args.max_parallel_requests),
+            ) as lease:
+                client = lease.create_client()
+                result = run_scan_batch(
+                    client,
+                    documents,
+                    types,
+                    max_chunk_tokens=args.max_chunk_tokens,
+                    max_parallel_requests=args.max_parallel_requests,
+                )
+        elif documents:
+            result = {
+                "results": [
+                    {"file": document.source, "entities": {}}
+                    for document in documents
+                ],
+                "count": len(documents),
+                "summary": {},
+            }
+        else:
+            result = {"results": [], "count": 0, "summary": {}}
+
+        if skipped:
+            result["skipped"] = skipped
+            result["skipped_count"] = len(skipped)
+    else:
+        text = read_text(args)
+        request_count = estimate_scan_request_count(
+            text,
+            max_chunk_tokens=args.max_chunk_tokens,
+            count_tokens=estimate_tokens_for_planning,
+        )
+        if request_count > 0:
+            with acquire_server(
+                DEFAULT_SERVER,
+                required_slots=required_slots(request_count, args.max_parallel_requests),
+            ) as lease:
+                client = lease.create_client()
+                result = run_scan(
+                    client,
+                    text,
+                    types,
+                    max_chunk_tokens=args.max_chunk_tokens,
+                    max_parallel_requests=args.max_parallel_requests,
+                )
+        else:
+            result = {"entities": {}}
+    elapsed_ms = round((time.time() - t0) * 1000)
+
+    output("scan", result, timing=args.timing, elapsed_ms=elapsed_ms)
+

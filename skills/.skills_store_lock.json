@@ -96,6 +96,18 @@
       "zip_url": "https://lightmake.site/api/v1/download?slug=doubao-chat",
       "source": "skillhub",
       "version": "1.0.0"
+    },
+    "opencli-skills": {
+      "name": "opencli",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=opencli-skills",
+      "source": "skillhub",
+      "version": "1.0.1"
+    },
+    "douyin-transcribe-skill": {
+      "name": "抖音视频智能助手",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=douyin-transcribe-skill",
+      "source": "skillhub",
+      "version": "1.1.0"
     }
   }
 }

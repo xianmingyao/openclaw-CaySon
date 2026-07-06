@@ -9,15 +9,20 @@ Internal workflow per chunk:
 
 from __future__ import annotations
 
+import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 import json
+import os
 from pathlib import Path
 import sys
+import time
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..chunker import DEFAULT_MAX_CHUNK_TOKENS, take_chunk
-from ..client import HaSClient
+from ..client import ContextOverflowError, HaSClient
+from ..pair import compute_pair_mapping
+from ..server_runtime import DEFAULT_CONTEXT_PER_SLOT
 from ..mapping import (
     TAG_PATTERN,
     find_composite_entries,
@@ -52,7 +57,8 @@ def estimate_hide_batch_request_count(documents: List[HideDocument]) -> int:
 
 def _warn(message: str) -> None:
     """Emit a non-fatal warning to stderr."""
-    print(f"Warning: {message}", file=sys.stderr)
+    if os.environ.get("HAS_TEXT_VERBOSE") == "1":
+        print(f"Warning: {message}", file=sys.stderr)
 
 
 def _clone_hide_client(client: HaSClient) -> HaSClient:
@@ -64,27 +70,56 @@ def _clone_hide_client(client: HaSClient) -> HaSClient:
         return HaSClient(client.base_url)
 
 
+_HIDE_OVERHEAD = 200
+# Pair call fixed overhead: pair prompt (~30) + pair mapping output (~200)
+_PAIR_OVERHEAD = 230
+# Anonymized output is roughly 1.05x the input (entity names become tags)
+_OUTPUT_RATIO = 1.05
+_MIN_CHUNK_TOKENS = 100
+# Retry parameters for context overflow recovery
+_RETRY_SHRINK_FACTOR = 0.75   # shrink chunk to 75% on overflow
+_MAX_OVERFLOW_RETRIES = 2     # retry up to 2 times per chunk position
+
+
 def _compute_chunk_budget(
     count_tokens,
     max_chunk_tokens: int,
     mapping: Optional[Dict[str, List[str]]],
+    context_window: int = DEFAULT_CONTEXT_PER_SLOT,
 ) -> int:
     """Shrink the text budget as the carried mapping grows.
 
-    `hide_with` injects the full accumulated mapping into every later chunk.
-    Subtracting its tokenized size keeps later requests inside the 8K context
-    window instead of chunking solely on the raw source text.
+    The Hide call is a 3-turn conversation where the source text appears as
+    input (T1-user) and the anonymized output (~1.05x input) appears as
+    T2-assistant.  The accumulated mapping is injected once in T2-user.
+
+    Context constraint for Hide:
+        T*(1 + α) + F_hide + M  ≤  context_window
+        T  ≤  (context_window - F_hide - M) / (1 + α)
+
+    Model-Pair imposes a fixed ceiling (independent of mapping):
+        T*(1 + α) + F_pair  ≤  context_window
+        T  ≤  (context_window - F_pair) / (1 + α)
     """
+    # Pair ceiling (fixed, does not depend on mapping)
+    pair_limit = int((context_window - _PAIR_OVERHEAD) / (1 + _OUTPUT_RATIO))
+
     if not mapping:
-        return max_chunk_tokens
+        hide_limit = int((context_window - _HIDE_OVERHEAD) / (1 + _OUTPUT_RATIO))
+        return min(max_chunk_tokens, hide_limit, pair_limit)
 
     mapping_json = json.dumps(mapping, ensure_ascii=False, separators=(",", ":"))
     mapping_tokens = count_tokens(mapping_json)
-    budget = max_chunk_tokens - mapping_tokens
-    if budget <= 0:
+
+    # Hide constraint: text appears ~2x, mapping appears 1x
+    hide_limit = int((context_window - _HIDE_OVERHEAD - mapping_tokens) / (1 + _OUTPUT_RATIO))
+
+    budget = min(max_chunk_tokens, hide_limit, pair_limit)
+    if budget < _MIN_CHUNK_TOKENS:
         raise RuntimeError(
             "Accumulated mapping no longer leaves room for more text chunks "
-            f"({len(mapping)} entries, ~{mapping_tokens} mapping tokens). "
+            f"({len(mapping)} entries, ~{mapping_tokens} mapping tokens, "
+            f"derived budget {hide_limit}). "
             "Split the document or reduce the carried mapping."
         )
     return budget
@@ -179,6 +214,21 @@ def _handle_composite_tags(
 
 
 # ======================================================================
+# Tool-Pair mapping extraction (diff-based, no model call)
+# ======================================================================
+
+def _tool_pair(
+    original_text: str,
+    anonymized_text: str,
+) -> Optional[Dict[str, List[str]]]:
+    """Extract mapping via diff alignment.  Returns None if self-check fails."""
+    result = compute_pair_mapping(original_text, anonymized_text)
+    if not result.self_check.get("pass"):
+        return None
+    return result.normalized_mapping
+
+
+# ======================================================================
 # Model-Pair mapping extraction
 # ======================================================================
 
@@ -215,8 +265,14 @@ def _hide_single_chunk(
     text: str,
     types: List[str],
     existing_mapping: Optional[Dict[str, List[str]]] = None,
+    tool_pair: bool = True,
+    context_window: int = DEFAULT_CONTEXT_PER_SLOT,
 ) -> Tuple[str, Dict[str, List[str]]]:
     """Anonymize a single text chunk.
+
+    Args:
+        tool_pair: If True, try diff-based pair extraction first (faster,
+            no model call).  Falls back to Model-Pair when self-check fails.
 
     Returns:
         (anonymized_text, mapping)
@@ -245,8 +301,24 @@ def _hide_single_chunk(
 
     anonymized_text = client.chat(messages)
 
-    # Step 3: Model-Pair — extract mapping
-    chunk_mapping = _model_pair(client, text, anonymized_text)
+    # Step 3: Pair — extract mapping
+    chunk_mapping = None
+    if tool_pair:
+        chunk_mapping = _tool_pair(text, anonymized_text)
+        if chunk_mapping is not None:
+            # Tool-Pair succeeded; still need to split composites if any
+            chunk_mapping = _handle_composite_tags(client, chunk_mapping)
+            if not _mapping_self_check(anonymized_text, chunk_mapping):
+                _warn("Tool-Pair mapping failed self-check after composite split, "
+                      "falling back to Model-Pair")
+                chunk_mapping = None
+            else:
+                _warn("Tool-Pair succeeded (skipped Model-Pair)")
+        else:
+            _warn("Tool-Pair self-check failed, falling back to Model-Pair")
+
+    if chunk_mapping is None:
+        chunk_mapping = _model_pair(client, text, anonymized_text)
 
     # Merge with existing mapping
     if existing_mapping:
@@ -268,6 +340,8 @@ def run_hide(
     existing_mapping: Optional[Dict[str, List[str]]] = None,
     max_chunk_tokens: int = DEFAULT_MAX_CHUNK_TOKENS,
     progress_label: Optional[str] = None,
+    tool_pair: bool = True,
+    context_window: int = DEFAULT_CONTEXT_PER_SLOT,
 ) -> Dict[str, Any]:
     """Anonymize text with automatic chunking and mapping accumulation.
 
@@ -301,6 +375,7 @@ def run_hide(
             client.count_tokens,
             max_chunk_tokens,
             accumulated_mapping if accumulated_mapping else None,
+            context_window=context_window,
         )
         chunk = take_chunk(
             remaining_text,
@@ -314,21 +389,50 @@ def run_hide(
         next_remaining = remaining_text[len(chunk.text):]
         if chunk_count > 0 or next_remaining:
             prefix = f"{progress_label}: " if progress_label else ""
-            print(
-                f"{prefix}Processing chunk {chunk_count + 1} "
-                f"({chunk.token_count} tokens, {len(chunk.text)} chars; "
-                f"text budget {chunk_budget})...",
-                file=sys.stderr,
-            )
+            if os.environ.get("HAS_TEXT_VERBOSE") == "1":
+                print(
+                    f"{prefix}Processing chunk {chunk_count + 1} "
+                    f"({chunk.token_count} tokens, {len(chunk.text)} chars; "
+                    f"text budget {chunk_budget})...",
+                    file=sys.stderr,
+                )
 
-        anonymized_text, accumulated_mapping = _hide_single_chunk(
-            client,
-            chunk.text,
-            types,
-            existing_mapping=accumulated_mapping if accumulated_mapping else None,
-        )
+        # Retry with shrunk chunk on context overflow
+        current_chunk_text = chunk.text
+        current_budget = chunk_budget
+        for attempt in range(_MAX_OVERFLOW_RETRIES + 1):
+            try:
+                anonymized_text, accumulated_mapping = _hide_single_chunk(
+                    client,
+                    current_chunk_text,
+                    types,
+                    existing_mapping=accumulated_mapping if accumulated_mapping else None,
+                    tool_pair=tool_pair,
+                    context_window=context_window,
+                )
+                break
+            except ContextOverflowError:
+                if attempt >= _MAX_OVERFLOW_RETRIES:
+                    raise
+                current_budget = int(current_budget * _RETRY_SHRINK_FACTOR)
+                if current_budget < _MIN_CHUNK_TOKENS:
+                    raise
+                _warn(
+                    f"Context overflow on chunk {chunk_count + 1}, "
+                    f"retrying with reduced budget {current_budget}"
+                )
+                retry_chunk = take_chunk(
+                    remaining_text,
+                    client.count_tokens,
+                    current_budget,
+                    index=chunk_count,
+                )
+                if retry_chunk is None:
+                    raise
+                current_chunk_text = retry_chunk.text
+
         anonymized_parts.append(anonymized_text)
-        remaining_text = next_remaining
+        remaining_text = remaining_text[len(current_chunk_text):]
         chunk_count += 1
 
     result = {
@@ -349,6 +453,8 @@ def run_hide_batch(
     existing_mapping: Optional[Dict[str, List[str]]] = None,
     max_chunk_tokens: int = DEFAULT_MAX_CHUNK_TOKENS,
     max_parallel_requests: int = DEFAULT_MAX_PARALLEL_REQUESTS,
+    tool_pair: bool = True,
+    context_window: int = DEFAULT_CONTEXT_PER_SLOT,
 ) -> Dict[str, Any]:
     """Anonymize multiple plaintext documents with independent per-file mappings."""
     if max_parallel_requests < 1:
@@ -367,6 +473,8 @@ def run_hide_batch(
             existing_mapping=existing_mapping,
             max_chunk_tokens=max_chunk_tokens,
             progress_label=Path(document.source).name,
+            tool_pair=tool_pair,
+            context_window=context_window,
         )
         hidden["file"] = document.source
         return hidden
@@ -392,3 +500,232 @@ def run_hide_batch(
 
     materialized = [result for result in results if result is not None]
     return {"results": materialized, "count": len(materialized)}
+
+
+# ======================================================================
+# CLI handler
+# ======================================================================
+
+
+def cmd_hide(args: argparse.Namespace) -> None:
+    """Execute the hide (anonymize) command."""
+    from ..cli_utils import (
+        FALLBACK_CONTEXT_PER_SLOT,
+        absolute_path,
+        collect_text_documents,
+        fatal,
+        load_mapping_file,
+        output,
+        parse_types,
+        read_text,
+        required_slots,
+        resolve_single_output_path,
+        write_text_output,
+    )
+    from ..client import DEFAULT_SERVER
+    from ..mapping import save_mapping
+    from ..server_runtime import DEFAULT_CONTEXT_PER_SLOT, acquire_server
+
+    types = parse_types(args.type)
+    dir_path = getattr(args, "dir", None)
+
+    if dir_path and args.mapping:
+        fatal(
+            "invalid_mapping_usage",
+            "hide --dir does not support --mapping; batch hide always writes per-file mappings.",
+        )
+    if dir_path and args.output:
+        fatal(
+            "invalid_output_usage",
+            "hide --dir does not support --output; use --output-dir instead.",
+        )
+    if dir_path and args.mapping_output:
+        fatal(
+            "invalid_output_usage",
+            "hide --dir does not support --mapping-output; use --mapping-dir instead.",
+        )
+    if not dir_path and args.output_dir:
+        fatal(
+            "invalid_output_usage",
+            "hide without --dir does not support --output-dir; use --output instead.",
+        )
+    if not dir_path and args.mapping_dir:
+        fatal(
+            "invalid_output_usage",
+            "hide without --dir does not support --mapping-dir; use --mapping-output instead.",
+        )
+    if not dir_path and not args.mapping_output:
+        fatal(
+            "missing_mapping_output",
+            "Single-file hide requires --mapping-output so the mapping is not emitted inline.",
+        )
+
+    existing_mapping = None
+    existing_mapping_path: Optional[Path] = None
+    if args.mapping:
+        existing_mapping = load_mapping_file(args.mapping)
+        existing_mapping_path = Path(args.mapping)
+
+    t0 = time.time()
+    if dir_path:
+        raw_documents, skipped = collect_text_documents(dir_path)
+        documents = [
+            HideDocument(source=item["file"], text=item["text"])
+            for item in raw_documents
+        ]
+        _required = required_slots(
+            estimate_hide_batch_request_count(documents),
+            args.max_parallel_requests,
+        )
+
+        if documents and _required > 0:
+            with acquire_server(
+                DEFAULT_SERVER,
+                required_slots=_required,
+            ) as lease:
+                client = lease.create_client()
+                batch_result = run_hide_batch(
+                    client,
+                    documents,
+                    types,
+                    existing_mapping=existing_mapping,
+                    max_chunk_tokens=args.max_chunk_tokens,
+                    max_parallel_requests=args.max_parallel_requests,
+                    tool_pair=args.tool_pair,
+                )
+        elif documents:
+            batch_result = {
+                "results": [
+                    {
+                        "file": document.source,
+                        "text": document.text,
+                        "mapping": dict(existing_mapping) if existing_mapping else {},
+                    }
+                    for document in documents
+                ],
+                "count": len(documents),
+            }
+        else:
+            batch_result = {"results": [], "count": 0}
+
+        output_dir = Path(args.output_dir or str(Path(dir_path) / ".has" / "anonymized"))
+        mapping_dir = Path(args.mapping_dir or str(output_dir / "mappings"))
+        manifest_results: List[Dict[str, Any]] = []
+
+        for item in batch_result["results"]:
+            source_path = Path(str(item["file"]))
+            output_path = output_dir / source_path.name
+            mapping_path = mapping_dir / f"{source_path.name}.mapping.json"
+            if output_path.resolve() == source_path.resolve():
+                fatal("refusing_overwrite", f"Refusing to overwrite source file: {source_path}")
+
+            write_text_output(output_path, str(item["text"]))
+            mapping_path.parent.mkdir(parents=True, exist_ok=True)
+            save_mapping(item["mapping"], str(mapping_path))
+
+            manifest_item: Dict[str, Any] = {
+                "file": absolute_path(source_path),
+                "output": absolute_path(output_path),
+                "mapping_output": absolute_path(mapping_path),
+            }
+            if "chunks" in item:
+                manifest_item["chunks"] = item["chunks"]
+            manifest_results.append(manifest_item)
+
+        result = {"results": manifest_results, "count": len(manifest_results)}
+        if skipped:
+            result["skipped"] = skipped
+            result["skipped_count"] = len(skipped)
+    else:
+        source_path = Path(args.file) if args.file else None
+        output_path = resolve_single_output_path(args.output, input_path=source_path)
+        mapping_output_path = resolve_single_output_path(
+            args.mapping_output,
+            input_path=source_path,
+            input_label="input file",
+        )
+        if mapping_output_path is None:
+            fatal(
+                "missing_mapping_output",
+                "Single-file hide requires --mapping-output so the mapping is not emitted inline.",
+            )
+        if output_path is not None and output_path.resolve(strict=False) == mapping_output_path.resolve(strict=False):
+            fatal(
+                "invalid_output_usage",
+                "hide output and mapping output must be different paths.",
+            )
+        if existing_mapping_path is not None:
+            resolved_mapping_input = existing_mapping_path.resolve(strict=False)
+            if output_path is not None and output_path.resolve(strict=False) == resolved_mapping_input:
+                fatal(
+                    "refusing_overwrite",
+                    "--output must not overwrite the input --mapping file.",
+                )
+            if mapping_output_path.resolve(strict=False) == resolved_mapping_input:
+                fatal(
+                    "refusing_overwrite",
+                    "--mapping-output must not overwrite the input --mapping file. "
+                    "Use a different path for the updated mapping.",
+                )
+
+        text = read_text(args)
+        if text.strip():
+            context_per_slot = DEFAULT_CONTEXT_PER_SLOT
+            for _attempt in range(2):
+                try:
+                    with acquire_server(
+                        DEFAULT_SERVER,
+                        required_slots=1,
+                        context_per_slot=context_per_slot,
+                    ) as lease:
+                        client = lease.create_client()
+                        result = run_hide(
+                            client,
+                            text,
+                            types,
+                            existing_mapping=existing_mapping,
+                            max_chunk_tokens=args.max_chunk_tokens,
+                            tool_pair=args.tool_pair,
+                            context_window=context_per_slot,
+                        )
+                    break
+                except RuntimeError as exc:
+                    if (
+                        context_per_slot < FALLBACK_CONTEXT_PER_SLOT
+                        and "no longer leaves room" in str(exc)
+                    ):
+                        context_per_slot = FALLBACK_CONTEXT_PER_SLOT
+                        if os.environ.get("HAS_TEXT_VERBOSE") == "1":
+                            print(
+                                f"Mapping overflow at {DEFAULT_CONTEXT_PER_SLOT} context; "
+                                f"retrying with {FALLBACK_CONTEXT_PER_SLOT}...",
+                                file=sys.stderr,
+                            )
+                        continue
+                    raise
+        else:
+            result = {"text": "", "mapping": dict(existing_mapping) if existing_mapping else {}}
+
+        mapping_output_path.parent.mkdir(parents=True, exist_ok=True)
+        save_mapping(result["mapping"], str(mapping_output_path))
+        if output_path is not None:
+            write_text_output(output_path, str(result["text"]))
+            single_result: Dict[str, Any] = {
+                "output": absolute_path(output_path),
+                "mapping_output": absolute_path(mapping_output_path),
+            }
+        else:
+            single_result = {
+                "text": str(result["text"]),
+                "mapping_output": absolute_path(mapping_output_path),
+            }
+        if "chunks" in result:
+            single_result["chunks"] = result["chunks"]
+        result = single_result
+    elapsed_ms = round((time.time() - t0) * 1000)
+    output(
+        "hide",
+        result,
+        timing=args.timing,
+        elapsed_ms=elapsed_ms,
+    )

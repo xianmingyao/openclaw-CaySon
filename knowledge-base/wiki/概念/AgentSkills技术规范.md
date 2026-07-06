@@ -1,4 +1,4 @@
-# AgentSkills 技术规范
+﻿# AgentSkills 技术规范
 
 > 类型：概念/方法论
 > 更新时间：2026-04-10
@@ -35,3 +35,4 @@ AgentSkills的SKILL.md技术规范，用于构建AI Agent的"能力包"。
 ## 相关标签
 
 #AgentSkills #SKILL规范 #AI-Agent #YAML #CoT #思维链
+

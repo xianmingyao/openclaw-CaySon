@@ -1,4 +1,4 @@
-# Karpathy 知识库使用指南
+﻿# Karpathy 知识库使用指南
 
 > 基于 Andrej Karpathy 的 LLM Wiki 工作流，让 AI 帮你管理知识。
 
@@ -231,3 +231,4 @@ set NOTION_API_TOKEN=你的token
 
 *最后更新：2026-04-09*
 *由 CaySon 知识库系统自动维护*
+

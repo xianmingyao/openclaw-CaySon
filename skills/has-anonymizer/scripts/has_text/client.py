@@ -8,64 +8,19 @@ from typing import Dict, List
 
 DEFAULT_SERVER = "http://127.0.0.1:8080"
 
-# Per-script tokens-per-character ratios, measured against the HaS 0.6B Q8
-# model tokenizer on representative text blocks:
-#
-#   Chinese (CJK Unified):  0.56  (540 chars → 302 tokens)
-#   Japanese (hiragana/katakana + CJK): 0.74 measured, padded to 0.95
-#   Korean (hangul):        0.67  (121 chars → 81 tokens)
-#   Latin letters (English prose): 0.20  (1693 chars → 341 tokens)
-#   Digits / ASCII punct:   ~0.55  (individual tokens in most contexts)
-#   Fallback:               0.56  (conservative, avoids under-estimation)
-#
-# The Latin letter ratio (0.20) reflects subword merging in continuous English
-# text. Digits and punctuation are usually emitted as individual tokens, so
-# they get a higher ratio. We pad the letter ratio from 0.20 → 0.25 for safety.
-_RATIO_CJK = 0.56
-_RATIO_KANA = 0.95
-_RATIO_HANGUL = 0.67
-_RATIO_LATIN_LETTER = 0.25
-_RATIO_DIGIT_PUNCT = 0.55
-_RATIO_FALLBACK = 0.56
 
+class ContextOverflowError(RuntimeError):
+    """Raised when the request exceeds or fills the model's context window.
 
-def _char_ratio(code: int) -> float:
-    """Return the per-character token ratio for a Unicode code point."""
-    # ASCII letters benefit from subword merging
-    if 65 <= code <= 90 or 97 <= code <= 122:
-        return _RATIO_LATIN_LETTER
-    # ASCII digits and punctuation are mostly individual tokens
-    if code < 0x0100:
-        return _RATIO_DIGIT_PUNCT
-    # CJK Unified Ideographs (shared by Chinese and Japanese kanji)
-    if 0x4E00 <= code <= 0x9FFF:
-        return _RATIO_CJK
-    # Hiragana / Katakana
-    if 0x3040 <= code <= 0x30FF:
-        return _RATIO_KANA
-    # Hangul Syllables
-    if 0xAC00 <= code <= 0xD7AF:
-        return _RATIO_HANGUL
-    # CJK Extension A/B, Compatibility Ideographs, etc.
-    if 0x3400 <= code <= 0x4DBF or 0x20000 <= code <= 0x2A6DF:
-        return _RATIO_CJK
-    # CJK punctuation, symbols, fullwidth forms
-    if 0x3000 <= code <= 0x303F or 0xFF00 <= code <= 0xFFEF:
-        return _RATIO_CJK
-    return _RATIO_FALLBACK
-
-
-def estimate_token_count(text: str) -> int:
-    """Cheap local token estimate used when llama-server is unavailable.
-
-    Uses per-script ratios calibrated against the HaS 0.6B model tokenizer
-    so that CJK-heavy text is not under-estimated (which would produce
-    chunks that exceed the model's context window).
+    Covers both cases:
+    - Prompt alone exceeds context (HTTP 400, exceed_context_size_error)
+    - Prompt fits but output is truncated (finish_reason: "length")
     """
-    if not text:
-        return 0
-    total = sum(_char_ratio(ord(ch)) for ch in text)
-    return max(1, int(total))
+
+    def __init__(self, message: str, *, prompt_tokens: int = 0, ctx_size: int = 0):
+        super().__init__(message)
+        self.prompt_tokens = prompt_tokens
+        self.ctx_size = ctx_size
 
 
 def _load_requests():
@@ -103,12 +58,13 @@ class HaSClient:
 
         Raises:
             RuntimeError: If the server is unreachable or returns an error.
+            ContextOverflowError: If the prompt exceeds context or output
+                is truncated due to context exhaustion.
         """
         url = f"{self.base_url}/v1/chat/completions"
         payload = {"messages": messages}
         try:
             resp = self._session.post(url, json=payload, timeout=120)
-            resp.raise_for_status()
         except self._requests.ConnectionError:
             raise RuntimeError(
                 f"Cannot connect to llama-server at {self.base_url}\n"
@@ -117,13 +73,44 @@ class HaSClient:
                 f"For parallel scan/seek, add --parallel N (or -np N) and scale -c to 8192 * N "
                 f"so each slot keeps the full 8K context budget."
             )
+
+        # Detect prompt overflow (HTTP 400 with exceed_context_size_error)
+        if resp.status_code == 400:
+            try:
+                err = resp.json().get("error", {})
+            except Exception:
+                err = {}
+            if err.get("type") == "exceed_context_size_error":
+                raise ContextOverflowError(
+                    f"Prompt ({err.get('n_prompt_tokens', '?')} tokens) exceeds "
+                    f"context window ({err.get('n_ctx', '?')} tokens)",
+                    prompt_tokens=err.get("n_prompt_tokens", 0),
+                    ctx_size=err.get("n_ctx", 0),
+                )
+
+        try:
+            resp.raise_for_status()
         except self._requests.HTTPError as e:
             raise RuntimeError(
                 f"llama-server returned {e.response.status_code}: {e.response.text}"
             ) from e
 
         data = resp.json()
-        return data["choices"][0]["message"]["content"]
+        choice = data["choices"][0]
+
+        # Detect output truncation (finish_reason: "length")
+        if choice.get("finish_reason") == "length":
+            usage = data.get("usage", {})
+            raise ContextOverflowError(
+                f"Output truncated: context full "
+                f"(prompt {usage.get('prompt_tokens', '?')} + "
+                f"completion {usage.get('completion_tokens', '?')} = "
+                f"{usage.get('total_tokens', '?')} tokens)",
+                prompt_tokens=usage.get("prompt_tokens", 0),
+                ctx_size=usage.get("total_tokens", 0),
+            )
+
+        return choice["message"]["content"]
 
     # ------------------------------------------------------------------
     # Tokenize (for chunking)
@@ -143,9 +130,14 @@ class HaSClient:
             resp = self._session.post(url, json={"content": text}, timeout=30)
             resp.raise_for_status()
         except self._requests.ConnectionError:
-            return [0] * estimate_token_count(text)
-        except self._requests.HTTPError:
-            return [0] * estimate_token_count(text)
+            raise RuntimeError(
+                f"Cannot connect to llama-server at {self.base_url} for tokenization.\n"
+                f"Token counting requires a running llama-server."
+            )
+        except self._requests.HTTPError as e:
+            raise RuntimeError(
+                f"llama-server tokenize returned {e.response.status_code}: {e.response.text}"
+            ) from e
 
         data = resp.json()
         return data.get("tokens", [])

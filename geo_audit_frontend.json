@@ -1,0 +1,641 @@
+{
+  "scanned_files": {
+    "admin": [
+      "apps/admin/package.json",
+      "apps/admin/config/config.ts",
+      "apps/admin/src/services/alerts.ts",
+      "apps/admin/src/services/auth.ts",
+      "apps/admin/src/services/crawler.ts",
+      "apps/admin/src/services/dashboard.ts",
+      "apps/admin/src/services/open-api-keys.ts",
+      "apps/admin/src/services/permissions.ts",
+      "apps/admin/src/services/projects.ts",
+      "apps/admin/src/services/reference-analysis.ts",
+      "apps/admin/src/services/reports.ts",
+      "apps/admin/src/services/settings.ts",
+      "apps/admin/src/services/ant-design-pro/api.ts",
+      "apps/admin/src/pages/dashboard/index.tsx",
+      "apps/admin/src/pages/projects/list.tsx",
+      "apps/admin/src/pages/projects/[id]/index.tsx",
+      "apps/admin/src/pages/projects/[id]/components/ConfigTab.tsx",
+      "apps/admin/src/pages/clients/index.tsx",
+      "apps/admin/src/pages/Analysis/Reference/index.tsx",
+      "apps/admin/src/pages/Analysis/Reference/ContentAttribution.tsx",
+      "apps/admin/src/pages/Analysis/Reference/FeatureAnalysis.tsx",
+      "apps/admin/src/pages/Crawl/OneTime/index.tsx",
+      "apps/admin/src/pages/Crawl/TempTasks/index.tsx",
+      "apps/admin/src/pages/Crawl/TempTasks/Detail.tsx",
+      "apps/admin/src/pages/crawler/components/AlertsTab.tsx",
+      "apps/admin/src/pages/crawler/components/SchedulesTab.tsx",
+      "apps/admin/src/pages/crawler/components/ServersTab.tsx",
+      "apps/admin/src/pages/crawler/components/StatusTab.tsx",
+      "apps/admin/src/pages/permissions/components/ClientUserTab.tsx",
+      "apps/admin/src/pages/permissions/components/OpenApiKeyTab.tsx",
+      "apps/admin/src/pages/permissions/components/OperatorTab.tsx",
+      "apps/admin/src/pages/reports/index.tsx",
+      "apps/admin/src/pages/settings/index.tsx",
+      "apps/admin/src/pages/user/login/index.tsx",
+      "apps/admin/src/components/ErrorAlert/index.tsx",
+      "apps/admin/src/components/DebugPanel/index.tsx",
+      "apps/admin/src/pages/404.tsx",
+      "apps/admin/src/pages/account/security/index.tsx",
+      "apps/admin/src/pages/user/forgot-password/index.tsx"
+    ],
+    "customer": [
+      "apps/customer/package.json",
+      "apps/customer/src/proxy.ts",
+      "apps/customer/src/app/layout.tsx",
+      "apps/customer/src/app/page.tsx",
+      "apps/customer/src/app/api/contract/route.ts",
+      "apps/customer/src/app/api/health/route.ts",
+      "apps/customer/src/app/[locale]/layout.tsx",
+      "apps/customer/src/app/[locale]/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/layout.tsx",
+      "apps/customer/src/app/[locale]/(platform)/answers/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/answers/[id]/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/brands/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/brands/[id]/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/briefs/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/citations/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/dashboard/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/reports/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/settings/page.tsx",
+      "apps/customer/src/app/[locale]/(platform)/visibility/page.tsx",
+      "apps/customer/src/app/[locale]/login/page.tsx",
+      "apps/customer/src/lib/api/client.ts",
+      "apps/customer/src/lib/api/base-url.ts",
+      "apps/customer/src/lib/swr-config.tsx",
+      "apps/customer/src/lib/api-utils.ts",
+      "apps/customer/src/lib/api/services/answers.ts",
+      "apps/customer/src/lib/api/services/dashboard.ts",
+      "apps/customer/src/hooks/use-dashboard.ts",
+      "apps/customer/src/hooks/use-brands.ts",
+      "apps/customer/src/hooks/use-answers.ts",
+      "apps/customer/src/hooks/use-citations.ts",
+      "apps/customer/src/hooks/use-competitors.ts",
+      "apps/customer/src/i18n/navigation",
+      "apps/customer/src/i18n/hooks",
+      "apps/customer/src/lib/stores/auth-store.ts",
+      "apps/customer/src/lib/stores/project-store.ts",
+      "apps/customer/src/components/layout/Sidebar.tsx",
+      "apps/customer/src/components/layout/PageContainer",
+      "apps/customer/src/components/ui/card",
+      "apps/customer/src/components/ui/skeleton",
+      "apps/customer/src/components/ui/button",
+      "apps/customer/src/components/ui/simple-select",
+      "apps/customer/src/components/ui/disabled-switch",
+      "apps/customer/src/components/data/kpi-card",
+      "apps/customer/src/components/data/brand-mention-badge",
+      "apps/customer/src/components/data/error-card",
+      "apps/customer/src/components/data/answer-detail-modal",
+      "apps/customer/src/components/data/geo-data-table",
+      "apps/customer/src/components/data/platform-badge",
+      "apps/customer/src/components/data/question-bar",
+      "apps/customer/src/components/PresalePlaceholder",
+      "apps/customer/src/components/charts/aurora-tooltip",
+      "apps/customer/src/components/charts/aurora-gradient",
+      "apps/customer/src/components/charts/chart-theme"
+    ],
+    "devpanel": [
+      "apps/devpanel/package.json",
+      "apps/devpanel/src/middleware.ts",
+      "apps/devpanel/src/app/layout.tsx",
+      "apps/devpanel/src/app/page.tsx",
+      "apps/devpanel/src/app/api/auth/login/route.ts",
+      "apps/devpanel/src/app/api/auth/logout/route.ts",
+      "apps/devpanel/src/app/api/devpanel/api-status/route.ts",
+      "apps/devpanel/src/app/api/devpanel/health/route.ts",
+      "apps/devpanel/src/app/api/devpanel/issues/route.ts",
+      "apps/devpanel/src/app/api/devpanel/lineage/[table]/route.ts",
+      "apps/devpanel/src/app/api/devpanel/page-health/[platform]/[page]/route.ts",
+      "apps/devpanel/src/app/api/devpanel/pipeline/[projectId]/route.ts",
+      "apps/devpanel/src/app/api/export-csv/route.ts",
+      "apps/devpanel/src/app/api-panorama/page.tsx",
+      "apps/devpanel/src/app/bugs/page.tsx",
+      "apps/devpanel/src/app/database/page.tsx",
+      "apps/devpanel/src/app/github/page.tsx",
+      "apps/devpanel/src/app/health/page.tsx",
+      "apps/devpanel/src/app/login/page.tsx",
+      "apps/devpanel/src/app/pipeline/page.tsx",
+      "apps/devpanel/src/app/health-diagnosis/page.tsx",
+      "apps/devpanel/src/components/LoginForm.tsx",
+      "apps/devpanel/src/components/LogoutButton.tsx",
+      "apps/devpanel/src/components/CrawlerStatus",
+      "apps/devpanel/src/components/api-panorama/types",
+      "apps/devpanel/src/components/api-panorama/GlobalStats",
+      "apps/devpanel/src/components/api-panorama/ApiTable",
+      "apps/devpanel/src/components/api-panorama/ServiceStatus",
+      "apps/devpanel/src/components/PipelineOverview",
+      "apps/devpanel/src/components/PlatformMatrix",
+      "apps/devpanel/src/components/DailyTimeline",
+      "apps/devpanel/src/components/RecordTrace",
+      "apps/devpanel/src/components/pipeline/GlobalLineage",
+      "apps/devpanel/src/components/github/OverviewTab",
+      "apps/devpanel/src/components/github/PRsTab",
+      "apps/devpanel/src/components/github/ActionsTab",
+      "apps/devpanel/src/components/github/BranchesTab",
+      "apps/devpanel/src/components/github/GovernanceTab",
+      "apps/devpanel/src/lib/queries",
+      "apps/devpanel/src/lib/actions",
+      "apps/devpanel/src/lib/database-browser",
+      "apps/devpanel/src/lib/db-error",
+      "apps/devpanel/src/lib/api-panorama-actions",
+      "apps/devpanel/src/lib/auth",
+      "apps/devpanel/src/lib/auth-constants",
+      "apps/devpanel/src/lib/actions.ts",
+      "apps/devpanel/src/lib/health-diagnosis-actions.ts"
+    ]
+  },
+  "api_layer": {
+    "admin": {
+      "http_client": "umi-request (via @umijs/request-record plugin)",
+      "base_url_config": "config.ts 中 request: {} 空对象，未配置 baseURL，未配置拦截器",
+      "interceptors": [
+        "无显式 request 拦截器（依赖 umi-request 默认）",
+        "无 response 拦截器",
+        "插件 '@umijs/request-record' 启用（仅用于录制回放，无缓存作用）"
+      ],
+      "request_dedup": false,
+      "retry_logic": false,
+      "request_record": true,
+      "issues": [
+        {
+          "type": "no_dedup",
+          "desc": "src/services/* 11 个文件全部为直接函数调用，无 useRequest/useSWR/useQuery 包装（唯一 useRequest 在 DebugPanel/index.tsx）。同一接口在多页面重复调用，无去重"
+        },
+        {
+          "type": "no_cache",
+          "desc": "字典类数据（如权限列表、平台选项、爬虫服务器列表）每次进页面都重新拉取，无 SWR 缓存"
+        },
+        {
+          "type": "no_pagination",
+          "desc": "list 页（projects/list、clients/index、crawler/servers）普遍直接调用 list 接口且无分页/虚拟滚动，可能一次拉全量"
+        },
+        {
+          "type": "serial_calls",
+          "desc": "dashboard/index.tsx 4 个 async service calls 串行 await，未用 Promise.all，TTFB 累加"
+        },
+        {
+          "type": "serial_calls",
+          "desc": "projects/list.tsx 6 个 service calls 串行，未并行"
+        },
+        {
+          "type": "no_loading_state",
+          "desc": "大部分页面用 useState + setLoading 手写 loading，缺少统一的 Skeleton/Spinner 抽象"
+        },
+        {
+          "type": "no_error_boundary",
+          "desc": "无 ErrorBoundary 包裹页面树，接口报错会白屏。仅 ErrorAlert/index.tsx 是被动 Alert 组件"
+        },
+        {
+          "type": "token_storage_xss_risk",
+          "desc": "src/services/auth.ts 将 access_token/refresh_token 存 localStorage，存在 XSS 窃取风险"
+        },
+        {
+          "type": "no_401_interceptor",
+          "desc": "无 401 自动刷新/跳转逻辑（依赖 umi-request 默认 + umi-plugin-initial-state，但未配置 request.errorConfig）"
+        },
+        {
+          "type": "no_request_cancel",
+          "desc": "组件 unmount 后请求未取消，setState 触发 React 警告"
+        },
+        {
+          "type": "untyped_responses",
+          "desc": "11 个 service 文件多数返回 any，无泛型/类型推导"
+        }
+      ]
+    },
+    "customer": {
+      "http_client": "axios (with swr)",
+      "base_url_config": "lib/api/base-url.ts - 支持 LOCAL_API_BASE_URL (http://localhost:8000/api/v1) / XINGCHUDA_API_BASE_URL / XSTRASTAR_API_BASE_URL，环境变量 NEXT_PUBLIC_API_BASE_URL 覆盖",
+      "interceptors": [
+        "request: 自动附加 Bearer Token (从 localStorage 读 access_token)",
+        "request: 记录开始时间用于计算耗时",
+        "response: 401 不重试（swr-config shouldRetryOnError）",
+        "response: TRIAL_EXPIRED 检测 - sessionStorage 标记 + window.dispatchEvent CustomEvent + 跳转 /zh/dashboard?trial=expired"
+      ],
+      "request_dedup": true,
+      "retry_logic": "partial - swr-config errorRetryCount=2，401/403 不重试",
+      "uses_swr": true,
+      "issues": [
+        {
+          "type": "waterfall_in_answers",
+          "desc": "answers/page.tsx 8 useState + 3 useCallback + 多个 SWR hook 同 key（list/question/question_quota）但参数动态变化时可能瀑布"
+        },
+        {
+          "type": "waterfall_in_citations",
+          "desc": "citations/page.tsx 847 行 - 多 hook 串联（stats/topDomains/citationTrend/domainDistribution/topArticles/featureHeatmap）"
+        },
+        {
+          "type": "no_image_lazy",
+          "desc": "components/data/answer-detail-modal.tsx 直接用 <img>，未用 next/image"
+        },
+        {
+          "type": "trial_expired_toast_missing",
+          "desc": "TRIAL_EXPIRED 跳到 dashboard 但缺少显眼的 toast/banner 通知"
+        },
+        {
+          "type": "token_storage_xss_risk",
+          "desc": "stores/auth-store.ts 与 base-url.ts 仍用 localStorage 存 access_token/refresh_token，XSS 可窃取"
+        },
+        {
+          "type": "raw_apiClient_in_login",
+          "desc": "src/app/[locale]/login/page.tsx 直接用 apiClient.post 而不是走 SWR-friendly 包装"
+        },
+        {
+          "type": "no_dedup_for_dict",
+          "desc": "platform-mode.ts / project-phase.ts 等平台配置虽是常量，但字典接口（如 platform list）无 swr 缓存策略"
+        },
+        {
+          "type": "recharts_in_main_bundle",
+          "desc": "brands/citations/dashboard/visibility 4 个页面直 import recharts，未用 dynamic import 切割，bundle 体积大"
+        },
+        {
+          "type": "no_react_memo",
+          "desc": "全仓 0 个 React.memo 使用，brands/page.tsx（497行）和 citations/page.tsx（847行）大组件无 memoization"
+        },
+        {
+          "type": "excessive_usestate",
+          "desc": "citations/page.tsx 有 5 useState，answers/page.tsx 有 8 useState，状态分散未合并"
+        },
+        {
+          "type": "no_pagination",
+          "desc": "answers/page.tsx 用 page/page_size 客户端分页，但 SWR 缓存键不含筛选维度会导致换筛选不命中"
+        }
+      ]
+    },
+    "devpanel": {
+      "http_client": "fetch (Next.js server actions + route handlers)",
+      "base_url_config": "无 - 直接连 PostgreSQL (pg 8.20)，无外部 HTTP 客户端",
+      "interceptors": [
+        "无 HTTP 拦截器（后端直连 DB）",
+        "middleware.ts 做 cookie 鉴权"
+      ],
+      "request_dedup": false,
+      "retry_logic": false,
+      "issues": [
+        {
+          "type": "polling_no_optimization",
+          "desc": "api-panorama/page.tsx 30 秒轮询 + pipeline/page.tsx 5 秒轮询，无 visibilitychange 暂停，后台标签页仍轮询浪费 CPU/DB"
+        },
+        {
+          "type": "raw_fetch_in_components",
+          "desc": "LoginForm.tsx / LogoutButton.tsx 直接 fetch /api/auth/* 端点，未走统一 client wrapper"
+        },
+        {
+          "type": "no_loading_state",
+          "desc": "database/page.tsx（646行）5 useState + 3 useEffect，loading/error 全靠 useState 散落"
+        },
+        {
+          "type": "no_error_boundary",
+          "desc": "无 ErrorBoundary，server action 抛错会白屏"
+        },
+        {
+          "type": "no_skeleton",
+          "desc": "database/page.tsx 和 health-diagnosis/page.tsx（527行）长加载无 Skeleton"
+        },
+        {
+          "type": "no_react_memo",
+          "desc": "health-diagnosis/page.tsx 527 行大组件 0 useMemo（除 1 个 useCallback），子树未 memo"
+        },
+        {
+          "type": "no_code_splitting",
+          "desc": "recharts（3.8.1）直 import 5 个 tab (OverviewTab/PRsTab/ActionsTab/BranchesTab/GovernanceTab) 全部进主 bundle"
+        },
+        {
+          "type": "excessive_usestate",
+          "desc": "database/page.tsx 5 useState 散落，pipeline/page.tsx 3 useState + 3 useEffect 计时器"
+        },
+        {
+          "type": "no_image_lazy",
+          "desc": "components/github/GovernanceTab.tsx 和 PRsTab.tsx 直接用 <img>，未用 next/image"
+        },
+        {
+          "type": "setinterval_no_cleanup",
+          "desc": "pipeline/page.tsx 5 秒 autoRefresh 使用 setInterval，需检查 cleanup；countdown 状态"
+        },
+        {
+          "type": "no_export_progress",
+          "desc": "export-csv/route.ts 拉取时无进度反馈，前端无 polling/SSE"
+        }
+      ]
+    }
+  },
+  "page_requests": [
+    {
+      "page": "apps/admin/src/pages/dashboard/index.tsx",
+      "api_calls": [
+        "getOverview / getCrawl / getAnalysis 3-4 个 service"
+      ],
+      "calls_in_useEffect": "页面 4 async service 串行 await",
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "waterfall", "desc": "overview/crawl/analysis 串行调用应并行 Promise.all"},
+        {"type": "no_skeleton", "desc": "首屏无 loading 骨架屏"},
+        {"type": "client_only_data", "desc": "无 SEO/缓存价值数据却走客户端"},
+        {"type": "heavy_component", "desc": "dashboard 组件未做 React.memo"}
+      ]
+    },
+    {
+      "page": "apps/admin/src/pages/projects/list.tsx",
+      "api_calls": [
+        "6 个 service call"
+      ],
+      "calls_in_useEffect": 6,
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "waterfall", "desc": "6 个 service 串行未并行"},
+        {"type": "no_pagination", "desc": "项目列表无分页/虚拟滚动"},
+        {"type": "no_cache", "desc": "重复进入列表页都重新拉取"}
+      ]
+    },
+    {
+      "page": "apps/customer/src/app/[locale]/(platform)/dashboard/page.tsx",
+      "api_calls": [
+        "useDashboardOverview",
+        "useGpowerTrend",
+        "usePlatformDistribution",
+        "useDashboardQuestions",
+        "useRecentAnswers",
+        "useSubscription"
+      ],
+      "calls_in_useEffect": 0,
+      "uses_swr_or_rq": true,
+      "issues": [
+        {"type": "recharts_bundled", "desc": "recharts 直 import 未 dynamic 切分，bundle 体积大"},
+        {"type": "no_loading_state_unified", "desc": "用 Skeleton 组件但不统一"},
+        {"type": "no_error_boundary", "desc": "无 ErrorBoundary，ErrorCard 局部兜底"}
+      ]
+    },
+    {
+      "page": "apps/customer/src/app/[locale]/(platform)/visibility/page.tsx",
+      "api_calls": [
+        "useCompetitorRankings",
+        "useCompetitorTrend"
+      ],
+      "calls_in_useEffect": 0,
+      "uses_swr_or_rq": true,
+      "issues": [
+        {"type": "recharts_bundled", "desc": "recharts LineChart 直 import"},
+        {"type": "no_pivot_caching", "desc": "pivotTrendData 每次 render 重新 pivot，未 useMemo"},
+        {"type": "no_react_memo", "desc": "复杂 IIFE 计算 brandColorMap 未 memo"},
+        {"type": "missing_key", "desc": "table row 用 brandName+rank 拼接 key 不稳定"}
+      ]
+    },
+    {
+      "page": "apps/customer/src/app/[locale]/(platform)/answers/page.tsx",
+      "api_calls": [
+        "useAnswerList",
+        "useQuestionList",
+        "useQuestionQuota",
+        "useSubscription"
+      ],
+      "calls_in_useEffect": 0,
+      "uses_swr_or_rq": true,
+      "issues": [
+        {"type": "excessive_usestate", "desc": "8 useState 状态分散"},
+        {"type": "no_skeleton_consistent", "desc": "加载态手工管理"},
+        {"type": "list_key_risk", "desc": "列表 key 用 id 但有重复风险"}
+      ]
+    },
+    {
+      "page": "apps/customer/src/app/[locale]/(platform)/citations/page.tsx",
+      "api_calls": [
+        "useCitationStats",
+        "useTopDomains",
+        "useCitationTrend",
+        "useDomainDistribution",
+        "useTopArticles",
+        "useFeatureHeatmap"
+      ],
+      "calls_in_useEffect": 1,
+      "uses_swr_or_rq": true,
+      "issues": [
+        {"type": "heavy_component", "desc": "847 行巨型页面组件"},
+        {"type": "recharts_bundled", "desc": "recharts 直 import"},
+        {"type": "no_react_memo", "desc": "大组件 0 memo 化"},
+        {"type": "excessive_usestate", "desc": "5 useState"},
+        {"type": "no_dynamic_tab", "desc": "Tab 切换未做 dynamic 切分"}
+      ]
+    },
+    {
+      "page": "apps/customer/src/app/[locale]/(platform)/brands/page.tsx",
+      "api_calls": [
+        "useBrandDetail / useBrandComparison"
+      ],
+      "calls_in_useEffect": 0,
+      "uses_swr_or_rq": true,
+      "issues": [
+        {"type": "heavy_component", "desc": "497 行"},
+        {"type": "recharts_bundled", "desc": "recharts 直 import"},
+        {"type": "no_react_memo", "desc": "6 useMemo 已有但子组件 0 memo"}
+      ]
+    },
+    {
+      "page": "apps/customer/src/app/[locale]/(platform)/settings/page.tsx",
+      "api_calls": [
+        "getProfile",
+        "getSubscription"
+      ],
+      "calls_in_useEffect": 1,
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "no_swr", "desc": "getProfile/getSubscription 走 useEffect 而非 SWR，重复进页面重复拉取"},
+        {"type": "no_skeleton", "desc": "loading 状态仅一行文本"},
+        {"type": "no_react_memo", "desc": "InfoRow 组件未 memo"}
+      ]
+    },
+    {
+      "page": "apps/customer/src/app/[locale]/(platform)/reports/page.tsx",
+      "api_calls": [
+        "useReports",
+        "useDashboardQuestions",
+        "useRecentAnswers",
+        "useSubscription"
+      ],
+      "calls_in_useEffect": 0,
+      "uses_swr_or_rq": true,
+      "issues": [
+        {"type": "no_dynamic_modal", "desc": "创建报告弹窗未用 dynamic 切分"},
+        {"type": "excessive_usestate", "desc": "9 useState"}
+      ]
+    },
+    {
+      "page": "apps/customer/src/app/[locale]/(platform)/briefs/page.tsx",
+      "api_calls": [
+        "未在 hooks 中显式调用，从 useEffect 拉"
+      ],
+      "calls_in_useEffect": 1,
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "no_swr", "desc": "452 行页面用 useEffect 拉数据无 SWR"},
+        {"type": "no_skeleton", "desc": "首屏 loading 占位简陋"},
+        {"type": "heavy_component", "desc": "452 行单文件"}
+      ]
+    },
+    {
+      "page": "apps/devpanel/src/app/page.tsx",
+      "api_calls": [
+        "getSchemaStats",
+        "getLatestRecords"
+      ],
+      "calls_in_useEffect": 0,
+      "uses_swr_or_rq": false,
+      "uses_server_action": true,
+      "issues": [
+        {"type": "force_dynamic", "desc": "export const dynamic = 'force-dynamic' 关闭静态优化"},
+        {"type": "no_polling_optimization", "desc": "无自动刷新但页面也不缓存"}
+      ]
+    },
+    {
+      "page": "apps/devpanel/src/app/api-panorama/page.tsx",
+      "api_calls": [
+        "getFullPanoramaData",
+        "checkAllServices"
+      ],
+      "calls_in_useEffect": 2,
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "polling_no_pause", "desc": "30 秒 setInterval 轮询，无 visibilitychange 暂停"},
+        {"type": "no_skeleton", "desc": "无 loading 占位"},
+        {"type": "no_cleanup_check", "desc": "未确认 useEffect 清理函数"},
+        {"type": "no_react_memo", "desc": "186 行组件 0 memo"}
+      ]
+    },
+    {
+      "page": "apps/devpanel/src/app/database/page.tsx",
+      "api_calls": [
+        "1 个 fetch（DB 查询）"
+      ],
+      "calls_in_useEffect": 1,
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "heavy_component", "desc": "646 行巨型页面"},
+        {"type": "excessive_usestate", "desc": "5 useState 散落"},
+        {"type": "no_skeleton", "desc": "无 loading 占位"},
+        {"type": "no_pagination", "desc": "无分页/虚拟滚动，长表性能差"}
+      ]
+    },
+    {
+      "page": "apps/devpanel/src/app/pipeline/page.tsx",
+      "api_calls": [
+        "getActiveClientsResult",
+        "getClientProjectsResult"
+      ],
+      "calls_in_useEffect": 3,
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "polling_no_pause", "desc": "5 秒 autoRefresh + countdown，无 visibilitychange 暂停"},
+        {"type": "no_cleanup_safety", "desc": "setInterval cleanup 需审查"},
+        {"type": "no_skeleton", "desc": "无 loading 占位"}
+      ]
+    },
+    {
+      "page": "apps/devpanel/src/app/health-diagnosis/page.tsx",
+      "api_calls": [
+        "runFullHealthCheck (server action)"
+      ],
+      "calls_in_useEffect": 1,
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "heavy_component", "desc": "527 行巨型页面"},
+        {"type": "no_react_memo", "desc": "0 useMemo，仅 1 useCallback"},
+        {"type": "no_skeleton", "desc": "无 loading 占位"}
+      ]
+    },
+    {
+      "page": "apps/devpanel/src/app/github/page.tsx",
+      "api_calls": [
+        "Suspense + useSearchParams"
+      ],
+      "calls_in_useEffect": 0,
+      "uses_swr_or_rq": false,
+      "issues": [
+        {"type": "no_code_splitting", "desc": "5 个 Tab (OverviewTab/PRsTab/ActionsTab/BranchesTab/GovernanceTab) 全部进主 bundle，应按需 dynamic 切分"},
+        {"type": "no_react_memo", "desc": "Tab 切换组件未 memo"}
+      ]
+    }
+  ],
+  "global_findings": {
+    "uses_swr": "customer only",
+    "uses_react_query": false,
+    "uses_umijs_request": "admin only",
+    "uses_nextjs_app_router": true,
+    "uses_nextjs_pages_router": "admin only (umi v4)",
+    "uses_react_memo": "none (0 个 React.memo 使用)",
+    "no_image_optimization": "partial (customer 有 2 处 next/image，admin/devpanel 几乎不用)",
+    "no_code_splitting": "partial (customer/layout.tsx 用了 dynamic import DebugPanel，其余 recharts/tab 未切分)",
+    "css_strategy": "tailwindcss v4 (customer+devpanel) + antd (admin)",
+    "ui_library": "antd v6 (admin), radix-ui + 自研 (customer), tailwindcss (devpanel)",
+    "state_management": {
+      "admin": "useState + UmiJS Model (无 zustand)",
+      "customer": "zustand (auth-store, project-store)",
+      "devpanel": "useState + server actions"
+    },
+    "chart_library": {
+      "customer": "recharts 3.7.0 + echarts 6.0.0 装在 deps 但实际全用 recharts",
+      "devpanel": "recharts 3.8.1",
+      "admin": "@ant-design/plots + @antv/l7"
+    },
+    "icon_library": "lucide-react (customer, devpanel)",
+    "form_library": "antd Form (admin), react 受控 (customer/devpanel)",
+    "lint_tool": "ESLint 9 + eslint-config-next (customer+devpanel), admin 无 eslint",
+    "test_framework": "admin 有 jest+playwright 配置；customer/devpanel 无测试"
+  },
+  "recommendations": [
+    "1. 【P0 - API 缓存去重】admin 引入 umi 的 useRequest (已存在但只在 DebugPanel)，统一封装 services/，配置 cacheKey + staleTime + debounceInterval，字典数据（平台/权限/角色）配置 5min staleTime",
+    "2. 【P0 - Token 安全】admin/services/auth.ts 与 customer/auth-store.ts 的 access_token/refresh_token 改用 httpOnly Cookie 或 sessionStorage + 短期 access token + refresh 轮换",
+    "3. 【P0 - 错误兜底】3 个 app 增加 ErrorBoundary 包裹 layout，admin 在 src/app.tsx 注入，customer 用 app/error.tsx + global-error.tsx，devpanel 同上",
+    "4. 【P0 - 401 拦截】3 个 app 统一配置 401 响应拦截：customer 已在 swr-config 但 admin 缺拦截器；refresh token + 自动重试机制",
+    "5. 【P0 - 轮询优化】devpanel api-panorama 30s + pipeline 5s 轮询加 document.visibilitychange 暂停，后台标签页停止拉取",
+    "6. 【P1 - 请求并行】admin dashboard/projects/list 的串行 await 改 Promise.all，customer 多 SWR hook 也要保证 key 独立不串行",
+    "7. 【P1 - 代码分割】customer 的 recharts、devpanel 的 5 个 github tab 改 dynamic(() => import(...), { ssr: false })，主 bundle 至少减 30%",
+    "8. 【P1 - 图片优化】customer 全部 <img> 改 next/image（设置 sizes + placeholder=blur），devpanel github tab 同理",
+    "9. 【P1 - 状态拆分】customer answers/citations 8+ useState 合并为 useReducer 或 zustand 切片，避免 prop drilling",
+    "10. 【P1 - 渲染优化】大组件（citations 847行、health-diagnosis 527行、database 646行、brands 497行）拆分子组件 + React.memo 包裹纯展示组件",
+    "11. 【P2 - 加载态】统一 Skeleton 组件库，3 个 app 各抽一个 <LoadingState variant=\"card|table|chart\"> 抽象",
+    "12. 【P2 - 字体优化】customer 用 next/font/local 已优化；admin/devpanel 需检查 Web 字体是否配置 display=swap",
+    "13. 【P2 - 列表虚拟化】admin 项目/客户列表、devpanel database 页接入 react-window 或 antd Virtual List",
+    "14. 【P2 - 请求取消】所有 useEffect + axios 模式增加 AbortController，避免 unmount 后 setState",
+    "15. 【P2 - 类型安全】admin 11 个 service 文件加泛型 <T> 返回；customer 已有强类型，保持",
+    "16. 【P2 - 移除无用依赖】customer 的 echarts / echarts-for-react 在 deps 但代码全用 recharts，建议从 deps 移除减体积",
+    "17. 【P3 - 测试覆盖】customer/devpanel 接入 Vitest，hooks (use-dashboard / use-answers) 必须有单元测试",
+    "18. 【P3 - 性能监控】接入 Web Vitals（next/web-vitals）上报 LCP/CLS/INP，三个 app 统一格式"
+  ],
+  "top_5_critical_issues": [
+    "1. 【P0-安全】admin 与 customer 都把 JWT 存 localStorage - XSS 一打就中；应迁移到 httpOnly Cookie + refresh 轮换",
+    "2. 【P0-可用性】3 个 app 全部缺 ErrorBoundary + 401 拦截 - 接口报错会白屏，token 过期不会自动登出",
+    "3. 【P0-性能】admin 11 个 service 全部裸调用无 useRequest 包装，dashboard/projects/list 串行 await 直接放大 TTFB 3-4 倍",
+    "4. 【P0-性能】customer 的 recharts 与 devpanel 的 github 5 个 tab 未做 dynamic import，主 bundle 体积过大",
+    "5. 【P0-资源浪费】devpanel api-panorama 30s + pipeline 5s 轮询无 visibilitychange 暂停，后台标签页空跑 DB 查询"
+  ],
+  "score_breakdown": {
+    "admin": {
+      "api_layer": 3,
+      "rendering": 4,
+      "image_optimization": 2,
+      "code_splitting": 3,
+      "error_handling": 2,
+      "state_management": 5,
+      "overall": 3.2
+    },
+    "customer": {
+      "api_layer": 7,
+      "rendering": 4,
+      "image_optimization": 5,
+      "code_splitting": 4,
+      "error_handling": 5,
+      "state_management": 7,
+      "overall": 5.3
+    },
+    "devpanel": {
+      "api_layer": 5,
+      "rendering": 4,
+      "image_optimization": 3,
+      "code_splitting": 3,
+      "error_handling": 3,
+      "state_management": 5,
+      "overall": 3.8
+    }
+  }
+}

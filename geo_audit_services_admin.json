@@ -1,0 +1,1028 @@
+{
+  "scanned_files": [
+    "admin_clients.py",
+    "admin_client_features.py",
+    "admin_crawler.py",
+    "admin_crawler_errors.py",
+    "admin_crawler_servers.py",
+    "admin_dashboard.py",
+    "admin_data_scope.py",
+    "admin_open_api_keys.py",
+    "admin_operator_open_api_resources.py",
+    "admin_projects.py",
+    "admin_project_analytics.py",
+    "admin_project_phase.py",
+    "admin_published_urls.py",
+    "admin_questions.py",
+    "admin_reference_analysis.py",
+    "admin_reference_analysis_articles.py",
+    "admin_reference_analysis_domains.py",
+    "admin_reference_analysis_features.py",
+    "admin_reference_analysis_stats.py",
+    "admin_settings.py",
+    "admin_temp_crawler.py",
+    "admin_temp_crawler_export_sources.py",
+    "admin_temp_crawler_helpers.py",
+    "admin_temp_crawler_persistence.py",
+    "admin_users.py"
+  ],
+  "function_issues": [
+    {
+      "file": "admin_clients.py",
+      "function": "get_client_list",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Per-page fan-out: for each Client row -> _build_client_item -> per Project -> _build_project_item does 3 awaits (competitors, platforms, question_count). For page_size=20 with ~5 projects/client = ~300 sequential awaits."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "High-frequency admin listing endpoint with no server-side cache; recomputes the same competitor/platform/count aggregates on every request."
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "page_size=0 falls back to building ALL clients' item graph in a single async coroutine; with hundreds of clients this is unbounded work and locks the request handler."
+        }
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "function": "delete_client",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "17 sequential DELETE statements (analysis/crawler/platform schemas) all inside one transaction. With large crawl_answers / reference data this can hold row locks for minutes and exhaust connection pool."
+        },
+        {
+          "type": "sync_io",
+          "severity": "low",
+          "desc": "Each delete runs as a separate await db.execute; could be merged into a single CTE-based DELETE for ~10x throughput."
+        },
+        {
+          "type": "exception",
+          "severity": "medium",
+          "desc": "No try/except: if any DELETE in the middle fails the whole transaction aborts and the user is left with a partially-cleaned client. Operator must manually reconcile."
+        }
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "function": "update_client",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "_rebuild_competitors loops await db.delete() once per old competitor (not bulk DELETE WHERE). Update of an 8-competitor project = 8 round-trips inside the same transaction."
+        },
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "For each project to be deleted, again loops await db.delete() per competitor then await db.delete(brand) - serializable sequence."
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "Mixes fetch + per-row mutate + per-row fetch + bulk insert; on large clients the request handler is held for the full sequence."
+        }
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "function": "_build_client_item / _build_project_item",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "_build_project_item issues 3 awaited queries per call (competitors, platforms via QuestionPool, count). Called for every project inside the per-client loop in get_client_list. The classic admin-list N+1."
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "Project aggregates (question_count, platform union) change slowly. Suitable for a short-TTL cache (e.g. 60s) keyed by project_id+date."
+        }
+      ]
+    },
+    {
+      "file": "admin_client_features.py",
+      "function": "update_client_features",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Per-feature loop: SELECT ... WHERE client_id+feature_key, then UPDATE or INSERT. For a 10-feature update = 10 round-trips; should use INSERT ... ON CONFLICT DO UPDATE (PostgreSQL upsert) in one query."
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "Feature list is essentially static per client; no read-side cache on get_client_features either."
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "function": "get_crawler_status",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "For each active server, issues a separate SELECT against CrawlerSchedule by server_id (UUID). 20 servers = 20 round-trips. Should be one IN(...) query."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Polled by admin UI frequently; aggregates task_daily_stats / crawl_answers by platform on every call with no cache."
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "function": "get_crawler_history",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "Builds SQL with f-string (where_clause, pagination_clause). All values are bound parameters so no injection, but the dynamic SQL is harder to audit and plan-cache friendly. Prefer sqlalchemy.sql.composed."
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "page_size=0 returns the entire crawl_answers aggregation; with months of data this can be 100k+ rows serialized into one response."
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_errors.py",
+      "function": "get_crawler_errors",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "Dynamic placeholders for project_ids; parameters are bound so safe, but the SQL is re-built per request preventing plan reuse. Use array binding (project_id = ANY(:project_ids))."
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "page_size=0 returns all matching error rows; with crawl_error_logs growing unbounded this is a memory bomb."
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "function": "get_server_list",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "For each server, fires SELECT CrawlerSchedule WHERE server_id=uuid. 10 servers = 10 round-trips. One IN(...) join would do."
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "Server list is essentially static; no Redis/in-memory cache. CrawlerServers.last_heartbeat is the only hot field."
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "function": "update_schedule",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Loads ALL CrawlerServers into memory just to resolve a single schedule's server name. For 100+ servers this is 100x more data than needed and bypasses the index on server_id."
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "Server-name lookup is hot; a small LRU keyed by UUID would save the full table scan."
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "function": "get_schedule_list",
+      "issue_count": 1,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "Loads all servers AND all schedules, then resolves server_name with a Python dict. Acceptable for full list, but pair with a single JOIN for the data path."
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "get_overview",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "Top-of-dashboard endpoint, polled every few seconds by admin UI. Issues 6 separate count queries + 2 day-stats queries (task_daily_stats and platform fallback) on every call. No Redis cache despite the data changing at most once per minute."
+        },
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "All queries are awaited sequentially (6 await db.execute calls in series). Could be batched with a single CTE returning all counters in one round-trip."
+        },
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "_get_platform_status loops and for each platform row issues another SELECT MAX(TaskQueue.completed_at) - per-platform round-trip. Should aggregate all in one query with a single MAX(completed_at) grouped by platform."
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "_get_today_crawl_summary",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "Today's crawl totals (task_daily_stats) are append-only per day - perfect cache candidate (TTL = until next minute). Yet it is recomputed on every dashboard refresh."
+        },
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "text(\"...\") with :today bound param - safe but raw SQL; better expressed with select() on the ORM model for plan-cache reuse."
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "_get_platform_status",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "After aggregating today's stats per platform, the function loops and for each platform issues a separate SELECT MAX(TaskQueue.completed_at) WHERE target_platform=?. For 5 platforms = 5 extra round-trips. Single GROUP BY query is enough."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Status (healthy/warning/error) is derived from today's counters and last_crawl. Stable for seconds-to-minutes. No cache; high-frequency endpoint."
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "get_crawl_today",
+      "issue_count": 1,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "Same today-stats aggregation as _get_today_crawl_summary, no cache. Two separate endpoints recompute overlapping data."
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "get_client_kpi",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "Uses f-string INTERVAL '{interval}' - interval is from a static map so safe, but raw SQL prevents easy migration and breaks plan caching per distinct value."
+        },
+        {
+          "type": "exception",
+          "severity": "medium",
+          "desc": "Bare `except Exception as e: logger.warning(...); rows = []` swallows DB errors silently. Operator gets an empty dashboard with no alert - could mask outages."
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "Computes a 4-table JOIN (clients, projects, brand_mention_daily, brand_answer_metrics) on every refresh. Time-range sliding window means cache TTL = a few minutes is safe."
+        },
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "After the big trend query, runs a separate SELECT Projects query for client_projects map. Could be folded into the main CTE."
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "get_analysis_status",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "exception",
+          "severity": "high",
+          "desc": "Four separate `except Exception` blocks silently downgrade to defaults. The dashboard then shows 'pending' / 0% success and operators think the pipeline is broken when in fact the query itself errored."
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "Endpoint runs 7+ queries (3 status groups + 4 trend CTEs). Polled by admin UI; data freshness is sub-minute. No cache."
+        },
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "The trend 7d CTE is fine, but it is preceded by 6 separate earlier queries that could be a single CTE returning all status counters."
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "function": "get_client_kpi_detail",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "high",
+          "desc": "The prev_g query has a correlated subquery `(SELECT MAX(gs2.batch_date) - INTERVAL '1 day' FROM gpower_scores gs2 WHERE gs2.project_id = gs.project_id ...)` - PostgreSQL may not be able to decorrelate this, leading to nested-loop execution per project row."
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "Heavy CTE + subquery pipeline runs on every dashboard refresh with no cache. Time-range stable; ideal Redis candidate (TTL 60-300s)."
+        },
+        {
+          "type": "exception",
+          "severity": "medium",
+          "desc": "Two `except Exception as e: logger.warning(...)` blocks silently fall back. On DB hiccup operators get a half-populated KPI page with no signal."
+        }
+      ]
+    },
+    {
+      "file": "admin_data_scope.py",
+      "function": "update_user_data_scope",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Deletes old records via `for record in old_result.scalars().all(): await db.delete(record)` - one await per row. Should be a single DELETE WHERE user_id=... with bulk_insert_mappings for inserts."
+        },
+        {
+          "type": "long_running",
+          "severity": "low",
+          "desc": "Per-item db.add + await db.flush() pattern is fine for small N, but the surrounding delete-N is the bottleneck."
+        }
+      ]
+    },
+    {
+      "file": "admin_open_api_keys.py",
+      "function": "get_admin_api_key_list",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "For each key row in the paged result, calls `await list_api_key_resources(db, key_row.id)` - per-row query. With page_size=20 and 5 resources/key = 100 extra round-trips per page. Should be a single JOIN with GROUP BY/array_agg."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "API key listings are admin-only but still polled; resource permissions rarely change. Short-TTL cache (60s) is safe."
+        }
+      ]
+    },
+    {
+      "file": "admin_open_api_keys.py",
+      "function": "create_admin_api_key / update_admin_api_key",
+      "issue_count": 1,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "After permission replacement, calls `list_api_key_resources` again to build the response - same per-row join could be avoided by returning the keys that were just written."
+        }
+      ]
+    },
+    {
+      "file": "admin_operator_open_api_resources.py",
+      "function": "update_operator_open_api_resources",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Loops DEFAULT_OPEN_API_RESOURCE_KEYS and per-key does `existing.get(resource_key)` then UPDATE or INSERT. Should be INSERT ... ON CONFLICT DO UPDATE in one statement for the full set."
+        },
+        {
+          "type": "sync_io",
+          "severity": "low",
+          "desc": "Each row is set with `row.is_allowed = ...; row.granted_by = ...` - 3 round-trips per resource. ORM unit-of-work would help here."
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "function": "get_project_list",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Per project: 3 awaited queries (client_name, competitors, platforms, question_count) inside _build_project_item. page_size=20 with average 1 project = 80+ awaits per page."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Project aggregates change slowly; no cache on the listing endpoint. A 60s Redis cache would cut DB load dramatically."
+        },
+        {
+          "type": "long_running",
+          "severity": "low",
+          "desc": "page_size=0 returns the full project set with all of its aggregates - unbounded."
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "function": "delete_project",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "`for comp in comps_result.scalars().all(): await db.delete(comp)` - per-competitor delete, not a bulk DELETE WHERE project_id=...|project_id IS NULL."
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "Only deletes the project's Competitors rows - does NOT touch question_pool, crawl_answers, gpower_scores, etc. Referencing data lingers; project_id becomes an orphan."
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "function": "update_project",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Same per-row delete loop in competitor replace (`for comp in old_result.scalars().all(): await db.delete(comp)`). Should be one DELETE WHERE project_id=... + bulk_insert_mappings."
+        },
+        {
+          "type": "long_running",
+          "severity": "low",
+          "desc": "Mixes fetch + delete + insert in a single transaction; small N is fine but blocks the connection."
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "function": "create_project",
+      "issue_count": 1,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "After creating the project, loops `client_users_result.all()` and adds a ClientProjectPermissions per user individually (one INSERT per row). Should use bulk_insert_mappings or executemany."
+        }
+      ]
+    },
+    {
+      "file": "admin_project_analytics.py",
+      "function": "get_geo_scores",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "f-string INTERVAL '{interval}' from a static map - safe, but raw SQL with the dynamic interval prevents plan caching."
+        },
+        {
+          "type": "exception",
+          "severity": "high",
+          "desc": "`except Exception: main_rows = []` (bare except) on the brand_mention_daily query. The function then returns a successful response with empty series, masking DB outages."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Time-series chart endpoint, polled by client. Per-day data changes slowly; cache TTL = 60-300s is safe and dramatically reduces compute."
+        }
+      ]
+    },
+    {
+      "file": "admin_project_analytics.py",
+      "function": "get_content_coverage",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "high",
+          "desc": "Loads ALL client_urls into memory, then extracts ALL crawl_answer.refer_info URLs via jsonb_array_elements with no LIMIT. For a busy project with 100k+ answers this is a full table scan with lateral expansion - very slow."
+        },
+        {
+          "type": "exception",
+          "severity": "high",
+          "desc": "Two `except Exception:` blocks silently fall back to empty data. Operators get a coverage chart with 0 matched but no error - debugging is hard."
+        },
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "text(f\"... INTERVAL '{interval}' ...\") - safe but raw SQL; static map means we could pre-compute the SQL per range."
+        }
+      ]
+    },
+    {
+      "file": "admin_published_urls.py",
+      "function": "get_coverage",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "Three sequential queries (total, covered_count, covered_urls, uncovered_urls) for the same project. Could be folded into one with FILTER clauses."
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "Loads ALL covered/uncovered URLs into memory just to return them in the response (no pagination). With 10k+ URLs this is tens of MB serialized per call."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Coverage rate is a slow-changing aggregate; no cache despite the dashboard refreshing it frequently."
+        }
+      ]
+    },
+    {
+      "file": "admin_published_urls.py",
+      "function": "get_published_urls",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "low",
+          "desc": "Separate count + paged select; could be one query with window function."
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "page_size=0 returns all rows for the project. For a project with thousands of published URLs this is unbounded memory."
+        }
+      ]
+    },
+    {
+      "file": "admin_published_urls.py",
+      "function": "bulk_add_urls",
+      "issue_count": 1,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "Loops and `db.add(new_record)` per URL. Should use `bulk_insert_mappings` or Core `insert().values(list_of_dicts)` for 10x faster batch insert. Also re-parses urlparse twice (once in detect_platform, once for domain)."
+        }
+      ]
+    },
+    {
+      "file": "admin_questions.py",
+      "function": "get_question_list",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "page_size=0 returns ALL questions with their crawl stats - unbounded. The crawl_stats GROUP BY already mitigates the per-row N+1, but the response payload itself becomes huge."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Question list is admin-heavy and changes slowly; no cache. Crawl stats can change frequently, so cache by (question_id, today) for 30-60s."
+        }
+      ]
+    },
+    {
+      "file": "admin_questions.py",
+      "function": "batch_create_questions",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "Per-question `db.add(question); await db.flush()` - one INSERT per row plus the flush round-trip. Use bulk_insert_mappings for batches >10."
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "Loads all existing question_content for the client (full table scan by client_id) to dedup. For a client with 10k+ questions this is unbounded and runs on every batch import."
+        }
+      ]
+    },
+    {
+      "file": "admin_questions.py",
+      "function": "delete_question",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "9 sequential DELETE statements (analysis + crawler schemas) all inside one transaction. The crawl_answers and reference data can be millions of rows; this blocks the connection for minutes."
+        },
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "Could be merged into a single CTE-based DELETE with USING to delete in dependency order atomically."
+        }
+      ]
+    },
+    {
+      "file": "admin_reference_analysis_articles.py",
+      "function": "_query_reference_articles / get_reference_articles",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "Reads rpa (reference_paragraph_attribution) - the largest analysis table - with 3 LEFT JOINs and heavy aggregates on every admin call. No cache despite the time-range windowing."
+        },
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "f-string SQL construction; values are bound so safe, but the plan cache is invalidated per distinct where_clause string."
+        },
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "Count query and data query are separate round-trips; could be one query with a window function (`COUNT(*) OVER()`) to save a round-trip per page."
+        }
+      ]
+    },
+    {
+      "file": "admin_reference_analysis_stats.py",
+      "function": "get_reference_stats",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "_get_reference_summary issues 2 separate aggregate queries (daily + attribution) per call. The fallback path adds another 1-2 queries. Hot admin endpoint with no cache."
+        },
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "Multiple f-string SQL with bound params; plan cache churn per distinct where_clause."
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "Domain stats query is `GROUP BY rsd.domain` over reference_source_daily - a large aggregate table. With wide time ranges and no LIMIT-by-domain this scans the whole window."
+        }
+      ]
+    },
+    {
+      "file": "admin_reference_analysis_domains.py",
+      "function": "_query_attribution_domains / get_reference_domain_stats_from_attribution",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Fallback stats path also no cache; called when the primary path returns zero results, so first-time dashboards pay both costs."
+        },
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "Same dynamic SQL pattern."
+        }
+      ]
+    },
+    {
+      "file": "admin_reference_analysis_features.py",
+      "function": "get_feature_analysis",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "text_concat",
+          "severity": "low",
+          "desc": "F-string SQL with 14 FILTER columns generated dynamically from FEATURE_LABELS. Safe but breaks plan cache; should be a hand-written SQL with the 7 fixed features."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Feature analysis rarely changes between days; no cache. Could be a materialized view refreshed daily."
+        }
+      ]
+    },
+    {
+      "file": "admin_temp_crawler.py",
+      "function": "_trigger_dcp_and_update_status",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "critical",
+          "desc": "CRITICAL: Inside an `async def` function, creates a SYNC SQLAlchemy engine (`create_engine(_to_sync_db_url(db_url))`) and runs `db = SessionLocal(); ... db.commit()` - sync I/O in an async event loop. Each commit() blocks the loop. Must use AsyncSession or `await asyncio.to_thread(...)`."
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "On success, calls _watch_dcp_completion_and_sync_results which polls for up to 60 * 10s = 10 minutes, also with sync engine. Background task is fine for that, but combined with sync I/O it pegs a worker thread for 10 minutes."
+        },
+        {
+          "type": "exception",
+          "severity": "medium",
+          "desc": "Outer try/except is broad (`logger.exception(...)`) - swallows all errors. No monitoring/alerting on dcp_trigger_status='failed' besides an in-DB flag."
+        }
+      ]
+    },
+    {
+      "file": "admin_temp_crawler.py",
+      "function": "_watch_dcp_completion_and_sync_results",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "critical",
+          "desc": "Polling loop uses SYNC engine (psycopg2) for 60 attempts * 10s. Blocks the async event loop each iteration. Should use the async engine and `await asyncio.sleep`."
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "Up to 10 minutes of polling per job, with sync DB calls. With concurrent jobs (concurrency limit 3) this can saturate the connection pool."
+        },
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Each iteration re-runs sync_temp_crawl_results_from_answers_sync which iterates ALL answers and does per-row INSERT...ON CONFLICT. For 1000 answers = 1000 round-trips once completion detected."
+        }
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_helpers.py",
+      "function": "sync_temp_crawl_results_from_answers_sync",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "high",
+          "desc": "Function name says `_sync` because it takes a sync Session, but it is invoked from the async `sync_temp_crawl_results_from_answers` in admin_temp_crawler_persistence. Two code paths (sync+async) for the same data sync - duplication and confusion."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Aggregation over crawl_answers + gpower_scores + brand_answer_metrics; no caching. Called from project detail page on every refresh."
+        }
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_helpers.py",
+      "function": "query_result_items",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "long_running",
+          "severity": "critical",
+          "desc": "page_size=0 returns ALL items (including full answer_text + answer_html). For a 10k-answer job, builds a 100MB+ Python list in one go, then serializes via the calling endpoint."
+        },
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "LATERAL joins on reference_source_daily and reference_sources per row - PostgreSQL handles this with Nested Loop, but for large result sets the per-row work dominates."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Result rows are immutable per job, no cache. Could be served from temp_crawl_results directly with a much simpler query."
+        }
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "sync_temp_crawl_results_from_answers",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "critical",
+          "desc": "Loops `items` (could be thousands) and for each item awaits `db.execute(text('INSERT ... ON CONFLICT'))` - one async round-trip per item. For 5000 answers = 5000 round-trips blocking the event loop."
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "Called from get_temp_crawl_detail, replay_temp_crawl_job, handle_temp_crawl_completion_callback, count_project_answers, build_project_answers_export. Repeatedly resyncs the same data on every read path."
+        },
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "Builds raw_response with `json.dumps(...)` in Python; PostgreSQL could build the jsonb with `jsonb_build_object(...)` in the same statement as the sync."
+        }
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "sync_project_temp_crawl_results",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "Loops every job_id in the project and calls sync_temp_crawl_results_from_answers (each one is a per-row INSERT loop). For a project with 10 jobs of 1000 answers each = 10000 round-trips on a single dashboard click."
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "Blocks the request handler. Should be a background task (the project export / count endpoints are user-facing)."
+        }
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "build_project_answers_export",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "long_running",
+          "severity": "critical",
+          "desc": "Loads ALL formal + temp answer rows into memory (`rows.extend(await _query_formal_export_rows(...))`) and then writes to a BytesIO - unbounded export size, memory bomb on large projects."
+        },
+        {
+          "type": "sync_io",
+          "severity": "high",
+          "desc": "Streams XLSX/CSV to BytesIO in-memory; for 50k rows the heap grows by hundreds of MB. Should stream to a file or response directly."
+        },
+        {
+          "type": "n_plus_one",
+          "severity": "medium",
+          "desc": "_query_formal_export_rows and _query_temp_export_rows have LATERAL joins over reference_source_daily/reference_sources per row - heavy on large exports."
+        }
+      ]
+    },
+    {
+      "file": "admin_temp_crawler_persistence.py",
+      "function": "create_temp_crawl_draft / update_temp_crawl_draft / run_temp_crawl_draft",
+      "issue_count": 1,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "Draft metadata is small but listed in list_temp_crawl_jobs which loads all jobs for the user on every poll. No cache for the list view."
+        }
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "get_client_user_list",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "For each user row, awaits _get_client_name + _get_client_projects (2 queries each). page_size=20 = 40 round-trips. Should be one JOIN with aggregation."
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "Hot admin endpoint, no cache. Client/Project name lookups are stable for seconds."
+        },
+        {
+          "type": "long_running",
+          "severity": "low",
+          "desc": "page_size=0 returns all users with all their projects - unbounded payload."
+        }
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "create_client_user",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "For each client_id in data.client_ids: create user, await db.flush(), then loop project_ids adding ClientProjectPermissions one at a time. With 3 clients * 5 projects = 15 awaits per request."
+        },
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "For each created user, then calls _get_client_name + _get_client_projects again to build the response. Could be one JOIN after the loop."
+        }
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "update_user_projects",
+      "issue_count": 1,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "medium",
+          "desc": "Loop `for pid in project_ids: db.add(ClientProjectPermissions(...))` - one INSERT per row. Use bulk_insert_mappings."
+        }
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "function": "delete_operator_user",
+      "issue_count": 1,
+      "issues": [
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "4 separate DELETE statements (OperatorPermissions, OperatorDataScope, UserLoginHistory, Users) in one transaction. With long login history tables the DELETE can be slow."
+        }
+      ]
+    }
+  ],
+  "global_findings": {
+    "files_with_n_plus_one": [
+      "admin_clients.py",
+      "admin_client_features.py",
+      "admin_crawler.py",
+      "admin_crawler_servers.py",
+      "admin_dashboard.py",
+      "admin_data_scope.py",
+      "admin_open_api_keys.py",
+      "admin_operator_open_api_resources.py",
+      "admin_projects.py",
+      "admin_published_urls.py",
+      "admin_questions.py",
+      "admin_temp_crawler.py",
+      "admin_temp_crawler_persistence.py",
+      "admin_users.py"
+    ],
+    "files_with_sync_io": [
+      "admin_clients.py",
+      "admin_dashboard.py",
+      "admin_open_api_keys.py",
+      "admin_operator_open_api_resources.py",
+      "admin_published_urls.py",
+      "admin_project_analytics.py",
+      "admin_temp_crawler.py",
+      "admin_temp_crawler_helpers.py",
+      "admin_temp_crawler_persistence.py",
+      "admin_users.py"
+    ],
+    "files_with_long_running": [
+      "admin_clients.py",
+      "admin_crawler.py",
+      "admin_crawler_errors.py",
+      "admin_dashboard.py",
+      "admin_published_urls.py",
+      "admin_questions.py",
+      "admin_temp_crawler.py",
+      "admin_temp_crawler_helpers.py",
+      "admin_temp_crawler_persistence.py",
+      "admin_users.py"
+    ],
+    "admin_high_freq_no_cache": [
+      "admin_dashboard.py",
+      "admin_crawler.py",
+      "admin_crawler_servers.py",
+      "admin_published_urls.py",
+      "admin_questions.py",
+      "admin_reference_analysis_articles.py",
+      "admin_reference_analysis_stats.py",
+      "admin_users.py"
+    ],
+    "files_with_sync_engine_in_async": [
+      "admin_temp_crawler.py",
+      "admin_temp_crawler_helpers.py"
+    ],
+    "files_with_critical_issues": [
+      "admin_temp_crawler.py",
+      "admin_temp_crawler_persistence.py",
+      "admin_temp_crawler_helpers.py"
+    ],
+    "files_with_unbounded_pagination": [
+      "admin_clients.py",
+      "admin_crawler.py",
+      "admin_crawler_errors.py",
+      "admin_published_urls.py",
+      "admin_questions.py",
+      "admin_users.py",
+      "admin_temp_crawler_helpers.py",
+      "admin_temp_crawler_persistence.py"
+    ],
+    "files_with_silent_exception_swallowing": [
+      "admin_dashboard.py",
+      "admin_project_analytics.py"
+    ],
+    "summary": {
+      "total_files_scanned": 25,
+      "files_with_critical_severity": 3,
+      "files_with_high_severity": 14,
+      "most_common_anti_patterns": [
+        "N+1 queries inside per-row Python loops (14 files)",
+        "No caching on high-frequency admin dashboard endpoints (8 files)",
+        "page_size=0 unbounded pagination (8 files)",
+        "Sync SQLAlchemy engine inside async functions (2 files)",
+        "Silent Exception swallow masking DB outages (2 files)"
+      ]
+    }
+  }
+}

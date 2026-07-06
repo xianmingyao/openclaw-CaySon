@@ -1,0 +1,31 @@
+# Mind Individual Information!
+
+> 类型：实体
+> 创建时间：2026-06-03 08:51
+
+## 简介
+
+Alchemy是清华研发的AI科研自动化框架，通过分离算法层与执行层，简化科研流程，支持无人干预的算法优化与实验自动化。
+
+## 相关概念
+- [[AI科研自动化]]
+- [[Alchemy框架]]
+- [[算法演化]]
+- [[Seed Baseline]]
+- [[多模态推荐]]
+- [[标准化接口]]
+- [[AI Scientist]]
+- [[科研基础设施解耦]]
+- [[清华大学人工智能学院]]
+- [[李佳助理教授课题组]]
+- [[李乐晖]]
+- [[蔡立一]]
+- [[Alchemy]]
+- [[github.com/TsinghuaISE/Alchemy]]
+- [[AAAI 2025]]
+
+## 来源
+- [[2026-06-03-github_2026-04-09-Alchemy-Tsinghua-AI-Science]]
+
+---
+*由 Karpathy 知识库系统自动生成*

@@ -1,4 +1,4 @@
-# 来源摘要：articles\hermes-agent-ai真用法.md
+﻿# 来源摘要：articles\hermes-agent-ai真用法.md
 
 > 原始路径：raw/articles\hermes-agent-ai真用法.md
 > 摄入时间：2026-04-10 20:03
@@ -63,3 +63,4 @@
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

@@ -1,4 +1,4 @@
-# 来源摘要：articles\karpathy-rag-critique-aidianliao.md
+﻿# 来源摘要：articles\karpathy-rag-critique-aidianliao.md
 
 > 原始路径：raw/articles\karpathy-rag-critique-aidianliao.md
 > 摄入时间：2026-04-13 20:00
@@ -54,3 +54,4 @@ Karpathy（安德烈·卡帕西）对 RAG 技术的观点
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

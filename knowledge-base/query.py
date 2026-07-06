@@ -1,31 +1,204 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-QUERY 查询脚本
-实现 Karpathy 知识库的提问 → 回答 → 沉淀闭环
+import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
-工作流：
-1. 读取 wiki/index.md 找相关页面
-2. 读取相关 wiki 页面
-3. 综合答案回复用户
-4. 如果答案质量高，建议沉淀回 wiki
-5. 可选：将回答追加到相关页面
+"""
+QUERY 查询脚本 v2 - 统一检索入口
+同时查询三个知识系统：
+1. Wiki知识库 (local) - knowledge-base/wiki/
+2. MAGMA记忆 (Mem0 + Milvus) - scripts/magma_memory/
+3. Skills知识库 (local) - knowledge/
+
+使用说明：
+    python query.py "检索内容"           # 单次查询
+    python query.py --all "检索内容"     # 全系统检索
+    python query.py --wiki "检索内容"    # 仅wiki
+    python query.py --memory "检索内容"  # 仅记忆
+    python query.py --skills "检索内容"  # 仅skills
 """
 
 import os
 import re
+import sys
 from pathlib import Path
 from datetime import datetime
+from typing import List, Dict, Optional, Tuple
 
-# 配置
+# ============== 配置 ==============
 WIKI_DIR = Path(__file__).parent / "wiki"
 INDEX_FILE = WIKI_DIR / "index.md"
 LOG_FILE = WIKI_DIR / "log.md"
+KNOWLEDGE_DIR = Path(__file__).parent.parent / "knowledge"  # E:\workspace\knowledge
+MAGMA_SCRIPT = Path(__file__).parent.parent / "scripts" / "magma_memory" / "cli.py"
 
 # Ollama 配置
 OLLAMA_URL = "http://localhost:11434"
 LLM_MODEL = "qwen2.5:7b"
 
+
+# ============== Wiki 检索 ==============
+
+def search_wiki(query: str, max_results: int = 5) -> List[Dict]:
+    """从 Wiki 知识库检索"""
+    results = []
+    query_lower = query.lower()
+    query_words = query_lower.replace(' ', '').split()
+    
+    for md_file in WIKI_DIR.rglob("*.md"):
+        if md_file.name in ["index.md", "log.md"]:
+            continue
+        
+        name_lower = md_file.stem.lower()
+        content = ""
+        try:
+            content = md_file.read_text(encoding='utf-8', errors='ignore').lower()
+        except:
+            pass
+        
+        # 计算匹配分数
+        score = 0
+        if query_lower in name_lower:
+            score += 20
+        name_words = set(name_lower.replace(' ', '').split())
+        for word in query_words:
+            if word in name_words:
+                score += 5
+            if word in content:
+                score += 2
+        
+        if score > 0:
+            results.append({
+                'source': 'wiki',
+                'path': str(md_file),
+                'name': md_file.stem,
+                'score': score,
+                'preview': content[:200] if content else ""
+            })
+    
+    results.sort(key=lambda x: x['score'], reverse=True)
+    return results[:max_results]
+
+
+def get_wiki_content(path: str) -> str:
+    """读取 Wiki 页面内容"""
+    try:
+        return Path(path).read_text(encoding='utf-8')
+    except:
+        return ""
+
+
+# ============== Skills 知识库检索 ==============
+
+def search_skills(query: str, max_results: int = 5) -> List[Dict]:
+    """从 Skills 知识库检索"""
+    results = []
+    query_lower = query.lower()
+    query_words = query_lower.replace(' ', '').split()
+    
+    if not KNOWLEDGE_DIR.exists():
+        return results
+    
+    for md_file in KNOWLEDGE_DIR.rglob("*.md"):
+        name_lower = md_file.stem.lower()
+        content = ""
+        try:
+            content = md_file.read_text(encoding='utf-8', errors='ignore').lower()
+        except:
+            pass
+        
+        score = 0
+        if query_lower in name_lower:
+            score += 20
+        name_words = set(name_lower.replace(' ', '').split())
+        for word in query_words:
+            if word in name_words:
+                score += 5
+            if word in content:
+                score += 2
+        
+        if score > 0:
+            rel_path = str(md_file.relative_to(KNOWLEDGE_DIR))
+            results.append({
+                'source': 'skills',
+                'path': str(md_file),
+                'name': md_file.stem,
+                'rel_path': rel_path,
+                'score': score,
+                'preview': content[:200] if content else ""
+            })
+    
+    results.sort(key=lambda x: x['score'], reverse=True)
+    return results[:max_results]
+
+
+def get_skills_content(path: str) -> str:
+    """读取 Skills 文档内容"""
+    try:
+        return Path(path).read_text(encoding='utf-8')
+    except:
+        return ""
+
+
+# ============== MAGMA 记忆检索 ==============
+
+def search_magma(query: str, max_results: int = 5) -> List[Dict]:
+    """从 MAGMA 记忆系统检索（Mem0 + Milvus）"""
+    results = []
+    
+    # 优先使用 Mem0 本地检索
+    try:
+        import mem0
+        config = {"vector_store": {"provider": "chroma", "config": {"collection_name": "cay son_db", "path": str(Path.home() / ".mem0" / "chroma")}}}
+        client = mem0.Client(config)
+        memories = client.search(query, limit=max_results)
+        
+        for mem in memories:
+            results.append({
+                'source': 'magma',
+                'id': mem.get('id', ''),
+                'text': mem.get('text', '')[:200],
+                'score': mem.get('score', 0),
+                'created_at': mem.get('created_at', '')
+            })
+    except Exception as e:
+        # Mem0 失败，尝试 Milvus 直连
+        try:
+            results = search_milvus_fallback(query, max_results)
+        except:
+            pass
+    
+    return results
+
+
+def search_milvus_fallback(query: str, max_results: int = 5) -> List[Dict]:
+    """Milvus 直连降级方案"""
+    results = []
+    
+    try:
+        from pymilvus import MilvusClient
+        client = MilvusClient(uri="http://8.137.122.11:19530", token="MRFzL6@Milvus")
+        results = client.search(
+            collection_name="CaySon_db",
+            query_text=query,
+            limit=max_results
+        )
+        
+        formatted = []
+        for r in results:
+            formatted.append({
+                'source': 'milvus',
+                'id': r.get('id', ''),
+                'text': r.get('text', r.get('entity', {}).get('text', ''))[:200],
+                'score': r.get('score', 0)
+            })
+        return formatted
+    except Exception as e:
+        return results
+
+
+# ============== LLM 综合回答 ==============
 
 def call_llm(prompt: str, system: str = None) -> str:
     """调用 Ollama LLM"""
@@ -48,320 +221,200 @@ def call_llm(prompt: str, system: str = None) -> str:
         return f"[LLM Error: {e}]"
 
 
-def read_index() -> dict:
-    """读取索引文件，返回相关页面列表"""
-    if not INDEX_FILE.exists():
-        return {'related_pages': [], 'raw_content': ''}
+def synthesize_answer(query: str, wiki_results: List, skills_results: List, magma_results: List) -> str:
+    """综合三个来源生成回答"""
     
-    content = INDEX_FILE.read_text(encoding='utf-8')
-    
-    # 提取相关页面（简化版：返回所有 wiki md 文件）
-    related = []
-    for md_file in WIKI_DIR.rglob("*.md"):
-        if md_file.name == "index.md" or md_file.name == "log.md":
-            continue
-        rel_path = str(md_file.relative_to(WIKI_DIR))
-        related.append({
-            'path': str(md_file),
-            'name': md_file.stem,
-            'rel_path': rel_path
-        })
-    
-    return {'related_pages': related, 'raw_content': content}
-
-
-def search_related_pages(query: str, pages: list) -> list:
-    """根据查询关键词搜索相关页面（全文搜索）"""
-    query_lower = query.lower()
-    query_words = query_lower.replace(' ', '').split()
-    
-    scored_pages = []
-    
-    for page in pages:
-        name_lower = page['name'].lower()
-        
-        # 使用绝对路径读取内容
-        page_path = Path(page['path'])
-        content = ""
-        if page_path.exists():
-            try:
-                content = page_path.read_text(encoding='utf-8', errors='ignore').lower()
-            except:
-                pass
-        
-        # 计算匹配分数
-        score = 0
-        
-        # 标题完全包含
-        if query_lower in name_lower:
-            score += 20
-        
-        # 标题词重叠
-        name_words = set(name_lower.replace(' ', '').split())
-        for word in query_words:
-            if word in name_words:
-                score += 5
-        
-        # 内容中包含查询词
-        for word in query_words:
-            if word in content:
-                score += 3
-            if word in name_lower:
-                score += 2
-        
-        if score > 0:
-            scored_pages.append((score, page))
-    
-    # 按分数排序
-    scored_pages.sort(key=lambda x: x[0], reverse=True)
-    return [p for _, p in scored_pages[:5]]  # 返回前5个
-
-
-def read_page_content(page_path: str) -> str:
-    """读取页面内容"""
-    try:
-        return Path(page_path).read_text(encoding='utf-8')
-    except:
-        return ""
-
-
-def query_from_wiki(question: str) -> dict:
-    """
-    从 wiki 知识库回答问题
-    返回: {answer, sources, suggested_save}
-    """
-    
-    # Step 1: 读取索引
-    print(f"\n[QUERY] 问题: {question}")
-    print("\n[Step 1] 读取索引...")
-    index_data = read_index()
-    pages = index_data['related_pages']
-    print(f"      找到 {len(pages)} 个页面")
-    
-    # Step 2: 搜索相关页面
-    print("\n[Step 2] 搜索相关页面...")
-    related = search_related_pages(question, pages)
-    print(f"      相关页面: {[p['name'] for p in related]}")
-    
-    if not related:
-        return {
-            'answer': "知识库中没有找到相关内容。请先运行 compile.py 编译原始资料。",
-            'sources': [],
-            'suggested_save': None
-        }
-    
-    # Step 3: 读取相关页面内容
-    print("\n[Step 3] 读取相关页面...")
+    # 构建上下文
     context_parts = []
-    source_files = []
+    sources = []
     
-    for page in related[:3]:  # 最多读取3个页面
-        content = read_page_content(page['path'])
-        if content:
-            context_parts.append(f"=== {page['name']} ===\n{content[:1500]}")
-            source_files.append(page['name'])
+    # Wiki 来源
+    if wiki_results:
+        context_parts.append("=== [Wiki知识库] ===")
+        for r in wiki_results[:2]:
+            content = get_wiki_content(r['path'])
+            context_parts.append(f"\n【{r['name']}】\n{content[:800]}")
+            sources.append(f"wiki:{r['name']}")
     
-    context = "\n\n".join(context_parts)
+    # Skills 来源
+    if skills_results:
+        context_parts.append("\n=== [Skills知识库] ===")
+        for r in skills_results[:2]:
+            content = get_skills_content(r['path'])
+            context_parts.append(f"\n【{r['name']}】\n{content[:800]}")
+            sources.append(f"skills:{r['name']}")
     
-    # Step 4: 综合回答
-    print("\n[Step 4] 综合回答...")
+    # MAGMA 来源
+    if magma_results:
+        context_parts.append("\n=== [个人记忆] ===")
+        for r in magma_results[:3]:
+            context_parts.append(f"\n【记忆 #{r.get('id', '')[:8]}】\n{r.get('text', '')}")
+            sources.append(f"memory:{r.get('id', '')[:8]}")
     
-    system_prompt = """你是一个知识库助手，基于提供的 wiki 页面内容回答用户问题。
+    if not context_parts:
+        return "在所有知识系统中都没有找到相关内容。", []
+    
+    context = "\n".join(context_parts)
+    
+    system_prompt = """你是一个知识库助手，基于三个来源（Wiki/Skills/个人记忆）回答用户问题。
 
 规则：
-1. 只基于提供的 wiki 内容回答，不要编造
-2. 如果内容不足以回答，说明知识库中没有足够信息
-3. 回答要简洁、有条理
-4. 引用相关页面时用 [[页面名]] 格式
-5. 如果你发现一个好答案值得沉淀到知识库，在回答末尾用 [值得沉淀到wiki] 标记"""
+1. 综合多个来源的信息，不要只依赖一个来源
+2. 引用来源时用 [来源:名称] 格式
+3. 如果某个来源没有相关信息，跳过它
+4. 回答要简洁、有条理，突出关键洞察"""
 
-    prompt = f"""基于以下 wiki 知识库内容，回答用户问题。
+    prompt = f"""基于以下知识库内容，回答用户问题。
 
-问题: {question}
+问题: {query}
 
-知识库内容:
 {context}
 
-请回答问题。"""
+请回答问题："""
 
     answer = call_llm(prompt, system=system_prompt)
+    return answer, sources
+
+
+# ============== 主函数 ==============
+
+def query_unified(query: str, mode: str = "all") -> Dict:
+    """
+    统一检索入口
     
-    # 检查是否值得沉淀
-    suggested_save = None
-    if "[值得沉淀到wiki]" in answer or "值得沉淀" in answer:
-        suggested_save = {
-            'question': question,
-            'answer': answer.replace("[值得沉淀到wiki]", "").strip(),
-            'sources': source_files
-        }
-        answer = answer.replace("[值得沉淀到wiki]", "").strip()
+    modes:
+        - "all": 全系统检索（wiki + skills + magma）
+        - "wiki": 仅 wiki 知识库
+        - "skills": 仅 skills 知识库  
+        - "memory": 仅 MAGMA 记忆
+    """
+    print(f"\n🔍 统一检索: {query}")
+    print(f"   模式: {mode}")
+    print("-" * 50)
+    
+    wiki_results = []
+    skills_results = []
+    magma_results = []
+    
+    # 根据模式选择检索范围
+    if mode in ["all", "wiki"]:
+        print("\n[1/3] 检索 Wiki 知识库...")
+        wiki_results = search_wiki(query)
+        print(f"      找到 {len(wiki_results)} 个相关页面")
+    
+    if mode in ["all", "skills"]:
+        print("\n[2/3] 检索 Skills 知识库...")
+        skills_results = search_skills(query)
+        print(f"      找到 {len(skills_results)} 个相关文档")
+    
+    if mode in ["all", "memory"]:
+        print("\n[3/3] 检索 MAGMA 记忆...")
+        magma_results = search_magma(query)
+        print(f"      找到 {len(magma_results)} 条记忆")
+    
+    # 综合回答
+    print("\n[综合] 生成回答...")
+    answer, sources = synthesize_answer(query, wiki_results, skills_results, magma_results)
     
     return {
+        'query': query,
+        'mode': mode,
         'answer': answer,
-        'sources': source_files,
-        'suggested_save': suggested_save
+        'sources': sources,
+        'wiki_results': wiki_results,
+        'skills_results': skills_results,
+        'magma_results': magma_results
     }
 
 
-def save_to_wiki(question: str, answer: str, sources: list):
-    """将问答沉淀到 wiki"""
+def print_result(result: Dict):
+    """打印检索结果"""
+    print("\n" + "=" * 60)
+    print("📝 回答")
+    print("=" * 60)
+    print(result['answer'])
     
-    timestamp = datetime.now().strftime('%Y-%m-%d')
+    print("\n📚 来源")
+    print("-" * 40)
     
-    # 创建问答沉淀页
-    content = f"""# Q&A 沉淀：{question[:50]}
-
-> 问题: {question}
-> 沉淀时间: {timestamp}
-> 来源页面: {', '.join(['[[' + s + ']]' for s in sources])}
-
-## 问题
-
-{question}
-
-## 回答
-
-{answer}
-
-## 来源
-
-"""
-    for s in sources:
-        content += f"- [[{s}]]\n"
+    wiki = result.get('wiki_results', [])
+    skills = result.get('skills_results', [])
+    magma = result.get('magma_results', [])
     
-    content += f"""
----
-
-*由 Karpathy 知识库系统自动沉淀 | {timestamp}*
-"""
+    if wiki:
+        print(f"\n【Wiki知识库】{len(wiki)} 个页面")
+        for r in wiki:
+            print(f"  • {r['name']} (score: {r['score']})")
     
-    # 生成安全的文件名
-    safe_name = re.sub(r'[^\w\s\u4e00-\u9fff]', '', question[:30])
-    safe_name = safe_name.replace(' ', '_')
-    filename = f"{timestamp}-Q&A-{safe_name}.md"
+    if skills:
+        print(f"\n【Skills知识库】{len(skills)} 个文档")
+        for r in skills:
+            print(f"  • {r['rel_path']} (score: {r['score']})")
     
-    # 保存到 wiki/来源/ 或新建 Q&A 目录
-    qa_dir = WIKI_DIR / "问答沉淀"
-    qa_dir.mkdir(exist_ok=True)
+    if magma:
+        print(f"\n【个人记忆】{len(magma)} 条")
+        for r in magma:
+            print(f"  • {r.get('text', '')[:50]}... (score: {r.get('score', 0):.2f})")
     
-    file_path = qa_dir / filename
-    file_path.write_text(content, encoding='utf-8')
-    
-    return str(file_path)
+    print("\n" + "=" * 60)
 
 
-def append_to_existing_page(page_name: str, question: str, answer: str):
-    """将问答追加到现有页面的"相关问答"章节"""
-    
-    # 查找页面
-    for md_file in WIKI_DIR.rglob("*.md"):
-        if md_file.stem == page_name:
-            existing = md_file.read_text(encoding='utf-8')
-            
-            # 检查是否有"相关问答"章节
-            if "## 相关问答" in existing:
-                new_entry = f"\n\n### {question}\n\n{answer}"
-                updated = existing.replace(
-                    "## 相关问答",
-                    f"## 相关问答{new_entry}"
-                )
-            else:
-                new_section = f"\n\n## 相关问答\n\n### {question}\n\n{answer}"
-                updated = existing + new_section
-            
-            md_file.write_text(updated, encoding='utf-8')
-            return str(md_file)
-    
-    return None
-
-
-def log_query(question: str, answer: str, sources: list, saved: bool = False):
+def log_query(result: Dict):
     """记录查询到日志"""
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
-    
     entry = f"""
 
-## [YYYY-MM-DD] query | 回答问题 | 来源: {len(sources)} 页 | 沉淀: {'是' if saved else '否'}
-
-**问题**: {question}
-
-**回答**: {answer[:200]}...
-
-**来源**: {', '.join(sources)}
+## [{timestamp}] query | {result['query'][:50]}
+- 模式: {result['mode']}
+- 来源数: {len(result['sources'])}
+- Wiki: {len(result.get('wiki_results', []))}
+- Skills: {len(result.get('skills_results', []))}
+- Memory: {len(result.get('magma_results', []))}
 
 """
     
     if LOG_FILE.exists():
         existing = LOG_FILE.read_text(encoding='utf-8')
     else:
-        existing = "# Wiki 操作日志\n\n> 本文件记录所有 wiki 的操作历史。\n"
+        existing = "# Wiki 操作日志\n\n"
     
     LOG_FILE.write_text(existing + entry, encoding='utf-8')
 
 
 def main():
-    """交互式查询"""
-    print("=" * 60)
-    print("Karpathy 知识库 - QUERY 查询")
-    print("=" * 60)
-    print("\n输入问题，我将基于 wiki 知识库回答。")
-    print("输入 'quit' 退出。\n")
+    """命令行入口"""
+    if len(sys.argv) < 2:
+        print(__doc__)
+        print("\n示例:")
+        print('  python query.py "什么是 Harness Engineering"')
+        print('  python query.py --wiki "OpenClaw"')
+        print('  python query.py --memory "昨天的会议"')
+        sys.exit(1)
     
-    while True:
-        try:
-            question = input("\n[问题] ").strip()
-        except EOFError:
-            break
-        
-        if not question:
-            continue
-        
-        if question.lower() in ['quit', 'exit', 'q']:
-            print("再见!")
-            break
-        
-        # 执行查询
-        result = query_from_wiki(question)
-        
-        print("\n" + "=" * 60)
-        print("回答:")
-        print("=" * 60)
-        print(result['answer'])
-        
-        print(f"\n[来源] {', '.join(result['sources'])}")
-        
-        # 沉淀建议
-        if result['suggested_save']:
-            print("\n[建议] 这个答案值得沉淀到 wiki!")
-            save = input("是否沉淀到 wiki？(y/n): ").strip().lower()
-            if save == 'y':
-                path = save_to_wiki(
-                    result['suggested_save']['question'],
-                    result['suggested_save']['answer'],
-                    result['suggested_save']['sources']
-                )
-                print(f"      已沉淀到: {path}")
-                log_query(question, result['answer'], result['sources'], saved=True)
-            else:
-                log_query(question, result['answer'], result['sources'], saved=False)
+    mode = "all"
+    query_parts = []
+    
+    for arg in sys.argv[1:]:
+        if arg.startswith("--"):
+            mode = arg[2:]
         else:
-            log_query(question, result['answer'], result['sources'], saved=False)
+            query_parts.append(arg)
+    
+    query = " ".join(query_parts)
+    
+    if mode == "help":
+        print(__doc__)
+        sys.exit(0)
+    
+    result = query_unified(query, mode)
+    print_result(result)
+    log_query(result)
 
 
-def query_once(question: str) -> dict:
-    """单次查询（非交互式）"""
-    return query_from_wiki(question)
+def query_once(query: str, mode: str = "all") -> Dict:
+    """单次查询 API"""
+    return query_unified(query, mode)
 
 
 if __name__ == '__main__':
-    import sys
-    
-    if len(sys.argv) > 1:
-        # 命令行参数：直接查询
-        question = ' '.join(sys.argv[1:])
-        result = query_once(question)
-        print(result['answer'])
-        print(f"\n[来源] {', '.join(result['sources'])}")
-    else:
-        # 交互式模式
-        main()
+    main()

@@ -1,4 +1,4 @@
-# AAAI 2025 论文《Mind Individual Information!》
+﻿# AAAI 2025 论文《Mind Individual Information!》
 
 > 类型：实体
 > 创建时间：2026-04-12 20:04
@@ -26,3 +26,4 @@ Alchemy 是由清华大学人工智能学院李佳助理教授课题组开发的
 
 ---
 *由 Karpathy 知识库系统自动生成*
+

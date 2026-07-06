@@ -1,0 +1,211 @@
+{
+  "task_id": "T-HN-001",
+  "row_index": 4,
+  "product": {
+    "title": "公牛（BULL）插座/B5系列 带儿童保护门/新国标插座/排插 【8位】总控1.6米（新国标防过载）B5440",
+    "brand": "公牛",
+    "model": "无",
+    "category": "插座",
+    "category_keyword": "插座",
+    "length_mm": 250,
+    "width_mm": 76,
+    "height_mm": 29,
+    "weight": 0.5,
+    "weight_kg": 0.5,
+    "unit": "个",
+    "jd_price": 70,
+    "jd_url": "https://item.jd.com/16793098028.html",
+    "business_type": "慧采",
+    "note": "数量：2",
+    "sku": "B5440",
+    "purchase_price": 60,
+    "market_price": 80,
+    "stock": 2,
+    "description": "公牛B5系列8位新国标防过载排插，总长1.6米，带儿童保护门，适用于家用和办公场景",
+    "main_image": "main.png",
+    "sub_images": [
+      "sub1.png",
+      "sub2.png"
+    ]
+  },
+  "status": "saved_draft",
+  "current_node": "VERIFY_DRAFT",
+  "evidence": {
+    "bootstrap": {
+      "workflow": "dry-run",
+      "row_index": 4
+    },
+    "select_row": {
+      "requested_row": 4,
+      "selected_row": 4
+    },
+    "recover_fields": {
+      "verified_fields": []
+    },
+    "prepare_assets": {
+      "ok": true,
+      "message": "image_transform dry-run",
+      "transformed_assets": [],
+      "attempts": [
+        {
+          "attempt": 1,
+          "ok": true
+        }
+      ]
+    },
+    "observe_page": {
+      "ok": true,
+      "message": "webview observation captured",
+      "data": {
+        "uia_html_controls": 0,
+        "screenshot_path": null,
+        "page_signature": "dry-run",
+        "ocr_blocks": []
+      }
+    },
+    "field_plan": [
+      "title",
+      "category",
+      "brand",
+      "sku",
+      "jd_price",
+      "purchase_price",
+      "market_price",
+      "main_image",
+      "sub_images",
+      "description",
+      "weight",
+      "stock"
+    ],
+    "title_action": {
+      "action": "fill"
+    },
+    "title_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "category_action": {
+      "action": "fill"
+    },
+    "category_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "brand_action": {
+      "action": "fill"
+    },
+    "brand_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "sku_action": {
+      "action": "fill"
+    },
+    "sku_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "jd_price_action": {
+      "action": "fill"
+    },
+    "jd_price_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "purchase_price_action": {
+      "action": "fill"
+    },
+    "purchase_price_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "market_price_action": {
+      "action": "fill"
+    },
+    "market_price_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "main_image_action": {
+      "action": "fill"
+    },
+    "main_image_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "sub_images_action": {
+      "action": "fill"
+    },
+    "sub_images_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "description_action": {
+      "action": "fill"
+    },
+    "description_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "weight_action": {
+      "action": "fill"
+    },
+    "weight_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "stock_action": {
+      "action": "fill"
+    },
+    "stock_verify": {
+      "ok": true,
+      "reason": "字段证据通过"
+    },
+    "completion": {
+      "score": 1.0,
+      "passed": true
+    },
+    "review_score": {
+      "decision": "save_draft",
+      "overall_score": 100,
+      "blocking_gaps": [],
+      "recommendations": []
+    },
+    "save_draft": {
+      "ok": true,
+      "message": "dry-run command recorded"
+    },
+    "verify_draft": {
+      "ok": true,
+      "reason": "dry-run 保存草稿证据通过",
+      "draft_id": null,
+      "draft_url": null,
+      "toast_text": null,
+      "list_page_hit": false,
+      "readback": {},
+      "strategy_reason": "草稿保存证据通过"
+    },
+    "commit_row": {
+      "row_index": 4,
+      "status": "committed"
+    }
+  },
+  "verified_fields": [
+    "brand",
+    "category",
+    "description",
+    "jd_price",
+    "main_image",
+    "market_price",
+    "purchase_price",
+    "sku",
+    "stock",
+    "sub_images",
+    "title",
+    "weight"
+  ],
+  "blockers": [],
+  "completion_score": 1.0,
+  "review_decision": "save_draft",
+  "evaluation_loop_count": 0
+}

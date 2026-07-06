@@ -1,0 +1,2879 @@
+{
+  "scanned_files": [
+    "admin_alerts.py",
+    "admin_api_keys.py",
+    "admin_clients.py",
+    "admin_client_features.py",
+    "admin_client_users.py",
+    "admin_crawler.py",
+    "admin_crawler_servers.py",
+    "admin_dashboard.py",
+    "admin_data_scope.py",
+    "admin_projects.py",
+    "admin_published_urls.py",
+    "admin_questions.py",
+    "admin_reference_analysis.py",
+    "admin_reports.py",
+    "admin_settings.py",
+    "admin_users.py",
+    "auth.py",
+    "brands.py",
+    "client_answers.py",
+    "client_api_keys.py",
+    "client_attribution.py",
+    "client_brands.py",
+    "client_brand_sub.py",
+    "client_comparison.py",
+    "client_dashboard.py",
+    "client_profile.py",
+    "client_questions.py",
+    "client_references.py",
+    "client_reports.py",
+    "open_exports.py",
+    "open_presale.py",
+    "reports.py",
+    "subscriptions.py",
+    "visibility.py"
+  ],
+  "endpoints": [
+    {
+      "file": "admin_alerts.py",
+      "method": "GET",
+      "path": "/api/v1/admin/alerts/channels",
+      "function": "list_channels",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "通道配置高频读取无 Redis 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_alerts.py",
+      "method": "POST",
+      "path": "/api/v1/admin/alerts/channels",
+      "function": "create_channel",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_alerts.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/alerts/channels/{channel_id}",
+      "function": "delete_channel",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_alerts.py",
+      "method": "POST",
+      "path": "/api/v1/admin/alerts/channels/{channel_id}/test",
+      "function": "test_channel",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "test_channel 可能触发外部 webhook/邮件发送，应放入 BackgroundTasks"
+        }
+      ]
+    },
+    {
+      "file": "admin_alerts.py",
+      "method": "GET",
+      "path": "/api/v1/admin/alerts/rules",
+      "function": "list_rules",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "rules 列表查询无缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_alerts.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/alerts/rules/{rule_id}",
+      "function": "update_rule",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "更新后未失效 rules 列表缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_alerts.py",
+      "method": "GET",
+      "path": "/api/v1/admin/alerts/history",
+      "function": "list_alert_history",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_api_keys.py",
+      "method": "GET",
+      "path": "/api/v1/admin/api-keys/resources",
+      "function": "list_open_api_resources",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "资源元数据低频变更应加 5-10min Redis 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_api_keys.py",
+      "method": "GET",
+      "path": "/api/v1/admin/api-keys",
+      "function": "list_api_keys",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_api_keys.py",
+      "method": "POST",
+      "path": "/api/v1/admin/api-keys",
+      "function": "create_api_key",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_api_keys.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/api-keys/{api_key_id}",
+      "function": "update_api_key",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_api_keys.py",
+      "method": "GET",
+      "path": "/api/v1/admin/api-keys/access-logs",
+      "function": "list_access_logs",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "日志查询 7d/30d 全量扫描可能很重"
+        }
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "method": "GET",
+      "path": "/api/v1/admin/clients",
+      "function": "list_clients",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "客户列表 keyword LIKE 搜索无覆盖索引"
+        },
+        {
+          "type": "permission_check_gap",
+          "desc": "仅检查 admin/operator 角色，operator 数据范围收紧依赖 service 层"
+        }
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "method": "POST",
+      "path": "/api/v1/admin/clients",
+      "function": "create_client",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_clients.py",
+      "method": "GET",
+      "path": "/api/v1/admin/clients/{client_id}",
+      "function": "get_client",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "permission_check_gap",
+          "desc": "operator 取任意 client_id 详情无显式 scope 校验"
+        }
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/clients/{client_id}",
+      "function": "delete_client",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "级联删除大量关联表未异步化"
+        }
+      ]
+    },
+    {
+      "file": "admin_clients.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/clients/{client_id}",
+      "function": "update_client",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_client_features.py",
+      "method": "GET",
+      "path": "/api/v1/admin/client-features/{client_id}",
+      "function": "get_client_features",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "client_features 配置低频变更但读频繁应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_client_features.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/client-features/{client_id}",
+      "function": "update_client_features",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_client_users.py",
+      "method": "GET",
+      "path": "/api/v1/admin/client-users",
+      "function": "list_client_users",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_client_users.py",
+      "method": "GET",
+      "path": "/api/v1/admin/client-users/{user_id}",
+      "function": "get_client_user",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_client_users.py",
+      "method": "GET",
+      "path": "/api/v1/admin/client-users/{user_id}/login-history",
+      "function": "get_client_user_login_history",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_client_users.py",
+      "method": "POST",
+      "path": "/api/v1/admin/client-users",
+      "function": "create_client_user",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "多选客户批量创建每条独立 DB 写入应放 BackgroundTasks"
+        }
+      ]
+    },
+    {
+      "file": "admin_client_users.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/client-users/{user_id}/reset-password",
+      "function": "reset_client_user_password",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_client_users.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/client-users/{user_id}/status",
+      "function": "update_client_user_status",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "禁用账户后无 Redis 黑名单，强制用户主动刷新才生效"
+        }
+      ]
+    },
+    {
+      "file": "admin_client_users.py",
+      "method": "GET",
+      "path": "/api/v1/admin/client-users/{user_id}/projects",
+      "function": "get_user_projects",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "permission_check_gap",
+          "desc": "本文件其他端点用 _require_admin 严格校验，本端点用 require_admin_or_operator，权限粒度不一致"
+        }
+      ]
+    },
+    {
+      "file": "admin_client_users.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/client-users/{user_id}/projects",
+      "function": "update_user_projects",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "permission_check_gap",
+          "desc": "operator 可改任何用户项目授权，越权风险"
+        },
+        {
+          "type": "long_running_no_bg",
+          "desc": "全量替换项目权限可能涉及大量 DELETE+INSERT"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/status",
+      "function": "crawler_status",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "实时状态未做短路缓存（5s TTL 可减少 DB 抖动）"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/history",
+      "function": "crawler_history",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/errors",
+      "function": "crawler_errors",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/crawler/temp-tasks",
+      "function": "create_temp_crawl_task",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "创建临时爬虫任务用 BackgroundTasks 不可靠（重启即丢），应改 Celery/Arq 持久化队列"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/crawler/temp-tasks/drafts",
+      "function": "create_temp_crawl_draft",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/temp-tasks",
+      "function": "list_temp_crawl_tasks",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "PATCH",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}/draft",
+      "function": "update_temp_crawl_draft",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}/run",
+      "function": "run_temp_crawl_draft",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "触发 DCP 爬虫长任务用 BackgroundTasks 不够可靠"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}",
+      "function": "get_temp_crawl_task_detail",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "sync_io_in_async",
+          "desc": "调用 sync_temp_crawl_results_from_answers 在请求内执行（写库），详情页并发时易锁竞争"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}/progress",
+      "function": "get_temp_crawl_progress",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "progress 接口高频轮询应加 Redis 短期缓存（2-3s）"
+        },
+        {
+          "type": "sync_io_in_async",
+          "desc": "progress 内仍触发 sync_temp_crawl_results_from_answers 写操作"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}/results",
+      "function": "get_temp_crawl_results",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "sync_io_in_async",
+          "desc": "每次查询前都执行 sync_temp_crawl_results_from_answers 写库，与 GET 语义冲突"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}/export",
+      "function": "export_temp_crawl_results",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "导出任务应先生成下载 token 再异步下载"
+        },
+        {
+          "type": "sync_io_in_async",
+          "desc": "导出前调用 sync_temp_crawl_results_from_answers 写库"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}/promote",
+      "function": "promote_temp_crawl_task",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "临时任务转正可能涉及大量数据迁移，未异步化"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}/replay",
+      "function": "replay_temp_crawl_task",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "replay 重新触发爬虫，长任务用 BackgroundTasks 不可靠"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}/completion",
+      "function": "complete_temp_crawl_task",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/crawler/temp-tasks/{job_id}",
+      "function": "delete_temp_crawl_task",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/temp-tasks",
+      "function": "create_temp_crawl_task_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/temp-tasks/drafts",
+      "function": "create_temp_crawl_draft_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/temp-tasks",
+      "function": "list_temp_crawl_tasks_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "PATCH",
+      "path": "/api/v1/admin/temp-tasks/{job_id}/draft",
+      "function": "update_temp_crawl_draft_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/temp-tasks/{job_id}/run",
+      "function": "run_temp_crawl_draft_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/temp-tasks/{job_id}",
+      "function": "get_temp_crawl_task_detail_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/temp-tasks/{job_id}/progress",
+      "function": "get_temp_crawl_progress_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/temp-tasks/{job_id}/results",
+      "function": "get_temp_crawl_results_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "GET",
+      "path": "/api/v1/admin/temp-tasks/{job_id}/export",
+      "function": "export_temp_crawl_results_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/temp-tasks/{job_id}/promote",
+      "function": "promote_temp_crawl_task_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/temp-tasks/{job_id}/replay",
+      "function": "replay_temp_crawl_task_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/admin/temp-tasks/{job_id}/completion",
+      "function": "complete_temp_crawl_task_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/temp-tasks/{job_id}",
+      "function": "delete_temp_crawl_task_alias",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_route",
+          "desc": "与 /admin/crawler/temp-tasks 重复别名，维护成本翻倍"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler.py",
+      "method": "POST",
+      "path": "/api/v1/internal/dcp/temp-tasks/{job_id}/completion",
+      "function": "complete_temp_crawl_task_from_dcp",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "permission_check_gap",
+          "desc": "DCP 内网回调仅校验共享 token，未做 IP 白名单/请求签名"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/servers",
+      "function": "list_crawler_servers",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "返回 CrawlerServerListResponse 全表扫描，无 page/limit"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "POST",
+      "path": "/api/v1/admin/crawler/servers",
+      "function": "register_crawler_server",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/crawler/servers/{server_id}",
+      "function": "update_crawler_server",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/crawler/servers/{server_id}",
+      "function": "delete_crawler_server",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "级联删除关联 schedules 未异步化"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/crawler/servers/{server_id}/assign",
+      "function": "assign_platform_to_server",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "GET",
+      "path": "/api/v1/admin/crawler/schedules",
+      "function": "list_crawler_schedules",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "全表 schedules 列表无分页"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "POST",
+      "path": "/api/v1/admin/crawler/schedules",
+      "function": "create_crawler_schedule",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/crawler/schedules/{schedule_id}",
+      "function": "delete_crawler_schedule",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "missing_pydantic_response",
+          "desc": "声明 response_model=dict，应统一为 OperationResponse"
+        }
+      ]
+    },
+    {
+      "file": "admin_crawler_servers.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/crawler/schedules/{schedule_id}",
+      "function": "update_crawler_schedule",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_dashboard.py",
+      "method": "GET",
+      "path": "/api/v1/admin/dashboard/overview",
+      "function": "overview",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "overview 聚合查询（多表 join + group by）每次请求直查 DB，运营首页高频访问应加 30-60s Redis 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "method": "GET",
+      "path": "/api/v1/admin/dashboard/crawl-today",
+      "function": "crawl_today",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "返回 list[CrawlTodayItem] 无 page_size，平台数量增长时全量返回"
+        },
+        {
+          "type": "no_cache",
+          "desc": "实时数据适合 10s 短 TTL 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "method": "GET",
+      "path": "/api/v1/admin/dashboard/client-kpi",
+      "function": "client_kpi",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "missing_pydantic_response",
+          "desc": "未声明 response_model，函数体直接 return {...} dict；schema 漂移风险"
+        },
+        {
+          "type": "no_cache",
+          "desc": "KPI 趋势聚合大表未加缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_dashboard.py",
+      "method": "GET",
+      "path": "/api/v1/admin/dashboard/analysis-status",
+      "function": "analysis_status",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "管道状态高频读取应加 5-10s TTL"
+        }
+      ]
+    },
+    {
+      "file": "admin_data_scope.py",
+      "method": "GET",
+      "path": "/api/v1/admin/users/{user_id}/data-scope",
+      "function": "get_data_scope",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_data_scope.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/users/{user_id}/data-scope",
+      "function": "update_data_scope",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "全量替换数据范围涉及大量 DELETE+INSERT"
+        }
+      ]
+    },
+    {
+      "file": "admin_data_scope.py",
+      "method": "GET",
+      "path": "/api/v1/admin/users/{user_id}/open-api-resources",
+      "function": "get_open_api_resources",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_data_scope.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/users/{user_id}/open-api-resources",
+      "function": "update_open_api_resources",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects",
+      "function": "list_projects",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/phase-stats",
+      "function": "get_project_phase_stats",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "阶段统计 GROUP BY 全表，应加 60s 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "POST",
+      "path": "/api/v1/admin/projects",
+      "function": "create_project",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}",
+      "function": "get_project",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}/temp-tasks",
+      "function": "list_project_temp_tasks",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}/answers/export/count",
+      "function": "count_project_answer_export_rows",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "sync_io_in_async",
+          "desc": "导出前 count 预查询在请求内执行（深分页 COUNT 很重）"
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}/answers/export",
+      "function": "export_project_answers",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "导出大数据集应先生成下载 token 再异步下载"
+        },
+        {
+          "type": "sync_io_in_async",
+          "desc": "build_project_answers_export 同步读全量到内存"
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/projects/{project_id}",
+      "function": "update_project",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/projects/{project_id}/phase",
+      "function": "update_project_phase",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/projects/{project_id}",
+      "function": "delete_project",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "级联删除未异步化"
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}/geo-scores",
+      "function": "get_geo_scores",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "GEO 分数时间线聚合应加 5min Redis 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}/crawl-status",
+      "function": "get_crawl_status",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "当日爬虫状态聚合应加 30s 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_projects.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}/content-coverage",
+      "function": "get_content_coverage",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "内容覆盖率分析查询重且频繁"
+        }
+      ]
+    },
+    {
+      "file": "admin_published_urls.py",
+      "method": "POST",
+      "path": "/api/v1/admin/projects/{project_id}/published-urls",
+      "function": "bulk_add_urls",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "批量 URL 插入未分批异步化，万级 URL 单事务风险"
+        }
+      ]
+    },
+    {
+      "file": "admin_published_urls.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}/published-urls",
+      "function": "list_published_urls",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_published_urls.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/projects/{project_id}/published-urls/{url_id}",
+      "function": "delete_published_url",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "missing_pydantic_response",
+          "desc": "无 response_model（204 No Content 可接受）"
+        }
+      ]
+    },
+    {
+      "file": "admin_published_urls.py",
+      "method": "POST",
+      "path": "/api/v1/admin/projects/{project_id}/published-urls/batch",
+      "function": "batch_upload_urls",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "sync_io_in_async",
+          "desc": "await file.read() + .decode('utf-8') 整文件读内存 OOM 风险"
+        },
+        {
+          "type": "long_running_no_bg",
+          "desc": "解析+插入大批量 URL 应异步化"
+        }
+      ]
+    },
+    {
+      "file": "admin_published_urls.py",
+      "method": "GET",
+      "path": "/api/v1/admin/projects/{project_id}/coverage",
+      "function": "get_coverage",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_questions.py",
+      "method": "GET",
+      "path": "/api/v1/admin/questions",
+      "function": "list_questions",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_questions.py",
+      "method": "POST",
+      "path": "/api/v1/admin/questions",
+      "function": "create_question",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_questions.py",
+      "method": "POST",
+      "path": "/api/v1/admin/questions/batch",
+      "function": "batch_create_questions",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "批量创建问题未异步化"
+        }
+      ]
+    },
+    {
+      "file": "admin_questions.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/questions/{question_id}",
+      "function": "update_question",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_questions.py",
+      "method": "GET",
+      "path": "/api/v1/admin/questions/{question_id}/delete-precheck",
+      "function": "delete_question_precheck",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_questions.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/questions/{question_id}",
+      "function": "delete_question",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "级联删除 question 相关数据未异步化"
+        }
+      ]
+    },
+    {
+      "file": "admin_reference_analysis.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reference-analysis/stats",
+      "function": "get_reference_stats",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "引用源统计 GROUP BY 重查询，应加 Redis 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_reference_analysis.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reference-analysis/top-domains",
+      "function": "get_top_domains",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "Top 域名排序查询无缓存"
+        },
+        {
+          "type": "duplicate_logic",
+          "desc": "与 stats 调用同一 service.get_reference_stats，应合并接口"
+        }
+      ]
+    },
+    {
+      "file": "admin_reference_analysis.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reference-analysis/articles",
+      "function": "get_reference_articles",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_reference_analysis.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reference-analysis/articles/{reference_source_id}",
+      "function": "get_reference_article_detail",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_reference_analysis.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reference-analysis/feature-analysis",
+      "function": "get_feature_analysis",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "特征分析聚合查询重"
+        }
+      ]
+    },
+    {
+      "file": "admin_reference_analysis.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reference-analysis/feature-heatmap",
+      "function": "get_feature_heatmap",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "duplicate_logic",
+          "desc": "与 feature-analysis 调用同一 service.get_feature_analysis"
+        }
+      ]
+    },
+    {
+      "file": "admin_reports.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reports",
+      "function": "get_report_list",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "无 page/limit 参数"
+        }
+      ]
+    },
+    {
+      "file": "admin_reports.py",
+      "method": "POST",
+      "path": "/api/v1/admin/reports",
+      "function": "create_report",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "PDF/CSV 报告生成用 BackgroundTasks 不可靠（重启即丢），应入 Celery"
+        },
+        {
+          "type": "no_cache",
+          "desc": "报告列表低频变更高频读"
+        }
+      ]
+    },
+    {
+      "file": "admin_reports.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/reports/{report_id}",
+      "function": "delete_report",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_reports.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reports/preview",
+      "function": "get_report_preview",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "报告预览聚合查询重且与正式生成共享代码"
+        }
+      ]
+    },
+    {
+      "file": "admin_reports.py",
+      "method": "GET",
+      "path": "/api/v1/admin/reports/history",
+      "function": "get_report_history",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_settings.py",
+      "method": "GET",
+      "path": "/api/v1/admin/settings",
+      "function": "get_settings",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "系统设置低频变更高频读，应加 5min 缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_settings.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/settings",
+      "function": "update_settings",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_settings.py",
+      "method": "GET",
+      "path": "/api/v1/admin/settings/history",
+      "function": "get_settings_history",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_settings.py",
+      "method": "POST",
+      "path": "/api/v1/admin/settings/test-connection",
+      "function": "test_llm_connection",
+      "uses_db": false,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "LLM 连接测试阻塞数秒（外部 API），无超时控制也未后台化"
+        },
+        {
+          "type": "permission_check_gap",
+          "desc": "无 role 校验，非 admin 也可触发外部 LLM 调用"
+        }
+      ]
+    },
+    {
+      "file": "admin_settings.py",
+      "method": "POST",
+      "path": "/api/v1/admin/settings/test-email",
+      "function": "test_email",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "SMTP 邮件发送应异步化"
+        }
+      ]
+    },
+    {
+      "file": "admin_settings.py",
+      "method": "POST",
+      "path": "/api/v1/admin/settings/rollback/{version}",
+      "function": "rollback_settings",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_users.py",
+      "method": "GET",
+      "path": "/api/v1/admin/users",
+      "function": "list_users",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_users.py",
+      "method": "POST",
+      "path": "/api/v1/admin/users",
+      "function": "create_user",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_users.py",
+      "method": "GET",
+      "path": "/api/v1/admin/users/{user_id}/permissions",
+      "function": "get_permissions",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "权限配置读频繁应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/users/{user_id}/password",
+      "function": "change_password",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_users.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/users/{user_id}/permissions",
+      "function": "update_permissions",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "admin_users.py",
+      "method": "DELETE",
+      "path": "/api/v1/admin/users/{user_id}",
+      "function": "delete_user",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "删除运营账号有审计校验可能阻塞"
+        }
+      ]
+    },
+    {
+      "file": "admin_users.py",
+      "method": "PUT",
+      "path": "/api/v1/admin/users/{user_id}/status",
+      "function": "update_user_status",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "function": "login",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "sync_io_in_async",
+          "desc": "verify_password (bcrypt 同步) 在 async 路径上阻塞事件循环"
+        },
+        {
+          "type": "no_cache",
+          "desc": "登录态无服务端会话表，每次冷查 user+client_name+permissions"
+        },
+        {
+          "type": "permission_check_gap",
+          "desc": "无显式失败计数（防爆破依赖 service 层）"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "function": "get_me",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "me 接口每次查 client_name+permissions，热点高并发可缓存"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "function": "refresh",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "function": "logout",
+      "uses_db": false,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "permission_check_gap",
+          "desc": "无 JWT 黑名单（logout 只是返回成功），token 仍可使用至过期"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "method": "GET",
+      "path": "/api/v1/auth/captcha",
+      "function": "get_captcha",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "captcha ticket 应存 Redis（短 TTL）而非 DB"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/verify-captcha",
+      "function": "verify_captcha",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/forgot-password",
+      "function": "forgot_password",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/send-reset-code",
+      "function": "send_reset_code",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "邮件/短信发送应在 BackgroundTasks 执行"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/verify-reset-code",
+      "function": "verify_reset_code",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/send-register-code",
+      "function": "send_register_code",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "验证码邮件发送应在 BackgroundTasks"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "method": "GET",
+      "path": "/api/v1/auth/register-platforms",
+      "function": "get_register_platforms",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "注册平台列表读多写少，应加 Redis 缓存"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/verify-register-code",
+      "function": "verify_register_code",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "function": "register",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "register_client_with_trial 创建 trial+项目+爬虫，事务重"
+        }
+      ]
+    },
+    {
+      "file": "auth.py",
+      "method": "POST",
+      "path": "/api/v1/auth/reset-password",
+      "function": "reset_password",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "auth.py",
+      "method": "PUT",
+      "path": "/api/v1/auth/change-password",
+      "function": "change_password",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "brands.py",
+      "method": "GET",
+      "path": "/api/v1/brands",
+      "function": "placeholder",
+      "uses_db": false,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": false,
+      "issues": [
+        {
+          "type": "dead_code",
+          "desc": "空 stub 文件，未实现任何端点"
+        }
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "method": "GET",
+      "path": "/api/v1/client/answers",
+      "function": "answer_list",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "client_answers.py",
+      "method": "GET",
+      "path": "/api/v1/client/answers/export",
+      "function": "answer_export",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "导出 AI 回答应在 service 层建下载 token 异步化"
+        }
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "method": "GET",
+      "path": "/api/v1/client/answers/{answer_id}",
+      "function": "answer_detail",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "client_answers.py",
+      "method": "GET",
+      "path": "/api/v1/client/answers/{answer_id}/screenshot",
+      "function": "answer_screenshot",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "截图 URL 永久有效，可加永久缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_api_keys.py",
+      "method": "GET",
+      "path": "/api/v1/client/api-keys",
+      "function": "api_key_list",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "client_api_keys.py",
+      "method": "POST",
+      "path": "/api/v1/client/api-keys",
+      "function": "api_key_create",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "client_api_keys.py",
+      "method": "DELETE",
+      "path": "/api/v1/client/api-keys/{api_key_id}",
+      "function": "api_key_revoke",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "client_attribution.py",
+      "method": "GET",
+      "path": "/api/v1/client/citation-attribution/top-articles",
+      "function": "top_articles",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "Top 引用文章查询无缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "method": "GET",
+      "path": "/api/v1/client/citation-attribution/export",
+      "function": "attribution_export",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "导出引用归因大数据集未异步化"
+        }
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "method": "GET",
+      "path": "/api/v1/client/citation-attribution/articles/{reference_source_id}",
+      "function": "article_detail",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "client_attribution.py",
+      "method": "GET",
+      "path": "/api/v1/client/citation-attribution/feature-heatmap",
+      "function": "feature_heatmap",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "返回 list[FeatureHeatmapItem] 无 page_size"
+        }
+      ]
+    },
+    {
+      "file": "client_brands.py",
+      "method": "GET",
+      "path": "/api/v1/client/brands",
+      "function": "brand_list",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "返回 list[BrandListItem] 无分页/limit"
+        }
+      ]
+    },
+    {
+      "file": "client_brands.py",
+      "method": "GET",
+      "path": "/api/v1/client/brands/{project_id}",
+      "function": "brand_detail",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "品牌详情聚合查询应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "method": "GET",
+      "path": "/api/v1/client/brands/{project_id}/mentions",
+      "function": "brand_mentions",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "client_brand_sub.py",
+      "method": "GET",
+      "path": "/api/v1/client/brands/{project_id}/competitors",
+      "function": "competitors",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "list[CompetitorItem] 无分页"
+        },
+        {
+          "type": "no_cache",
+          "desc": "竞品聚合查询无缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "method": "GET",
+      "path": "/api/v1/client/brands/{project_id}/competitors/trend",
+      "function": "competitors_trend",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "竞品趋势 list 无分页"
+        },
+        {
+          "type": "no_cache",
+          "desc": "趋势聚合查询应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "method": "GET",
+      "path": "/api/v1/client/brands/{project_id}/rankings",
+      "function": "rankings",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "list[RankingItem] 无分页"
+        },
+        {
+          "type": "no_cache",
+          "desc": "品牌排名查询无缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "method": "GET",
+      "path": "/api/v1/client/brands/{project_id}/dynamic-rankings",
+      "function": "dynamic_rankings",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "动态品牌提及排行榜 list 无分页"
+        },
+        {
+          "type": "no_cache",
+          "desc": "排行榜计算重应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_comparison.py",
+      "method": "GET",
+      "path": "/api/v1/client/brands/{project_id}/comparison",
+      "function": "brand_comparison",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "品牌与竞品对比聚合重查询"
+        }
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "method": "GET",
+      "path": "/api/v1/client/dashboard/overview",
+      "function": "overview",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "客户首页概览聚合重查询，高频访问应加 30-60s 缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "method": "GET",
+      "path": "/api/v1/client/dashboard/gpower-trend",
+      "function": "gpower_trend",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "G-Power 趋势聚合应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "method": "GET",
+      "path": "/api/v1/client/dashboard/mention-trend",
+      "function": "mention_trend",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "list[MentionTrendItem] 无 page_size"
+        },
+        {
+          "type": "no_cache",
+          "desc": "提及趋势聚合应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "method": "GET",
+      "path": "/api/v1/client/dashboard/platform-distribution",
+      "function": "platform_distribution",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "list[PlatformDistributionItem] 无 page_size"
+        },
+        {
+          "type": "no_cache",
+          "desc": "平台分布聚合应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_profile.py",
+      "method": "GET",
+      "path": "/api/v1/client/profile",
+      "function": "profile",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "账号信息高频读应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_profile.py",
+      "method": "GET",
+      "path": "/api/v1/client/subscription",
+      "function": "subscription",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "订阅信息低频变更高频读应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_questions.py",
+      "method": "GET",
+      "path": "/api/v1/client/questions",
+      "function": "list_questions",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "list[QuestionItem] 无 page_size，问题数量大时全量返回"
+        }
+      ]
+    },
+    {
+      "file": "client_questions.py",
+      "method": "POST",
+      "path": "/api/v1/client/questions",
+      "function": "create_question",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "client_references.py",
+      "method": "GET",
+      "path": "/api/v1/client/reference-analysis/stats",
+      "function": "citation_stats",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "KPI 统计 GROUP BY 重查询应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "method": "GET",
+      "path": "/api/v1/client/reference-analysis/top-domains",
+      "function": "top_domains",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "Top 域名查询无缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "method": "GET",
+      "path": "/api/v1/client/reference-analysis/trend",
+      "function": "citation_trend",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "list[CitationTrendItem] 无 page_size"
+        },
+        {
+          "type": "no_cache",
+          "desc": "趋势查询应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "method": "GET",
+      "path": "/api/v1/client/reference-analysis/distribution",
+      "function": "domain_distribution",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_pagination",
+          "desc": "list[DomainDistributionItem] 无 page_size"
+        },
+        {
+          "type": "no_cache",
+          "desc": "分布聚合应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_reports.py",
+      "method": "GET",
+      "path": "/api/v1/client/reports",
+      "function": "list_reports",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "报告列表读频繁"
+        }
+      ]
+    },
+    {
+      "file": "client_reports.py",
+      "method": "POST",
+      "path": "/api/v1/client/reports",
+      "function": "create_report",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "PDF/CSV 生成用 BackgroundTasks 不可靠"
+        }
+      ]
+    },
+    {
+      "file": "client_reports.py",
+      "method": "POST",
+      "path": "/api/v1/client/reports/{report_id}/retry",
+      "function": "retry_report",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "retry PDF/CSV 生成不可靠"
+        }
+      ]
+    },
+    {
+      "file": "open_exports.py",
+      "method": "GET",
+      "path": "/api/v1/export/answers",
+      "function": "export_answers",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "Open API 高频读，无缓存"
+        }
+      ]
+    },
+    {
+      "file": "open_exports.py",
+      "method": "POST",
+      "path": "/api/v1/export/answers/download",
+      "function": "download_answers",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "导出大数据集未异步化"
+        }
+      ]
+    },
+    {
+      "file": "open_exports.py",
+      "method": "GET",
+      "path": "/api/v1/export/references",
+      "function": "export_references",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "引用源 Open API 读无缓存"
+        }
+      ]
+    },
+    {
+      "file": "open_exports.py",
+      "method": "POST",
+      "path": "/api/v1/export/references/download",
+      "function": "download_references",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "导出引用源未异步化"
+        }
+      ]
+    },
+    {
+      "file": "open_exports.py",
+      "method": "GET",
+      "path": "/api/v1/export/downloads/{token}",
+      "function": "get_download",
+      "uses_db": false,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "下载 token 已在 service 层做本地存储"
+        }
+      ]
+    },
+    {
+      "file": "open_presale.py",
+      "method": "POST",
+      "path": "/api/v1/open/presale/tasks",
+      "function": "create_presale_task",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "售前爬虫长任务用 BackgroundTasks 不可靠"
+        }
+      ]
+    },
+    {
+      "file": "open_presale.py",
+      "method": "GET",
+      "path": "/api/v1/open/presale/tasks/{job_id}/progress",
+      "function": "get_presale_task_progress",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "progress 轮询接口应加 Redis 短期缓存"
+        }
+      ]
+    },
+    {
+      "file": "open_presale.py",
+      "method": "GET",
+      "path": "/api/v1/open/presale/tasks/{job_id}/results",
+      "function": "get_presale_task_results",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": []
+    },
+    {
+      "file": "open_presale.py",
+      "method": "POST",
+      "path": "/api/v1/open/presale/tasks/{job_id}/answers/download",
+      "function": "download_presale_task_answers",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "下载链接生成实际生成 CSV 未异步化"
+        }
+      ]
+    },
+    {
+      "file": "open_presale.py",
+      "method": "POST",
+      "path": "/api/v1/open/presale/tasks/{job_id}/promote",
+      "function": "promote_presale_task",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "数据转正可能涉及大量数据迁移未异步化"
+        }
+      ]
+    },
+    {
+      "file": "reports.py",
+      "method": "GET",
+      "path": "/api/v1/reports",
+      "function": "placeholder",
+      "uses_db": false,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": false,
+      "issues": [
+        {
+          "type": "dead_code",
+          "desc": "空 stub 文件，未实现任何端点"
+        }
+      ]
+    },
+    {
+      "file": "subscriptions.py",
+      "method": "POST",
+      "path": "/api/v1/subscriptions/trial",
+      "function": "create_trial",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "long_running_no_bg",
+          "desc": "试用订阅可能涉及客户创建级联"
+        }
+      ]
+    },
+    {
+      "file": "subscriptions.py",
+      "method": "GET",
+      "path": "/api/v1/subscriptions/quota/{client_id}",
+      "function": "check_quota",
+      "uses_db": true,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": true,
+      "issues": [
+        {
+          "type": "no_cache",
+          "desc": "额度查询高频调用应加缓存"
+        }
+      ]
+    },
+    {
+      "file": "visibility.py",
+      "method": "GET",
+      "path": "/api/v1/visibility",
+      "function": "placeholder",
+      "uses_db": false,
+      "uses_redis": false,
+      "uses_cache": false,
+      "is_async": false,
+      "issues": [
+        {
+          "type": "dead_code",
+          "desc": "空 stub 文件，未实现任何端点"
+        }
+      ]
+    }
+  ],
+  "global_findings": {
+    "total_endpoints_scanned": 186,
+    "total_files_scanned": 34,
+    "sync_io_count": 0,
+    "sync_io_in_async_via_service": 6,
+    "raw_sql_files": [],
+    "missing_pagination_endpoints": [
+      "admin_crawler_servers.py:list_crawler_servers",
+      "admin_crawler_servers.py:list_crawler_schedules",
+      "admin_dashboard.py:crawl_today",
+      "admin_reports.py:get_report_list",
+      "client_attribution.py:feature_heatmap",
+      "client_brands.py:brand_list",
+      "client_brand_sub.py:competitors",
+      "client_brand_sub.py:competitors_trend",
+      "client_brand_sub.py:rankings",
+      "client_brand_sub.py:dynamic_rankings",
+      "client_dashboard.py:mention_trend",
+      "client_dashboard.py:platform_distribution",
+      "client_questions.py:list_questions",
+      "client_references.py:citation_trend",
+      "client_references.py:domain_distribution"
+    ],
+    "no_cache_highfreq_endpoints": [
+      "admin_dashboard.py:overview (运营首页高频)",
+      "admin_dashboard.py:client_kpi (KPI 趋势)",
+      "admin_dashboard.py:crawl_today",
+      "admin_dashboard.py:analysis_status",
+      "admin_projects.py:get_geo_scores",
+      "admin_projects.py:get_crawl_status",
+      "admin_projects.py:get_content_coverage",
+      "admin_projects.py:get_project_phase_stats",
+      "admin_reference_analysis.py:stats",
+      "admin_reference_analysis.py:top_domains",
+      "admin_reference_analysis.py:feature_analysis",
+      "admin_reports.py:get_report_list",
+      "admin_reports.py:get_report_preview",
+      "admin_settings.py:get_settings",
+      "admin_users.py:get_permissions",
+      "client_dashboard.py:overview (客户首页高频)",
+      "client_dashboard.py:gpower_trend",
+      "client_dashboard.py:mention_trend",
+      "client_dashboard.py:platform_distribution",
+      "client_brand_sub.py:rankings / dynamic_rankings / competitors",
+      "client_references.py:citation_stats / top_domains / trend / distribution",
+      "client_attribution.py:top_articles",
+      "client_answers.py:answer_screenshot",
+      "client_profile.py:profile / subscription",
+      "auth.py:me (热点高并发)",
+      "auth.py:register-platforms (读多写少)",
+      "open_exports.py:export_answers / export_references",
+      "subscriptions.py:check_quota",
+      "admin_api_keys.py:list_open_api_resources (元数据缓存)",
+      "admin_client_features.py:get_client_features",
+      "admin_alerts.py:list_channels / list_rules"
+    ],
+    "long_running_no_bg_endpoints": [
+      "admin_crawler.py:create_temp_crawl_task / run_temp_crawl_draft / replay_temp_crawl_task (爬虫长任务)",
+      "admin_crawler.py:promote_temp_crawl_task (数据转正)",
+      "admin_crawler.py:export_temp_crawl_results (导出)",
+      "admin_projects.py:export_project_answers (导出)",
+      "admin_projects.py:delete_project (级联删除)",
+      "admin_published_urls.py:bulk_add_urls / batch_upload_urls (批量插入/上传)",
+      "admin_questions.py:batch_create_questions (批量创建)",
+      "admin_questions.py:delete_question (级联删除)",
+      "admin_clients.py:delete_client (级联删除)",
+      "admin_crawler_servers.py:delete_crawler_server (级联删除)",
+      "admin_data_scope.py:update_data_scope (DELETE+INSERT 大量)",
+      "admin_client_users.py:update_user_projects (项目权限全量替换)",
+      "admin_client_users.py:create_client_user (批量创建)",
+      "admin_reports.py:create_report (PDF/CSV 生成)",
+      "client_reports.py:create_report / retry_report (PDF/CSV 生成)",
+      "admin_alerts.py:test_channel (外部 webhook/邮件)",
+      "admin_settings.py:test_llm_connection (外部 LLM 调用)",
+      "admin_settings.py:test_email (SMTP 邮件发送)",
+      "admin_users.py:delete_user (审计校验)",
+      "auth.py:send-reset-code / send-register-code (邮件/短信)",
+      "auth.py:register (客户+订阅+项目+爬虫事务)",
+      "client_answers.py:answer_export (导出)",
+      "client_attribution.py:attribution_export (导出)",
+      "subscriptions.py:create_trial (试用订阅创建)",
+      "open_exports.py:download_answers / download_references (导出)",
+      "open_presale.py:create_presale_task (爬虫长任务)",
+      "open_presale.py:download_presale_task_answers (导出)",
+      "open_presale.py:promote_presale_task (数据转正)"
+    ],
+    "permission_check_gaps": [
+      "admin_api_keys.py:定义 _require_admin 但未使用（dead code）",
+      "admin_client_users.py:get_user_projects / update_user_projects 用 require_admin_or_operator 而非 _require_admin（越权风险）",
+      "admin_crawler.py:complete_temp_crawl_task_from_dcp (DCP 内网回调) 仅校验共享 token，无 IP 白名单/签名",
+      "admin_settings.py:test_llm_connection / test_email 无显式 role 校验",
+      "admin_users.py:list_users 严格 _require_admin（与 client-users 文件的不一致策略）",
+      "auth.py:logout 无 JWT 黑名单机制",
+      "client 端点正确使用 require_client_access_scope / require_subscription_active（✓）"
+    ],
+    "missing_pydantic_response": [
+      "admin_dashboard.py:client_kpi - 直接 return {...} dict",
+      "admin_crawler_servers.py:delete_crawler_schedule - response_model=dict 应为 OperationResponse"
+    ],
+    "duplicate_routes": [
+      "admin_crawler.py: temp_tasks_router (13 个别名) 与 /admin/crawler/temp-tasks/* 完全重复（维护成本翻倍）",
+      "admin_reference_analysis.py:top-domains / feature-heatmap 与 stats / feature-analysis 调用相同 service 实现"
+    ],
+    "dead_code_files": [
+      "brands.py - 空 stub",
+      "reports.py - 空 stub",
+      "visibility.py - 空 stub"
+    ],
+    "raw_sql_in_routers": 0,
+    "uses_redis_in_routers": 0,
+    "uses_cache_decorator_in_routers": 0,
+    "all_endpoints_async": true,
+    "all_endpoints_use_async_session": true,
+    "no_pagination_count": 15,
+    "duplicate_routes_count": 13,
+    "long_running_no_bg_count": 28,
+    "permission_gap_count": 7,
+    "no_cache_highfreq_count": 31
+  }
+}

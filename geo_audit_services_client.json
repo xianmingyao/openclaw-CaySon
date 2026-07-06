@@ -1,0 +1,1273 @@
+{
+  "audit_target": "E:\\PY\\yunfanshujing\\GEO-Platform\\apps\\backend\\src\\services\\client_*.py",
+  "scanned_at": "2026-06-17",
+  "scanned_files": [
+    "client_access_scope.py",
+    "client_answers.py",
+    "client_api_keys.py",
+    "client_attribution.py",
+    "client_brands.py",
+    "client_brand_rankings.py",
+    "client_brand_sub.py",
+    "client_comparison.py",
+    "client_dashboard.py",
+    "client_dynamic_rankings.py",
+    "client_profile.py",
+    "client_questions.py",
+    "client_references.py",
+    "client_reports.py"
+  ],
+  "function_issues": [
+    {
+      "file": "client_dashboard.py",
+      "function": "get_overview",
+      "issue_count": 7,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "9+ 次串行 db.execute；gpower(latest/current/prev) + mentions(current/prev) + avg_position + rank_change + sentiment(current/prev) + monitored_platforms + monitored_questions + last_crawl 全部可 asyncio.gather"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "高频只读接口无 Redis 缓存，dashboard 数据 5~10 分钟刷新一次即可"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "low",
+          "desc": "avg_position 用 text() 拼接 SQL 拼 AVG(avg_position)，可改 func.avg() ORM"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "current/prev 周期对比查询本可并行执行，串行浪费 RTT"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "GpowerScores/BrandMentionDaily/SentimentScores 全部用 (project_id, batch_date, batch_round IS NULL) 但未确认有复合索引；建议 (project_id, batch_date DESC) WHERE batch_round IS NULL"
+        },
+        {
+          "type": "redundant_query",
+          "severity": "medium",
+          "desc": "同一表 gpower_score 查 3 次（latest / period / prev_period），可一条 SQL 用窗口函数或 CASE WHEN 一次拿三段"
+        },
+        {
+          "type": "memory_risk",
+          "severity": "low",
+          "desc": "get_mention_trend 返回的 dict 包含 8 个平台 case 列，若 date 跨度大时行数过多；建议上限 365 天"
+        }
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "function": "get_gpower_trend",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "趋势数据日维度，最多 90 天；Redis 缓存 5 分钟可省 90 行聚合"
+        },
+        {
+          "type": "missing_index",
+          "severity": "medium",
+          "desc": "WHERE project_id + batch_date GROUP BY batch_date，缺 (project_id, batch_date) 复合索引"
+        },
+        {
+          "type": "serial_await",
+          "severity": "low",
+          "desc": "查 brand_name 与 gpower 趋势两个 query 串行，应 gather"
+        },
+        {
+          "type": "no_pagination",
+          "severity": "low",
+          "desc": "days 无上限，days=365 会拉 365 行聚合"
+        }
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "function": "get_mention_trend",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "case_in_select",
+          "severity": "medium",
+          "desc": "8 个平台用 8 次 func.sum(case()) 写成一长串，可改成 brand_name GROUP BY 然后 Python pivot"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "高频 dashboard 接口无缓存"
+        },
+        {
+          "type": "missing_index",
+          "severity": "medium",
+          "desc": "缺 (project_id, batch_date, target_platform) 复合索引"
+        }
+      ]
+    },
+    {
+      "file": "client_dashboard.py",
+      "function": "get_platform_distribution",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "low",
+          "desc": "用 text() 拼接的 window function SQL 算占比，可改 ORM + Python 算百分比"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "聚合数据可缓存 5 分钟"
+        },
+        {
+          "type": "missing_index",
+          "severity": "medium",
+          "desc": "缺 (project_id, batch_date, target_platform) 复合索引"
+        }
+      ]
+    },
+    {
+      "file": "client_brands.py",
+      "function": "get_brand_list",
+      "issue_count": 5,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "对每个 brand 循环 2 次 await db.execute（monitored_platforms + question_count），客户有 N 个品牌就是 2N 次查询；应一次性 GROUP BY project_id 批量取"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "品牌列表接口每次请求都查 DB，5 分钟缓存即可"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "medium",
+          "desc": "即使不改 N+1，单一 brand 的 2 个查询也串行，应 asyncio.gather"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "Projects 表 (client_id, is_primary) 无确认复合索引；QuestionPool (project_id, is_active) 缺复合索引"
+        },
+        {
+          "type": "memory_risk",
+          "severity": "low",
+          "desc": "返回所有 brand 无分页，大客户可能上千"
+        }
+      ]
+    },
+    {
+      "file": "client_brands.py",
+      "function": "get_brand_detail",
+      "issue_count": 7,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "13+ 次串行 db.execute（gpower 1 + mentions×2 + avg_position×2 + mention_rate×2 + sentiment×2 + recommendation×2 + ranking×2），应并行"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "9 处用 text() + f-string 拼接 where 子句；虽然参数化但代码重复严重，建议抽 helper"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "详情页高频只读，应 Redis 60s 缓存"
+        },
+        {
+          "type": "redundant_query",
+          "severity": "medium",
+          "desc": "current/prev 周期对比查了 4 组表各 2 次，可合并为一条带 CASE WHEN 的 SQL"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "4 组对比查询完全独立，必须 asyncio.gather"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "GpowerScores/BrandMentionDaily/SentimentScores/BrandAnswerMetrics 全部缺 (project_id, batch_date DESC) 复合索引"
+        },
+        {
+          "type": "long_running",
+          "severity": "medium",
+          "desc": "13+ 次 round-trip，详情页响应可能 500ms+"
+        }
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "function": "get_answer_list",
+      "issue_count": 6,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "循环每行 await 2 次 db.execute（BrandMentions + SentimentScores），page_size=20 就是 40 次查询；与 get_answer_export_file 的 join 实现不一致"
+        },
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "N×2 次 query 串行执行，page_size 大时极慢"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "只读接口无缓存；30s 短缓存可显著减负"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "即使不消除 N+1，循环内 2 个 query 应 asyncio.gather"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "low",
+          "desc": "_build_answer_conditions 全程手拼 where，无类型检查"
+        },
+        {
+          "type": "inconsistent_impl",
+          "severity": "medium",
+          "desc": "export 用了 GROUP BY subquery 一次拿，list 用了 N+1，同模块两套实现"
+        }
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "function": "get_answer_export_file",
+      "issue_count": 5,
+      "issues": [
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "MAX_EXPORT_ROWS=10000 行的 Excel/CSV 在请求内同步生成，openpyxl write_only 仍可能数秒；应放后台任务+邮件通知"
+        },
+        {
+          "type": "sync_io",
+          "severity": "high",
+          "desc": "openpyxl/csv 是同步 IO，在 async handler 里阻塞 event loop"
+        },
+        {
+          "type": "memory_risk",
+          "severity": "medium",
+          "desc": "10000 行 * 8 列 + answer_text(可能很长)，单次内存可能 50MB+"
+        },
+        {
+          "type": "subquery_in_select",
+          "severity": "low",
+          "desc": "mention_subquery + sentiment_subquery 是相关子查询风格；10000 行扫描+join 仍较重"
+        },
+        {
+          "type": "no_streaming",
+          "severity": "medium",
+          "desc": "应 StreamingResponse 分块返回，避免长连接占用 worker"
+        }
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "function": "get_answer_detail",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "medium",
+          "desc": "3 次串行 db.execute（detail + mention + sentiment）应 gather"
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "详情只读可短缓存"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "medium",
+          "desc": "mention + sentiment 互相独立，可并行"
+        }
+      ]
+    },
+    {
+      "file": "client_answers.py",
+      "function": "get_answer_screenshot",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "sync_io",
+          "severity": "low",
+          "desc": "generate_signed_url 若为同步网络 IO 会阻塞；应确认是否已 async 化"
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "签名 URL 可缓存到过期前"
+        }
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "function": "get_top_articles",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "medium",
+          "desc": "复杂聚合 SQL 用 text() 拼接；ORM 难表达 COUNT(DISTINCT) FILTER"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "Top 列表页面高访问，30s 缓存可显著减负"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "reference_paragraph_attribution (project_id, batch_date, target_platform) 缺复合索引，GROUP BY source_id 必然全表扫"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "medium",
+          "desc": "get_top_articles / get_feature_heatmap 通常一起展示，应并行查询"
+        }
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "function": "get_reference_list",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "medium",
+          "desc": "count 和 data 两条 SQL 都用 text() 拼接"
+        },
+        {
+          "type": "serial_await",
+          "severity": "medium",
+          "desc": "count 和 data 串行执行，可并行（虽然分页需 count 后 offset）"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "列表接口可短缓存"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "rpa 三表 JOIN (project_id, target_platform, batch_date) 无合适索引"
+        }
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "function": "get_reference_export_file",
+      "issue_count": 5,
+      "issues": [
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "10000 行 Excel 同步生成在请求内"
+        },
+        {
+          "type": "sync_io",
+          "severity": "high",
+          "desc": "openpyxl 是同步 IO 阻塞 event loop"
+        },
+        {
+          "type": "memory_risk",
+          "severity": "medium",
+          "desc": "result.mappings().all() 全量加载，10000 行 mapping 对象内存大"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "medium",
+          "desc": "GROUP BY 三列全表扫，无 cache"
+        },
+        {
+          "type": "no_streaming",
+          "severity": "medium",
+          "desc": "应 StreamingResponse 边读边写"
+        }
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "function": "get_article_detail",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "medium",
+          "desc": "text() 拼接大段 SQL"
+        },
+        {
+          "type": "memory_risk",
+          "severity": "low",
+          "desc": "rpa 全量 paragraphs 入内存，无分页"
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "文章详情只读可缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_attribution.py",
+      "function": "get_feature_heatmap",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "先查 rpa，if 空 fallback 到 answers，串行两次重查询"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "medium",
+          "desc": "动态生成 7 个 FEATURE_LABELS 列拼 SQL，INJECTION 风险低（常量）但 ORM 不可读"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "可缓存 10 分钟"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "medium",
+          "desc": "三层 fallback 应并询后取第一个非空"
+        }
+      ]
+    },
+    {
+      "file": "client_api_keys.py",
+      "function": "list_api_keys",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "对每个 key 循环 await open_api_permissions.list_api_key_resource_keys(db, row.id)，N 个 key 就是 N 次查询；应一次性 JOIN 批量取"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "API key 列表无缓存，但权限变化时需 invalidate"
+        },
+        {
+          "type": "schema_check",
+          "severity": "low",
+          "desc": "每次 has_api_key_enabled_column 检查全表 information_schema，建议缓存 1h"
+        },
+        {
+          "type": "in_memory_state",
+          "severity": "high",
+          "desc": "_RATE_LIMIT_BUCKETS 是模块级 dict，gunicorn 多 worker / 多机部署会失效；必须用 Redis"
+        }
+      ]
+    },
+    {
+      "file": "client_api_keys.py",
+      "function": "create_api_key",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "no_commit_handling",
+          "severity": "medium",
+          "desc": "db.add + flush + open_api_permissions.create_default_resource_permissions 但无显式 commit/rollback；依赖调用方事务；异常时无回滚保护"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "low",
+          "desc": "_create_api_key_before_permissions_migration 用 text() 拼 INSERT"
+        },
+        {
+          "type": "plain_key_in_response",
+          "severity": "low",
+          "desc": "返回的明文 key 不缓存，刷新页面即丢失；考虑一次性显示并提示"
+        }
+      ]
+    },
+    {
+      "file": "client_api_keys.py",
+      "function": "enforce_open_api_rate_limit",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "in_memory_state",
+          "severity": "high",
+          "desc": "_RATE_LIMIT_BUCKETS 模块级 dict，多进程或多机部署下不共享；应迁 Redis"
+        },
+        {
+          "type": "memory_leak_risk",
+          "severity": "medium",
+          "desc": "dict 永不清空废弃 key_hash；恶意 key 探测会内存膨胀"
+        },
+        {
+          "type": "no_cluster_support",
+          "severity": "high",
+          "desc": "enforce_open_api_rate_limit_for_context 用 pg_advisory_xact_lock 正确，但 enforce_open_api_rate_limit 完全进程内"
+        }
+      ]
+    },
+    {
+      "file": "client_api_keys.py",
+      "function": "authenticate_open_api_key",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "每次 API 请求都查 ApiKeys+Users 联表，应 Redis 缓存 api_key_id → user_id 60s"
+        },
+        {
+          "type": "serial_await",
+          "severity": "low",
+          "desc": "查 ApiKeys+Users JOIN 后再 resolve_access_scope_context（又多次 db.execute），可并行"
+        },
+        {
+          "type": "scope_resolution_cost",
+          "severity": "medium",
+          "desc": "resolve_access_scope_context 内 _list_project_ids_for_client + N 次循环查询，单次 API 鉴权可能 200ms+"
+        }
+      ]
+    },
+    {
+      "file": "client_brand_rankings.py",
+      "function": "get_rankings",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "排名历史只读，应 Redis 缓存 5 分钟"
+        },
+        {
+          "type": "missing_index",
+          "severity": "medium",
+          "desc": "BrandRankings (project_id, batch_round IS NULL, batch_date DESC) 缺复合索引"
+        },
+        {
+          "type": "memory_risk",
+          "severity": "low",
+          "desc": "days 无上限，days=365 会拉 365*N 行"
+        }
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "function": "get_brand_mentions",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "count 和 data 都用 text() 拼接，复杂 JOIN"
+        },
+        {
+          "type": "serial_await",
+          "severity": "medium",
+          "desc": "count + data 串行，必须先 count 才能分页；但可在确认 page 后并行（如果用 keyset）"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "brand_mentions (project_id, is_client_brand, crawl_answer_id) + crawl_answers.id 无合适复合索引；JOIN 性能差"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "列表接口无缓存"
+        }
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "function": "get_competitors",
+      "issue_count": 5,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "复杂 CTE（4 个子查询）用 text() 拼接 30+ 行 SQL"
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "gpower_scores + brand_rankings 大表 JOIN + GROUP BY，30 天数据全表扫可能 1s+"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "GpowerScores/BrandRankings (project_id, brand_name, batch_date) 缺复合索引"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "竞品对比数据 30 天才更新一次，5 分钟缓存可省大量 DB"
+        },
+        {
+          "type": "memory_risk",
+          "severity": "low",
+          "desc": "无 limit，结果行数 = 客户竞品数"
+        }
+      ]
+    },
+    {
+      "file": "client_brand_sub.py",
+      "function": "get_competitors_trend",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "text() 拼 CTE"
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "brand_mention_daily JOIN competitor_brands + GROUP BY date, brand_name，30 天 * N 品牌"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "趋势数据 5 分钟缓存足够"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "缺 (project_id, brand_name, batch_date) 复合索引"
+        }
+      ]
+    },
+    {
+      "file": "client_comparison.py",
+      "function": "get_brand_comparison",
+      "issue_count": 6,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "5 次独立 db.execute 查不同维度（mention_frequency, mention_rate, ranking, sentiment, recommendation），应 asyncio.gather"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "5 段都 text() 拼接，重复模板代码多"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "对比页一次拉 5 个维度，30 天数据，缓存 5 分钟可极大减负"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "brand_mention_daily (project_id, brand_name ANY, batch_date) 无合适索引；IN/ANY 难命中"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "5 个查询完全独立，串行 5 个 RTT"
+        },
+        {
+          "type": "memory_risk",
+          "severity": "low",
+          "desc": "Python pivot 阶段 O(N*M) dict 操作，大品牌组可能慢"
+        }
+      ]
+    },
+    {
+      "file": "client_dynamic_rankings.py",
+      "function": "get_dynamic_rankings",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "medium",
+          "desc": "text() 拼 CTE 复杂聚合 SQL"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "动态排名实时性高但 1 分钟缓存仍可接受"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "brand_mentions (project_id, crawl_answer_id) + crawl_answers(project_id, crawled_at) 缺复合索引，CTE 全表扫"
+        }
+      ]
+    },
+    {
+      "file": "client_profile.py",
+      "function": "_get_admin_profile",
+      "issue_count": 6,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "对每个 client 循环 1 次 await db.execute 查 brands（虽然 N 客户数小），每个 brand 循环 2 次 await db.execute（competitors + question_count）"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "admin profile 数据 1 小时变化一次即可，5 分钟缓存可省 90% 请求"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "competitors + question_count 完全独立查询却串行"
+        },
+        {
+          "type": "serial_await",
+          "severity": "medium",
+          "desc": "客户多时 brands 循环 N 次串行查询"
+        },
+        {
+          "type": "missing_index",
+          "severity": "medium",
+          "desc": "Competitors (client_id, project_id) + QuestionPool (project_id, is_active) 缺复合索引"
+        },
+        {
+          "type": "no_pagination",
+          "severity": "medium",
+          "desc": "全量 client 全量 brand 全量 project 无分页"
+        }
+      ]
+    },
+    {
+      "file": "client_profile.py",
+      "function": "_build_profile_projects",
+      "issue_count": 5,
+      "issues": [
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "对每个 project 循环 2 次 await db.execute（competitors + question_count），N 项目 = 2N 查询"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "profile 接口应缓存"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "competitors + question_count 可并行"
+        },
+        {
+          "type": "missing_index",
+          "severity": "medium",
+          "desc": "Competitors (client_id, project_id) + QuestionPool (project_id, is_active) 缺复合索引"
+        },
+        {
+          "type": "redundant_query",
+          "severity": "low",
+          "desc": "_get_admin_profile 和 _build_profile_projects 重复写项目-竞品-问题数的查询逻辑"
+        }
+      ]
+    },
+    {
+      "file": "client_questions.py",
+      "function": "get_question_list",
+      "issue_count": 4,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "text() 拼 where + 2 个相关子查询（platform_count + answer_count）"
+        },
+        {
+          "type": "subquery_in_select",
+          "severity": "high",
+          "desc": "SELECT 列表里 2 个相关子查询，每行扫 task_queue/crawl_answers，N 问题 = 2N 次表扫；应 LEFT JOIN + GROUP BY"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "只读接口可缓存"
+        },
+        {
+          "type": "no_pagination",
+          "severity": "medium",
+          "desc": "无 LIMIT/OFFSET，问题池大时一次返回过多"
+        }
+      ]
+    },
+    {
+      "file": "client_questions.py",
+      "function": "create_client_question",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "no_commit",
+          "severity": "medium",
+          "desc": "db.add + db.flush 无 commit/rollback；需调用方 commit；异常时无 try/except 保护"
+        },
+        {
+          "type": "session_leak",
+          "severity": "medium",
+          "desc": "配额检查失败 / 项目不存在抛 HTTPException 前未 await session.rollback()，虽然没显式修改但有 flush 风险"
+        },
+        {
+          "type": "no_audit",
+          "severity": "low",
+          "desc": "创建问题无审计日志，难以追溯"
+        }
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "function": "get_citation_stats",
+      "issue_count": 6,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "rsd 主查询 + rpa 辅助查询 + 可选 answers 兜底查询，3 步串行"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "3 段都 text() 拼接"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "高频统计接口无缓存"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "rsd 和 rpa 完全不同源，并行查后合并更快"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "reference_source_daily (project_id, batch_date) + reference_paragraph_attribution (project_id, batch_date) 缺复合索引"
+        },
+        {
+          "type": "logic_complexity",
+          "severity": "low",
+          "desc": "三段 fallback 逻辑复杂，if 链难维护；建议并发查后按优先级取"
+        }
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "function": "get_top_domains",
+      "issue_count": 7,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "rsd → rpa → answers 三层 fallback 串行，最坏情况 3 次空查询后才出结果"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "3 段都 text() 拼接，重复逻辑"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "高访问页面应缓存"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "三层应并询后取 first non-empty；2x 提速"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "3 表都缺 (project_id, batch_date) 复合索引；LATERAL jsonb_array_elements 会放大问题"
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "jsonb_array_elements 在大量 answers 上是逐行调用，对客户项目可能扫描数十万行"
+        },
+        {
+          "type": "no_pagination",
+          "severity": "low",
+          "desc": "limit=20 合理，但 total=len(items) 用 list 长度不准"
+        }
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "function": "get_citation_trend",
+      "issue_count": 6,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "rsd → rpa → answers 三层 fallback 串行"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "3 段都 text() 拼接"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "趋势数据日维度，5 分钟缓存足够"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "三层并询后取 first non-empty"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "同上，3 表缺复合索引"
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "jsonb_array_elements 扫 answers 极重"
+        }
+      ]
+    },
+    {
+      "file": "client_references.py",
+      "function": "get_domain_distribution",
+      "issue_count": 6,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "rsd → rpa → answers 三层 fallback 串行"
+        },
+        {
+          "type": "raw_sql_text",
+          "severity": "high",
+          "desc": "3 段 text() 拼接"
+        },
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "可缓存 5 分钟"
+        },
+        {
+          "type": "no_parallel",
+          "severity": "high",
+          "desc": "三层并询后取 first non-empty"
+        },
+        {
+          "type": "missing_index",
+          "severity": "high",
+          "desc": "同上"
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "domain 分布 GROUP BY 全量 domain，无 limit"
+        }
+      ]
+    },
+    {
+      "file": "client_reports.py",
+      "function": "get_report_list",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "medium",
+          "desc": "text() 拼接 SELECT + JOIN，无 ORM 类型检查"
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "报告列表变化不频繁可缓存"
+        },
+        {
+          "type": "missing_index",
+          "severity": "medium",
+          "desc": "report_history (project_id, generated_at DESC) 缺复合索引；LATERAL 排序走 filesort"
+        }
+      ]
+    },
+    {
+      "file": "client_reports.py",
+      "function": "create_report_for_scope",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "low",
+          "desc": "_resolve_report_project 用 text() 简单 SELECT"
+        },
+        {
+          "type": "long_running",
+          "severity": "high",
+          "desc": "report_service.create_report 内部可能同步生成 PDF（数十秒），应放后台任务"
+        },
+        {
+          "type": "no_commit",
+          "severity": "medium",
+          "desc": "调用方负责 commit/rollback，service 层无显式事务保护"
+        }
+      ]
+    },
+    {
+      "file": "client_reports.py",
+      "function": "retry_report_for_scope",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "raw_sql_text",
+          "severity": "low",
+          "desc": "text() 拼 UPDATE"
+        },
+        {
+          "type": "no_background_dispatch",
+          "severity": "medium",
+          "desc": "重置后只返 id，背景任务分发在调用方；service 层应负责 dispatch"
+        }
+      ]
+    },
+    {
+      "file": "client_access_scope.py",
+      "function": "resolve_access_scope_context",
+      "issue_count": 5,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "high",
+          "desc": "operator 分支循环 await db.execute 每个 scope entry；N scope = N 次查询"
+        },
+        {
+          "type": "n_plus_one",
+          "severity": "high",
+          "desc": "scope_type=client 的每个 target_id 调 _list_project_ids_for_client，应一次性 WHERE client_id IN(...)"
+        },
+        {
+          "type": "no_cache",
+          "severity": "high",
+          "desc": "每个 API 请求都重算 access scope（多次 db.execute），应 Redis 缓存 user_id → scope 60s"
+        },
+        {
+          "type": "session_leak",
+          "severity": "medium",
+          "desc": "_raise_forbidden 直接抛 HTTPException，若前面有 flush 未 commit 会留事务；应 try/rollback"
+        },
+        {
+          "type": "complex_hot_path",
+          "severity": "medium",
+          "desc": "单次 API 可能调用 resolve_access_scope_context 一次，再调用 5+ 次独立服务，每个都重新解析 scope；应一次解析注入"
+        }
+      ]
+    },
+    {
+      "file": "client_access_scope.py",
+      "function": "resolve_access_scope_client_id",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "频繁调用，每次查 Projects.client_id"
+        },
+        {
+          "type": "serial_await",
+          "severity": "low",
+          "desc": "_list_client_ids_for_projects 单次查可接受"
+        },
+        {
+          "type": "missing_index",
+          "severity": "low",
+          "desc": "Projects.id IN 已是 PK，但 client_id 无 index 时 _list_client_ids_for_projects 需回表"
+        }
+      ]
+    },
+    {
+      "file": "client_access_scope.py",
+      "function": "list_feature_enabled_project_ids",
+      "issue_count": 2,
+      "issues": [
+        {
+          "type": "no_cache",
+          "severity": "medium",
+          "desc": "feature permissions 极少变化，可 Redis 缓存 client_id → set[feature_key]"
+        },
+        {
+          "type": "missing_index",
+          "severity": "low",
+          "desc": "FeaturePermissions (client_id, project_id, feature_key, is_enabled) 缺复合索引"
+        }
+      ]
+    },
+    {
+      "file": "client_profile.py",
+      "function": "get_subscription",
+      "issue_count": 3,
+      "issues": [
+        {
+          "type": "serial_await",
+          "severity": "medium",
+          "desc": "3 次串行 db.execute（subscription + brands_count + questions_count）应 gather"
+        },
+        {
+          "type": "no_cache",
+          "severity": "low",
+          "desc": "订阅信息变化不频繁可缓存"
+        },
+        {
+          "type": "missing_index",
+          "severity": "low",
+          "desc": "Subscriptions (client_id, status) + QuestionPool (client_id, is_active) 缺复合索引"
+        }
+      ]
+    }
+  ],
+  "global_findings": {
+    "files_with_cache": [],
+    "files_with_redis": [],
+    "files_using_text_raw_sql": [
+      "client_dashboard.py",
+      "client_brands.py",
+      "client_questions.py",
+      "client_brand_sub.py",
+      "client_comparison.py",
+      "client_attribution.py",
+      "client_references.py",
+      "client_reports.py",
+      "client_api_keys.py"
+    ],
+    "files_with_n_plus_one": [
+      "client_brands.py",
+      "client_answers.py",
+      "client_api_keys.py",
+      "client_brand_sub.py",
+      "client_profile.py",
+      "client_questions.py",
+      "client_access_scope.py"
+    ],
+    "high_freq_no_cache": [
+      "client_dashboard.py",
+      "client_brands.py",
+      "client_brand_sub.py",
+      "client_comparison.py",
+      "client_attribution.py",
+      "client_references.py",
+      "client_brand_rankings.py",
+      "client_profile.py"
+    ],
+    "files_with_long_running_export": [
+      "client_answers.py",
+      "client_attribution.py",
+      "client_reports.py"
+    ],
+    "files_with_serial_await": [
+      "client_dashboard.py",
+      "client_brands.py",
+      "client_answers.py",
+      "client_attribution.py",
+      "client_brand_sub.py",
+      "client_comparison.py",
+      "client_references.py",
+      "client_profile.py",
+      "client_access_scope.py"
+    ],
+    "files_with_sync_io": [
+      "client_answers.py",
+      "client_attribution.py",
+      "client_reports.py"
+    ],
+    "files_with_missing_index": [
+      "client_dashboard.py",
+      "client_brands.py",
+      "client_brand_sub.py",
+      "client_comparison.py",
+      "client_attribution.py",
+      "client_references.py",
+      "client_reports.py",
+      "client_brand_rankings.py",
+      "client_profile.py",
+      "client_dynamic_rankings.py",
+      "client_questions.py",
+      "client_access_scope.py"
+    ],
+    "summary_stats": {
+      "total_files_scanned": 14,
+      "total_functions_audited": 40,
+      "high_severity_issues": 79,
+      "medium_severity_issues": 56,
+      "low_severity_issues": 32,
+      "files_with_no_cache": 14,
+      "files_with_raw_sql": 9,
+      "files_with_n_plus_one": 7,
+      "files_with_serial_await": 9,
+      "files_with_sync_io": 3,
+      "files_with_long_running_export": 3
+    },
+    "top_5_critical_issues": [
+      {
+        "rank": 1,
+        "title": "全模块零缓存",
+        "impact": "高频 dashboard/brands/comparison/references 接口每请求都查 DB；这是性能问题最严重的根源",
+        "files": [
+          "client_dashboard.py",
+          "client_brands.py",
+          "client_brand_sub.py",
+          "client_comparison.py",
+          "client_attribution.py",
+          "client_references.py",
+          "client_brand_rankings.py",
+          "client_profile.py"
+        ],
+        "fix": "引入 Redis 60~300s TTL 缓存，user_id+project_id+period 作 key；admin profile 1h、dashboard 5min、列表 30s"
+      },
+      {
+        "rank": 2,
+        "title": "client_brands.get_brand_detail 13+ 次串行 db.execute",
+        "impact": "单接口响应可能 500ms+，4 组 current/prev 对比查询完全独立却串行；高访问详情页 P99 极高",
+        "files": [
+          "client_brands.py"
+        ],
+        "fix": "asyncio.gather 4 组对比查询；或合并为单条 SQL 带 CASE WHEN 一次拿 current/prev"
+      },
+      {
+        "rank": 3,
+        "title": "client_answers.get_answer_list N+1 + get_answer_export 长任务",
+        "impact": "page_size=20 → 40 次 query；Excel 10000 行同步生成阻塞 event loop 数秒",
+        "files": [
+          "client_answers.py"
+        ],
+        "fix": "list 改 LEFT JOIN + GROUP BY 一次拿；export 放后台任务 + 邮件通知 + StreamingResponse"
+      },
+      {
+        "rank": 4,
+        "title": "client_api_keys._RATE_LIMIT_BUCKETS 内存 dict + list_api_keys N+1",
+        "impact": "多 worker/多机部署 rate limit 失效；每 key 一次额外查询 list_api_key_resource_keys",
+        "files": [
+          "client_api_keys.py"
+        ],
+        "fix": "迁 Redis（ZADD + ZREMRANGEBYSCORE）；list_api_key_resource_keys 改批量 JOIN"
+      },
+      {
+        "rank": 5,
+        "title": "client_references 4 个接口三层 fallback 串行 + jsonb_array_elements 重扫",
+        "impact": "rsd → rpa → answers 串行最坏 3 次空查询；answers 端 jsonb_array_elements 扫描数十万行",
+        "files": [
+          "client_references.py"
+        ],
+        "fix": "asyncio.gather 三层并询取 first non-empty；answers 物化到独立 reference_sources 表（已存在但未充分索引）"
+      }
+    ]
+  }
+}

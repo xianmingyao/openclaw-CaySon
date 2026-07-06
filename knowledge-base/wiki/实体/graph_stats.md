@@ -1,0 +1,82 @@
+# graph_stats
+
+> 类型：实体
+> 创建时间：2026-06-03 08:51
+
+## 简介
+
+Graphify 是一款将代码、文档、视频等转换为可查询知识图谱的工具，支持AST提取、LLM语义分析和社区检测，提供多种输出格式和MCP服务，适用于代码理解与知识管理。
+
+## 相关概念
+- [[知识图谱]]
+- [[AST提取]]
+- [[LLM语义提取]]
+- [[社区检测]]
+- [[增量更新]]
+- [[MCP服务]]
+- [[代码导航]]
+- [[跨文件连接关系]]
+- [[God Nodes]]
+- [[Surprising Connections]]
+- [[SHA256缓存]]
+- [[git hook]]
+- [[视频转录]]
+- [[文档/论文/图片处理]]
+- [[图谱输出格式]]
+- [[OpenClaw集成]]
+- [[MAGMA图谱对比]]
+- [[语义查询]]
+- [[最短路径]]
+- [[节点与边Schema]]
+- [[graphifyy]]
+- [[graphify]]
+- [[GitHub]]
+- [[PyPI]]
+- [[MIT License]]
+- [[Python 3.10+]]
+- [[tree-sitter]]
+- [[faster-whisper]]
+- [[Claude subagents]]
+- [[Leiden算法]]
+- [[Louvain算法]]
+- [[NetworkX]]
+- [[graspologic]]
+- [[SHA256]]
+- [[git commit hook]]
+- [[manifest.json]]
+- [[Vite]]
+- [[TypeScript]]
+- [[Svelte]]
+- [[tsconfig.json]]
+- [[MCP stdio]]
+- [[OpenClaw]]
+- [[MAGMA]]
+- [[Gemini]]
+- [[GEMINI_API_KEY]]
+- [[Windows PowerShell 5.1]]
+- [[graph.html]]
+- [[GRAPH_REPORT.md]]
+- [[graph.json]]
+- [[HTML]]
+- [[Obsidian]]
+- [[Neo4j]]
+- [[GraphML]]
+- [[YouTube]]
+- [[arXiv]]
+- [[PDF]]
+- [[Twitter]]
+- [[docx]]
+- [[xlsx]]
+- [[uv tool]]
+- [[query_graph]]
+- [[get_node]]
+- [[get_neighbors]]
+- [[get_community]]
+- [[god_nodes]]
+- [[shortest_path]]
+
+## 来源
+- [[2026-06-03-github-graphify-2026-05-07]]
+
+---
+*由 Karpathy 知识库系统自动生成*

@@ -8,7 +8,32 @@
 - 异常处理：发现问题立即通知宁兄
 
 ## 待处理任务
-（无）
+
+### ⚠️ Feishu/Notion Sync SIGKILL 模式（持续跟踪）
+- **问题**：多个知识同步脚本被系统 SIGKILL 终止
+- **模式**：进程运行 ~2分钟后被强制终止
+- **已知受影响**：`sync_pull_notion.py`、`feishu pull`
+- **可能原因**：内存不足 / cron timeout太短 / 进程挂起
+- **问题**：`knowledge-base/sync_pull_notion.py` 多次被 SIGKILL 终止
+- **影响**：凌晨3点多5个实例全部失败，cron状态却显示"ok"
+- **可能原因**：内存不足 / 进程挂起 / 超时
+- **建议**：检查脚本是否正常，可能需要添加超时或重试机制
+- **Cron Job ID**: 67e39d09-e4b9-405e-88d5-b877739c6b3d
+- **最近状态**：2026-04-28 20:00 cron 正常完成（报告已发送）
+
+### 📊 2026-04-30 09:51 更新
+- vivid-willow session 被 SIGKILL：运行 `sync_pull_notion.py`，持续 2m5s 后被终止
+- 又是 knowledge-base sync 问题，模式跟之前一样
+
+### 📊 2026-04-28 20:12 更新
+- SIGKILL 模式：多个 exec 会话被系统强制终止（可能是 cron timeout 或内存不足）
+- knowledge-base-sync cron 已完成：报告已生成（Milvus ~250/422 条因超时中断）
+- 旧失败记录（4月25日）已过期，清理
+
+## Cron 状态更新 (2026-05-03 14:36)
+- ✅ MAGMA知识验证报告：delivery 修复为 none
+- ✅ morning-wechat-login-check：delivery 修复为 none（timeout 问题待查）
+- ⚠️ MAGMA 记忆衰减：99.8% 知识老化，10条即将衰减（需要定期检索激活）
 
 ## 心跳检查
 - 上次检查：HEARTBEAT_OK
